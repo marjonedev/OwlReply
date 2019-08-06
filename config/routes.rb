@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'pricing', to: 'pages#pricing'
   get 'signup', to: 'pages#signup'
   get 'documentation', to: 'pages#documentation'
-  get 'faq', to: 'pages#faq'
+  get 'faqs', to: 'pages#faqs'
   get 'security', to: 'pages#security'
   get 'signup', to: 'pages#signup'
  
