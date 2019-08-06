@@ -14,7 +14,7 @@ class PagesController < ApplicationController
   def documentation
   end
 
-  def faq
+  def faqs
   end
 
   def security
