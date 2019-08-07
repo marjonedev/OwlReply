@@ -8,19 +8,12 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
 	<!-- Stylesheets
 	============================================= -->
   <%= javascript_include_tag 'https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i', rel: 'stylesheet', type: 'text/css' %>
 	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
 
   <%= stylesheet_link_tag 'style', media: 'all', 'data-turbolinks-track': 'reload' %>
-<!--	<link rel="stylesheet" href="style.css" type="text/css" /> -->
-
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
 
   <link rel="stylesheet" href="css/swiper.css" type="text/css" />
@@ -31,6 +24,11 @@
 
 	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
 	<!-- Document Title
 	============================================= -->
@@ -55,8 +53,14 @@
           <!-- Logo
           ============================================= -->
           <div id="logo">
-            <a href="/" class="standard-logo" data-dark-logo="images/logo/logo.png"><img src="images/logo/logo.png" alt="OwlReply"></a>
-            <a href="/" class="retina-logo" data-dark-logo="images/logo@2x.png"><img src="images/logo/logo@2x.png" alt="OwlReply"></a>
+            <a href="/" class="standard-logo" data-dark-logo="images/logo/logo.png">
+              <%= image_tag "logo/logo.png", alt: "OwlReply" %>
+<!--              <img src="images/logo/logo.png" alt="OwlReply">-->
+            </a>
+            <a href="/" class="retina-logo" data-dark-logo="images/logo@2x.png">
+              <%= image_tag "logo/logo@2x.png", alt: "OwlReply" %>
+<!--              <img src="images/logo/logo@2x.png" alt="OwlReply">-->
+            </a>
           </div><!-- #logo end -->
 
           <!-- Primary Navigation
