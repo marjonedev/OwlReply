@@ -7,10 +7,15 @@
 
 	<!-- Stylesheets
 	============================================= -->
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
+  <%= javascript_include_tag 'https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i' %>
+<!--	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />-->
 	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-	<link rel="stylesheet" href="style.css" type="text/css" /> 
-	<link rel="stylesheet" href="css/swiper.css" type="text/css" />
+
+  <%= stylesheet_link_tag 'style', media: 'all', 'data-turbolinks-track': 'reload' %>
+<!--	<link rel="stylesheet" href="style.css" type="text/css" /> -->
+
+
+  <link rel="stylesheet" href="css/swiper.css" type="text/css" />
 	<link rel="stylesheet" href="css/dark.css" type="text/css" />
 	<link rel="stylesheet" href="css/font-icons.css" type="text/css" />
 	<link rel="stylesheet" href="css/animate.css" type="text/css" />
