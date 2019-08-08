@@ -9,12 +9,12 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 #  adapter: mysql
+#  encoding: utf8
 #  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#  timeout: 5000
 #  database: owlreply
 #  username: oruser
 #  password: user-owlreply5421
-#  host: localhost
+#  socket: /var/run/mysqld/mysqld.sock
 
 development:
   <<: *default
