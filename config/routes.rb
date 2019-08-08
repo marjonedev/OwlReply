@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :users
   get 'pages/home'
   get 'features', to: 'pages#features'
   get 'pricing', to: 'pages#pricing'
