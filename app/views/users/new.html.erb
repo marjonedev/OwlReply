@@ -37,11 +37,6 @@
       <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
         <div class="acc_content clearfix">
             <%= form_for @user, :as => :user, url: {action: "create"}, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'} do |f| %>
-<!--          <form id="register-form" name="register-form" class="nobottommargin" action="#" method="post">-->
-            <!--<div class="col_full">
-              <label for="register-form-name">Name:</label>
-              <input type="text" id="username" name="username" value="" class="form-control" />
-            </div>-->
 
             <div class="col_full">
               <label for="register-form-email">Email Address:</label>
@@ -53,11 +48,6 @@
               <input type="text" id="username" name="username" value="" class="form-control" />
             </div>
 
-            <!--<div class="col_full">
-              <label for="register-form-phone">Phone:</label>
-              <input type="text" id="register-form-phone" name="register-form-phone" value="" class="form-control" />
-            </div>-->
-
             <div class="col_full">
               <label for="register-form-password">Choose Password:</label>
               <input type="password" id="password" name="password" value="" class="form-control" />
@@ -65,7 +55,7 @@
 
             <div class="col_full">
               <label for="register-form-repassword">Re-enter Password:</label>
-              <input type="password" id="confirm_password" name="confirm_password" value="" class="form-control" />
+              <input type="password" id="confirm_password" value="" class="form-control" />
             </div>
 
             <div class="col_full nobottommargin">
