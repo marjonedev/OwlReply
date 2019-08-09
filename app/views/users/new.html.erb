@@ -36,7 +36,8 @@
 
       <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
         <div class="acc_content clearfix">
-          <%= form_for @user, :as => :user, url: {action: "create"}, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'} do |f| %>
+          <%= form_for(:user, :url => {:controller => 'users', :action => 'create'}, html => {id: 'register-form', class: 'nobottommargin', name: 'register-form'}) do |f| %>
+          <%#= form_for @user, :as => :user, url: {action: "create"}, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'} do |f| %>
 <!--          <form id="register-form" name="register-form" class="nobottommargin" action="#" method="post">-->
             <!--<div class="col_full">
               <label for="register-form-name">Name:</label>
