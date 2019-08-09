@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'documentation', to: 'pages#documentation'
   get 'faqs', to: 'pages#faqs'
   get 'security', to: 'pages#security'
-  get 'signup', to: 'pages#signup'
+  get 'signup', to: 'users#new'
  
   root 'pages#home'
 end
