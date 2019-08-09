@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get 'faqs', to: 'pages#faqs'
   get 'security', to: 'pages#security'
   get 'signup', to: 'users#new'
+
+  get 'users/new'
  
   root 'pages#home'
 end
