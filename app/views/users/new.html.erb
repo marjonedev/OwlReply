@@ -1,5 +1,85 @@
 <h1>New User</h1>
 
-<%= render 'form', user: @user %>
 
-<%= link_to 'Back', users_path %>
+<%= form_for @user, :as => :user, :url => sign_in_path(@user) do |f| %>
+  <p>
+    <%= f.label 'Username' %><br />
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label 'password:' %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.submit 'Sign In' %>&nbsp;&nbsp;&nbsp;
+    <%= f.submit 'Clear Form', :type => 'reset' %>
+  </p>
+<% end %>
+
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+
+  <div class="container clearfix">
+    <h1>Sign Up</h1>
+  </div>
+
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+
+  <div class="content-wrap">
+
+    <div class="container clearfix">
+
+      <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
+        <div class="acc_content clearfix">
+          <%= form_for @user, :as => :user, url: {action: "create"}, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'} do |f| %>
+<!--          <form id="register-form" name="register-form" class="nobottommargin" action="#" method="post">-->
+            <!--<div class="col_full">
+              <label for="register-form-name">Name:</label>
+              <input type="text" id="username" name="username" value="" class="form-control" />
+            </div>-->
+
+            <div class="col_full">
+              <label for="register-form-email">Email Address:</label>
+              <input type="text" id="email" name="email" value="" class="form-control" />
+            </div>
+
+            <div class="col_full">
+              <label for="register-form-username">Choose a Username:</label>
+              <input type="text" id="username" name="username" value="" class="form-control" />
+            </div>
+
+            <!--<div class="col_full">
+              <label for="register-form-phone">Phone:</label>
+              <input type="text" id="register-form-phone" name="register-form-phone" value="" class="form-control" />
+            </div>-->
+
+            <div class="col_full">
+              <label for="register-form-password">Choose Password:</label>
+              <input type="password" id="password" name="password" value="" class="form-control" />
+            </div>
+
+            <div class="col_full">
+              <label for="register-form-repassword">Re-enter Password:</label>
+              <input type="password" id="confirm_password" name="confirm_password" value="" class="form-control" />
+            </div>
+
+            <div class="col_full nobottommargin">
+              <button class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>
+            </div>
+<!--          </form>-->
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section><!-- #content end -->
+
+
