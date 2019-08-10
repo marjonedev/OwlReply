@@ -32,10 +32,10 @@ class User < ApplicationRecord
     def encrypt_password
       return if password.blank?
       self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}---#{username}--") if new_record?
-      self.crypted_password = encrypt(password)
+      self.encrypted_password = encrypt(password)
     end
 
     def password_required?
-      crypted_password.blank? || !password.blank?
+      encrypted_password.blank? || !password.blank?
     end
 end
