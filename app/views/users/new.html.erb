@@ -20,6 +20,19 @@
 
       <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
 
+        <% if @user.errors.any? %>
+        <div class="style-msg2 errormsg">
+          <div class="msgtitle">Error on submitting the form</div>
+          <div class="sb-msg">
+            <ul>
+              <% for message in @user.errors.full_messages %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <% end %>
+
         <div class="acc_content clearfix">
             <%= form_for(@user, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'}) do |f| %>
 

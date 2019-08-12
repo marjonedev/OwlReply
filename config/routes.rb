@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :users
 
   get 'pages/home'
   get 'features', to: 'pages#features'
@@ -8,10 +7,11 @@ Rails.application.routes.draw do
   get 'documentation', to: 'pages#documentation'
   get 'faqs', to: 'pages#faqs'
   get 'security', to: 'pages#security'
-  get 'signup', to: 'users#new'
-
+  get 'signup' => 'users#new', :as => "signup"
   get 'users/index'
 
   root 'pages#home'
+
+  resources :users
 end
 
