@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+  get 'sessions/new'
   get 'pages/home'
   get 'features', to: 'pages#features'
   get 'pricing', to: 'pages#pricing'
