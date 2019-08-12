@@ -34976,3 +34976,18 @@
 /var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/spell_checkers/method_name_checker.rb:7: warning: previous definition of NAMES_TO_EXCLUDE was here
 /usr/lib/ruby/vendor_ruby/did_you_mean.rb:34: warning: already initialized constant DidYouMean::SPELL_CHECKERS
 /var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean.rb:87: warning: previous definition of SPELL_CHECKERS was here
+=== puma startup: 2019-08-12 17:36:47 +0000 ===
+/usr/lib/ruby/vendor_ruby/did_you_mean/version.rb:2: warning: already initialized constant DidYouMean::VERSION
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/version.rb:2: warning: previous definition of VERSION was here
+/usr/lib/ruby/vendor_ruby/did_you_mean/jaro_winkler.rb:63: warning: already initialized constant DidYouMean::JaroWinkler::WEIGHT
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/jaro_winkler.rb:63: warning: previous definition of WEIGHT was here
+/usr/lib/ruby/vendor_ruby/did_you_mean/jaro_winkler.rb:64: warning: already initialized constant DidYouMean::JaroWinkler::THRESHOLD
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/jaro_winkler.rb:64: warning: previous definition of THRESHOLD was here
+/usr/lib/ruby/vendor_ruby/did_you_mean/spell_checkers/name_error_checkers/variable_name_checker.rb:9: warning: already initialized constant DidYouMean::VariableNameChecker::NAMES_TO_EXCLUDE
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/spell_checkers/name_error_checkers/variable_name_checker.rb:9: warning: previous definition of NAMES_TO_EXCLUDE was here
+/usr/lib/ruby/vendor_ruby/did_you_mean/spell_checkers/name_error_checkers.rb:5: warning: already initialized constant DidYouMean::NameErrorCheckers
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/spell_checkers/name_error_checkers.rb:5: warning: previous definition of NameErrorCheckers was here
+/usr/lib/ruby/vendor_ruby/did_you_mean/spell_checkers/method_name_checker.rb:7: warning: already initialized constant DidYouMean::MethodNameChecker::NAMES_TO_EXCLUDE
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean/spell_checkers/method_name_checker.rb:7: warning: previous definition of NAMES_TO_EXCLUDE was here
+/usr/lib/ruby/vendor_ruby/did_you_mean.rb:34: warning: already initialized constant DidYouMean::SPELL_CHECKERS
+/var/lib/gems/2.5.0/gems/did_you_mean-1.3.0/lib/did_you_mean.rb:87: warning: previous definition of SPELL_CHECKERS was here

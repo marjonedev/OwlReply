@@ -124,3 +124,7 @@
 === puma startup: 2019-08-12 16:41:14 +0000 ===
 [6075] * Starting control server on unix:///tmp/puma-status-1565628074269-6075
 [6075] - Worker 0 (pid: 6104) booted, phase: 0
+[6075] - Gracefully shutting down workers...
+=== puma startup: 2019-08-12 17:36:47 +0000 ===
+[16665] * Starting control server on unix:///tmp/puma-status-1565631407871-16665
+[16665] - Worker 0 (pid: 16700) booted, phase: 0
