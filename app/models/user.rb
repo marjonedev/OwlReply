@@ -11,8 +11,7 @@ class User < ApplicationRecord
   validates_length_of :username, :within => 5..40
   validates_uniqueness_of :username, :case_sensitive => false
   validates_presence_of :email_address
-  # validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }
-  # validates_format_of :email_address, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
+  validates_format_of :email_address, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates_format_of :username, :with => /\A[a-z][a-z0-9\_]*?\Z/, :message => "must start with a letter and include only letters, numbers, and underscore."
 
   before_save :encrypt_password
