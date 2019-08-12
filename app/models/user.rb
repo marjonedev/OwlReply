@@ -5,6 +5,7 @@ class User < ApplicationRecord
   attr_accessor :password
 
   validates_presence_of :username
+  validates_confirmation_of :password
   validates_presence_of :password, :if => :password_required?
   validates_length_of :password, :within => 8..40, :if => :password_required?
   validates_length_of :username, :within => 5..40
