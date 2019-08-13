@@ -72,6 +72,14 @@
 
     </header><!-- #header end -->
 
+    <% flash.each do |key, value| %>
+      <div class="style-msg style-msg-light" style="background-color: #333;">
+        <div class="sb-msg">
+          <%= content_tag :p, value, class: "flash #{key}" %>
+        </div>
+      </div>
+    <% end %>
+
     <% if current_user %>
       <div class="style-msg successmsg">
         <div class="sb-msg">
