@@ -29,6 +29,15 @@ class User < ApplicationRecord
     Digest::SHA512.hexdigest("--#{salt}---#{password}--")
   end
 
+  def self.authenticate(password)
+    user = find_by(username: self.username)
+    if user && user.encrypted_password == user.encrypt(password, user.salt)
+      user
+    else
+      nil
+    end
+  end
+
   protected
     # before filter
     def encrypt_password
