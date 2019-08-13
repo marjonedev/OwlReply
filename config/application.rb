@@ -15,7 +15,9 @@ module Website
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+    #
+    #
+
+    config.action_controller.session_store = :active_record_store
   end
 end
-
-config.action_controller.session_store = :active_record_store
