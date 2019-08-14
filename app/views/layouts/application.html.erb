@@ -61,7 +61,9 @@
               <li class="<%= 'current' if current_page?('/') %>"><a href="/"><div>Home</div></a>
               <li class="<%= 'current' if current_page?(action: 'features', controller: 'pages') %>"><a href="/features"><div>Features</div></a>
               <li class="<%= 'current' if current_page?(action: 'pricing', controller: 'pages') %>"><a href="/pricing"><div>Pricing</div></a>
-              <li class="<%= 'current' if current_page?('/signup') %>"><a href="/signup"><div>Signup</div></a>
+              <% unless current_user %>
+                <li class="<%= 'current' if current_page?('/signup') %>"><a href="/signup"><div>Signup</div></a>
+              <% end %>
             </ul>
             <% if current_user %>
               <ul>
