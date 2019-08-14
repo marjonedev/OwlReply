@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  require 'sessions_helper'
+  include SessionsHelper
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
