@@ -26,6 +26,10 @@ class UsersController < ApplicationController
     logger.debug "test"
 
     unless @current_user.id === current_user.id
+      logger.debug current_user.id
+      logger.debug params[:id]
+      logger.debug @current_user
+
       not_found
     end
   end
