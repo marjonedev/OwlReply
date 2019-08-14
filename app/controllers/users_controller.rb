@@ -16,12 +16,12 @@ class UsersController < ApplicationController
   def show
     if !logged_in?
       redirect_to login_url
-    end
+    else
+      @param_user ||= User.find_by_id(params[:id])
 
-    @param_user ||= User.find_by_id(params[:id])
-
-    unless current_user.id == @param_user.id
-      not_found
+      unless current_user.id == @param_user.id
+        not_found
+      end
     end
 
   end
