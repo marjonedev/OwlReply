@@ -22,12 +22,10 @@ class UsersController < ApplicationController
 
     logger.debug "test"
 
-    if current_user.id == @param_user.id
-      logger.debug current_user.id
-      logger.debug params[:id]
-
+    unless current_user.id == @param_user.id
       not_found
     end
+
   end
 
   # GET /users/new
