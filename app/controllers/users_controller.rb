@@ -8,7 +8,11 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    if !logged_in?
+      redirect_to login_url
+    else
+      @users = User.all
+    end
   end
 
   # GET /users/1
@@ -17,9 +21,7 @@ class UsersController < ApplicationController
     if !logged_in?
       redirect_to login_url
     else
-      @param_user ||= User.find_by_id(params[:id])
-
-      unless current_user.id == @param_user.id
+      unless current_user.id == @user.id
         not_found
       end
     end
