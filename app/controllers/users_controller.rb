@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       redirect_to login_url
     else
       if current_user.id != params[:id]
-        render_not_found
+        not_found
       end
     end
   end
