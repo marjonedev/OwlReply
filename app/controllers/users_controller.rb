@@ -18,6 +18,7 @@ class UsersController < ApplicationController
       redirect_to login_url
     end
     logger.debug current_user.id
+    logger.debug "test"
     if current_user.id != params[:id]
       not_found
     end
