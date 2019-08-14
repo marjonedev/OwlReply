@@ -16,10 +16,10 @@ class UsersController < ApplicationController
   def show
     if !logged_in?
       redirect_to login_url
-    else
-      logger.debug current_user
-      logger.debug params[:id]
-      logger.debug "logged in"
+    end
+
+    if current_user.id != params[:id]
+      not_found
     end
   end
 
