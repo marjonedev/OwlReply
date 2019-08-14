@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
 
-  get 'errors/not_found'
-  get 'errors/unacceptable'
-  get 'errors/internal_error'
+  get "/404", to: "errors#not_found"
+  get "/422", to: "errors#unacceptable"
+  get "/500", to: "errors#internal_error"
+
   resources :users
   resources :sessions
 

@@ -19,6 +19,6 @@ module Website
     #
 
     # config.action_controller.session_store = :active_record_store
-    # config.exceptions_app = self.routes
+    config.exceptions_app = self.routes
   end
 end
