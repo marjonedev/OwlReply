@@ -18,9 +18,11 @@ class UsersController < ApplicationController
       redirect_to login_url
     end
 
+    @param_user ||= User.find_by_id(params[:id])
+
     logger.debug "test"
 
-    if current_user.id == params[:id]
+    if current_user.id == @param_user.id
       logger.debug current_user.id
       logger.debug params[:id]
 
