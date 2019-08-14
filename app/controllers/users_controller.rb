@@ -17,9 +17,7 @@ class UsersController < ApplicationController
     if !logged_in?
       redirect_to login_url
     else
-      if current_user.id != params[:id]
-        not_found
-      end
+      logger.debug "logged in"
     end
   end
 
