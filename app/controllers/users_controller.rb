@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  # require 'sessions_helper'
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   #TEST1
@@ -11,6 +14,13 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    if !logged_in?
+      redirect_to login_url
+    end
+
+    if current_user.id != params[:id]
+      render_not_found
+    end
   end
 
   # GET /users/new
