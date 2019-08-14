@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  include SessionsHelper
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   #TEST1
@@ -14,10 +16,10 @@ class UsersController < ApplicationController
   def show
     if !logged_in?
       redirect_to login_url
-    end
-
-    if current_user.id != params[:id]
-      render_not_found
+    else
+      if current_user.id != params[:id]
+        render_not_found
+      end
     end
   end
 
