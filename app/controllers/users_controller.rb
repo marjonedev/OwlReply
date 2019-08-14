@@ -20,8 +20,6 @@ class UsersController < ApplicationController
 
     @param_user ||= User.find_by_id(params[:id])
 
-    logger.debug "test"
-
     unless current_user.id == @param_user.id
       not_found
     end
