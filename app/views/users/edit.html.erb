@@ -1,16 +1,9 @@
-<h1>Editing User</h1>
-
-<%= render 'form', user: @user %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
-
 <!-- Page Title
-		============================================= -->
+============================================= -->
 <section id="page-title" class="nobg">
 
   <div class="container clearfix">
-    <h1>My Profile</h1>
+    <h1>Edit My Account</h1>
   </div>
 
 </section><!-- #page-title end -->
@@ -26,6 +19,19 @@
             <div class="white-section custom-white-box">
               <h3 class="section-title nomargin">Details</h3>
               <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-user1"></i></div>
+
+              <% if @user.errors.any? %>
+                <div class="style-msg2 errormsg">
+                  <div class="msgtitle">Opps! There's an error upon submitting.</div>
+                  <div class="sb-msg">
+                    <ul>
+                      <% for message in @user.errors.full_messages %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+              <% end %>
 
               <%= form_for @user do |f| %>
 
