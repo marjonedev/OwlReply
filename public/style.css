@@ -13975,7 +13975,7 @@ body:not(.no-transition) #wrapper,
 	margin: 15px 0;
 }
 
-.form-group span.static-value{
+.form-group .static-value{
 	font-size: 16px;
-	margin-top: 3px;
+	padding: 3px;
 }
