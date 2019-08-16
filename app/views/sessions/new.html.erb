@@ -20,8 +20,12 @@
 
         <div class="acctitle"><i class="acc-closed icon-lock3"></i><i class="acc-open icon-unlock"></i>Login to your Account</div>
         <div class="acc_content clearfix">
+          <% flash.each do |key, value| %>
+            <div class="style-msg <%= key %>">
+              <div class="sb-msg"><%= value %></div>
+            </div>
+          <% end %>
           <%= form_for(:user, url: login_path, class: 'nobottommargin') do |f| %>
-<!--          <form id="login-form" name="login-form" class="nobottommargin" action="#" method="post">-->
             <div class="col_full">
               <label for="login-username">Username:</label>
               <%= f.text_field :username, class: 'form-control required', id: 'login-username' %>
@@ -34,9 +38,7 @@
 
             <div class="col_full nobottommargin">
               <button class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
-<!--              <a href="#" class="fright">Forgot Password?</a>-->
             </div>
-<!--          </form>-->
           <% end %>
         </div>
 
