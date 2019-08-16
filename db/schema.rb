@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_10_142143) do
+ActiveRecord::Schema.define(version: 2019_08_16_171936) do
+
+  create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "users_id"
+    t.string "address"
+    t.string "password"
+    t.string "encrypted_password"
+    t.string "encryption_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["users_id"], name: "index_emailaccounts_on_users_id"
+  end
+
+  create_table "sessions", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "username"
@@ -22,4 +42,5 @@ ActiveRecord::Schema.define(version: 2019_08_10_142143) do
     t.index ["email_address"], name: "index_users_on_email_address"
   end
 
+  add_foreign_key "emailaccounts", "users", column: "users_id"
 end
