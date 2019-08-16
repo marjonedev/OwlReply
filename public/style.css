@@ -13958,3 +13958,19 @@ body:not(.no-transition) #wrapper,
 	-webkit-box-shadow: 0px 1px 1px 0px #444;
 	box-shadow: 0px 1px 1px 0px #444;
 }
+
+/* ----------------------------------------------------------------
+	Custom White Box
+-----------------------------------------------------------------*/
+
+.custom-white-box a.edit-section{
+	font-size: 16px;
+}
+
+.custom-white-box a.edit-section i{
+	vertical-align: middle;
+}
+
+.custom-white-box .divider{
+	margin: 15px;
+}
