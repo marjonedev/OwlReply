@@ -1,2 +1,0 @@
-class Emailaccount < ApplicationRecord
-end
