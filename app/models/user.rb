@@ -1,6 +1,5 @@
 class User < ApplicationRecord
-  # has_many :emailaccounts
-  # has_many :autoreplies, through: :emailaccounts
+  has_many :emailaccount
 
   attr_accessor :password
 
