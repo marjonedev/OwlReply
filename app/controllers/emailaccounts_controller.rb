@@ -9,7 +9,9 @@ class EmailaccountsController < ApplicationController
   # GET /emailaccounts.json
   def index
     @user = User.find(current_user.id)
-    @emailaccounts = Emailaccount.find_by(user_id: @user.id)
+    @emailaccounts = Emailaccount.where(user_id: @user.id)
+    Rails.logger.debug("My object: #{@user.id}")
+    Rails.logger.debug("My object: #{@emailaccounts}")
   end
 
   # GET /emailaccounts/1
