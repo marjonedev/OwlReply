@@ -26,11 +26,9 @@
         </thead>
 
         <tbody class="emailaccounts">
-        <% if @emailaccounts.present? %>
           <% @emailaccounts.each do |emailaccount| %>
             <%= render emailaccount %>
           <% end %>
-        <% end %>
         </tbody>
       </table>
 
