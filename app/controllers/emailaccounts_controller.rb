@@ -1,10 +1,15 @@
 class EmailaccountsController < ApplicationController
+
+  include SessionsHelper
+
+  before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
   def index
-    @emailaccounts = Emailaccount.all
+    @user = User.find(current_user.id)
+    @emailaccounts = Emailaccount.find_by(user_id: @user.id)
   end
 
   # GET /emailaccounts/1
