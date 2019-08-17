@@ -1,35 +1,50 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Emailaccounts</h1>
+<section id="page-title">
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Address</th>
-      <th>Password</th>
-      <th>Encrypted password</th>
-      <th>Encryption key</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <div class="container clearfix">
+    <h1>Accounts</h1>
+    <h2>Add your email accounts here.</h2>
+  </div>
 
-  <tbody>
-    <% @emailaccounts.each do |emailaccount| %>
-      <tr>
-        <td><%= emailaccount.user_id %></td>
-        <td><%= emailaccount.address %></td>
-        <td><%= emailaccount.password %></td>
-        <td><%= emailaccount.encrypted_password %></td>
-        <td><%= emailaccount.encryption_key %></td>
-        <td><%= link_to 'Show', emailaccount %></td>
-        <td><%= link_to 'Edit', edit_emailaccount_path(emailaccount) %></td>
-        <td><%= link_to 'Destroy', emailaccount, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+</section><!-- #page-title end -->
 
-<br>
+<section id="content">
+  <div class="content-wrap">
+    <div class="container clearfix">
 
-<%= link_to 'New Emailaccount', new_emailaccount_path %>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Address</th>
+            <th>Password</th>
+            <th>Encrypted password</th>
+            <th>Encryption key</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @emailaccounts.each do |emailaccount| %>
+            <tr>
+              <td><%= emailaccount.user_id %></td>
+              <td><%= emailaccount.address %></td>
+              <td><%= emailaccount.password %></td>
+              <td><%= emailaccount.encrypted_password %></td>
+              <td><%= emailaccount.encryption_key %></td>
+              <td><%= link_to 'Show', emailaccount %></td>
+              <td><%= link_to 'Edit', edit_emailaccount_path(emailaccount) %></td>
+              <td><%= link_to 'Destroy', emailaccount, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <br>
+
+      <%= link_to 'New Emailaccount', new_emailaccount_path %>
+
+    </div>
+  </div>
+</section>
