@@ -30,7 +30,9 @@ class EmailaccountsController < ApplicationController
       if @emailaccount.save
         format.html { redirect_to @emailaccount, notice: 'Emailaccount was successfully created.' }
         format.json { render :show, status: :created, location: @emailaccount }
+        format.js {  }
       else
+        format.js { render :new }
         format.html { render :new }
         format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
       end
