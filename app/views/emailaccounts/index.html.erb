@@ -45,7 +45,7 @@
 
       <%= link_to 'New Emailaccount', new_emailaccount_path, onclick: '$(".emailaccount_x").toggle();return false;', class: 'emailaccount_x' %>
       <div class="emailaccount_x" style="display: none;">
-        <%= render action: "emailaccounts/new" %>
+        <%#= render action: "emailaccounts/new" %>
         <a href="#" onclick="$('.emailaccount_x').toggle();return false;">Cancel</a>
       </div>
 
