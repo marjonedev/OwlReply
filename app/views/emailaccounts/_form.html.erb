@@ -1,4 +1,4 @@
-<%= form_with model: (emailaccount || emailaccount = Emailaccount.new) do |form| %>
+<%= form_with model: (emailaccount || emailaccount = Emailaccount.new), format: :js do |form| %>
   <% if emailaccount.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(emailaccount.errors.count, "error") %> prohibited this emailaccount from being saved:</h2>
