@@ -1,1 +1,4 @@
-$('#new_record a').parent().html("<%= j render 'form', emailaccount: @emailaccount %>");
+$('#new_record a')
+    .hide()
+    .parent()
+    .find('.record-form').html("<%= j render 'form', emailaccount: @emailaccount %>");
