@@ -13,12 +13,12 @@
 
   <div class="col_full">
     <label for="password">Encrypted Password:</label>
-    <%= f.password_field :encrypted_password, class: 'form-control required', id: 'encrypted_password', required: 'required' %>
+    <%= f.text_field :encrypted_password, class: 'form-control required', id: 'encrypted_password', required: 'required' %>
   </div>
 
   <div class="col_full">
     <label for="password">Encryption Key:</label>
-    <%= f.password_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required' %>
+    <%= f.text_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required' %>
   </div>
 
   <div class="col_full nobottommargin">
