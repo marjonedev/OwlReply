@@ -10,7 +10,6 @@ class EmailaccountsController < ApplicationController
   def index
     @user = User.find(current_user.id)
     @emailaccounts = Emailaccount.where(user_id: @user.id)
-    @emailaccount = Emailaccount.new
   end
 
   # GET /emailaccounts/1

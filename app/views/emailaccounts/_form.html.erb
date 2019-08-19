@@ -1,4 +1,4 @@
-<%= form_with model: (emailaccount || emailaccount = Emailaccount.new) do |form| %>
+<%= form_with model: (emailaccount || emailaccount = Emailaccount.new), html:{class: 'nobottommargin'} do |form| %>
   <% if emailaccount.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(emailaccount.errors.count, "error") %> prohibited this emailaccount from being saved:</h2>
@@ -11,32 +11,27 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id %>
-  </div>
-
-  <div class="field">
+  <div class="col_full">
     <%= form.label :address %>
-    <%= form.text_field :address %>
+    <%= form.text_field :address, class: 'form-control required', id: 'address', required: 'required' %>
   </div>
 
-  <div class="field">
+  <div class="col_full">
     <%= form.label :password %>
-    <%= form.text_field :password %>
+    <%= form.text_field :password, class: 'form-control required', id: 'password', required: 'required' %>
   </div>
 
-  <div class="field">
+  <div class="col_full">
     <%= form.label :encrypted_password %>
-    <%= form.text_field :encrypted_password %>
+    <%= form.text_field :encrypted_password, class: 'form-control required', id: 'encrypted_password', required: 'required' %>
   </div>
 
-  <div class="field">
+  <div class="col_full">
     <%= form.label :encryption_key %>
-    <%= form.text_field :encryption_key %>
+    <%= form.text_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required' %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="actions col_full nobottommargin">
+    <%= form.submit emailaccount.new_record? ? 'Add New' : 'Save', :class => 'button button-3d button-black nomargin' %>
   </div>
 <% end %>
