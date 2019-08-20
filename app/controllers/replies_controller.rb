@@ -27,7 +27,8 @@ class RepliesController < ApplicationController
   # POST /replies
   # POST /replies.json
   def create
-    @reply = Reply.new(reply_params)
+    #@reply = Reply.new(reply_params)
+    @reply = @emailaccount.replies.new(reply_params)
 
     respond_to do |format|
       if @reply.save
