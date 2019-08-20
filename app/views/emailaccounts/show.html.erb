@@ -20,7 +20,23 @@
             <%# render emailreply %>
           <%# end %>
           <h3>Keyword Suggestions</h3>
+          <%# This should check if any of these are already used and then not show them. The list should probably be rendered from a [] array somewhere. %>
           <a href="#">Refund+</a> <a href="#">Sales+</a> <a href="#">Hours+</a>
+          <h3>Template</h3>
+          <textarea>
+            Hello,
+
+            Thank you for emailing our company. We are happy to hear from you, and I'm happy to be here to help.
+
+            %%response%%
+
+            Thank you for reaching out.
+
+            Sincerely,
+
+            Customer Service
+            info@company.com
+          </textarea>
         </div>
       </div>
     </div>
