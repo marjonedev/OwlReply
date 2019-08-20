@@ -15,6 +15,7 @@ class EmailaccountsController < ApplicationController
   # GET /emailaccounts/1
   # GET /emailaccounts/1.json
   def show
+    @replies = @emailaccount.replies
   end
 
   # GET /emailaccounts/new

@@ -21,7 +21,10 @@
         <%# end %>
         <%# OR just render Emailaccount.emailreplies usually works %>
 
-        <div class="acc_content clearfix">
+        <%#= render @emailaccount.replies %>
+        <%= render file: "replies/index" %>
+
+        <!--<div class="acc_content clearfix">
           <h3>Keyword Suggestions</h3>
           <%# This should check if any of these are already used and then not show them. The list should probably be rendered from a [] array somewhere. %>
           <a href="#">Refund+</a> <a href="#">Sales+</a> <a href="#">Hours+</a>
@@ -43,7 +46,7 @@ Sincerely,
 Customer Service
 info@company.com
           </textarea>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>

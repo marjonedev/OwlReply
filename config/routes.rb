@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "/422", to: "errors#unacceptable"
   get "/500", to: "errors#internal_error"
 
+  resources :replies
   resources :emailaccounts
   resources :sessions
   resources :users
