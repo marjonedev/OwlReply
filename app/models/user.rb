@@ -24,6 +24,7 @@ class User < ApplicationRecord
     #CongoingsubscribeJob.perform_later(self.email_address)
   end
 
+
   def create_initial_emailaccount
     Emailaccount.create(user_id: self.id, address: self.email_address)
   end
