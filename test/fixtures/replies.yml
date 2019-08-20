@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  keywords: MyString
+  body: MyText
+  negative_keywords: MyString
+  catchcall: false
+
+two:
+  keywords: MyString
+  body: MyText
+  negative_keywords: MyString
+  catchcall: false
