@@ -1,9 +1,8 @@
 class RepliesController < ApplicationController
-
   include SessionsHelper
-
   before_action :logged_in_user
   before_action :set_reply, only: [:show, :edit, :update, :destroy]
+  before_action :set_emailaccount, only: [:new, :create]
 
   # GET /replies
   # GET /replies.json
@@ -76,4 +75,8 @@ class RepliesController < ApplicationController
     def reply_params
       params.require(:reply).permit(:keywords, :body, :negative_keywords, :catchcall)
     end
+
+  def set_emailaccount
+    @emailaccount = User.emailaccounts.find(params[:emailaccount_id])
+  end
 end
