@@ -9,7 +9,7 @@ class EmailaccountsController < ApplicationController
   # GET /emailaccounts.json
   def index
     @user = User.find(current_user.id)
-    @emailaccounts = Emailaccount.where(user_id: @user.id)
+    @emailaccounts = current_user.emailaccounts
   end
 
   # GET /emailaccounts/1
@@ -71,7 +71,7 @@ class EmailaccountsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_emailaccount
-      @emailaccount = Emailaccount.find(params[:id])
+      @emailaccount = current_user.emailaccounts.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -79,6 +79,5 @@ class EmailaccountsController < ApplicationController
       params
           .require(:emailaccount)
           .permit(:address, :password, :encrypted_password, :encryption_key)
-          .merge(:user_id => current_user.id)
     end
 end
