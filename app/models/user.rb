@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
   def set_initial_content
     self.password = self.email_address
-    self.login = self.email_address
+    self.username = self.email_address
     #CongoingsubscribeJob.perform_later(self.email_address)
   end
 
