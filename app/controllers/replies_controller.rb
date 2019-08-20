@@ -77,6 +77,6 @@ class RepliesController < ApplicationController
     end
 
   def set_emailaccount
-    @emailaccount = User.emailaccounts.find(params[:emailaccount_id])
+    @emailaccount = current_user.emailaccounts.find(params[:emailaccount_id])
   end
 end
