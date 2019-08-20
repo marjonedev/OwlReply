@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     user = User.find_by(username: params[:user][:username])
     authenticate = User.authenticate(params[:user][:username], params[:user][:password])
     if user && authenticate
-      session[:user_id] = user.id
+      e
       redirect_to controller: "users", action: "show", id: user.id
     else
       flash.now[:errormsg] = "Username or password is invalid"
