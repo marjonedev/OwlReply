@@ -13980,3 +13980,10 @@ body:not(.no-transition) #wrapper,
 	font-size: 16px;
 	padding: 3px;
 }
+/* CUSTOM CSS */
+#primary-menu .goodbutton {
+  background: #FF7800;
+	color: #FFF !important;
+	border-radius: 10px;
+	margin: -10px;
+}
