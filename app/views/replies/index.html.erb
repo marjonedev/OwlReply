@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <thead>
+  <tr>
+    <th>Keywords</th>
+    <th>Body</th>
+    <th>Negative keywords</th>
+    <th>Catchcall</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody class="replies">
+  <% @replies.each do |reply| %>
+    <%= render reply %>
+  <% end %>
+  </tbody>
+</table>
+
+<div id="new_record">
+  <%= link_to 'New Email Reply', new_reply_path, remote: true %>
+  <div class="record-form">
+  </div>
+</div>
