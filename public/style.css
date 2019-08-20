@@ -13983,7 +13983,8 @@ body:not(.no-transition) #wrapper,
 /* CUSTOM CSS */
 #primary-menu .goodbutton div {
   background: #FF7800;
-	color: #FFF !important;
 	border-radius: 10px;
+	color: #FFF !important;
 	margin: -10px;
+	padding: 10px;
 }
