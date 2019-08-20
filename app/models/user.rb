@@ -14,7 +14,19 @@ class User < ApplicationRecord
   validates_format_of :username, :with => /\A[a-z][a-z0-9\_]*?\Z/, :message => "must start with a letter and include only letters, numbers, and underscore."
 
   before_save :encrypt_password
+  before_validation :set_initial_content, on: [:create]
   before_validation :lowercase_username
+  after_create :create_initial_emailaccount
+
+  def set_initial_content
+    self.password = self.email_address
+    self.login = self.email_address
+    #CongoingsubscribeJob.perform_later(self.email_address)
+  end
+
+  def create_initial_emailaccount
+    Emailaccount.create(user_id: self.id, address: self.email_address)
+  end
 
   def lowercase_username
     self.username.downcase!

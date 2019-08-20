@@ -46,9 +46,11 @@ class UsersController < ApplicationController
       if @user.save
         format.html { redirect_to @user, notice: 'You signed up successfully.' }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
+        format.js { @emailaccount = @user.emailaccounts.first }
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity, color: 'invalid' }
+        format.js { render :new }
       end
     end
   end
