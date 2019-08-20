@@ -49,7 +49,7 @@ class EmailaccountsController < ApplicationController
   def update
     respond_to do |format|
       if @emailaccount.update(emailaccount_params)
-        format.html { redirect_to @emailaccount, notice: 'Emailaccount was successfully updated.', turbolinks: false }
+        format.html { redirect_to @emailaccount, notice: 'Emailaccount was successfully updated.' }
         format.json { render :show, status: :ok, location: @emailaccount }
       else
         format.html { render :edit }
