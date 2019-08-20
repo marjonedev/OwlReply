@@ -4,6 +4,7 @@ class EmailaccountsController < ApplicationController
 
   before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy]
+  before_action :set_current_emailaccount, only: [:show]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -80,5 +81,9 @@ class EmailaccountsController < ApplicationController
       params
           .require(:emailaccount)
           .permit(:address, :password, :encrypted_password, :encryption_key)
+    end
+
+    def set_current_emailaccount
+      Emailaccount.current = @emailaccount
     end
 end

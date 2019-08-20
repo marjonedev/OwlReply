@@ -14,4 +14,12 @@ class Emailaccount < ApplicationRecord
     self.user_id = User.current.id
   end
 
+  def self.current
+    Thread.current[:emailaccount]
+  end
+
+  def self.current=(emailaccount)
+    Thread.current[:emailaccount] = emailaccount
+  end
+
 end
