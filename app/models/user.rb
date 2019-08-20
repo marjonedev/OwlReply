@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :emailaccount
+  has_many :emailaccounts
 
   attr_accessor :password
 
