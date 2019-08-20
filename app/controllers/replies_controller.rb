@@ -27,7 +27,6 @@ class RepliesController < ApplicationController
   # POST /replies
   # POST /replies.json
   def create
-    #@reply = Reply.new(reply_params)
     @reply = @emailaccount.replies.new(reply_params)
 
     respond_to do |format|
@@ -69,7 +68,8 @@ class RepliesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reply
-      @reply = Reply.find(params[:id])
+      #@reply = Reply.find(params[:id])
+      @reply = current_user.replies.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

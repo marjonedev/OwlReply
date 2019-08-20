@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :emailaccounts
+  has_many :replies, through: :emailaccounts
 
   attr_accessor :password
 
