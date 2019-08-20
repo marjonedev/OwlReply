@@ -15,14 +15,20 @@
   <div class="content-wrap">
     <div class="container clearfix">
       <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
+        <h3>Your Replies</h3>
+        <%# for emailreply in Emailaccount.emailreplies %>
+        <%# render emailreply %>
+        <%# end %>
+        <%# OR just render Emailaccount.emailreplies usually works %>
+
         <div class="acc_content clearfix">
-          <%# for emailreply in Emailaccount.emailreplies %>
-            <%# render emailreply %>
-          <%# end %>
           <h3>Keyword Suggestions</h3>
           <%# This should check if any of these are already used and then not show them. The list should probably be rendered from a [] array somewhere. %>
           <a href="#">Refund+</a> <a href="#">Sales+</a> <a href="#">Hours+</a>
+          <br>
+          <br>
           <h3>Template</h3>
+          <%# This will eventually need to be editable. For now, it will be on the Emailaccount. Later, we will have a whole Template model so that each reply can select a different one. %>
           <textarea style="width:100%;height:300px;padding:5px;">
 Hello,
 
