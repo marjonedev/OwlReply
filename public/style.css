@@ -1043,7 +1043,8 @@ body.stretched #header.full-header .container {
 #header.full-header #logo {
 	padding-right: 30px;
 	margin-right: 30px;
-	border-right: 1px solid #EEE;
+	/*border-right: 1px solid #EEE;*/
+	border: 0;
 }
 
 #header.transparent-header.full-header #logo { border-right-color: rgba(0,0,0,0.1); }
@@ -1160,7 +1161,7 @@ body.stretched #header.full-header .container {
 	padding: 39px 15px;
 	color: #444;
 	font-weight: bold;
-	font-size: 13px;
+	font-size: 15px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	font-family: 'Raleway', sans-serif;

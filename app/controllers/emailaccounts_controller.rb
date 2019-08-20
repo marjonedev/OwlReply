@@ -1,10 +1,15 @@
 class EmailaccountsController < ApplicationController
+
+  include SessionsHelper
+
+  before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
   def index
-    @emailaccounts = Emailaccount.all
+    @user = User.find(current_user.id)
+    @emailaccounts = Emailaccount.where(user_id: @user.id)
   end
 
   # GET /emailaccounts/1
@@ -71,6 +76,9 @@ class EmailaccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def emailaccount_params
-      params.require(:emailaccount).permit(:user_id, :address, :password, :encrypted_password, :encryption_key)
+      params
+          .require(:emailaccount)
+          .permit(:address, :password, :encrypted_password, :encryption_key)
+          .merge(:user_id => current_user.id)
     end
 end

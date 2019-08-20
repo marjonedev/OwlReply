@@ -32,13 +32,17 @@
         </tbody>
       </table>
 
-      <br>
-
-      <%= link_to 'New Emailaccount', new_emailaccount_path, onclick: '$(".emailaccount_x").toggle();return false;', class: 'emailaccount_x' %>
-      <div class="emailaccount_x" style="display: none;">
-        <%= render file: "emailaccounts/new" %>
-        <a href="#" onclick="$('.emailaccount_x').toggle();return false;">Cancel</a>
+      <div id="new_record">
+        <%= link_to 'New Email Account', new_emailaccount_path, remote: true %>
+        <div class="record-form">
+        </div>
       </div>
+
+      <%#= link_to 'New Emailaccount', new_emailaccount_path, onclick: '$(".emailaccount_x").toggle();return false;', class: 'emailaccount_x' %>
+<!--      <div class="emailaccount_x" style="display: none;">-->
+        <%#= render file: "emailaccounts/new" %>
+<!--        <a href="#" onclick="$('.emailaccount_x').toggle();return false;">Cancel</a>-->
+<!--      </div>-->
 
     </div>
   </div>
