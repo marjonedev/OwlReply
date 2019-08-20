@@ -32,6 +32,8 @@
     <%= form.check_box :catchcall, class: 'form-control', id: 'keywords' %>
   </div>
 
+  <input type="hidden" name="emailaccount_id" value="<%= @emailaccount.id %>">
+
   <div class="actions col_full nobottommargin">
     <%= form.submit reply.new_record? ? 'Add New' : 'Save', :class => 'button button-3d button-black nomargin' %>
   </div>
