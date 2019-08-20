@@ -13981,7 +13981,7 @@ body:not(.no-transition) #wrapper,
 	padding: 3px;
 }
 /* CUSTOM CSS */
-#primary-menu .goodbutton {
+#primary-menu .goodbutton div {
   background: #FF7800;
 	color: #FFF !important;
 	border-radius: 10px;
