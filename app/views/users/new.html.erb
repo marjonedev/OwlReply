@@ -34,7 +34,7 @@
         <% end %>
 
         <div class="acc_content clearfix">
-            <%= form_with(@user, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'}) do |f| %>
+            <%= form_with(model: @user, html: {id: 'register-form', class: 'nobottommargin', name: 'register-form'}) do |f| %>
 
             <div class="col_full">
               <label for="email_address">Email Address:</label>
