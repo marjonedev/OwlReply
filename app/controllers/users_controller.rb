@@ -44,9 +44,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         session[:user_id] = @user.id # Make sure the user is logged in after signing in!
-        format.html { redirect_to @user, notice: 'You signed up successfully.' }
+        format.html { redirect_to @user.emailaccounts.first }
+        #format.html { redirect_to @user, notice: 'You signed up successfully.' }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
-        format.js { @emailaccount = @user.emailaccounts.first }
+        #format.js { @emailaccount = @user.emailaccounts.first }
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity, color: 'invalid' }
