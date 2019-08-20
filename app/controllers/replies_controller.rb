@@ -1,4 +1,8 @@
 class RepliesController < ApplicationController
+
+  include SessionsHelper
+
+  before_action :logged_in_user
   before_action :set_reply, only: [:show, :edit, :update, :destroy]
 
   # GET /replies
