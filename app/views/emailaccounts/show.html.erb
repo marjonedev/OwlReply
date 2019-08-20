@@ -1,29 +1,28 @@
-<p id="notice"><%= notice %></p>
+<!-- Page Title
+============================================= -->
+<section id="page-title">
 
-<p>
-  <strong>User:</strong>
-  <%= @emailaccount.user_id %>
-</p>
+  <div class="container clearfix">
+    <h1><%= @emailaccount.address %></h1>
+    <%= link_to 'Edit', edit_emailaccount_path(@emailaccount) %> - <%= link_to 'All Accounts', emailaccounts_path %>
+  </div>
 
-<p>
-  <strong>Address:</strong>
-  <%= @emailaccount.address %>
-</p>
+</section><!-- #page-title end -->
 
-<p>
-  <strong>Password:</strong>
-  <%= @emailaccount.password %>
-</p>
-
-<p>
-  <strong>Encrypted password:</strong>
-  <%= @emailaccount.encrypted_password %>
-</p>
-
-<p>
-  <strong>Encryption key:</strong>
-  <%= @emailaccount.encryption_key %>
-</p>
-
-<%= link_to 'Edit', edit_emailaccount_path(@emailaccount) %> |
-<%= link_to 'Back', emailaccounts_path %>
+<!-- Content
+============================================= -->
+<section id="content">
+  <div class="content-wrap">
+    <div class="container clearfix">
+      <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
+        <div class="acc_content clearfix">
+          <%# for emailreply in Emailaccount.emailreplies %>
+            <%# render emailreply %>
+          <%# end %>
+          <h3>Keyword Suggestions</h3>
+          <a href="#">Refund+</a> <a href="#">Sales+</a> <a href="#">Hours+</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- #content end -->
