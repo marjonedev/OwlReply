@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   get "/500", to: "errors#internal_error"
 
   resources :replies
-  resources :emailaccounts
+  resources :emailaccounts do
+    resources :replies #This will be for new and create ONLY. /emailaccounts/1/replies/2 should just be /replies/2
+  end
   resources :sessions
   resources :users
 
