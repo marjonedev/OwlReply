@@ -41,9 +41,9 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
+        session[:user_id] = user.id # Make sure the user is logged in after signing in!
         format.html { redirect_to @user, notice: 'You signed up successfully.' }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
         format.js { @emailaccount = @user.emailaccounts.first }
