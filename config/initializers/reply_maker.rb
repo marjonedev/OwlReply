@@ -20,6 +20,7 @@ module ReplyMaker
       imap.login(account.address, account.password)
       imap.select('INBOX')
       imap.search(['UNSEEN']).each do |message_id|
+        reply_used = false
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
         msg = Mail.read_from_string data
         thebody = msg.body.to_s.downcase
@@ -28,7 +29,11 @@ module ReplyMaker
 
         auto = ""
         for reply in account.replies
-          auto << reply.body if reply.matches?(msg.subject, thebody)
+          next unless reply.matches?(msg.subject, thebody)
+          auto << reply.body
+          reply.increment!(:drafts_created_today)
+          reply.increment!(:drafts_created_lifetime)
+          reply_used = true
         end
 
         body_html = (msg.html_part.body.to_s rescue "")
@@ -54,6 +59,10 @@ module ReplyMaker
         mail.header['References'] = msg["Message-ID"]
         message = mail.to_s
         imap.append("[Gmail]/Drafts", message, [:Seen], Time.now)
+
+        account.increment!(:drafts_created_today)
+        account.increment!(:drafts_created_lifetime)
+        account.increment!(:drafts_missing_replies) unless reply_used
       end
     end
 
