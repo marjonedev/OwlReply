@@ -1,8 +1,7 @@
 $(".record-form").html('');
-console.log("<%= j render @emailaccount %>");
-console.log($("div.accounts").html());
-//$("div.accounts").append("<%= j render @emailaccount %>");
+
 $("div.accounts").append("<%= j render @emailaccount %>");
+
 $('html, body').animate({
     scrollTop: $("div.account:last-child").offset().top - 120
 }, 2000);
