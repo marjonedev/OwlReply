@@ -1,3 +1,7 @@
 $('#new_record a')
     .closest('div#new_record')
     .find('.record-form').html("<%= j render 'form', emailaccount: @emailaccount %>");
+
+$('button.button-cancel').on('click', function () {
+    $(".record-form").html('');
+});
