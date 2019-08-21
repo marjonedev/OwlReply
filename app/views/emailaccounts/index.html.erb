@@ -20,29 +20,7 @@
       <% end %>
       <div class="accounts">
         <% @emailaccounts.each do |emailaccount| %>
-          <div class="account">
-            <h2><%= emailaccount.address %></h2>
-            <div class="card-deck custom_cards">
-              <div class="col_card card">
-                <div class="card-body">
-                  <h5 class="card-title">Drafts created today</h5>
-                  <span class="numval">0</span>
-                </div>
-              </div>
-              <div class="col_card card">
-                <div class="card-body">
-                  <h5 class="card-title">Reply Sets Created</h5>
-                  <span class="numval">0</span>
-                </div>
-              </div>
-              <div class="col_card card">
-                <div class="card-body">
-                  <h5 class="card-title">Draft without a reply set</h5>
-                  <span class="numval">0</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <%= render emailaccount %>
         <% end %>
       </div>
 

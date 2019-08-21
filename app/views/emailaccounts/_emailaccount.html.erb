@@ -1,10 +1,39 @@
-<tr>
-  <td><%= emailaccount.user_id %></td>
-  <td><%= emailaccount.address %></td>
-  <td><%= emailaccount.password %></td>
-  <td><%= emailaccount.encrypted_password %></td>
-  <td><%= emailaccount.encryption_key %></td>
-  <td><%= link_to 'Show', emailaccount %></td>
-  <td><%= link_to 'Edit', edit_emailaccount_path(emailaccount) %></td>
-  <td><%= link_to 'Destroy', emailaccount, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-</tr>
+<!--<tr>
+  <td><%#= emailaccount.user_id %></td>
+  <td><%#= emailaccount.address %></td>
+  <td><%#= emailaccount.password %></td>
+  <td><%#= emailaccount.encrypted_password %></td>
+  <td><%#= emailaccount.encryption_key %></td>
+  <td><%#= link_to 'Show', emailaccount %></td>
+  <td><%#= link_to 'Edit', edit_emailaccount_path(emailaccount) %></td>
+  <td><%#= link_to 'Destroy', emailaccount, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+</tr>-->
+<div class="account">
+  <h2><%= link_to emailaccount.address, emailaccount %></h2>
+  <div class="card-deck custom_cards">
+    <div class="col_card card">
+      <%= link_to emailaccount do  %>
+        <div class="card-body">
+          <h5 class="card-title">Drafts created today</h5>
+          <span class="numval">0</span>
+        </div>
+      <% end %>
+    </div>
+    <div class="col_card card">
+      <%= link_to emailaccount do  %>
+        <div class="card-body">
+          <h5 class="card-title">Reply Sets Created</h5>
+          <span class="numval">0</span>
+        </div>
+      <% end %>
+    </div>
+    <div class="col_card card">
+      <%= link_to emailaccount do  %>
+        <div class="card-body">
+          <h5 class="card-title">Draft without a reply set</h5>
+          <span class="numval">0</span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
