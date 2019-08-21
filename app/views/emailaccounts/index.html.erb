@@ -1,21 +1,52 @@
 <section id="page-title">
 
   <div class="container clearfix">
-    <h1>Accounts</h1>
-    <h2>Add your email accounts here.</h2>
+    <h1>Email Accounts</h1>
+    <p>Add your email accounts here.</p>
   </div>
 
 </section><!-- #page-title end -->
 
-<section id="content">
-  <div class="content-wrap">
+<section id="content" class="emailaccounts">
+  <div class="content-wrap notoppadding">
     <div class="container clearfix">
+      <div class="button_container">
+        <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Email Account</span>'), new_emailaccount_path, class: "button button-rounded button-reveal button-small button-dirtygreen", id: "addnew_account", remote: true %>
+      </div>
       <% if notice %>
         <div class="style-msg successmsg">
           <div class="sb-msg"><%=notice%></div>
         </div>
       <% end %>
-      <table>
+      <div class="accounts">
+        <% @emailaccounts.each do |emailaccount| %>
+          <div class="account">
+            <h2><%= emailaccount.address %></h2>
+            <div class="card-deck custom_cards">
+              <div class="col_card card">
+                <div class="card-body">
+                  <h5 class="card-title">Drafts created today</h5>
+                  <span class="numval">0</span>
+                </div>
+              </div>
+              <div class="col_card card">
+                <div class="card-body">
+                  <h5 class="card-title">Reply Sets Created</h5>
+                  <span class="numval">0</span>
+                </div>
+              </div>
+              <div class="col_card card">
+                <div class="card-body">
+                  <h5 class="card-title">Draft without a reply set</h5>
+                  <span class="numval">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!--<table>
         <thead>
           <tr>
             <th>User</th>
@@ -28,14 +59,14 @@
         </thead>
 
         <tbody class="emailaccounts">
-          <% @emailaccounts.each do |emailaccount| %>
-            <%= render emailaccount %>
-          <% end %>
+          <%# @emailaccounts.each do |emailaccount| %>
+            <%#= render emailaccount %>
+          <%# end %>
         </tbody>
-      </table>
+      </table>-->
 
       <div id="new_record">
-        <%= link_to 'New Email Account', new_emailaccount_path, remote: true %>
+
         <div class="record-form">
         </div>
       </div>
