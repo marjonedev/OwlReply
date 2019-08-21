@@ -11,25 +11,34 @@
 <div class="account">
   <h2><%= link_to emailaccount.address, emailaccount %></h2>
   <div class="card-deck custom_cards">
-    <div class="col_card card">
+    <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
       <%= link_to emailaccount do  %>
         <div class="card-body">
+          <div class="fbox-icon">
+            <i class="icon-firstdraft i-alt"></i>
+          </div>
           <h5 class="card-title">Drafts created today</h5>
           <span class="numval">0</span>
         </div>
       <% end %>
     </div>
-    <div class="col_card card">
+    <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
       <%= link_to emailaccount do  %>
         <div class="card-body">
+          <div class="fbox-icon">
+            <i class="icon-email2 i-alt"></i>
+          </div>
           <h5 class="card-title">Reply Sets Created</h5>
           <span class="numval">0</span>
         </div>
       <% end %>
     </div>
-    <div class="col_card card">
+    <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
       <%= link_to emailaccount do  %>
         <div class="card-body">
+          <div class="fbox-icon">
+            <i class="icon-line2-layers i-alt"></i>
+          </div>
           <h5 class="card-title">Draft without a reply set</h5>
           <span class="numval">0</span>
         </div>
