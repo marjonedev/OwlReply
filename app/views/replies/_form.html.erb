@@ -32,7 +32,9 @@
     <%= form.label :catchcall %>
   </div>
 
+  <% if reply.new_record? %>
   <input type="hidden" name="emailaccount_id" value="<%= @emailaccount.id %>">
+  <% end %>
 
   <div class="actions col_full nobottommargin">
     <%= form.submit reply.new_record? ? 'Add New' : 'Save', :class => 'button button-3d button-black nomargin' %>
