@@ -1,50 +1,68 @@
-<%= form_with model: (emailaccount || emailaccount = Emailaccount.new), html:{class: 'nobottommargin'} do |form| %>
-  <% if emailaccount.errors.any? %>
-    <div class="style-msg2 errormsg">
-      <div class="msgtitle">Opps! There's an error upon submitting.</div>
-      <div class="sb-msg">
-        <ul>
-          <% for message in emailaccount.errors.full_messages %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+<div class="form-wrapper">
+  <%= form_with model: (emailaccount || emailaccount = Emailaccount.new), html:{class: 'nobottommargin'} do |form| %>
+    <% if emailaccount.errors.any? %>
+      <div class="style-msg2 errormsg">
+        <div class="msgtitle">Opps! There's an error upon submitting.</div>
+        <div class="sb-msg">
+          <ul>
+            <% for message in emailaccount.errors.full_messages %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+
+    <%# if emailaccount.errors.any? %>
+    <!--    <div id="error_explanation">-->
+    <!--      <h2><%#= pluralize(emailaccount.errors.count, "error") %> prohibited this emailaccount from being saved:</h2>-->
+
+    <!--      <ul>-->
+    <%# emailaccount.errors.full_messages.each do |message| %>
+    <!--        <li><%#= message %></li>-->
+    <%# end %>
+    <!--      </ul>-->
+    <!--    </div>-->
+    <%# end %>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <%= form.text_field :address, class: 'form-control required', id: 'address', required: 'required', placeholder: "Email Address" %>
+      </div>
+      <div class="form-group col-md-4">
+        <%= form.text_field :password, class: 'form-control required', id: 'password', required: 'required', placeholder: "Password" %>
+      </div>
+      <div class="form-group col-md-4">
+        <%= form.text_field :encrypted_password, class: 'form-control required', id: 'encrypted_password', required: 'required', placeholder: "Encrypted Password" %>
+      </div>
+      <div class="form-group col-md-12">
+        <%= form.text_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required', placeholder: "Encryption Key" %>
       </div>
     </div>
+
+    <!--<div class="col_full">
+    <%#= form.label :address %>
+    <%#= form.text_field :address, class: 'form-control required', id: 'address', required: 'required', placeholder: "Email Address" %>
+  </div>
+
+  <div class="col_full">
+    <%#= form.label :password %>
+    <%#= form.text_field :password, class: 'form-control required', id: 'password', required: 'required' %>
+  </div>
+
+  <div class="col_full">
+    <%#= form.label :encrypted_password %>
+    <%#= form.text_field :encrypted_password, class: 'form-control required', id: 'encrypted_password', required: 'required' %>
+  </div>
+
+  <div class="col_full">
+    <%#= form.label :encryption_key %>
+    <%#= form.text_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required' %>
+  </div>-->
+
+    <div class="actions col_full nobottommargin">
+      <%= form.submit emailaccount.new_record? ? 'Add New' : 'Save', :class => 'button button-small nomargin' %>
+      <button class="button-cancel button button-white button-light button-small" type="reset">Cancel</button>
+    </div>
   <% end %>
+</div>
 
-  <%# if emailaccount.errors.any? %>
-<!--    <div id="error_explanation">-->
-<!--      <h2><%#= pluralize(emailaccount.errors.count, "error") %> prohibited this emailaccount from being saved:</h2>-->
-
-<!--      <ul>-->
-      <%# emailaccount.errors.full_messages.each do |message| %>
-<!--        <li><%#= message %></li>-->
-      <%# end %>
-<!--      </ul>-->
-<!--    </div>-->
-  <%# end %>
-
-  <div class="col_full">
-    <%= form.label :address %>
-    <%= form.text_field :address, class: 'form-control required', id: 'address', required: 'required' %>
-  </div>
-
-  <div class="col_full">
-    <%= form.label :password %>
-    <%= form.text_field :password, class: 'form-control required', id: 'password', required: 'required' %>
-  </div>
-
-  <div class="col_full">
-    <%= form.label :encrypted_password %>
-    <%= form.text_field :encrypted_password, class: 'form-control required', id: 'encrypted_password', required: 'required' %>
-  </div>
-
-  <div class="col_full">
-    <%= form.label :encryption_key %>
-    <%= form.text_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required' %>
-  </div>
-
-  <div class="actions col_full nobottommargin">
-    <%= form.submit emailaccount.new_record? ? 'Add New' : 'Save', :class => 'button button-3d button-black nomargin' %>
-  </div>
-<% end %>

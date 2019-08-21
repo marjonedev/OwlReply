@@ -1,4 +1,3 @@
 $('#new_record a')
-    .hide()
-    .parent()
+    .closest('div#new_record')
     .find('.record-form').html("<%= j render 'form', emailaccount: @emailaccount %>");

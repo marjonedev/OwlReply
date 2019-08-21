@@ -50,3 +50,9 @@ section#content.emailaccounts div.account .card > a{
     color: #444444;
 }
 
+section#content.emailaccounts .form-wrapper{
+    border: 3px solid #eee;
+    padding: 20px;
+    margin: 20px 5px 0 5px;
+}
+

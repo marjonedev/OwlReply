@@ -10,8 +10,12 @@
 <section id="content" class="emailaccounts">
   <div class="content-wrap">
     <div class="container clearfix">
-      <div class="button_container">
-        <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Email Account</span>'), new_emailaccount_path, class: "button button-rounded button-reveal button-small button-dirtygreen", id: "addnew_account", remote: true %>
+      <div id="new_record">
+        <div class="button_container">
+          <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Email Account</span>'), new_emailaccount_path, class: "button button-rounded button-reveal button-small button-dirtygreen", id: "addnew_account", remote: true %>
+        </div>
+        <div class="record-form">
+        </div>
       </div>
       <% if notice %>
         <div class="style-msg successmsg">
@@ -42,12 +46,6 @@
           <%# end %>
         </tbody>
       </table>-->
-
-      <div id="new_record">
-
-        <div class="record-form">
-        </div>
-      </div>
 
       <%#= link_to 'New Emailaccount', new_emailaccount_path, onclick: '$(".emailaccount_x").toggle();return false;', class: 'emailaccount_x' %>
 <!--      <div class="emailaccount_x" style="display: none;">-->
