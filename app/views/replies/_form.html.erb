@@ -12,24 +12,24 @@
     </div>
   <% end %>
 
-  <div class="col_full">
+  <div class="form-group">
     <%= form.label :keywords %>
     <%= form.text_field :keywords, class: 'form-control', id: 'keywords' %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :body %>
     <%= form.text_area :body, class: 'form-control', id: 'keywords' %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :negative_keywords %>
     <%= form.text_field :negative_keywords, class: 'form-control', id: 'keywords' %>
   </div>
 
-  <div class="field">
+  <div class="form-check">
+    <%= form.check_box :catchcall, class: 'form-check-input', id: 'catchcall' %>
     <%= form.label :catchcall %>
-    <%= form.check_box :catchcall, class: 'form-control', id: 'keywords' %>
   </div>
 
   <input type="hidden" name="emailaccount_id" value="<%= @emailaccount.id %>">

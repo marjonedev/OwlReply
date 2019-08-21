@@ -78,5 +78,6 @@ class EmailaccountsController < ApplicationController
       params
           .require(:emailaccount)
           .permit(:address, :password, :encrypted_password, :encryption_key)
+          .merge(:user_id => current_user.id)
     end
 end
