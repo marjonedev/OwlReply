@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <section id="page-title">
 
   <div class="container clearfix">
@@ -12,7 +10,11 @@
 <section id="content">
   <div class="content-wrap">
     <div class="container clearfix">
-
+      <% if notice %>
+        <div class="style-msg successmsg">
+          <div class="sb-msg"><%=notice%></div>
+        </div>
+      <% end %>
       <table>
         <thead>
           <tr>

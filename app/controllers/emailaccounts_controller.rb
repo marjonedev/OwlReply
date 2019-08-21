@@ -32,7 +32,7 @@ class EmailaccountsController < ApplicationController
 
     respond_to do |format|
       if @emailaccount.save
-        format.html { redirect_to @emailaccount, notice: 'Emailaccount was successfully created.' }
+        format.html { redirect_to @emailaccount, notice: 'Email account was successfully created.' }
         format.json { render :show, status: :created, location: @emailaccount }
         format.js {  }
       else
@@ -48,7 +48,7 @@ class EmailaccountsController < ApplicationController
   def update
     respond_to do |format|
       if @emailaccount.update(emailaccount_params)
-        format.html { redirect_to @emailaccount, notice: 'Emailaccount was successfully updated.' }
+        format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
         format.json { render :show, status: :ok, location: @emailaccount }
       else
         format.html { render :edit }
@@ -62,7 +62,7 @@ class EmailaccountsController < ApplicationController
   def destroy
     @emailaccount.destroy
     respond_to do |format|
-      format.html { redirect_to emailaccounts_url, notice: 'Emailaccount was successfully destroyed.' }
+      format.html { redirect_to emailaccounts_url, notice: 'Email Account was successfully removed.' }
       format.json { head :no_content }
     end
   end
