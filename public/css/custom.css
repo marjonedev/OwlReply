@@ -76,4 +76,13 @@ section#content.emailaccounts .form-wrapper{
     font-size: 16px;
 }
 
+section#content.replies .card{
+    border: none;
+}
+
+section#content.replies .card .card-header{
+    min-height: 50px;
+    background: #fdfdfd;
+}
+
 

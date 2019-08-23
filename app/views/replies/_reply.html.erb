@@ -1,32 +1,9 @@
-
-<div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-10 bottommargin-sm">
-    <div class="white-section custom-white-box">
-      <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'} do |f| %>
-      <% if reply.errors.any? %>
-        <div class="style-msg2 errormsg">
-          <div class="msgtitle">Opps! There's an error upon submitting.</div>
-          <div class="sb-msg">
-            <ul>
-              <% reply.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      <% end %>
-      <div class="form-group">
-        <label>Keywords:</label>
-        <%= f.text_field :keywords, class: 'form-control', readonly: 'readonly' %>
-      </div>
-      <div class="form-group">
-        <label>Body</label>
-        <div>
-          <%= f.text_area :body, class: 'form-control', readonly: 'readonly' %>
-        </div>
-      </div>
-      <% end %>
-    </div>
-  </div>
-</div>
+<tr>
+  <td><%= reply.keywords %></td>
+  <td><%= reply.body %></td>
+  <td><%= reply.negative_keywords %></td>
+  <td><%= reply.catchcall %></td>
+  <td><%= link_to 'Show', reply %></td>
+  <td><%= link_to 'Edit', edit_reply_path(reply) %></td>
+  <td><%= link_to 'Destroy', reply, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+</tr>
