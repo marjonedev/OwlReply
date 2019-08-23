@@ -1,4 +1,6 @@
-$('#new_record a')
-    .hide()
-    .parent()
-    .find('.record-form').html("<%= j render 'form', reply: @reply %>");
+//$('#addnew_reply a')
+//    .hide()
+//    .parent()
+//    .find('.record-form').html("<%= j render 'form', reply: @reply %>");
+$("<%= j render 'new', reply: @reply %>").prependTo('#replies_container').hide().slideDown();
+//$('#replies_container').prepend("<%= j render 'new', reply: @reply %>");

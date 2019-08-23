@@ -88,6 +88,10 @@ section#content.replies .card{
     border: none;
 }
 
+section#content.replies .card.active{
+    border: 2px solid #dfdfdf;
+}
+
 section#content.replies .card .card-header{
     min-height: 50px;
     background: #fdfdfd;
@@ -107,4 +111,9 @@ section#content.replies textarea.form-control{
     min-height: 250px;
 }
 
+section#content.replies .card .card-footer{
+    padding-bottom: 0;
+    background: #fff;
+    padding-left: 0;
+}
 
