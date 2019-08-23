@@ -56,3 +56,24 @@ section#content.emailaccounts .form-wrapper{
     margin: 20px 5px 0 5px;
 }
 
+/*REPLIES
+---------------------------------*/
+#page-title.replies h1 a.edit{
+    vertical-align: middle;
+    font-size: 14px;
+    text-transform: initial;
+    font-weight: normal;
+    margin-left: 10px;
+    color: #444444;
+}
+
+
+#page-title.replies h1 a.edit:hover{
+    color: #1ABC9C;
+}
+
+#page-title.replies .breadcrumb{
+    font-size: 16px;
+}
+
+
