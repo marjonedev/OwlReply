@@ -7,7 +7,7 @@ class RepliesController < ApplicationController
   # GET /replies
   # GET /replies.json
   def index
-    @replies = Reply.all
+    @replies = Reply.all.order("created_at DESC")
   end
 
   # GET /replies/1
