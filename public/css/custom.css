@@ -76,6 +76,14 @@ section#content.emailaccounts .form-wrapper{
     font-size: 16px;
 }
 
+section#content.replies .add-reply{
+    margin: 30px 0;
+}
+
+section#content.replies .add-reply .button{
+    margin: 0;
+}
+
 section#content.replies .card{
     border: none;
 }
@@ -83,6 +91,11 @@ section#content.replies .card{
 section#content.replies .card .card-header{
     min-height: 50px;
     background: #fdfdfd;
+    text-align: right;
+}
+
+section#content.replies .card .card-header .button{
+    padding: 0 30px;
 }
 
 section#content.replies .form-control.readonly{
