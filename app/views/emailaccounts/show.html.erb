@@ -1,51 +1,22 @@
-<!-- Page Title
-============================================= -->
-<section id="page-title">
+<section id="page-title" class="replies nobg">
 
   <div class="container clearfix">
-    <h1><%= @emailaccount.address %></h1>
-    <%= link_to 'Edit', edit_emailaccount_path(@emailaccount) %> - <%= link_to 'All Accounts', emailaccounts_path %>
+    <h1><%= @emailaccount.address %> <%= link_to raw('Edit<i class="icon icon-pencil"></i>'), edit_emailaccount_path(@emailaccount), class: 'edit' %></h1>
+    <div class="breadcrumb">
+      <%= link_to 'All Accounts', emailaccounts_path %>
+    </div>
   </div>
 
-</section><!-- #page-title end -->
+</section>
 
-<!-- Content
-============================================= -->
 <section id="content">
-  <div class="content-wrap">
-    <div class="container clearfix">
-      <div class="divcenter nobottommargin clearfix" style="max-width: 550px;">
-        <%# for emailreply in Emailaccount.emailreplies %>
-        <%# render emailreply %>
-        <%# end %>
-        <%# OR just render Emailaccount.emailreplies usually works %>
 
+  <div class="content-wrap nopadding">
+    <div class="section nomargin">
+      <div class="container clearfix">
         <%= render file: "replies/index" %>
-
-        <!--<div class="acc_content clearfix">
-          <h3>Keyword Suggestions</h3>
-          <%# This should check if any of these are already used and then not show them. The list should probably be rendered from a [] array somewhere. %>
-          <a href="#">Refund+</a> <a href="#">Sales+</a> <a href="#">Hours+</a>
-          <br>
-          <br>
-          <h3>Template</h3>
-          <%# This will eventually need to be editable. For now, it will be on the Emailaccount. Later, we will have a whole Template model so that each reply can select a different one. %>
-          <textarea style="width:100%;height:300px;padding:5px;">
-Hello,
-
-Thank you for emailing our company. We are happy to hear from you, and I'm happy to be here to help.
-
-%%response%%
-
-Thank you for reaching out.
-
-Sincerely,
-
-Customer Service
-info@company.com
-          </textarea>
-        </div>-->
       </div>
     </div>
   </div>
-</section><!-- #content end -->
+
+</section>
