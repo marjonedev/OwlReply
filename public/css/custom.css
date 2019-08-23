@@ -85,4 +85,13 @@ section#content.replies .card .card-header{
     background: #fdfdfd;
 }
 
+section#content.replies .form-control.readonly{
+    border-color: #f9f9f9;
+    background: #fcfcfc;
+}
+
+section#content.replies textarea.form-control{
+    min-height: 250px;
+}
+
 
