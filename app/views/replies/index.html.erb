@@ -1,4 +1,8 @@
-<p id="notice"><%= notice %></p>
+<% @replies.each do |reply| %>
+  <% render reply %>
+<% end %>
+
+<!--<p id="notice"><%#= notice %></p>
 
 <table>
   <thead>
@@ -12,14 +16,14 @@
   </thead>
 
   <tbody class="replies">
-  <% @replies.each do |reply| %>
-    <%= render reply %>
-  <% end %>
+  <%# @replies.each do |reply| %>
+    <%#= render reply %>
+  <%# end %>
   </tbody>
 </table>
 
 <div id="new_record">
-  <%= link_to 'New Email Reply', new_emailaccount_reply_path(@emailaccount), remote: true %>
+  <%#= link_to 'New Email Reply', new_emailaccount_reply_path(@emailaccount), remote: true %>
   <div class="record-form">
   </div>
-</div>
+</div>-->
