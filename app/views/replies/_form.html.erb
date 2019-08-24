@@ -50,7 +50,7 @@
 
         </div>
         <div class="card-body">
-          <%= form_with model: (reply || reply = Reply.new), html: {class: 'nobottommargin'}, path: emailaccount_replies_path(@emailaccount) do |f| %>
+          <%= form_with model: (reply || reply = Reply.new), html: {class: 'nobottommargin'} do |f| %>
             <% if reply.errors.any? %>
               <div class="style-msg2 errormsg">
                 <div class="msgtitle">Oops! There's an error when saving your Reply.</div>
