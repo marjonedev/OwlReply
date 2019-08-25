@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" id="<%= dom_id(reply) %>">
   <div class="col-md-1"></div>
   <div class="col-md-10 bottommargin-sm">
     <div class="white-section custom-white-box nopadding">
@@ -6,7 +6,7 @@
         <div class="card-header text-right">
         </div>
         <div class="card-body">
-          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'}, url: emailaccount_replies_path(@emailaccount) do |f| %>
+          <%= form_with model: (reply || reply = Reply.new), id: dom_id(reply, 'edit'), url: emailaccount_reply_url(@emailaccount, reply), html:{class: 'nobottommargin'} do |f| %>
             <% if reply.errors.any? %>
               <div class="style-msg2 errormsg">
                 <div class="msgtitle">Opps! There's an error upon submitting.</div>
