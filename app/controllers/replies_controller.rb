@@ -2,7 +2,7 @@ class RepliesController < ApplicationController
   include SessionsHelper
   before_action :logged_in_user
   before_action :set_reply, only: [:show, :edit, :update, :destroy]
-  before_action :set_emailaccount, only: [:new, :create, :edit, :update]
+  before_action :set_emailaccount, only: [:new, :create, :edit, :update, :destroy]
 
   # GET /replies
   # GET /replies.json
@@ -37,6 +37,7 @@ class RepliesController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @reply.errors, status: :unprocessable_entity }
+        format.js {  }
       end
     end
   end
@@ -52,6 +53,7 @@ class RepliesController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @reply.errors, status: :unprocessable_entity }
+        format.js {  }
       end
     end
   end
@@ -61,6 +63,7 @@ class RepliesController < ApplicationController
   def destroy
     @reply.destroy
     respond_to do |format|
+      format.js {  }
       format.html { redirect_to replies_url, notice: 'Reply was successfully destroyed.' }
       format.json { head :no_content }
     end
