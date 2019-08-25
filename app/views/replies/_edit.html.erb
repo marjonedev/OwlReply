@@ -31,6 +31,7 @@
             </div>
             <div class="card-footer">
               <%= f.submit 'Save', :class => 'button button-large nomargin submit_btn' %>
+              <%= link_to 'Cancel', emailaccount_reply_path(reply), :remote => true %>
             </div>
           <% end %>
         </div>
