@@ -4,6 +4,11 @@ if(!$('#new_reply').length){
     $('#new_reply').addClass( "custom_shake" );
 
     $('#new_reply').on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e){
-        $('#new_reply').delay(200).removeClass('custom_shake');
+        $('#new_reply').delay(500).removeClass('custom_shake');
     });
 }
+
+$('a.cancel_new').on('click', function (e) {
+    e.preventDefault();
+    $(this).closest('#new_reply').slideToggle('slow').delay(200).remove();
+})
