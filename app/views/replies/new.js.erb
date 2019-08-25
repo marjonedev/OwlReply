@@ -1,5 +1,9 @@
 if(!$('#new_reply').length){
     $("<%= j render 'new', reply: @reply %>").prependTo('#replies_container').hide().slideDown();
 }else{
+    $('#new_reply').addClass( "custom_shake" );
 
+    $('#new_reply').on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e){
+        $('#new_reply').delay(200).removeClass('custom_shake');
+    });
 }
