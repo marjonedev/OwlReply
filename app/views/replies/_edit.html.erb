@@ -29,10 +29,10 @@
                 <%= f.text_area :body, class: 'form-control' %>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer norightpadding">
               <%= f.submit 'Save', :class => 'button button-large nomargin submit_btn' %>
               <%= link_to 'Cancel', emailaccount_reply_path(reply), :remote => true, :class => 'cancel_edit button button-white button-light button-large' %>
-              <%= link_to 'Remove', emailaccount_reply_url(@emailaccount, reply), remote: true, method: :delete, data: {confirm: "Are you sure to delete this reply?"}, class: 'button button-large button-red pull-right' %>
+              <%= link_to 'Remove', emailaccount_reply_url(@emailaccount, reply), remote: true, method: :delete, data: {confirm: "Are you sure to delete this reply?"}, class: 'button button-large button-red float-right' %>
             </div>
           <% end %>
         </div>
