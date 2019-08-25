@@ -4,7 +4,8 @@
     <div class="white-section custom-white-box nopadding">
       <div class="card">
         <div class="card-header text-right">
-          <a href="#" class="button button-rounded button-reveal button-mini button-yellow button-light"><i class="icon-pencil"></i><span>Edit</span></a>
+          <%= link_to raw('<i class="icon-pencil"></i><span>Edit</span>'), edit_reply_path(reply), :class => 'button button-rounded button-reveal button-mini button-yellow button-light', :remote => true %>
+          <a href="#" class=""></a>
         </div>
         <div class="card-body">
           <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'} do |f| %>
