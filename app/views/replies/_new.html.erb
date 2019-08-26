@@ -4,7 +4,7 @@
     <div class="white-section custom-white-box nopadding">
       <div class="card active">
         <div class="card-body">
-          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'}, url: emailaccount_replies_path(@emailaccount) do |f| %>
+          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin new_reply'}, url: emailaccount_replies_path(@emailaccount) do |f| %>
             <% if reply.errors.any? %>
               <div class="style-msg2 errormsg">
                 <div class="msgtitle">Oops! There's an error upon submitting.</div>

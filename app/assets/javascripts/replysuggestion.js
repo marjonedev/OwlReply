@@ -2,7 +2,7 @@ Replymaker = {}
 Replymaker.suggested_keywords = ["Refund","Cancel","Unable","Hours","Hiring","Resume","Human Resources"]
 Replymaker.show_suggestions = function () {
   $('.keyword_suggestions').remove();
-  var input = $("input[name='reply[keywords]']");
+  var input = $(".new_reply input[name='reply[keywords]']");
   input.after("<div class='keyword_suggestions'></div>");
   for (var i=0;i < Replymaker.suggested_keywords.length;i++) {
     var text = Replymaker.suggested_keywords[i];
@@ -22,5 +22,5 @@ Replymaker.get_suggestions = function () {
   $.get("/replies/suggest");
 }
 Replymaker.add_keyword = function (word) {
-  $("input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
+  $(".new_reply input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
 }
