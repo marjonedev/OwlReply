@@ -1,1 +1,12 @@
-$('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
+$('.autodismiss').each(function (index, element) {
+    var $element = $(element),
+        timeout  = $element.data('auto-dismiss') || 5000;
+
+    setTimeout(function () {
+        $element.fadeTo(1000, 500).slideUp(500, function(){
+            $(this).remove();
+        });
+    }, timeout);
+});
+
+alert('test');
