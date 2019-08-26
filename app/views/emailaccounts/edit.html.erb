@@ -1,3 +1,29 @@
-<h1>Editing Emailaccount</h1>
+<!-- Page Title
+============================================= -->
+<section id="page-title" class="nobg">
 
-<%= render 'form', emailaccount: @emailaccount %>
+  <div class="container clearfix">
+    <h1>Edit Your Email Account</h1>
+  </div>
+
+</section><!-- #page-title end -->
+
+<section id="content">
+
+  <div class="content-wrap nopadding">
+    <div class="section nomargin">
+      <div class="container clearfix">
+        <div class="row">
+          <div class="col-lg-1 col-sm-1"></div>
+          <div class="col-lg-10 col-sm-10 bottommargin-sm">
+            <div class="white-section custom-white-box">
+              <%= render 'edit', emailaccount: @emailaccount %>
+            </div>
+          </div>
+          <div class="col-lg-1 col-sm-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
