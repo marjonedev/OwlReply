@@ -11,8 +11,8 @@ Replymaker.show_suggestions = function () {
     a.text = text;
     a.setAttribute('class','button button-light button-mini keyword')
     a.setAttribute('data-keyword',text)
-    a.addEventListener( 'click', function () {
-      Replymaker.add_keyword(a.text);
+    a.addEventListener( 'click', function (e) {
+      Replymaker.add_keyword(e.target.textContent);
       Replymaker.show_suggestions();
     });
     $('.keyword_suggestions').append(a)
