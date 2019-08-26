@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   has_many :emailaccounts
   has_many :replies, through: :emailaccounts
-  # has_many :transactions
-  # has_many :invoices
+  has_many :transactions, through: :invoices
+  has_many :invoices
 
   attr_accessor :password
 
