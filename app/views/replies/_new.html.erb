@@ -3,8 +3,6 @@
   <div class="col-md-10 bottommargin-sm">
     <div class="white-section custom-white-box nopadding">
       <div class="card active">
-        <div class="card-header text-right">
-        </div>
         <div class="card-body">
           <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'}, url: emailaccount_replies_path(@emailaccount) do |f| %>
             <% if reply.errors.any? %>
