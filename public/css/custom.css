@@ -148,8 +148,8 @@ section#content.replies .card .card-footer{
     100% { -o-origin-transform: translate(0px); }
 }
 @keyframes temporary {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 .custom_shake {
@@ -165,5 +165,5 @@ section#content.replies .card .card-footer{
     width: calc(100% - 80px);
     left: 0;
     margin: 40px;
-    animation: temporary 0.4s 1 linear;
+    animation: temporary 4s 1 ease-in forwards;
 }
