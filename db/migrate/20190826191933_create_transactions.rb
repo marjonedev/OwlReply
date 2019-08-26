@@ -1,7 +1,7 @@
 class CreateTransactions < ActiveRecord::Migration[5.2]
   def change
     create_table :transactions do |t|
-      t.integer :user_id
+      t.integer :user_id, :index =>true, :null => false
       t.string :reference
       t.string :payment_provider
       t.timestamp :timestamp
