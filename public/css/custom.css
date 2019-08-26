@@ -56,6 +56,10 @@ section#content.emailaccounts .form-wrapper{
     margin: 20px 5px 0 5px;
 }
 
+section#content.emailaccount_edit .card{
+    border: none;
+}
+
 /*REPLIES
 ---------------------------------*/
 #page-title.replies h1 a.edit{
