@@ -9,7 +9,7 @@
           <%= form_with model: (reply || reply = Reply.new), id: dom_id(reply, 'edit'), url: emailaccount_reply_url(@emailaccount, reply), html:{class: 'nobottommargin'} do |f| %>
             <% if reply.errors.any? %>
               <div class="style-msg2 errormsg">
-                <div class="msgtitle">Opps! There's an error upon submitting.</div>
+                <div class="msgtitle">Oops! There's an error upon submitting.</div>
                 <div class="sb-msg">
                   <ul>
                     <% reply.errors.full_messages.each do |message| %>
