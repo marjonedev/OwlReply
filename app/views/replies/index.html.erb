@@ -2,6 +2,11 @@
   <div class="col-md-1"></div>
   <div class="col-md-10 add-reply">
     <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Automated Reply</span>'), new_emailaccount_reply_path(@emailaccount), class: "button button-rounded button-reveal button-small button-dirtygreen", id: "addnew_reply", remote: true %>
+    <% if notice %>
+      <div class="style-msg successmsg">
+        <div class="sb-msg"><%=notice%></div>
+      </div>
+    <% end %>
   </div>
   <div class="col-md-1"></div>
 </div>
