@@ -3,9 +3,8 @@
   <div class="col-md-10 bottommargin-sm">
     <div class="white-section custom-white-box nopadding">
       <div class="card">
-        <div class="card-header text-right">
-          <%= link_to raw('<i class="icon-pencil"></i><span>Edit</span>'), edit_emailaccount_reply_path(@emailaccount, reply), :class => 'edit_btn button button-rounded button-reveal button-mini button-yellow button-light', :remote => true %>
-        </div>
+        <!--<div class="card-header text-right">
+        </div>-->
         <div class="card-body">
           <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'} do |f| %>
             <% if reply.errors.any? %>
@@ -31,6 +30,9 @@
               </div>
             </div>
           <% end %>
+          <div class="card-footer norightpadding">
+            <%= link_to raw('<i class="icon-pencil"></i><span>Edit</span>'), edit_emailaccount_reply_path(@emailaccount, reply), class: 'edit_btn button button-rounded button-reveal button-large button-yellow button-light', remote: true %>
+          </div>
         </div>
       </div>
     </div>
