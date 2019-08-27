@@ -8,6 +8,11 @@ class RepliesController < ApplicationController
   # GET /replies.json
   def index
     @replies = Reply.all.order("created_at DESC")
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.js { }
+    end
   end
 
   # GET /replies/1
