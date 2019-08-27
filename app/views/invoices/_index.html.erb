@@ -18,7 +18,11 @@
             <div class="bottommargin-sm">You are on the free plan.</div>
             <div><a href="/paymentmethods/new" class="button button-large">Upgrade / Add Credit Card</a></div>
           <% else %>
-            <div><a href="/subscriptions/" class="button button-large">Change Plan</a></div><%# subscriptions/index.html should show something different if admin or if not admin. %>
+            <div><a href="/plans/" class="button button-large">Change Plan</a></div>
+            <% if current_user.subscription_id != current_user %>
+              <%# User can change their plan, but it doesn't take affect until the next time they would have been billed. %>
+              <div class="allmargin-sm">Your plan will change to <b><%= current_user.subscription.name %></b> at the end of your current billing cycle.</div>
+            <% end %>
           <% end %>
         </div>
       </div>
