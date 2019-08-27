@@ -47,7 +47,11 @@
             </div>
             <div class="pricing-action"><% s = 0 %>
               <% if current_user # && (current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id)) %>
-                <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>
+                <% if true %>
+                  <a href="#" class="btn btn-danger btn-block btn-lg" onclick="return false;">Current Plan</a>
+                <% else %>
+                  <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>
+                <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
               <% end %>
