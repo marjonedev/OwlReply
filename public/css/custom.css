@@ -158,7 +158,11 @@ section#content.replies .card .card-footer{
     -o-animation: kf_shake 0.4s 1 linear;
 }
 
-.notification-wrapper{
+
+/*Global Notification
+===================================*/
+
+.floating-notification{
     position: fixed;
     z-index: 999;
     margin: 5px;
@@ -166,8 +170,11 @@ section#content.replies .card .card-footer{
     right: 0;
     bottom: 5px;
 }
-
-.notification-wrapper .style-msg{
-    opacity: 0.85;
+.floating-notification .style-msg{
     margin-bottom: 0;
+    border-radius: 3px;
+}
+.floating-notification .style-msg .sb-msg{
+    border: 0;
+    padding: 15px 25px;
 }
