@@ -1,1 +1,7 @@
 $('.row#<%= dom_id(@reply) %>').slideUp().remove();
+
+$('.notif-wrapper').append('<div class="floating-notification">\n' +
+    '      <div class="style-msg errormsg">\n' +
+    '        <div class="sb-msg"></div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\n' +
+    '      </div>\n' +
+    '    </div>');
