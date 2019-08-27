@@ -5,7 +5,7 @@ class PlansController < ApplicationController
 
   def index
     @plans = Subscription.where(secret: false)
-    render action: "pages/pricing"
+    render file: "pages/pricing"
   end
 
   def update
