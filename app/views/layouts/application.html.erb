@@ -64,9 +64,12 @@
           <nav id="primary-menu" class="dark">
             <ul>
               <li class="<%= 'current' if current_page?('/') %>"><a href="/"><div>Home</div></a>
-              <li class="<%= 'current' if current_page?(action: 'features', controller: 'pages') %>"><a href="/features"><div>Features</div></a>
-              <li class="<%= 'current' if current_page?(action: 'pricing', controller: 'pages') %>"><a href="/pricing"><div>Pricing</div></a>
-              <% unless current_user %>
+              <% if current_user %>
+                <li class="<%= 'current' if current_page?(action: 'index', controller: 'emailaccounts') %>"><a href="/emailaccounts"><div>Emails</div></a>
+                <li class="<%= 'current' if current_page?(action: 'pricing', controller: 'pages') %>"><a href="/pricing"><div>Plans</div></a>
+              <% else %>
+                <li class="<%= 'current' if current_page?(action: 'features', controller: 'pages') %>"><a href="/features"><div>Features</div></a>
+                <li class="<%= 'current' if current_page?(action: 'pricing', controller: 'pages') %>"><a href="/pricing"><div>Pricing</div></a>
                 <li class="<%= 'current' if current_page?('/login') %>">
                   <a href="/login">
                     <div>Log In</div>
@@ -78,7 +81,7 @@
             <% if current_user %>
               <ul>
                 <li class="<%= 'current' if current_page?('/login') %>">
-                  <a href="#">
+                  <a href="/users/<%= current_user.id %>">
                     <div><i class="icon-user-circle"></i>Account</div>
                   </a>
                   <ul>
@@ -296,7 +299,7 @@
 
   <!-- External JavaScripts
   ============================================= -->
-  <script src="/js/jquery.js"></script>
+<!--  <script src="/js/jquery.js"></script>-->
   <script src="/js/plugins.js"></script>
 
   <!-- Footer Scripts

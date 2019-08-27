@@ -1,0 +1,32 @@
+<div class="section nomargin notoppadding">
+  <div class="container clearfix">
+    <div class="row">
+      <div class="col-lg-1 col-sm-1"></div>
+      <div class="col-lg-10 col-sm-10 bottommargin-sm">
+        <div class="white-section custom-white-box">
+          <h3 class="section-title nomargin">Invoices</h3>
+          <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-file-invoice-dollar"></i></div>
+          <% if notice %>
+            <div class="style-msg successmsg">
+              <div class="sb-msg"><%= notice %></div>
+            </div>
+          <% end %>
+          <% for invoice in current_user.invoices %>
+            <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= invoice.date.strftime("%m/%d/%Y") %> - <%= invoice.amount %> - <%= invoice.paid? ? "Paid" : "Unpaid" %></div>
+          <% end %>
+          <% if current_user.invoices.empty? %>
+            <div class="bottommargin-sm">You are on the free plan.</div>
+            <div><a href="/paymentmethods/new" class="button button-large">Upgrade / Add Credit Card</a></div>
+          <% else %>
+            <div><a href="/plans/" class="button button-large">Change Plan</a></div>
+            <% if current_user.subscription_id != current_user %>
+              <%# User can change their plan, but it doesn't take affect until the next time they would have been billed. %>
+              <div class="allmargin-sm">Your plan will change to <b><%= current_user.subscription.name %></b> at the end of your current billing cycle.</div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-lg-1 col-sm-1"></div>
+    </div>
+  </div>
+</div>

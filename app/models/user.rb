@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   has_many :emailaccounts
   has_many :replies, through: :emailaccounts
-  # has_many :transactions
-  # has_many :invoices
+  has_many :transactions, through: :invoices
+  has_many :invoices
 
   attr_accessor :password
 
@@ -29,6 +29,20 @@ class User < ApplicationRecord
 
   def create_initial_emailaccount
     Emailaccount.create(user_id: self.id, address: self.email_address)
+  end
+
+  def current_subscription_id
+    return nil if self.invoices.empty?
+    self.invoices.first.subscription_id
+  end
+
+  def set_subscription!(subscription)
+    self.update_attribute(:subscription_id,subscription.id)
+    self.generate_first_invoice! if current_subscription_id.nil?
+  end
+
+  def generate_first_invoice!
+    self.invoices.create(subscription_id: self.subscription_id) if current_subscription_id.nil? # Amount, date, and collecting payment too, will be done by the invoice object 'on_create'.
   end
 
   def lowercase_username
