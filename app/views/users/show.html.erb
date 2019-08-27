@@ -19,13 +19,13 @@
             <div class="white-section custom-white-box">
               <h3 class="section-title nomargin">Details</h3>
               <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-user1"></i></div>
-              <% if notice %>
-                <div class="floating-notification">
+              <div class="floating-notification">
+                <% if notice %>
                   <div class="style-msg successmsg">
                     <div class="sb-msg"><%= notice %></div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   </div>
-                </div>
-              <% end %>
+                <% end %>
+              </div>
               <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Username</label>
                 <div class="col-sm-10">
