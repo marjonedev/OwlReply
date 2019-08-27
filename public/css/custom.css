@@ -166,7 +166,7 @@ section#content.replies .card .card-footer{
     position: fixed;
     z-index: 999;
     margin: 5px;
-    animation: temporary 4s 1 ease-in forwards;
+    animation: temporary 10s 1 ease-in forwards;
     right: 0;
     bottom: 5px;
 }
