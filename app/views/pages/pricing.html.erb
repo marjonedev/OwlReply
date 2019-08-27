@@ -46,7 +46,7 @@
               </ul>
             </div>
             <div class="pricing-action">
-              <% if current_user && false && (current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id)) %>
+              <% if current_user # && (current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id)) %>
                 <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-remote="true" data-method="post">Choose Plan</a>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
@@ -78,7 +78,7 @@
               </ul>
             </div>
             <div class="pricing-action">
-              <% if current_user && false && (current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id)) %>
+              <% if current_user # && (current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id)) %>
                 <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-remote="true" data-method="post">Choose Plan</a>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg bgcolor border-color">Sign Up</a>
@@ -110,7 +110,7 @@
               </ul>
             </div>
             <div class="pricing-action">
-              <% if current_user && false && (current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id)) %>
+              <% if current_user # && (current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id)) %>
                 <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-remote="true" data-method="post">Choose Plan</a>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
