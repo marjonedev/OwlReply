@@ -1,5 +1,11 @@
 class PagesController < ApplicationController
   def home
+    if current_user
+      @emailaccounts = current_user.emailaccounts
+      render file: "emailaccounts/index"
+    else
+
+    end
   end
 
   def features
