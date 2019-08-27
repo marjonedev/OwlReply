@@ -18,8 +18,10 @@
         </div>
       </div>
       <% if notice %>
-        <div class="style-msg successmsg">
-          <div class="sb-msg"><%=notice%></div>
+        <div class="floating-notification">
+          <div class="style-msg successmsg">
+            <div class="sb-msg"><%=notice%></div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          </div>
         </div>
       <% end %>
       <div class="accounts">

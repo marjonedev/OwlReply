@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_16_181040) do
+ActiveRecord::Schema.define(version: 2019_08_26_192648) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -23,6 +23,28 @@ ActiveRecord::Schema.define(version: 2019_08_16_181040) do
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
+  create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.float "amount"
+    t.float "amount_paid"
+    t.datetime "date_paid"
+    t.integer "transaction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_invoices_on_user_id"
+  end
+
+  create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "emailaccount_id", null: false
+    t.string "keywords"
+    t.text "body"
+    t.string "negative_keywords"
+    t.boolean "catchcall"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["emailaccount_id"], name: "index_replies_on_emailaccount_id"
+  end
+
   create_table "sessions", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
@@ -32,13 +54,36 @@ ActiveRecord::Schema.define(version: 2019_08_16_181040) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "subscriptions", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "name"
+    t.integer "price"
+    t.string "frequency"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transactions", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "reference"
+    t.string "payment_provider"
+    t.timestamp "timestamp"
+    t.boolean "reversed"
+    t.float "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "username"
     t.string "email_address"
     t.string "encrypted_password"
     t.string "salt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subscription_level"
+    t.datetime "subscription_start_date"
+    t.datetime "subscription_last_payment_date"
     t.index ["email_address"], name: "index_users_on_email_address"
   end
 

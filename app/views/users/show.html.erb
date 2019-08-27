@@ -20,8 +20,10 @@
               <h3 class="section-title nomargin">Details</h3>
               <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-user1"></i></div>
               <% if notice %>
-                <div class="style-msg successmsg">
-                  <div class="sb-msg"><%= notice %></div>
+                <div class="floating-notification">
+                  <div class="style-msg successmsg">
+                    <div class="sb-msg"><%= notice %></div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  </div>
                 </div>
               <% end %>
               <div class="form-group row">
