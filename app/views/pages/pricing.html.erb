@@ -83,7 +83,7 @@
             </div>
             <div class="pricing-action">
               <% if current_user %>
-                <% if true #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
+                <% if false #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
                   <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>
@@ -119,7 +119,7 @@
             </div>
             <div class="pricing-action">
               <% if current_user %>
-                <% if true #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
+                <% if false #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
                   <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>
