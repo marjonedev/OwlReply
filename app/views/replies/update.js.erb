@@ -1,1 +1,5 @@
 $('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
+
+$('.floating-notification').append('<div class="style-msg successmsg">\n' +
+    '        <div class="sb-msg">Email Reply Successfully Updated.</div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\n' +
+    '      </div>');

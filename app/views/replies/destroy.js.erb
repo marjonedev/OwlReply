@@ -1,1 +1,5 @@
 $('.row#<%= dom_id(@reply) %>').slideUp().remove();
+
+$('.floating-notification').append('<div class="style-msg successmsg">\n' +
+    '        <div class="sb-msg">Email Reply Successfully Deleted.</div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>\n' +
+    '      </div>');

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   get 'pages/home'
+  get 'help', to: 'pages#help'
   get 'features', to: 'pages#features'
   get 'pricing', to: 'pages#pricing'
   get 'documentation', to: 'pages#documentation'
