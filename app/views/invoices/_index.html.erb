@@ -15,7 +15,8 @@
 
           <% end %>
           <% if current_user.invoices.empty? %>
-          <div>You are on the free plan.</div>
+            <div>You are on the free plan.</div>
+            <div><a href="/paymentmethods/new" class="button button-large">Upgrade / Add Card</a></div>
           <% end %>
         </div>
       </div>
