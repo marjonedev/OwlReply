@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :sessions
   resources :users
 
-  authenticated do
+  current_user do
     root 'emailaccounts#index', as: :authenticated
   end
   root 'pages#home'
