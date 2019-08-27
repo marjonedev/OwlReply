@@ -1,5 +1,5 @@
 $(function() {
-    $('.floating-notification').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+    $('.floating-notification').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
         $(this).remove();
     });
 });
