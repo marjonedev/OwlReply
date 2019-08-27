@@ -6,7 +6,6 @@ class EmailaccountsController < ApplicationController
   # GET /emailaccounts
   # GET /emailaccounts.json
   def index
-    @user = User.find(current_user.id)
     @emailaccounts = current_user.emailaccounts
   end
 
