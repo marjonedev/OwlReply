@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   authenticated do
     root 'emailaccounts#index', as: :authenticated
   end
-
   root 'pages#home'
   #root 'pages#home'
 
