@@ -165,16 +165,21 @@ section#content.replies .card .card-footer{
 .floating-notification{
     position: fixed;
     z-index: 999;
-    margin: 5px;
+    margin: 10px;
     animation: temporary 10s 1 ease-in forwards;
     right: 0;
-    bottom: 5px;
+    bottom: 0px;
 }
 .floating-notification .style-msg{
     margin-bottom: 0;
     border-radius: 3px;
+    padding-right: 20px;
 }
 .floating-notification .style-msg .sb-msg{
-    /*border: 0;*/
-    /*padding: 15px 25px;*/
+    border: 0;
+    padding: 15px 25px;
+}
+
+.style-msg .close{
+    top: 13px;
 }
