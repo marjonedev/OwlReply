@@ -1,0 +1,25 @@
+<div class="section nomargin">
+  <div class="container clearfix">
+    <div class="row">
+      <div class="col-lg-1 col-sm-1"></div>
+      <div class="col-lg-10 col-sm-10 bottommargin-sm">
+        <div class="white-section custom-white-box">
+          <h3 class="section-title nomargin">Invoices</h3>
+          <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-user1"></i></div>
+          <% if notice %>
+            <div class="style-msg successmsg">
+              <div class="sb-msg"><%= notice %></div>
+            </div>
+          <% end %>
+          <% for invoice in current_user.invoices %>
+
+          <% end %>
+          <% if current_user.invoices.empty? %>
+          <div>You are on the free plan.</div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-lg-1 col-sm-1"></div>
+    </div>
+  </div>
+</div>
