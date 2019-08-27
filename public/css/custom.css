@@ -175,6 +175,6 @@ section#content.replies .card .card-footer{
     border-radius: 3px;
 }
 .floating-notification .style-msg .sb-msg{
-    border: 0;
-    padding: 15px 25px;
+    /*border: 0;*/
+    /*padding: 15px 25px;*/
 }
