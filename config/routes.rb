@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   resources :sessions
   resources :users
 
+
+  constraints AuthenticatedConstraint.new do
+    root 'emailaccounts#index', as: :authenticated
+  end
+
   #authenticated do
   #  root 'emailaccounts#index', as: :authenticated
   #end
