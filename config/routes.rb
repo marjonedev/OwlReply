@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "/422", to: "errors#unacceptable"
   get "/500", to: "errors#internal_error"
 
+  resources :plans
   resources :replies
   resources :emailaccounts do
     resources :replies #This will be for new and create ONLY. /emailaccounts/1/replies/2 should just be /replies/2
