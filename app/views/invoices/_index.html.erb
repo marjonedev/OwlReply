@@ -12,7 +12,7 @@
             </div>
           <% end %>
           <% for invoice in current_user.invoices %>
-
+            <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= invoice.date.strftime("%m/%d/%Y") %> - <%= invoice.amount %> - <%= invoice.paid? ? "Paid" : "Unpaid" %></div>
           <% end %>
           <% if current_user.invoices.empty? %>
             <div class="bottommargin-sm">You are on the free plan.</div>
