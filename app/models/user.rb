@@ -39,10 +39,19 @@ class User < ApplicationRecord
   def set_subscription!(subscription)
     self.update_attribute(:subscription_id,subscription.id)
     self.generate_first_invoice! if current_subscription_id.nil?
+    self.generate_first_invoice! unless current_subscription_id.nil?
   end
 
   def generate_first_invoice!
     self.invoices.create(subscription_id: self.subscription_id) if current_subscription_id.nil? # Amount, date, and collecting payment too, will be done by the invoice object 'on_create'.
+  end
+
+  def generate_upgrade_invoice!
+    # If old price is less than the new price.
+    previous_subscription = Subscription.find(current_subscription_id)
+    if previous_subscription.price < self.subscription.price
+      self.invoices.create(subscription_id: self.subscription_id, previous_price: previous_subscription.price)
+    end
   end
 
   def lowercase_username
