@@ -81,8 +81,8 @@
             <% if current_user %>
               <ul>
                 <li class="<%= 'current' if current_page?('/login') %>">
-                  <a href="#">
-                    <div><i class="icon-user-circle"></i><a href="/users/<%= current_user.id %>">Account</a></div>
+                  <a href="/users/<%= current_user.id %>">
+                    <div><i class="icon-user-circle"></i>Account</div>
                   </a>
                   <ul>
                     <li><a href="/users/<%= current_user.id %>">My Account</a></li>
