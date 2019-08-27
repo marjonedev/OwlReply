@@ -48,9 +48,9 @@ class EmailaccountsController < ApplicationController
   def update
     respond_to do |format|
       if @emailaccount.update(emailaccount_params)
-        format.js { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
         format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
         format.json { render :show, status: :ok, location: @emailaccount }
+        format.js {  }
       else
         format.html { render :edit }
         format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
