@@ -8,6 +8,7 @@ class PagesController < ApplicationController
     end
   end
 
+
   def help
   end
 
