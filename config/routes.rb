@@ -15,7 +15,12 @@ Rails.application.routes.draw do
   resources :sessions
   resources :users
 
+  authenticated do
+    root 'emailaccounts#index', as: :authenticated
+  end
+
   root 'pages#home'
+  #root 'pages#home'
 
   get 'pages/home'
   get 'features', to: 'pages#features'
