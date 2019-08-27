@@ -16,9 +16,9 @@ Rails.application.routes.draw do
   resources :users
 
 
-  #constraints AuthenticatedConstraint.new do
-  #  root 'emailaccounts#index', as: :authenticated
-  #end
+  constraints AuthenticatedConstraint.new do
+    root 'emailaccounts#index', as: :authenticated
+  end
   root 'pages#home'
 
   get 'pages/home'
