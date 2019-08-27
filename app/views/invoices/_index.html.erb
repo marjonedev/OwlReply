@@ -17,6 +17,8 @@
           <% if current_user.invoices.empty? %>
             <div class="bottommargin-sm">You are on the free plan.</div>
             <div><a href="/paymentmethods/new" class="button button-large">Upgrade / Add Credit Card</a></div>
+          <% else %>
+            <div><a href="/subscriptions/" class="button button-large">Change Plan</a></div><%# subscriptions/index.html should show something different if admin or if not admin. %>
           <% end %>
         </div>
       </div>
