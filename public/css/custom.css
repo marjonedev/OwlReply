@@ -209,6 +209,7 @@ section#content.replies .card .card-footer{
 
 /*Keyword Suggestions
 ===================================*/
-.keyword_suggestions .keyword:hover{
-    color: #FFFFFF !important;
+.keyword_suggestions a.keyword:not([href]):not([tabindex]):hover,
+.keyword_suggestions a.keyword:hover{
+    color: #FFFFFF;
 }
