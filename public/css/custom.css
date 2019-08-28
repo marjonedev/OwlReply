@@ -192,7 +192,8 @@ section#content.replies .card .card-footer{
 }
 .form-group.readonly .bootstrap-tagsinput .badge{
     padding: 0 10px;
-    background: #f3f3f3;
+    border-radius: 3px;
+    background: #eaeaea;
     text-transform: uppercase;
     font-size: 0.9rem;
     font-weight: 400;
