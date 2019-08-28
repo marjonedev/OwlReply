@@ -19,7 +19,7 @@
             <% end %>
             <div class="form-group">
               <label>Keywords</label>
-              <%= f.text_field :keywords, class: 'form-control readonly keywords', readonly: 'readonly' %>
+              <%= f.text_field :keywords, class: 'form-control readonly keywords', readonly: 'readonly', data: {role: 'tagsinput'} %>
             </div>
             <div class="form-group">
               <label>Body</label>
