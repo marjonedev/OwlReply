@@ -183,3 +183,22 @@ section#content.replies .card .card-footer{
 .style-msg .close{
     top: 13px;
 }
+
+/*Input Tags
+===================================*/
+.form-group.readonly .bootstrap-tagsinput{
+    border-color: #f9f9f9;
+    background: #fcfcfc;
+}
+.form-group.readonly .bootstrap-tagsinput .badge{
+    padding: 0 10px;
+    background: #f3f3f3;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #666;
+    letter-spacing: normal;
+}
+.form-group.readonly .bootstrap-tagsinput .badge [data-role="remove"]{
+    display: none;
+}
