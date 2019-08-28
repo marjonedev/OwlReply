@@ -30,7 +30,7 @@
   border: none;
   box-shadow: none;
 }
-.bootstrap-tagsinput .tag {
+.bootstrap-tagsinput .badge {
   margin-right: 2px;
   color: inherit;
   background-color: #EEE;
@@ -49,20 +49,17 @@
   border: none;
   margin-bottom: 5px;
 }
-.bootstrap-tagsinput .tag [data-role="remove"] {
+.bootstrap-tagsinput .badge [data-role="remove"] {
   margin-left: 8px;
-  border-left: 1px solid #ddd;
   cursor: pointer;
-  padding: 5px 5px 5px 5px;
-  color: #AAAAAA;
 }
-.bootstrap-tagsinput .tag [data-role="remove"]:after {
+.bootstrap-tagsinput .badge [data-role="remove"]:after {
   content: "x";
   padding: 0px 2px;
 }
-.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:after {
   color: #555;
 }
-.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:active {
   color: #555;
 }
