@@ -6,14 +6,6 @@
         <div class="white-section custom-white-box">
           <h3 class="section-title nomargin">Invoices</h3>
           <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-file-invoice-dollar"></i></div>
-          <div class="floating-notification">
-            <% if notice %>
-              <div class="style-msg successmsg">
-                <div class="sb-msg"><%= notice %></div>
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              </div>
-            <% end %>
-          </div>
           <% for invoice in current_user.invoices %>
             <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= invoice.date.strftime("%m/%d/%Y") %> - <%= invoice.amount %> - <%= invoice.paid? ? "Paid" : "Unpaid" %></div>
           <% end %>

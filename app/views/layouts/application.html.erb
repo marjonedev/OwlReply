@@ -101,6 +101,14 @@
 
     </header><!-- #header end -->
 
+    <div class="floating-notification">
+      <% if notice %>
+        <div class="style-msg successmsg">
+          <div class="sb-msg"><%=notice%></div><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        </div>
+      <% end %>
+    </div>
+
     <%= yield %>
 
     <!-- Footer
