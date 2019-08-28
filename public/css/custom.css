@@ -210,5 +210,5 @@ section#content.replies .card .card-footer{
 /*Keyword Suggestions
 ===================================*/
 .keyword_suggestions .keyword:hover{
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
