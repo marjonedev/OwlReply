@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :replies, through: :emailaccounts
   has_many :transactions, through: :invoices
   has_many :invoices
+  has_many :paymentmethods
 
   attr_accessor :password
 
