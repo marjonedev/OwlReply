@@ -4,6 +4,7 @@
   vertical-align: middle;
   max-width: 100%;
   cursor: text;
+  height: auto;
 }
 .bootstrap-tagsinput input {
   border: none;
@@ -32,10 +33,20 @@
 .bootstrap-tagsinput .tag {
   margin-right: 2px;
   color: white;
-  background: #a7a7a7;
-  padding: 2px 5px;
-  border-radius: 2px;
-  line-height: 1.6rem;
+  background-color: #EEE;
+  border-radius: 0;
+  padding: 0 14px;
+  font-size: 11px;
+  height: 28px;
+  line-height: 28px;
+  text-shadow: none !important;
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
 }
 .bootstrap-tagsinput .tag [data-role="remove"] {
   margin-left: 5px;
