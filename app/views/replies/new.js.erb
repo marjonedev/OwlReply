@@ -1,5 +1,6 @@
 if(!$('#new_reply').length){
     $("<%= j render 'new', reply: @reply %>").prependTo('#replies_container').hide().slideDown();
+    $('#new_reply').find('input.keywords').tagsinput();
 }else{
     $('#new_reply').addClass( "custom_shake" );
 

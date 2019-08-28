@@ -202,3 +202,6 @@ section#content.replies .card .card-footer{
 .form-group.readonly .bootstrap-tagsinput .badge [data-role="remove"]{
     display: none;
 }
+.form-group.readonly .bootstrap-tagsinput input[type="text"]{
+    display: none;
+}
