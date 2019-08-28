@@ -11,14 +11,11 @@ Replymaker.show_suggestions = function () {
     a.text = text;
     a.setAttribute('class','button button-light button-mini keyword');
     a.setAttribute('data-keyword',text);
-      $(document).on('click', a, function (e) {
-          Replymaker.add_keyword(e.target.textContent);
-          Replymaker.show_suggestions();
-      });
     a.addEventListener( 'click', function (e) {
-        alert('clicked');
+        Replymaker.add_keyword(e.target.textContent);
+        Replymaker.show_suggestions();
     });
-    $('.keyword_suggestions').append(a)
+    $('.keyword_suggestions').append(a);
   }
 };
 Replymaker.get_suggestions = function () {
@@ -26,8 +23,10 @@ Replymaker.get_suggestions = function () {
 };
 Replymaker.add_keyword = function (word) {
     if ( $.isFunction($.fn.tagsinput) ) {
+        alert('exist');
         $(".new_reply input[name='reply[keywords]']").tagsinput(word);
     }else{
+        alert('not exist');
         $(".new_reply input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
     }
 };
