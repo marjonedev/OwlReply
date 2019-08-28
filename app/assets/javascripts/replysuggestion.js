@@ -7,13 +7,16 @@ Replymaker.show_suggestions = function () {
   for (var i=0;i < Replymaker.suggested_keywords.length;i++) {
     var text = Replymaker.suggested_keywords[i];
     if (input.val().indexOf(text) >= 0) { continue; }
-    var a = document.createElement('a')
+    var a = document.createElement('a');
     a.text = text;
-    a.setAttribute('class','button button-light button-mini keyword')
-    a.setAttribute('data-keyword',text)
+    a.setAttribute('class','button button-light button-mini keyword');
+    a.setAttribute('data-keyword',text);
+      $(document).on('click', a, function (e) {
+          Replymaker.add_keyword(e.target.textContent);
+          Replymaker.show_suggestions();
+      });
     a.addEventListener( 'click', function (e) {
-      Replymaker.add_keyword(e.target.textContent);
-      Replymaker.show_suggestions();
+        alert('clicked');
     });
     $('.keyword_suggestions').append(a)
   }
