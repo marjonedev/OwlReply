@@ -5,7 +5,7 @@
   max-width: 100%;
   cursor: text;
   height: auto;
-  padding: 0.375rem 0.75rem 0.275rem;
+  padding: 0.375rem 0.75rem 0.175rem;
 }
 .bootstrap-tagsinput input {
   border: none;
@@ -32,7 +32,7 @@
   box-shadow: none;
 }
 .bootstrap-tagsinput .badge {
-  margin-right: 2px;
+  margin-right: 3px;
   color: inherit;
   background-color: #EEE;
   border-radius: 0;
@@ -48,7 +48,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   border: none;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 .bootstrap-tagsinput .badge [data-role="remove"] {
   margin-left: 5px;
