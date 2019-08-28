@@ -1,5 +1,8 @@
-$('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
-
-$('input.keywords').tagsinput();
+$('#<%= dom_id(@reply) %>')
+    .replaceWith('<%= j render 'reply', reply: @reply %>')
+    .find('input.keywords')
+    .tagsinput({
+        tagClass: 'readonly'
+    });
 
 $.Custom.notify('Email Reply Successfully Updated.');

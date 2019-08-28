@@ -1,6 +1,7 @@
-$('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'edit', reply: @reply %>');
-
-$('input.keywords').tagsinput();
+$('#<%= dom_id(@reply) %>')
+    .replaceWith('<%= j render 'edit', reply: @reply %>')
+    .find('input.keywords')
+    .tagsinput();
 
 $('.cancel_edit').on('click', function(){
     $('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
