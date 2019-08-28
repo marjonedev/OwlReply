@@ -25,6 +25,11 @@ Replymaker.add_keyword = function (word) {
     if ( $.isFunction($.fn.tagsinput) ) {
         $(".new_reply input[name='reply[keywords]']").tagsinput('add', word);
     }else{
-        $(".new_reply input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
+        var inputKeywords = $(".new_reply input[name='reply[keywords]']");
+        if(inputKeywords.val() == ""){
+            inputKeywords.val(word);
+        }else{
+            inputKeywords.val(inputKeywords.val() + ", " + word);
+        }
     }
 };
