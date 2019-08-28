@@ -23,10 +23,8 @@ Replymaker.get_suggestions = function () {
 };
 Replymaker.add_keyword = function (word) {
     if ( $.isFunction($.fn.tagsinput) ) {
-        alert('exist');
-        $(".new_reply input[name='reply[keywords]']").tagsinput(word);
+        $(".new_reply input[name='reply[keywords]']").tagsinput('add', word);
     }else{
-        alert('not exist');
         $(".new_reply input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
     }
 };
