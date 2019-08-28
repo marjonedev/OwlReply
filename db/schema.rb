@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_27_195126) do
+ActiveRecord::Schema.define(version: 2019_08_28_163641) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -20,6 +20,9 @@ ActiveRecord::Schema.define(version: 2019_08_27_195126) do
     t.string "encryption_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "drafts_created_today"
+    t.integer "drafts_created_lifetime"
+    t.text "template"
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
@@ -42,6 +45,7 @@ ActiveRecord::Schema.define(version: 2019_08_27_195126) do
     t.string "card_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "customer_id"
   end
 
   create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -52,6 +56,8 @@ ActiveRecord::Schema.define(version: 2019_08_27_195126) do
     t.boolean "catchcall"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "drafts_created_today"
+    t.integer "drafts_created_lifetime"
     t.index ["emailaccount_id"], name: "index_replies_on_emailaccount_id"
   end
 
