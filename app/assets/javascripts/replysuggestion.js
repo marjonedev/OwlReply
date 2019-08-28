@@ -1,5 +1,5 @@
-Replymaker = {}
-Replymaker.suggested_keywords = ["Refund","Cancel","Unable","Hours","Hiring","Resume","Human Resources"]
+Replymaker = {};
+Replymaker.suggested_keywords = ["Refund","Cancel","Unable","Hours","Hiring","Resume","Human Resources"];
 Replymaker.show_suggestions = function () {
   $('.keyword_suggestions').remove();
   var input = $(".new_reply input[name='reply[keywords]']");
@@ -17,10 +17,14 @@ Replymaker.show_suggestions = function () {
     });
     $('.keyword_suggestions').append(a)
   }
-}
+};
 Replymaker.get_suggestions = function () {
   $.get("/replies/suggest");
-}
+};
 Replymaker.add_keyword = function (word) {
-  $(".new_reply input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
-}
+    if ( $.isFunction($.fn.tagsinput) ) {
+        $(".new_reply input[name='reply[keywords]']").tagsinput(word);
+    }else{
+        $(".new_reply input[name='reply[keywords]']").val($("input[name='reply[keywords]']").val() + ", " + word);
+    }
+};
