@@ -1,5 +1,9 @@
 $('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'edit', reply: @reply %>');
 
+$('input.keywords').tagsinput({
+    tagClass: 'big'
+});
+
 $('.cancel_edit').on('click', function(){
     $('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
 });
