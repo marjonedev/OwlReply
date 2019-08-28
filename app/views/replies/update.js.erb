@@ -1,3 +1,5 @@
 $('#<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
 
+$('input.keywords').tagsinput();
+
 $.Custom.notify('Email Reply Successfully Updated.');

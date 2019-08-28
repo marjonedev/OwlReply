@@ -1,3 +1,5 @@
 $('#new_reply').attr('id', '<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
 
+$('input.keywords').tagsinput();
+
 $.Custom.notify('Successfully Created New Email Reply.');
