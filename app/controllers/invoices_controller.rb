@@ -1,4 +1,6 @@
 class InvoicesController < ApplicationController
+  include SessionsHelper
+  before_action :logged_in_user
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
 
   # GET /invoices

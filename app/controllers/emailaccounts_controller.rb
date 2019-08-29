@@ -27,7 +27,7 @@ class EmailaccountsController < ApplicationController
   # POST /emailaccounts
   # POST /emailaccounts.json
   def create
-    @emailaccount = Emailaccount.new(emailaccount_params)
+    @emailaccount = current_user.emailaccounts.new(emailaccount_params)
 
     respond_to do |format|
       if @emailaccount.save
@@ -78,6 +78,5 @@ class EmailaccountsController < ApplicationController
       params
           .require(:emailaccount)
           .permit(:address, :password, :encrypted_password, :encryption_key)
-          .merge(:user_id => current_user.id)
     end
 end

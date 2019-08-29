@@ -1,10 +1,12 @@
 class PaymentmethodsController < ApplicationController
+  include SessionsHelper
+  before_action :logged_in_user
   before_action :set_paymentmethod, only: [:show, :edit, :update, :destroy]
 
   # GET /paymentmethods
   # GET /paymentmethods.json
   def index
-    @paymentmethods = Paymentmethod.all
+    @paymentmethods = current_user.paymentmethods
   end
 
   # GET /paymentmethods/1
@@ -24,7 +26,7 @@ class PaymentmethodsController < ApplicationController
   # POST /paymentmethods
   # POST /paymentmethods.json
   def create
-    @paymentmethod = Paymentmethod.new(paymentmethod_params)
+    @paymentmethod = current_user.paymentmethods.new(paymentmethod_params)
 
     respond_to do |format|
       if @paymentmethod.save
@@ -64,11 +66,12 @@ class PaymentmethodsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_paymentmethod
-      @paymentmethod = Paymentmethod.find(params[:id])
+      @paymentmethod = current_user.paymentmethods.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def paymentmethod_params
-      params.require(:paymentmethod).permit(:user_id, :method, :card_name, :card_type, :customer_id, :card_exp_date)
+
+      params.require(:paymentmethod).permit(:method, :card_name, :card_type, :customer_id, :card_exp_date)
     end
 end

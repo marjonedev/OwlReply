@@ -1,5 +1,5 @@
 class CommunicationsController < ApplicationController
-  #include SessionsHelper
+  include SessionsHelper
   before_action :logged_in_user
   before_action :set_communication, only: [:new, :create, :edit, :update, :destroy]
 
