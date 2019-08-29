@@ -1,2 +1,0 @@
-class PaymentmethodsController < ApplicationController
-end
