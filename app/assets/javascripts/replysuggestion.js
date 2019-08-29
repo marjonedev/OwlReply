@@ -33,3 +33,9 @@ Replymaker.add_keyword = function (word) {
         }
     }
 };
+
+$(function(){
+    $(document).on('turbolinks:load', function () {
+       $("input[name='reply[keywords]'], input[data-role='tagsinput']").tagsinput();
+    });
+});
