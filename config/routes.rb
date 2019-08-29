@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :paymentmethods
   resources :subscriptions
   resources :transactions
   resources :invoices
