@@ -5,7 +5,7 @@
 
       <div class="form-group">
         <label for="card_brand">Card Type</label>
-        <%= form.select(:card_brand, [['Visa', 'visa'], ['Mastercard', 'mastercard'], ['Diners', 'diners'], ['Discover', 'discover'], ['JBC', 'jcb'], ['Unionpay', 'unionpay']], class: 'form-control', id: 'card_brand', required: 'required') %>
+        <%= form.select(:card_brand, [['Visa', 'visa'], ['Mastercard', 'mastercard'], ['Diners', 'diners'], ['Discover', 'discover'], ['JBC', 'jcb'], ['Unionpay', 'unionpay']], :class => 'form-control', :id => 'card_brand', :required => 'required') %>
       </div>
 
       <div class="form-group">
