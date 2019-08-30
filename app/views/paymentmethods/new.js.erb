@@ -1,1 +1,7 @@
-$("<%= j render 'new', paymentmethod: @paymentmethod %>").appendTo('.modals');
+$.magnificPopup.open({
+    items: {
+        src: "<%= j render 'new', paymentmethod: @paymentmethod %>", // can be a HTML string, jQuery object, or CSS selector
+        type: 'inline'
+    },
+    modal: true
+});
