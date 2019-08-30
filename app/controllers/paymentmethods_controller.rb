@@ -32,9 +32,11 @@ class PaymentmethodsController < ApplicationController
       if @paymentmethod.save
         format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully created.' }
         format.json { render :show, status: :created, location: @paymentmethod }
+        format.js {  }
       else
         format.html { render :new }
         format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+        format.js {  }
       end
     end
   end
@@ -46,9 +48,11 @@ class PaymentmethodsController < ApplicationController
       if @paymentmethod.update(paymentmethod_params)
         format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully updated.' }
         format.json { render :show, status: :ok, location: @paymentmethod }
+        format.js {  }
       else
         format.html { render :edit }
         format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+        format.js {  }
       end
     end
   end
@@ -60,6 +64,7 @@ class PaymentmethodsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to paymentmethods_url, notice: 'Paymentmethod was successfully destroyed.' }
       format.json { head :no_content }
+      format.js {  }
     end
   end
 
