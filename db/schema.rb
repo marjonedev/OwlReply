@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_163641) do
+ActiveRecord::Schema.define(version: 2019_08_29_173308) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -41,11 +41,11 @@ ActiveRecord::Schema.define(version: 2019_08_28_163641) do
     t.integer "user_id"
     t.string "method"
     t.string "card_name"
-    t.datetime "card_expiration_date"
     t.string "card_type"
+    t.string "customer_id"
+    t.date "card_exp_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "customer_id"
   end
 
   create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
