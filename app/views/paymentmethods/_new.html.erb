@@ -2,19 +2,15 @@
   <h3 class="popup-title">New Payment Method</h3>
   <div class="popup-form nobottomborder">
     <%= form_with model: (paymentmethod || paymentmethod = Paymentmethod.new), html:{class: 'nobottommargin'} do |form| %>
-      <div class="form-group">
-        <%= form.label :method %>
-        <%= form.text_field :method, class: 'form-control' %>
-      </div>
 
       <div class="form-group">
-        <label for="card_type">Card Type</label>
-        <%= form.select :card_brand, [['Visa', 'visa'], ['Mastercard', 'mastercard'], ['Diners', 'diners'], ['Discover', 'discover'], ['JBC', 'jcb'], ['Unionpay', 'unionpay']], class: 'form-control', id: 'card_type', required: 'required' %>
+        <label for="card_brand">Card Type</label>
+        <%= form.select :card_brand, [['Visa', 'visa'], ['Mastercard', 'mastercard'], ['Diners', 'diners'], ['Discover', 'discover'], ['JBC', 'jcb'], ['Unionpay', 'unionpay']], class: 'form-control', id: 'card_brand', required: 'required' %>
       </div>
 
       <div class="form-group">
         <label for="card_number">Card Number</label>
-        <%= form.text_field :card_number, class: 'form-control', id: 'card_number', type: 'number', required: 'required' %>
+        <%= form.text_field :card_number, class: 'form-control required', id: 'card_number', type: 'number', required: 'required' %>
       </div>
 
       <div class="form-group">
@@ -23,7 +19,7 @@
 
       <div class="form-group">
         <label for="card_cvc">CVC</label>
-        <%= form.text_field :card_cvc, class: 'form-control', id: 'card_type', type: 'number', min: 3, max: 3, maxlength: 3, required: 'required' %>
+        <%= form.text_field :card_cvc, class: 'form-control required', id: 'card_type', type: 'number', min: 3, max: 3, maxlength: 3, required: 'required' %>
       </div>
 
       <div class="form-group">
