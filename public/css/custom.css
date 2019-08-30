@@ -216,6 +216,17 @@ section#content.replies .card .card-footer{
 
 /*Magnific Popup Form
 =====================================*/
+.mfp-content .popup{
+    position: relative !important;
+    float: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 20px 30px;
+}
+
+.mfp-content .popup-title{
+
+}
 .popup-form{
     padding: 0 40px 40px;
 }
