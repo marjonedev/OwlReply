@@ -1,1 +1,12 @@
-alert('new payment method');
+$.magnificPopup.open({
+    items: {
+        src: "<%= j render 'new', paymentmethod: @paymentmethod %>", // can be a HTML string, jQuery object, or CSS selector
+        type: 'inline'
+    },
+    modal: true,
+    prependTo: $('.modals')
+});
+
+$('.button-cancel').on('click', function () {
+  $.magnificPopup.close();return false;
+});

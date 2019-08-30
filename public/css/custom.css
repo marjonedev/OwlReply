@@ -213,3 +213,9 @@ section#content.replies .card .card-footer{
 .keyword_suggestions a.keyword:hover{
     color: #FFFFFF;
 }
+
+/*Magnific Popup Form
+=====================================*/
+.popup-form{
+    padding: 0 40px 40px;
+}
