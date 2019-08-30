@@ -7,6 +7,8 @@ $.magnificPopup.open({
     prependTo: $('.modals')
 });
 
-$('.button-cancel').on('click', function () {
-  $.magnificPopup.close();return false;
+$('.button_cancel').on('click', function (e) {
+  e.preventDefault();
+  $.magnificPopup.close();
+  return false;
 });
