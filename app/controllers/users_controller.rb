@@ -24,6 +24,8 @@ class UsersController < ApplicationController
       unless current_user.id == @user.id
         not_found
       end
+
+      @paymentmethods = current_user.paymentmethods
     end
 
   end

@@ -224,6 +224,26 @@ section#content.replies .card .card-footer{
     padding: 20px 30px;
 }
 
-.mfp-content .popup-title{
 
+/*Payment Method List
+=====================================*/
+div.list-paymentmethod .list-group-item{
+    border: 1px solid #eee;
+}
+
+.list-paymentmethod .cc-type{
+    color: #999;
+    font-size: 16px;
+}
+
+.list-paymentmethod .cc-type .icon{
+    vertical-align: middle;
+    margin-right: 5px;
+    font-size: 34px;
+    color: #333;
+}
+
+.list-paymentmethod .expiration{
+    font-style: italic;
+    color: #999;
 }
