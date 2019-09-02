@@ -16,19 +16,19 @@
   </thead>
 
   <tbody>
-    <% @paymentmethods.each do |paymentmethod| %>
-      <tr>
-        <td><%= paymentmethod.user_id %></td>
-        <td><%= paymentmethod.method %></td>
-        <td><%= paymentmethod.card_name %></td>
-        <td><%= paymentmethod.card_type %></td>
-        <td><%= paymentmethod.customer_id %></td>
-        <td><%= paymentmethod.card_exp_date %></td>
-        <td><%= link_to 'Show', paymentmethod %></td>
-        <td><%= link_to 'Edit', edit_paymentmethod_path(paymentmethod) %></td>
-        <td><%= link_to 'Destroy', paymentmethod, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+    <%# @paymentmethods.each do |paymentmethod| %>
+<!--      <tr>-->
+<!--        <td><%#= paymentmethod.user_id %></td>-->
+<!--        <td><%#= paymentmethod.method %></td>-->
+<!--        <td><%#= paymentmethod.card_name %></td>-->
+<!--        <td><%#= paymentmethod.card_type %></td>-->
+<!--        <td><%#= paymentmethod.customer_id %></td>-->
+<!--        <td><%#= paymentmethod.card_exp_date %></td>-->
+<!--        <td><%#= link_to 'Show', paymentmethod %></td>-->
+<!--        <td><%#= link_to 'Edit', edit_paymentmethod_path(paymentmethod) %></td>-->
+<!--        <td><%#= link_to 'Destroy', paymentmethod, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+<!--      </tr>-->
+    <%# end %>
   </tbody>
 </table>
 
