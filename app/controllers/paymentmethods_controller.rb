@@ -30,6 +30,7 @@ class PaymentmethodsController < ApplicationController
 
     respond_to do |format|
       if @paymentmethod.save
+        @paymentmethods = current_user.paymentmethods
         format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully created.' }
         format.json { render :show, status: :created, location: @paymentmethod }
         format.js {  }
