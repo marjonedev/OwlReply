@@ -4,5 +4,5 @@ $.Custom.notify('Successfully Created New Payment Method.');
 
 if ($( "#user_paymentmethod_list" ).length) {
 
-    $("#user_paymentmethod_list").replaceWith('<%= j render 'index_user', paymentmethod: @paymentmethod %>');
+    $("#user_paymentmethod_list").replaceWith('<%= j render 'index_user' %>');
 }
