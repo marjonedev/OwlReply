@@ -1,37 +1,22 @@
-<p id="notice"><%= notice %></p>
+<section id="page-title">
 
-<h1>Paymentmethods</h1>
+  <div class="container clearfix">
+    <h1>Payment Methods</h1>
+    <p>Manage your payment methods here.</p>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Method</th>
-      <th>Card name</th>
-      <th>Card type</th>
-      <th>Customer</th>
-      <th>Card exp date</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+</section><!-- #page-title end -->
 
-  <tbody>
-    <%# @paymentmethods.each do |paymentmethod| %>
-<!--      <tr>-->
-<!--        <td><%#= paymentmethod.user_id %></td>-->
-<!--        <td><%#= paymentmethod.method %></td>-->
-<!--        <td><%#= paymentmethod.card_name %></td>-->
-<!--        <td><%#= paymentmethod.card_type %></td>-->
-<!--        <td><%#= paymentmethod.customer_id %></td>-->
-<!--        <td><%#= paymentmethod.card_exp_date %></td>-->
-<!--        <td><%#= link_to 'Show', paymentmethod %></td>-->
-<!--        <td><%#= link_to 'Edit', edit_paymentmethod_path(paymentmethod) %></td>-->
-<!--        <td><%#= link_to 'Destroy', paymentmethod, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
-<!--      </tr>-->
-    <%# end %>
-  </tbody>
-</table>
+<section id="content" class="paymentmethods">
+  <div class="content-wrap pt-4">
+    <div class="container clearfix">
+      <div id="new_record" class="mb-4">
+        <div class="button_container">
+          <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Payment Method</span>'), new_paymentmethod_path, class: 'button button-rounded button-reveal button-small button-dirtygreen', remote: true %>
+        </div>
+      </div>
 
-<br>
-
-<%= link_to 'New Paymentmethod', new_paymentmethod_path %>
+      <%= render partial: 'index' %>
+    </div>
+  </div>
+</section>
