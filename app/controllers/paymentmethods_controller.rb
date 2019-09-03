@@ -22,6 +22,7 @@ class PaymentmethodsController < ApplicationController
 
   # GET /paymentmethods/1/edit
   def edit
+    @paymentmethods = current_user.paymentmethods
   end
 
   # POST /paymentmethods
@@ -48,6 +49,7 @@ class PaymentmethodsController < ApplicationController
   def update
     respond_to do |format|
       if @paymentmethod.update(paymentmethod_params)
+        @paymentmethods = current_user.paymentmethods
         format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully updated.' }
         format.json { render :show, status: :ok, location: @paymentmethod }
         format.js {  }

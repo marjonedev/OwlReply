@@ -1,0 +1,14 @@
+$.magnificPopup.open({
+    items: {
+        src: "<%= j render 'edit', paymentmethod: @paymentmethod %>", // can be a HTML string, jQuery object, or CSS selector
+        type: 'inline'
+    },
+    modal: true,
+    prependTo: $('.modals')
+});
+
+$('.button_cancel').on('click', function (e) {
+  e.preventDefault();
+  $.magnificPopup.close();
+  return false;
+});

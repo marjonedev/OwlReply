@@ -1,0 +1,7 @@
+$.magnificPopup.close();
+
+$.Custom.notify('Payment Method Successfully Updated.');
+
+if($("#paymentmethod_index").length){
+    $("#paymentmethod_index").replaceWith('<%= j render partial: 'index' %>');
+}
