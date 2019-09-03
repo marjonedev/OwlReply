@@ -1,7 +1,7 @@
 $.magnificPopup.close();
 
 $.Custom.notify('Successfully Created New Payment Method.');
-console.log('<%= request.request_uri %>');
+console.log('<%= request.original_url %>');
 <% if current_page?(user_path(current_user.id)) %>
   alert('test');
 <% end %>
