@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
 
-  resources :paymentmethods
-  resources :subscriptions
-  resources :transactions
-  resources :invoices
   get "/404", to: "errors#not_found"
   get "/422", to: "errors#unacceptable"
   get "/500", to: "errors#internal_error"
 
+  resources :paymentmethods
+  resources :subscriptions
+  resources :transactions
+  resources :invoices
   resources :plans
   resources :replies
   resources :emailaccounts do
