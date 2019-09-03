@@ -247,3 +247,9 @@ div.list-paymentmethod .list-group-item{
     font-style: italic;
     color: #999;
 }
+
+.list-paymentmethod .list-group-item-action:hover,
+.list-paymentmethod .list-group-item-action:active,
+.list-paymentmethod .list-group-item-action:focus{
+    background: inherit;
+}

@@ -4,19 +4,22 @@
       <div class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
           <h3 class="mb-0 cc-number">**** **** **** <%= paymentmethod.card_number.to_s[-4..-1].to_i %></h3>
+          <div class="actions">
+            <%= link_to raw('<i class="icon-pencil"></i><span>Edit</span>'), edit_paymentmethod_path(paymentmethod), class: 'button button-rounded button-reveal button-mini button-yellow button-light nomargin', remote: true %>
+            <% if !paymentmethod.default %>
+               <%= link_to raw('<i class="icon-trash"></i><span>Remove</span>'), paymentmethod_url(paymentmethod), remote: true, method: :delete, data: {confirm: "Are you sure to delete this payment method?"}, class: 'button button-rounded button-mini button-yellow button-light nomargin' %>
+          <% end %>
+          </div>
+        </div>
+          <div class="cc-type">
+            <i class="icon icon-cc-<%= paymentmethod.card_brand %>"></i> <%= paymentmethod.card_brand&.gsub('-', ' ')&.titleize %>
+          </div>
+        <div class="d-flex w-100 justify-content-between">
+          <small class="expiration">Expires in <%= paymentmethod.card_exp_month %>/<%= paymentmethod.card_exp_year %></small>
           <% if paymentmethod.default %>
             <small class="cc-default">Default</small>
           <% end %>
         </div>
-        <div class="d-flex w-100 justify-content-between">
-          <div class="cc-type">
-            <i class="icon icon-cc-<%= paymentmethod.card_brand %>"></i> <%= paymentmethod.card_brand&.gsub('-', ' ')&.titleize %>
-          </div>
-          <div class="actions">
-
-          </div>
-        </div>
-        <small class="expiration">Expires in <%= paymentmethod.card_exp_month %>/<%= paymentmethod.card_exp_year %></small>
       </div>
     <% end %>
   </div>

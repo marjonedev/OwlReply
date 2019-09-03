@@ -3,6 +3,7 @@ class Paymentmethod < ApplicationRecord
 
   after_save :set_default
   before_save :set_initial_default
+  before_destroy :set_destroy_default
 
   def set_default
     if self.default
@@ -13,6 +14,12 @@ class Paymentmethod < ApplicationRecord
   def set_initial_default
     if Paymentmethod.where(user_id: self.user_id).first.nil?
       self.default = true
+    end
+  end
+
+  def set_destroy_default
+    if self.default
+      Paymentmethod.where(user_id: self.user_id).first.default = true
     end
   end
 end
