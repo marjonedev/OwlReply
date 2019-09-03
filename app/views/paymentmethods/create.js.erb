@@ -1,9 +1,7 @@
 $.magnificPopup.close();
 
 $.Custom.notify('Successfully Created New Payment Method.');
-console.log('<%= request.original_url %>');
-console.log('<%= request.url %>');
-console.log('<%= request.path %>');
-<% if current_page?(paymentmethods_url) %>
-  alert('test');
-<% end %>
+
+if ($( "#user_paymentmethod_list" ).length) {
+    $("#user_paymentmethod_list").replaceWith('<%= j render '_index_user', paymentmethod: @paymentmethod %>');
+}
