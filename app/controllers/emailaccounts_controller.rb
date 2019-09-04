@@ -1,5 +1,4 @@
 class EmailaccountsController < ApplicationController
-  include SessionsHelper
   before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy]
 
