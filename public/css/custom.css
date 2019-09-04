@@ -60,6 +60,10 @@ section#content.emailaccount_edit .card{
     border: none;
 }
 
+section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
+    min-height: 250px;
+}
+
 /*REPLIES
 ---------------------------------*/
 #page-title.replies h1 a.edit{

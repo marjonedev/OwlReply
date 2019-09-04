@@ -56,6 +56,11 @@
         <label>Encryption Key</label>
         <%= f.text_field :encryption_key, class: 'form-control' %>
       </div>
+      <div class="form-group">
+        <label>Email Template</label>
+        <%= f.text_area :template, class: 'form-control' %>
+      </div>
+
 
       <div class="card-footer noleftpadding norightpadding nobottompadding bg-white">
         <%= f.submit 'Save', :class => 'button nomargin' %>
