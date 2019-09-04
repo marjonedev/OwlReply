@@ -5,3 +5,5 @@ $("div.accounts").append("<%= j render @emailaccount %>");
 $('html, body').animate({
     scrollTop: $("div.account:last-child").offset().top - 120
 }, 2000);
+
+$.Custom.notify('Successfully Created New Email Account.');

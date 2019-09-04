@@ -77,6 +77,6 @@ class EmailaccountsController < ApplicationController
     def emailaccount_params
       params
           .require(:emailaccount)
-          .permit(:address, :password, :encrypted_password, :encryption_key)
+          .permit(:address, :password, :encrypted_password, :encryption_key, :template)
     end
 end
