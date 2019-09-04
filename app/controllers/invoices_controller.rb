@@ -1,5 +1,4 @@
 class InvoicesController < ApplicationController
-  include SessionsHelper
   before_action :logged_in_user
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
 
@@ -13,6 +12,10 @@ class InvoicesController < ApplicationController
   # GET /invoices/1.json
   def show
   end
+
+=begin
+  An invoice will almost never be deleted, edited, or created by the controller. Only monthly processes will ever create or edit an invoice.
+  MAYBE "Edit" can be used for applying credits and adjustments in the future if necessary.
 
   # GET /invoices/new
   def new
@@ -62,6 +65,7 @@ class InvoicesController < ApplicationController
       format.json { head :no_content }
     end
   end
+=end
 
   private
     # Use callbacks to share common setup or constraints between actions.
