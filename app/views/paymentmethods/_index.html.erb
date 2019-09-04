@@ -1,7 +1,7 @@
 <div class="bottommargin-sm" id="paymentmethod_index">
   <div class="list-group list-paymentmethod">
     <% @paymentmethods.each do |paymentmethod| %>
-      <div class="list-group-item list-group-item-action flex-column align-items-start">
+      <div class="list-group-item list-group-item-action flex-column align-items-start" id="<%= dom_id(paymentmethod) %>">
         <div class="d-flex w-100 justify-content-between">
           <h3 class="mb-0 cc-number">**** **** **** <%= paymentmethod.card_number.to_s[-4..-1].to_i %></h3>
           <div class="actions">
