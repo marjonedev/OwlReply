@@ -26,6 +26,24 @@
       <div class="form-group col-md-12">
         <%= form.text_field :encryption_key, class: 'form-control required', id: 'encryption_key', required: 'required', placeholder: "Encryption Key" %>
       </div>
+      <div class="form-group col-md-12">
+        <textarea name="emailaccount[template]" id="template" class="form-control required" required="required" placeholder="Put Your Email Template Here...">Hi,
+
+Thank you for emailing our company. We are happy to hear from you, and I'm happy to be here to help.
+
+%%reply%%
+
+Thank you for reaching out.
+
+Sincerely,
+
+Customer Service
+info@company.com</textarea>
+        <small class="form-text text-muted">
+          use  <strong>%%reply%%</strong>  short tag to insert the content of the reply
+        </small>
+      </div>
+
     </div>
 
     <div class="actions col_full nobottommargin">

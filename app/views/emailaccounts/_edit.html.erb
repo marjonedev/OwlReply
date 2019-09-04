@@ -59,6 +59,9 @@
       <div class="form-group">
         <label>Email Template</label>
         <%= f.text_area :template, class: 'form-control' %>
+        <small class="form-text text-muted">
+          use  <strong>%%reply%%</strong>  short tag to insert the content of the reply
+        </small>
       </div>
 
 

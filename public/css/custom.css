@@ -60,6 +60,7 @@ section#content.emailaccount_edit .card{
     border: none;
 }
 
+section#content.emailaccounts textarea[name="emailaccount[template]"],
 section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
     min-height: 250px;
 }
