@@ -1,11 +1,7 @@
-<% content_for :javascript_includes do %>
-  <script src="https://js.stripe.com/v3/"></script>
-<% end %>
-
 <div class="popup block divcenter" style="background-color: #FFF; max-width: 350px;">
   <h3 class="popup-title text-center">New Payment Method</h3>
   <div class="popup-form nobottomborder" style="padding: 0 20px;">
-    <%= form_with model: (paymentmethod || paymentmethod = Paymentmethod.new), html:{class: 'nobottommargin new_paymentmethod'}, url: paymentmethods_path(@paymentmethod) do |form| %>
+    <%= form_with model: (paymentmethod || paymentmethod = Paymentmethod.new), html:{class: 'nobottommargin new_paymentmethod', id: 'new_paymentmethod'}, url: paymentmethods_path(@paymentmethod) do |form| %>
 
       <div class="form-group">
         <label for="card_number">Card Number</label>

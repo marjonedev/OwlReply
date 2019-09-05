@@ -1,13 +1,14 @@
 //EVERYTHING FROM HERE ON IS PROBABLY PSUEDO CODE OR UNTESTED
 Paymentmethod = {};
 Paymentmethod.set_submit = function () {
-  $(".new_paymentmethod").on("submit", function (e) {
+  $("#new_paymentmethod").on("submit", function (e) {
       e.preventDefault();
-      Paymentmethod.submit_form();
+
+      var form = $(e.target);
+      Paymentmethod.submit_form(form);
   });
 }
-Paymentmethod.submit_form = function (e) {
-  var form = $(e.target);
+Paymentmethod.submit_form = function (form) {
 
   //EVERYTHING FROM HERE ON IS PSUEDO CODE
   data = {
