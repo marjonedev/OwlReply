@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_05_153733) do
+ActiveRecord::Schema.define(version: 2019_09_05_165343) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2019_09_05_153733) do
     t.string "card_number"
     t.string "card_exp_month"
     t.string "card_exp_year"
+    t.string "card_brand"
   end
 
   create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
