@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include SessionsHelper
+
   helper_method :current_user
 
   def current_user
@@ -12,6 +12,16 @@ class ApplicationController < ActionController::Base
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
+  end
+
+  def logged_in?
+    !current_user.nil?
+  end
+
+  def logged_in_user
+    if !logged_in?
+      redirect_to login_url
+    end
   end
 
 end

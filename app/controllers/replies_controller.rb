@@ -1,5 +1,5 @@
 class RepliesController < ApplicationController
-  # include RepliesHelper
+
   before_action :logged_in_user
   before_action :set_reply, only: [:show, :edit, :update, :destroy]
   before_action :set_emailaccount, only: [:new, :create, :edit, :update, :destroy]
