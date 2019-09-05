@@ -18,7 +18,8 @@ Paymentmethod.submit_form = function (e) {
 }
 Paymentmethod.stripe_result = function (result) {
   var token = result.token;
-  $().put("/paymentmethods", {data: {token: token}, onsuccess: Paymentmethod.created, onerror: Paymentmethod.creation_error});
+  console.log('token', token);
+  $.put("/paymentmethods", {data: {token: token}, onsuccess: Paymentmethod.created, onerror: Paymentmethod.creation_error});
 
 }
 Paymentmethod.stripe_error = function (result) {
