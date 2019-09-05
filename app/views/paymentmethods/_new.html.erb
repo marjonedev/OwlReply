@@ -3,16 +3,6 @@
   <div class="popup-form nobottomborder">
     <%= form_with model: (paymentmethod || paymentmethod = Paymentmethod.new), html:{class: 'nobottommargin new_paymentmethod'}, url: paymentmethods_path(@paymentmethod) do |form| %>
 
-  <!--<div class="form-group">
-    <label for="card_brand">Card Type</label>
-    <select class="form-control" class="paymentmethod[card_brand]">
-      <option value="visa" selected="selected">Visa</option>
-      <option value="mastercard">Mastercard</option>
-      <option value="diners-club">Diners</option>
-      <option value="discover">Discover</option>
-      <option value="jcb">JBC</option>
-    </select>
-  </div>-->
 
       <div class="form-group">
         <label for="card_number">Card Number</label>
@@ -22,13 +12,13 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="card_exp_month">Exp Month</label>
-          <input class="form-control required" id="card_exp_month" maxlength="2" placeholder="MM" required="required" size="2" type="text">
-          <%#= form.text_field :card_exp_month, class: 'form-control required', id: 'card_exp_month', maxlength: 2, placeholder: 'MM', required: 'required' %>
+<!--          <input class="form-control required" id="card_exp_month" maxlength="2" placeholder="MM" required="required" size="2" type="text">-->
+          <%= form.text_field :card_exp_month, class: 'form-control required', id: 'card_exp_month', maxlength: 2, placeholder: 'MM', required: 'required' %>
         </div>
         <div class="form-group col-md-4">
           <label for="card_exp_month">Exp Year</label>
-          <input class="form-control required" id="card_exp_year" maxlength="4" placeholder="YYYY" required="required" size="4" type="text">
-          <%#= form.text_field :card_exp_year, class: 'form-control required', id: 'card_exp_year', maxlength: 4, placeholder: 'YYYY', required: 'required' %>
+<!--          <input class="form-control required" id="card_exp_year" maxlength="4" placeholder="YYYY" required="required" size="4" type="text">-->
+          <%= form.text_field :card_exp_year, class: 'form-control required', id: 'card_exp_year', maxlength: 4, placeholder: 'YYYY', required: 'required' %>
         </div>
         <div class="form-group col-md-4">
           <label for="card_cvc">CVC</label>
