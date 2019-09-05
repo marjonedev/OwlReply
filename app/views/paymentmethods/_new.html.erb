@@ -1,6 +1,6 @@
-<div class="popup block divcenter" style="background-color: #FFF; max-width: 500px;">
+<div class="popup block divcenter" style="background-color: #FFF; max-width: 350px;">
   <h3 class="popup-title text-center">New Payment Method</h3>
-  <div class="popup-form nobottomborder">
+  <div class="popup-form nobottomborder" style="padding: 0 20px;">
     <%= form_with model: (paymentmethod || paymentmethod = Paymentmethod.new), html:{class: 'nobottommargin new_paymentmethod'}, url: paymentmethods_path(@paymentmethod) do |form| %>
 
 
@@ -10,19 +10,14 @@
         <input class="form-control required" id="card_number" type="number" required="required">
       </div>
       <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="card_exp_month">Exp Month</label>
-<!--          <input class="form-control required" id="card_exp_month" maxlength="2" placeholder="MM" required="required" size="2" type="text">-->
-          <%= form.text_field :card_exp_month, class: 'form-control required', id: 'card_exp_month', maxlength: 2, placeholder: 'MM', required: 'required' %>
+        <div class="form-group col-md-6">
+          <label for="card_exp_month">Expiration</label>
+          <input class="form-control required" id="card_expiration" placeholder="MM/YY" required="required" type="text">
+          <%#= form.text_field :card_exp_year, class: 'form-control required', id: 'card_exp_year', maxlength: 4, placeholder: 'YYYY', required: 'required' %>
         </div>
-        <div class="form-group col-md-4">
-          <label for="card_exp_month">Exp Year</label>
-<!--          <input class="form-control required" id="card_exp_year" maxlength="4" placeholder="YYYY" required="required" size="4" type="text">-->
-          <%= form.text_field :card_exp_year, class: 'form-control required', id: 'card_exp_year', maxlength: 4, placeholder: 'YYYY', required: 'required' %>
-        </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
           <label for="card_cvc">CVC</label>
-          <%= form.text_field :card_cvc, class: 'form-control required', id: 'card_cvc', maxlength: 3, required: 'required' %>
+          <%= form.text_field :card_cvc, class: 'form-control required', id: 'card_cvc', maxlength: 3, size: 3, required: 'required' %>
         </div>
       </div>
 
@@ -37,7 +32,7 @@
       </div>
       <% end %>
 
-      <div class="form-group nobottommargin mt-2">
+      <div class="form-group nobottommargin mt-2 d-flex w-100 justify-content-between">
         <%= form.submit 'Save', class: 'button button-large noleftmargin' %>
         <%= link_to 'Cancel', '#', :remote => true, :class => 'button_cancel button button-white button-light button-large' %>
       </div>
