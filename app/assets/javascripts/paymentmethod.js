@@ -1,7 +1,10 @@
 //EVERYTHING FROM HERE ON IS PROBABLY PSUEDO CODE OR UNTESTED
 Paymentmethod = {};
 Paymentmethod.set_submit = function () {
-  $(".new_paymentmethod").on("submit",Paymentmethod.submit_form);
+  $(".new_paymentmethod").on("submit", function (e) {
+      e.preventDefault();
+      Paymentmethod.submit_form();
+  });
 }
 Paymentmethod.submit_form = function (e) {
   var form = $(e.target);
