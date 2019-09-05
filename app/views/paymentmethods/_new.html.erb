@@ -7,17 +7,17 @@
       <div class="form-group">
         <label for="card_number">Card Number</label>
         <%#= form.text_field :card_number, class: 'form-control required', id: 'card_number', type: 'number', required: 'required' %>
-        <input class="form-control required" id="card_number" type="number" required="required">
+        <input class="form-control required" id="card_number" type="text" required="required">
       </div>
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="card_exp_month">Expiration</label>
-          <input class="form-control required" id="card_expiration" placeholder="MM/YY" required="required" type="text">
+          <input class="form-control required" id="card_expiration" placeholder="MM/YYYY" required="required" type="text">
           <%#= form.text_field :card_exp_year, class: 'form-control required', id: 'card_exp_year', maxlength: 4, placeholder: 'YYYY', required: 'required' %>
         </div>
         <div class="form-group col-md-6">
           <label for="card_cvc">CVC</label>
-          <%= form.text_field :card_cvc, class: 'form-control required', id: 'card_cvc', maxlength: 3, size: 3, required: 'required' %>
+          <%= form.text_field :card_cvc, class: 'form-control required', id: 'card_cvc', required: 'required' %>
         </div>
       </div>
 
