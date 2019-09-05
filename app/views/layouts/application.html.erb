@@ -26,6 +26,8 @@
   <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
+  <%= yield :javascript_includes %>
+
   <link rel="stylesheet" href="/css/custom.css" type="text/css" />
 
 	<!-- Document Title

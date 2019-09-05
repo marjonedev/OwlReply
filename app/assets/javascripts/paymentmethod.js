@@ -11,9 +11,12 @@ Paymentmethod.submit_form = function (e) {
     card_number: form.find('#card_number'), //form.closest instead??
     exp_month: form.find('#card_exp_month'),
     exp_year: form.find('#card_exp_year')
-  }
-  Stripe.key = "";
-  Stripe.submit(data, {onsuccess: Paymentmethod.stripe_result, onerror: Paymentmethod.stripe_error});
+  };
+
+  var stripe = Stripe('pk_test_JfJHLapqizR8IPrLtem4UXWn00OhqC4dVb');
+  var elements = stripe.elements();
+  console.log(elements);
+  // Stripe.submit(data, {onsuccess: Paymentmethod.stripe_result, onerror: Paymentmethod.stripe_error});
 
 }
 Paymentmethod.stripe_result = function (result) {
