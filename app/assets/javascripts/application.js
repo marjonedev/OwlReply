@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require jquery
 //= require bootstrap-tagsinput
+//= require jquery.payment
 //= require_tree .

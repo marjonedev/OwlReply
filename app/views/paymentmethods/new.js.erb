@@ -12,3 +12,7 @@ $('.button_cancel').on('click', function (e) {
   $.magnificPopup.close();
   return false;
 });
+
+$('#card_number').payment('formatCardNumber');
+$('#card_expiration').payment('formatCardExpiry');
+$('#card_cvc').payment('formatCardCVC');

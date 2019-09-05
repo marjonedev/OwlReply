@@ -21,6 +21,9 @@
                   <small class="cc-default">Default</small>
                   <% end %>
                 </div>
+                <div class="cc-type">
+                  <i class="icon icon-cc-<%= paymentmethod.card_brand.to_s.squish.downcase.tr(" ","-") %>"></i> <%= paymentmethod.card_brand&.gsub('-', ' ')&.titleize %>
+                </div>
                 <small class="expiration">Expires in <%= paymentmethod.card_exp_month %>/<%= paymentmethod.card_exp_year %></small>
               </div>
               <% end %>
