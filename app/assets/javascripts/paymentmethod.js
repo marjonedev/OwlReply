@@ -18,7 +18,6 @@ Paymentmethod.submit_form = function () {
 
     //EVERYTHING FROM HERE ON IS PSUEDO CODE
     var expMonthAndYear = form.find('#card_expiration').val().split(" / ");
-    console.log(expMonthAndYear);
 
     var data = {
         number: form.find('#card_number').val(), //form.closest instead??
@@ -42,21 +41,23 @@ Paymentmethod.ResponseHandler = function(status, response) {
 
         console.log(response);
 
-        // Show the errors on the form
         $form.find('.errormsg').find('span.message').text(response.error.message);
         $form.find('.errormsg').show();
-        // $form.find('button').prop('disabled', false); // Re-enable submission
 
     } else { // Token was created!
 
-        // Get the token ID:
         var token = response.id;
+        var def = $form.find('#default').val();
+        var data = {
+            'token': response.id,
+            'card_exp_month': response.card.exp_month,
+            'card_exp_year': response.card.exp_year,
+            'card_brand': response.card.brand,
+            'card_number': response.card.last4,
+            'default': def,
+        };
 
-        // Insert the token into the form so it gets submitted to the server:
-        $form.append($('<input type="hidden" name="paymentmethod[token]" />').val(token));
-
-        // Submit the form:
-        // $form.get(0).submit();
+        $.put("/paymentmethods", {data: data, onsuccess: Paymentmethod.created, onerror: Paymentmethod.creation_error});
     }
 };
 
@@ -70,8 +71,10 @@ Paymentmethod.stripe_error = function (result) {
   $(".new_paymentmethod").prepend("<div class='error'>" + result + "</div>");
 };
 Paymentmethod.creation_error = function (result) {
+    var $form = $("#new_paymentmethod");
+    $form.find('.errormsg').find('span.message').text(result);
+    $form.find('.errormsg').show();
   //This method should very rarely be called. It means our code refused to save the paymentmethod. Maybe the user got logged out or something.
-  $(".new_paymentmethod").prepend("<div class='error'>" + result + "</div>");
 };
 Paymentmethod.created = function (result) {
   //This might actually not do anything.
