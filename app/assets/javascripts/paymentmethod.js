@@ -14,6 +14,8 @@ Paymentmethod.submit_form = function () {
 
     var form = $("#new_paymentmethod");
 
+    form.find('.errormsg').hide();
+
     //EVERYTHING FROM HERE ON IS PSUEDO CODE
     var expMonthAndYear = form.find('#card_expiration').val().split(" / ");
     console.log(expMonthAndYear);
@@ -36,13 +38,14 @@ Paymentmethod.ResponseHandler = function(status, response) {
     // Grab the form:
     var $form = $("#new_paymentmethod");
 
-    console.log(response);
-
     if (response.error) { // Problem!
 
+        console.log(response);
+
         // Show the errors on the form
-        $form.find('.payment-errors').text(response.error.message);
-        $form.find('button').prop('disabled', false); // Re-enable submission
+        $form.find('.errormsg').find('span.message').text(response.error.message);
+        $form.find('.errormsg').show();
+        // $form.find('button').prop('disabled', false); // Re-enable submission
 
     } else { // Token was created!
 
