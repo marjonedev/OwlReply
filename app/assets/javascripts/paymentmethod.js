@@ -46,7 +46,6 @@ Paymentmethod.ResponseHandler = function(status, response) {
 
     } else { // Token was created!
 
-        var token = response.id;
         var def = $form.find('#default').val();
         var data = {
             'token': response.id,
@@ -77,6 +76,7 @@ Paymentmethod.creation_error = function (result) {
   //This method should very rarely be called. It means our code refused to save the paymentmethod. Maybe the user got logged out or something.
 };
 Paymentmethod.created = function (result) {
+    console.log(result);
   //This might actually not do anything.
   //paymentmethods/create.js might do this:
   //$('.popup').remove();
