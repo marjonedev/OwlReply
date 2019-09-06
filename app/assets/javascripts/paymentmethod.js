@@ -4,42 +4,39 @@ Paymentmethod.set_submit = function () {
   $("#new_paymentmethod").on("submit", function (e) {
       e.preventDefault();
 
-      var form = $(e.target);
-      Paymentmethod.submit_form(form);
-  });
-}
+      Paymentmethod.submit_form();
 
-Paymentmethod.submit_form = function (form) {
+      return false;
+  });
+};
+
+Paymentmethod.submit_form = function () {
+
+    var form = $("#new_paymentmethod");
 
     //EVERYTHING FROM HERE ON IS PSUEDO CODE
     var expMonthAndYear = form.find('#card_expiration').val().split(" / ");
     console.log(expMonthAndYear);
 
-    data = {
-        card_number: form.find('#card_number').val(), //form.closest instead??
+    var data = {
+        number: form.find('#card_number').val(), //form.closest instead??
         cvc: form.find('#card_cvc').val(),
         exp_month: expMonthAndYear[0],
         exp_year: expMonthAndYear[1]
     };
 
-    console.log(data);
-
     Stripe.setPublishableKey('pk_test_JfJHLapqizR8IPrLtem4UXWn00OhqC4dVb');
 
-    // Stripe.card.createToken({
-    //     number: data.card_number,
-    //     cvc: data.cvc,
-    //     exp_month: data.exp_month,
-    //     exp_year: data.exp_year
-    // }, Paymentmethod.ResponseHandler);
+    Stripe.card.createToken(data, Paymentmethod.ResponseHandler);
     // Stripe.submit(data, {onsuccess: Paymentmethod.stripe_result, onerror: Paymentmethod.stripe_error});
-
 };
 
 Paymentmethod.ResponseHandler = function(status, response) {
 
     // Grab the form:
     var $form = $("#new_paymentmethod");
+
+    console.log(response);
 
     if (response.error) { // Problem!
 
@@ -53,11 +50,10 @@ Paymentmethod.ResponseHandler = function(status, response) {
         var token = response.id;
 
         // Insert the token into the form so it gets submitted to the server:
-        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+        $form.append($('<input type="hidden" name="paymentmethod[token]" />').val(token));
 
         // Submit the form:
-        $form.get(0).submit();
-
+        // $form.get(0).submit();
     }
 };
 
