@@ -37,48 +37,58 @@ Paymentmethod.ResponseHandler = function(status, response) {
     // Grab the form:
     var $form = $("#new_paymentmethod");
 
-    if (response.error) { // Problem!
+    console.log(response);
 
-        console.log(response);
+    if (response.error) { // Problem!
 
         $form.find('.errormsg').find('span.message').text(response.error.message);
         $form.find('.errormsg').show();
 
     } else { // Token was created!
 
-        var def = $form.find('#default').val();
-        var data = {
-            'token': response.id,
-            'card_exp_month': response.card.exp_month,
-            'card_exp_year': response.card.exp_year,
-            'card_brand': response.card.brand,
-            'card_number': response.card.last4,
-            'default': def,
-        };
+        var serializedData = $form.serialize();
 
-        $.put("/paymentmethods", {data: data, onsuccess: Paymentmethod.created, onerror: Paymentmethod.creation_error});
+        serializedData += '&paymentmethod[token]=' + response.id;
+        serializedData += '&paymentmethod[card_exp_month]=' + response.card.exp_month;
+        serializedData += '&paymentmethod[card_exp_year]=' + response.card.exp_year;
+        serializedData += '&paymentmethod[card_brand]=' + response.card.brand;
+        serializedData += '&paymentmethod[card_number]=' + response.card.last4;
+
+        $.ajax({
+            type: "post",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/paymentmethods" ,
+            data: serializedData,
+            success: Paymentmethod.created,
+            error: Paymentmethod.creation_error
+        });
+
     }
 };
 
-Paymentmethod.stripe_result = function (result) {
+Paymentmethod.creation_error = function (jqXHR, textStatus, errorThrown) {
+    console.log(jqXHR);
+    console.log(textStatus);
+    console.log(errorThrown);
+    // var $form = $("#new_paymentmethod");
+    // $form.find('.errormsg').find('span.message').text(result);
+    // $form.find('.errormsg').show();
+    //This method should very rarely be called. It means our code refused to save the paymentmethod. Maybe the user got logged out or something.
+};
+
+Paymentmethod.created = function (data, textStatus, jqXHR) {
+    //This might actually not do anything.
+    //paymentmethods/create.js might do this:
+    //$('.popup').remove();
+    //$('.paymentmethods').html('<%=j render partial: "paymentmethods/index" %>');
+};
+
+/*Paymentmethod.stripe_result = function (result) {
   var token = result.token;
   console.log('token', token);
-  $.put("/paymentmethods", {data: {token: token}, onsuccess: Paymentmethod.created, onerror: Paymentmethod.creation_error});
+  $.post("/paymentmethods", {data: {token: token}, onsuccess: Paymentmethod.created, onerror: Paymentmethod.creation_error});
 
 };
 Paymentmethod.stripe_error = function (result) {
   $(".new_paymentmethod").prepend("<div class='error'>" + result + "</div>");
-};
-Paymentmethod.creation_error = function (result) {
-    var $form = $("#new_paymentmethod");
-    $form.find('.errormsg').find('span.message').text(result);
-    $form.find('.errormsg').show();
-  //This method should very rarely be called. It means our code refused to save the paymentmethod. Maybe the user got logged out or something.
-};
-Paymentmethod.created = function (result) {
-    console.log(result);
-  //This might actually not do anything.
-  //paymentmethods/create.js might do this:
-  //$('.popup').remove();
-  //$('.paymentmethods').html('<%=j render partial: "paymentmethods/index" %>');
-};
+};*/
