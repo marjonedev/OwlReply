@@ -1,6 +1,6 @@
 class PaymentmethodsController < ApplicationController
   before_action :logged_in_user
-  before_action :set_paymentmethod, only: [:show, :edit, :update, :destroy]
+  before_action :set_paymentmethod, only: [:show, :edit, :update, :destroy, :toggle_default]
 
   # GET /paymentmethods
   # GET /paymentmethods.json
@@ -23,6 +23,24 @@ class PaymentmethodsController < ApplicationController
   # GET /paymentmethods/1/edit
   def edit
     @paymentmethods = current_user.paymentmethods
+  end
+
+  def toggle_default
+    respond_to do |format|
+      @paymentmethod = Paymentmethod.find(params[:id])
+      if @paymentmethod.default
+        @paymentmethod.update_attribute(:default, false)
+        @default = false
+      else
+        @paymentmethod.update_attribute(:default, true)
+        @default = true
+      end
+
+      format.js {}
+    end
+
+
+
   end
 
   # POST /paymentmethods
@@ -48,7 +66,7 @@ class PaymentmethodsController < ApplicationController
   # PATCH/PUT /paymentmethods/1.json
   def update
     respond_to do |format|
-      if @paymentmethod.update(paymentmethod_update_params)
+      if @paymentmethod.update(update_params)
         @paymentmethods = current_user.paymentmethods
         format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully updated.' }
         format.json { render :show, status: :ok, location: @paymentmethod }
@@ -84,7 +102,7 @@ class PaymentmethodsController < ApplicationController
     end
 
     #only allow default parameter to be updated
-    def paymentmethod_update_params
+    def toggle_default_params
       params.require(:paymentmethod).permit(:default)
     end
 end

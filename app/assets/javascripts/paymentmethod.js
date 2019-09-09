@@ -37,8 +37,6 @@ Paymentmethod.ResponseHandler = function(status, response) {
     // Grab the form:
     var $form = $("#new_paymentmethod");
 
-    console.log(response);
-
     if (response.error) { // Problem!
 
         $form.find('.errormsg').find('span.message').text(response.error.message);

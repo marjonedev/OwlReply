@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   get "/422", to: "errors#unacceptable"
   get "/500", to: "errors#internal_error"
 
-  resources :paymentmethods
+  resources :paymentmethods do
+    member do
+      patch :toggle_default
+      put :toggle_default
+    end
+  end
   resources :subscriptions
   resources :transactions
   resources :invoices
