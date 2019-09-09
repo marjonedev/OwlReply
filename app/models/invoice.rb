@@ -3,7 +3,7 @@ class Invoice < ApplicationRecord
   belongs_to :subscription
   has_many :transactions
   before_create :set_details
-  after_create :charge_card
+  after_create :charge_card, :set_next_subscription_date
   attr_accessor :previous_price
 
   def set_details
@@ -24,6 +24,10 @@ class Invoice < ApplicationRecord
 
       # Send an email "Please update your billing information."
     end
+  end
+
+  def set_next_subscription_date
+    User.find(self.user_id).update_attribute(:set_next_subscription_date, 1.month.from_now)
   end
 
 end
