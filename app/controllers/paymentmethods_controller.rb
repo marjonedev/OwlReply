@@ -21,9 +21,9 @@ class PaymentmethodsController < ApplicationController
 
 
   # GET /paymentmethods/1/edit
-  def edit
-    @paymentmethods = current_user.paymentmethods
-  end
+  # def edit
+  #   @paymentmethods = current_user.paymentmethods
+  # end
 
   def toggle_default
     respond_to do |format|
@@ -65,20 +65,20 @@ class PaymentmethodsController < ApplicationController
 
   # PATCH/PUT /paymentmethods/1
   # PATCH/PUT /paymentmethods/1.json
-  def update
-    respond_to do |format|
-      if @paymentmethod.update(update_params)
-        @paymentmethods = current_user.paymentmethods
-        format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully updated.' }
-        format.json { render :show, status: :ok, location: @paymentmethod }
-        format.js {  }
-      else
-        format.html { render :edit }
-        format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
-        format.js {  }
-      end
-    end
-  end
+  # def update
+  #   respond_to do |format|
+  #     if @paymentmethod.update(update_params)
+  #       @paymentmethods = current_user.paymentmethods
+  #       format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully updated.' }
+  #       format.json { render :show, status: :ok, location: @paymentmethod }
+  #       format.js {  }
+  #     else
+  #       format.html { render :edit }
+  #       format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+  #       format.js {  }
+  #     end
+  #   end
+  # end
 
   # DELETE /paymentmethods/1
   # DELETE /paymentmethods/1.json
