@@ -19,6 +19,7 @@ class PaymentmethodsController < ApplicationController
     @paymentmethods = current_user.paymentmethods
   end
 
+
   # GET /paymentmethods/1/edit
   def edit
     @paymentmethods = current_user.paymentmethods
@@ -47,7 +48,7 @@ class PaymentmethodsController < ApplicationController
   # PATCH/PUT /paymentmethods/1.json
   def update
     respond_to do |format|
-      if @paymentmethod.update(paymentmethod_params)
+      if @paymentmethod.update(paymentmethod_update_params)
         @paymentmethods = current_user.paymentmethods
         format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully updated.' }
         format.json { render :show, status: :ok, location: @paymentmethod }
@@ -80,5 +81,10 @@ class PaymentmethodsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def paymentmethod_params
       params.require(:paymentmethod).permit(:default, :card_number, :token, :card_exp_month, :card_exp_year, :card_brand)
+    end
+
+    #only allow default parameter to be updated
+    def paymentmethod_update_params
+      params.require(:paymentmethod).permit(:default)
     end
 end
