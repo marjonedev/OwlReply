@@ -36,6 +36,7 @@ class PaymentmethodsController < ApplicationController
         @default = true
       end
 
+      @paymentmethods = current_user.paymentmethods
       format.js {}
     end
 

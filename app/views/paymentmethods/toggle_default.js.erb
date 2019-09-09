@@ -1,0 +1,5 @@
+$.Custom.notify('Successfully Updated Payment Method.');
+
+if($("#paymentmethod_index").length){
+    $("#paymentmethod_index").replaceWith('<%= j render partial: 'index' %>');
+}
