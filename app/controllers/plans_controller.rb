@@ -1,5 +1,5 @@
 class PlansController < ApplicationController
-  before_action :set_subscription, only: [:show, :edit, :update, :destroy]
+  before_action :set_subscription, only: [:update]
   # This is a Controller-Only function that sort of wraps the "Subscription".
   # This user-facing interface is what allows a user to change their subscription plan.
 

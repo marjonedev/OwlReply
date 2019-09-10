@@ -38,7 +38,7 @@
                 <!--<li>Email Support</li>-->
               </ul>
             </div>
-            <div class="pricing-action"><% s = 0 %>
+            <div class="pricing-action"><% s = Subscription.find_by(name: "Entrepreneur").id %>
               <% if current_user %>
                 <% if true #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
