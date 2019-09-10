@@ -35,6 +35,10 @@ class User < ApplicationRecord
     Emailaccount.create(user_id: self.id, address: self.email_address)
   end
 
+  def no_paymentmethods?
+    self.paymentmethods.first.nil?
+  end
+
   def current_subscription_id
     return nil if self.invoices.empty?
     self.invoices.first.subscription_id
