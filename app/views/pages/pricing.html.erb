@@ -38,13 +38,14 @@
                 <!--<li>Email Support</li>-->
               </ul>
             </div>
-            <div class="pricing-action"><% s = Subscription.find_by(name: "Entrepreneur").id %>
+            <div class="pricing-action"><% s1 = Subscription.find_by(name: "Entrepreneur").id %>
               <% if current_user %>
-                <% if true #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
+                <% if current_user.subscription_id != s1 #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
-                  <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>
-                <% end %>
+<!--                  <a href="/plans/<%#= s1 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
+                  <%= link_to 'Choose Plan', update_plan_path(s1), method: :put, class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'}, remote: true %>
+            <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
               <% end %>
@@ -74,13 +75,14 @@
                 <!--<li>Phone &amp; Email Support</li>-->
               </ul>
             </div>
-            <div class="pricing-action">
+            <div class="pricing-action"><% s2 = Subscription.find_by(name: "Small Business").id %>
               <% if current_user %>
-                <% if false #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
+                <% if current_user.subscription_id != s2 #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
-                  <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>
-                <% end %>
+<!--                  <a href="/plans/<%#= s2 %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>-->
+                  <%= link_to 'Choose Plan', update_plan_path(s2), method: :put, class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Small Business'}, remote: true %>
+            <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg bgcolor border-color">Sign Up</a>
               <% end %>
@@ -108,13 +110,14 @@
                 <li>Automated reply content suggestion</li>
               </ul>
             </div>
-            <div class="pricing-action">
+            <div class="pricing-action"><% s3 = Subscription.find_by(name: "Big Business").id %>
               <% if current_user %>
-                <% if false #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
+                <% if current_user.subscription_id != s3 #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
-                  <a href="/plans/<%= s %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>
-                <% end %>
+<!--                  <a href="/plans/<%#= s3 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
+                  <%= link_to 'Choose Plan', update_plan_path(s3), method: :put, class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Big Business'}, remote: true %>
+            <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
               <% end %>
@@ -130,3 +133,44 @@
   </div>
 
 </section><!-- #content end -->
+
+<% content_for :modals_includes do %>
+  <div class="modal fade" id="ConfirmPlanModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmPlanModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm to Upgrade Plan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+          <div class="modal-body">
+            <h5>You are selecting <span class="plan-name"></span> plan</h5>
+            <div>
+              <%= link_to 'Confirm', '#', class: 'button button-xlarge tright', id: 'confirm_plan' %>
+              <button type="button" class="button button-xlarge button-white button-light" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :javascript_footer_includes do %>
+  <script type="text/javascript">
+      $(function () {
+          $('.confirm-plan').on('click', function (e) {
+              e.preventDefault();
+              var $name = $(this).attr('data-plan');
+              var $target = $(this).attr('href');
+              $('#ConfirmPlanModal').find('span.plan-name').text($name);
+              $('#ConfirmPlanModal').find('#confirm_plan').attr('href', $target);
+              $('#ConfirmPlanModal').modal('show');
+          });
+
+          $('#ConfirmPlanModal').on('hidden.bs.modal', function () {
+              $(this).find('span.plan-name').text('');
+              $(this).find('#confirm_plan').attr('href', '#');
+          });
+      });
+  </script>
+<% end %>

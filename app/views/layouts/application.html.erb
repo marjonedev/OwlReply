@@ -308,7 +308,9 @@
   ============================================= -->
   <script src="/js/functions.js"></script>
 
-  <div class="modals"></div>
+  <div class="modals">
+    <%= yield :modals_includes %>
+  </div>
 
   <div class="floating-notification">
     <% if notice %>
