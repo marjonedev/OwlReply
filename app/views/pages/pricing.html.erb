@@ -47,7 +47,7 @@
                   <% if current_user.no_paymentmethods? %>
                     <%= link_to 'Choose Plan', '/paymentmethods/new?upgrade=#{s1}', class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur', remote: true} %>
                   <% else %>
-                    <%= link_to 'Choose Plan', plan_path(s1), class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'} %>
+                    <%= link_to 'Choose Plan', plan_path(s1), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'} %>
                   <% end %>
                 <% end %>
               <% else %>
@@ -86,7 +86,7 @@
                 <% else %>
 <!--                  <a href="/plans/<%#= s2 %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>-->
                   <% if current_user.no_paymentmethods? %>
-                    <%= link_to 'Choose Plan', '/paymentmethods/new?upgrade=#{s2}', class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Small Business', remote: true} %>
+                    <%= link_to 'Choose Plan', '/paymentmethods/new?upgrade=#{s2}', class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Small Business', remote: true} %>
                   <% else %>
                     <%= link_to 'Choose Plan', plan_path(s2), class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Small Business'} %>
                   <% end %>
@@ -127,7 +127,7 @@
                   <% if current_user.no_paymentmethods? %>
                     <%= link_to 'Choose Plan', '/paymentmethods/new?upgrade=#{s3}', class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Big Business', remote: true} %>
                   <% else %>
-                    <%= link_to 'Choose Plan', plan_path(s3), class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Big Business'} %>
+                    <%= link_to 'Choose Plan', plan_path(s3), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Big Business'} %>
                   <% end %>
             <% end %>
               <% else %>
