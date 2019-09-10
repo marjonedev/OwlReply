@@ -40,7 +40,7 @@
             </div>
             <div class="pricing-action"><% s1 = Subscription.find_by(name: "Entrepreneur").id %>
               <% if current_user %>
-                <% if current_user.subscription_id != s1 #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
+                <% if current_user.subscription_id == s1 or current_user.subscription_id.nil? #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s1 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
@@ -77,7 +77,7 @@
             </div>
             <div class="pricing-action"><% s2 = Subscription.find_by(name: "Small Business").id %>
               <% if current_user %>
-                <% if current_user.subscription_id != s2 #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
+                <% if current_user.subscription_id == s2 #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s2 %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>-->
@@ -112,7 +112,7 @@
             </div>
             <div class="pricing-action"><% s3 = Subscription.find_by(name: "Big Business").id %>
               <% if current_user %>
-                <% if current_user.subscription_id != s3 #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
+                <% if current_user.subscription_id == s3 #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s3 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
