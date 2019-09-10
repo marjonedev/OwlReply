@@ -14,12 +14,7 @@ Rails.application.routes.draw do
   resources :subscriptions
   resources :transactions
   resources :invoices
-  resources :plans do
-    member do
-      patch :update
-      put :update
-    end
-  end
+  resources :plans
   resources :replies
   resources :emailaccounts do
     resources :replies #This will be for new and create ONLY. /emailaccounts/1/replies/2 should just be /replies/2
