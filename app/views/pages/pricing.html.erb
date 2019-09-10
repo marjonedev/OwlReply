@@ -81,7 +81,7 @@
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s2 %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>-->
-                  <%= link_to 'Choose Plan', plan_path(s2), method: :put, class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Small Business'}, remote: true %>
+                  <%= link_to 'Choose Plan', plan_path(s2), method: :put, class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Small Business'}, remote: true %>
             <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg bgcolor border-color">Sign Up</a>
