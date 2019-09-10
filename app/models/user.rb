@@ -25,6 +25,9 @@ class User < ApplicationRecord
   def set_initial_content
     self.password = self.email_address
     self.username = self.email_address.gsub("@","_").gsub(".","_")
+    # set default subscription_id
+    s = Subscription.find_by(name: "Entrepreneur").id
+    self.subscription_id = s
     #CongoingsubscribeJob.perform_later(self.email_address)
   end
 
