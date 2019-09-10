@@ -44,7 +44,7 @@
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s1 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
-                  <%= link_to 'Choose Plan', plan_path(s1), method: :put, class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'}, remote: true %>
+                  <%= link_to 'Choose Plan', plan_path(s1), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'} %>
             <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
@@ -81,7 +81,7 @@
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s2 %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>-->
-                  <%= link_to 'Choose Plan', plan_path(s2), method: :put, class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Small Business'}, remote: true %>
+                  <%= link_to 'Choose Plan', plan_path(s2), class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Small Business'} %>
             <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg bgcolor border-color">Sign Up</a>
@@ -116,7 +116,7 @@
                   <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                 <% else %>
 <!--                  <a href="/plans/<%#= s3 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
-                  <%= link_to 'Choose Plan', plan_path(s3), method: :put, class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Big Business'}, remote: true %>
+                  <%= link_to 'Choose Plan', plan_path(s3), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Big Business'} %>
             <% end %>
               <% else %>
                 <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
@@ -145,7 +145,7 @@
           <div class="modal-body">
             <h5>You are selecting <span class="plan-name"></span> plan</h5>
             <div>
-              <%= link_to 'Confirm', '#', class: 'button button-xlarge tright', id: 'confirm_plan' %>
+              <%= link_to 'Confirm', '#', method: :put, class: 'button button-xlarge tright', id: 'confirm_plan' %>
               <button type="button" class="button button-xlarge button-white button-light" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -165,6 +165,8 @@
               $('#ConfirmPlanModal').find('span.plan-name').text($name);
               $('#ConfirmPlanModal').find('#confirm_plan').attr('href', $target);
               $('#ConfirmPlanModal').modal('show');
+
+              return false;
           });
 
           $('#ConfirmPlanModal').on('hidden.bs.modal', function () {
