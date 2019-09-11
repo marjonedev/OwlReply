@@ -52,7 +52,7 @@ class User < ApplicationRecord
 
   def generate_first_invoice!
     self.invoices.create(subscription_id: self.subscription_id) if current_subscription_id.nil? # Amount, date, and collecting payment too, will be done by the invoice object 'on_create'.
-    self.update_attribute(:subscription_start_date,DateTime.today)
+    self.update_attribute(:subscription_start_date,DateTime.now)
   end
 
   def generate_upgrade_invoice!

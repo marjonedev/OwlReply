@@ -74,6 +74,7 @@ Paymentmethod.creation_error = function (jqXHR, textStatus, errorThrown) {
     var $form = $("#new_paymentmethod");
     $form.find('.errormsg').find('span.message').text(textStatus);
     $form.find('.errormsg').show();
+    $form.find('input[type="submit"]').prop('disabled', false).val('Save');
 
     //This method should very rarely be called. It means our code refused to save the paymentmethod. Maybe the user got logged out or something.
 };
