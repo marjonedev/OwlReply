@@ -178,7 +178,7 @@ section#content.replies .card .card-footer{
     border-radius: 3px;
     padding-right: 20px;
     margin: 10px;
-    animation: temporary 6s 1 ease-in forwards;
+    animation: temporary 10s 1 ease-in forwards;
 }
 .floating-notification .style-msg .sb-msg{
     border: 0;
