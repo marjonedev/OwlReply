@@ -28,7 +28,7 @@ class Invoice < ApplicationRecord
   end
 
   def set_next_subscription_date
-    User.find(self.user_id).update_attribute(:set_next_subscription_date, 1.month.from_now)
+    self.user.set_next_subscription_date!
   end
 
 end
