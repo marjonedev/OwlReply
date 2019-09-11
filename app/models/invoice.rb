@@ -13,7 +13,7 @@ class Invoice < ApplicationRecord
   end
 
   def charge_card
-    paymentmethod = self.user.paymentmethods.order('current DESC').first
+    paymentmethod = self.user.paymentmethods.find_by(default: true).first
     result = paymentmethod.charge(self.amount)
     if (result)
       self.paid_amount = self.amount
