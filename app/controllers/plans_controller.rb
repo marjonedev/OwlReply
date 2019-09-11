@@ -10,7 +10,7 @@ class PlansController < ApplicationController
 
   def update
     current_user.set_subscription!(@subscription)
-    redirect_to root_url, notice: raw("Your account have been successfully upgraded to <strong>#{@subscription.name}<strong>")
+    redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}"
   end
 
   private
