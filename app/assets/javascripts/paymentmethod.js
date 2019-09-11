@@ -5,7 +5,6 @@ Paymentmethod.set_submit = function () {
       e.preventDefault();
 
       $("#new_paymentmethod").find('input[type="submit"]').prop('disabled', true);
-      $("#new_paymentmethod").find('input[type="submit"]').attr('disabled', 'disabled');
 
       console.log($("#new_paymentmethod").find('input[type="submit"]'));
       console.log('test');
