@@ -36,7 +36,7 @@
       <% end %>
 
       <div class="form-group nobottommargin mt-2 d-flex w-100 justify-content-between">
-        <%= form.submit 'Save', class: 'button button-large noleftmargin' %>
+        <%= form.submit 'Save', class: 'button button-large noleftmargin', data: { disable_with: "Processing..." } %>
         <%= link_to 'Cancel', '#', :remote => true, :class => 'button_cancel button button-white button-light button-large' %>
       </div>
     <% end %>
