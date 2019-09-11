@@ -52,19 +52,20 @@ class PaymentmethodsController < ApplicationController
   # POST /paymentmethods.json
   def create
     @paymentmethod = current_user.paymentmethods.new(paymentmethod_params)
-
-    respond_to do |format|
-      if session[:upgrade]
-        @subscription = Subscription.find(session[:upgrade])
-        if @paymentmethod.save
-          current_user.set_subscription!(@subscription)
-          session.delete(:upgrade)
-          redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}"
-        else
+    if session[:upgrade]
+      @subscription = Subscription.find(session[:upgrade])
+      if @paymentmethod.save
+        current_user.set_subscription!(@subscription)
+        session.delete(:upgrade)
+        redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}"
+      else
+        respond_to do |format|
           format.js {  }
           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
         end
-      else
+      end
+    else
+      respond_to do |format|
         if @paymentmethod.save
           @paymentmethods = current_user.paymentmethods
           format.js {  }
@@ -77,6 +78,7 @@ class PaymentmethodsController < ApplicationController
         end
       end
     end
+
   end
 
   # PATCH/PUT /paymentmethods/1
