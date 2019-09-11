@@ -58,6 +58,7 @@ class PaymentmethodsController < ApplicationController
         @subscription = Subscription.find(session[:upgrade])
         if @paymentmethod.save
           current_user.set_subscription!(@subscription)
+          session.delete(:upgrade)
           format.html { redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}" }
         else
           format.js {  }
