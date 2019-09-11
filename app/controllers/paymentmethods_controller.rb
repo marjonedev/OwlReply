@@ -17,6 +17,10 @@ class PaymentmethodsController < ApplicationController
   def new
     @paymentmethod = Paymentmethod.new
     @paymentmethods = current_user.paymentmethods
+
+    if(params.has_key?(:upgrade))
+      session[:upgrade] = params[:upgrade]
+    end
   end
 
 
