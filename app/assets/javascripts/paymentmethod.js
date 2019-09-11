@@ -12,7 +12,7 @@ Paymentmethod.set_submit = function () {
   });
 };
 
-Paymentmethod.submit_form = function () {
+Paymentmethod.submit_form = function (callback) {
 
     var form = $("#new_paymentmethod");
 
@@ -70,9 +70,11 @@ Paymentmethod.creation_error = function (jqXHR, textStatus, errorThrown) {
     console.log(jqXHR);
     console.log(textStatus);
     console.log(errorThrown);
-    // var $form = $("#new_paymentmethod");
-    // $form.find('.errormsg').find('span.message').text(result);
-    // $form.find('.errormsg').show();
+
+    var $form = $("#new_paymentmethod");
+    $form.find('.errormsg').find('span.message').text(textStatus);
+    $form.find('.errormsg').show();
+
     //This method should very rarely be called. It means our code refused to save the paymentmethod. Maybe the user got logged out or something.
 };
 
@@ -81,6 +83,7 @@ Paymentmethod.created = function (data, textStatus, jqXHR) {
     //paymentmethods/create.js might do this:
     //$('.popup').remove();
     //$('.paymentmethods').html('<%=j render partial: "paymentmethods/index" %>');
+    $.magnificPopup.close();
 };
 
 /*Paymentmethod.stripe_result = function (result) {
