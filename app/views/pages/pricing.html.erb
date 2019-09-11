@@ -1,5 +1,7 @@
-<% content_for :javascript_includes do %>
-  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<% if current_user %>
+  <% content_for :javascript_includes do %>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <% end %>
 <% end %>
 
 <!-- Page Title
@@ -149,44 +151,49 @@
   </div>
 
 </section><!-- #content end -->
-
-<% content_for :modals_includes do %>
-  <div class="modal fade" id="ConfirmPlanModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmPlanModal" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title text-center" style="width: 100%">Confirm to Upgrade Plan</h4>
-        </div>
-        <div class="modal-body">
-          <h5 class="text-center">You are selecting <span class="plan-name"></span> plan</h5>
-          <div>
-            <%= link_to 'Confirm', '#', method: :put, class: 'button button-large tright', id: 'confirm_plan', remote: true %>
-            <button type="button" class="button button-large button-white button-light" data-dismiss="modal">Close</button>
+<% if current_user %>
+  <% content_for :modals_includes do %>
+    <div class="modal fade" id="ConfirmPlanModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmPlanModal" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title text-center" style="width: 100%">Confirm to Upgrade Plan</h4>
+          </div>
+          <div class="modal-body">
+            <h5 class="text-center">You are selecting <span class="plan-name"></span> plan</h5>
+            <div>
+              <%= link_to 'Confirm', '#', method: :put, class: 'button button-large tright', id: 'confirm_plan', remote: true %>
+              <button type="button" class="button button-large button-white button-light" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
-<% content_for :javascript_footer_includes do %>
-  <script type="text/javascript">
-      $(function () {
-          $('.confirm-plan').on('click', function (e) {
-              e.preventDefault();
-              var $name = $(this).attr('data-plan');
-              var $target = $(this).attr('href');
-              $('#ConfirmPlanModal').find('span.plan-name').text($name);
-              $('#ConfirmPlanModal').find('#confirm_plan').attr('href', $target);
-              $('#ConfirmPlanModal').modal('show');
+  <% content_for :javascript_footer_includes do %>
+    <script type="text/javascript">
+        $(function () {
+            $('.confirm-plan').on('click', function (e) {
+                e.preventDefault();
+                var $name = $(this).attr('data-plan');
+                var $target = $(this).attr('href');
+                $('#ConfirmPlanModal').find('span.plan-name').text($name);
+                $('#ConfirmPlanModal').find('#confirm_plan').attr('href', $target);
+                $('#ConfirmPlanModal').modal('show');
 
-              return false;
-          });
+                return false;
+            });
 
-          $('#ConfirmPlanModal').on('hidden.bs.modal', function () {
-              $(this).find('span.plan-name').text('');
-              $(this).find('#confirm_plan').attr('href', '#');
-          });
-      });
-  </script>
+            $('#confirm_plan').on('click', function () {
+                $('#ConfirmPlanModal').modal('hide');
+            });
+
+            $('#ConfirmPlanModal').on('hidden.bs.modal', function () {
+                $(this).find('span.plan-name').text('');
+                $(this).find('#confirm_plan').attr('href', '#');
+            });
+        });
+    </script>
+  <% end %>
 <% end %>
