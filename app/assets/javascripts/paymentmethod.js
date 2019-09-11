@@ -4,7 +4,7 @@ Paymentmethod.set_submit = function () {
   $("#new_paymentmethod").on("submit", function (e) {
       e.preventDefault();
 
-      $(this).find('button[type=submit]').prop('disabled', true);
+      $(this).find('input[type=submit]').prop('disabled', true);
 
       Paymentmethod.submit_form();
 
