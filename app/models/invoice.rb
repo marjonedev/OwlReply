@@ -3,7 +3,8 @@ class Invoice < ApplicationRecord
   belongs_to :subscription
   has_many :transactions
   before_create :set_details
-  after_create :charge_card, :set_next_subscription_date
+  # after_create :charge_card #todo: temporary commented. charge card after create
+  after_create :set_next_subscription_date
   attr_accessor :previous_price
 
   def set_details
@@ -13,11 +14,11 @@ class Invoice < ApplicationRecord
   end
 
   def charge_card
-    paymentmethod = self.user.paymentmethods.find_by(default: true).first
+    paymentmethod = self.user.paymentmethods.find_by(default: true)
     result = paymentmethod.charge(self.amount)
     if (result)
       self.paid_amount = self.amount
-      self.time_paid = Time.now
+      self.date_paid = DateTime.now
       #
       # Send an email receipt.
     else
