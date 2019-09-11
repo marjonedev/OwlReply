@@ -49,7 +49,7 @@
                 <% else %>
 <!--                  <a href="/plans/<%#= s1 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
                   <% if current_user.no_paymentmethods? %>
-                    <%= link_to 'Choose Plan', "/paymentmethods/new?upgrade=#{s1}", class: 'btn btn-danger btn-block btn-lg' %>
+                    <%= link_to 'Choose Plan', "/paymentmethods/new?upgrade=#{s1}", class: 'btn btn-danger btn-block btn-lg', remote: true %>
                   <% else %>
                     <%= link_to 'Choose Plan', plan_path(s1), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'} %>
                   <% end %>
