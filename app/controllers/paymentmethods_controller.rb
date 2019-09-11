@@ -54,15 +54,26 @@ class PaymentmethodsController < ApplicationController
     @paymentmethod = current_user.paymentmethods.new(paymentmethod_params)
 
     respond_to do |format|
-      if @paymentmethod.save
-        @paymentmethods = current_user.paymentmethods
-        format.js {  }
-        # format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully created.' }
-        format.json { render :show, status: :created, location: @paymentmethod }
+      if session[:upgrade]
+        if @paymentmethod.save
+          @subscription = Subscription.find(session[:upgrade])
+          current_user.set_subscription!(@subscription)
+          format.html { redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}" }
+        else
+          format.js {  }
+          format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+        end
       else
-        format.js {  }
-        # format.html { render :new }
-        format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+        if @paymentmethod.save
+          @paymentmethods = current_user.paymentmethods
+          format.js {  }
+          # format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully created.' }
+          format.json { render :show, status: :created, location: @paymentmethod }
+        else
+          format.js {  }
+          # format.html { render :new }
+          format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

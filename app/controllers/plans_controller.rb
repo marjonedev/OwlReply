@@ -9,13 +9,7 @@ class PlansController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if current_user.no_paymentmethods?
-        format.js { redirect_to '/paymentmethods/new' }
-      else
-        current_user.set_subscription!(@subscription)
-      end
-    end
+    current_user.set_subscription!(@subscription)
   end
 
   private
