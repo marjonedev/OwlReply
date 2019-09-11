@@ -64,7 +64,7 @@ class User < ApplicationRecord
   end
 
   def set_next_subscription_date!
-    self.next_subscription_charge_on = 1.month.from_now
+    self.update_attribute(:next_subscription_charge_on, 1.month.from_now)
   end
 
   def lowercase_username
