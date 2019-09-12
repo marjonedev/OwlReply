@@ -13,7 +13,7 @@ class Paymentmethod < ApplicationRecord
       charge = Stripe::Charge.create(
           amount: amount, # amount in cents
           currency: "usd",
-          source: self.token, # this is whatever token that stripe returned earlier
+          customer: self.customer_id,
           description: "Convention registration."
       )
       return charge
