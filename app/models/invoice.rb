@@ -29,6 +29,10 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def paid?
+    self.paid_amount == self.amount
+  end
+
   def set_next_subscription_date
     self.user.set_next_subscription_date!
   end
