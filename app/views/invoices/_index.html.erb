@@ -7,7 +7,7 @@
           <h3 class="section-title nomargin">Invoices</h3>
           <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-file-invoice-dollar"></i></div>
           <% for invoice in current_user.invoices %>
-            <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= invoice.date.strftime("%m/%d/%Y") %> - <%= invoice.amount %> - <%= invoice.paid? ? "Paid" : "Unpaid" %></div>
+            <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= link_to invoice.date.strftime("%m/%d/%Y"), invoice %> - <%= invoice.amount %> - <%= invoice.paid? ? "Paid" : "Unpaid" %></div>
           <% end %>
           <% if current_user.invoices.empty? %>
             <div class="bottommargin-sm">You are on the free plan.</div>
