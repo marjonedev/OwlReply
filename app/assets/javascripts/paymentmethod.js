@@ -43,6 +43,7 @@ Paymentmethod.ResponseHandler = function(status, response) {
 
         $form.find('.errormsg').find('span.message').text(response.error.message);
         $form.find('.errormsg').show();
+        $form.find('input[type="submit"]').prop('disabled', false);
 
     } else { // Token was created!
 

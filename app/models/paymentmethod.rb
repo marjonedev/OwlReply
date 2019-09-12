@@ -7,7 +7,7 @@ class Paymentmethod < ApplicationRecord
 
   def charge!
     begin
-      Stripe.api_key = Rails.application.secrets.stripe_api_key
+      Stripe.api_key = Rails.application.credentials.stripe_api_key
       # Note: If the token is cus_XXXX then that's a customer_id.
       # If the token is something else, then it's a source_id (basically a card id but technically could be a bank account or bitcoins or something in the FUTURE.)
       charge = Stripe::Charge.create(
