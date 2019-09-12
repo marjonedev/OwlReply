@@ -17,7 +17,7 @@ class InvoicesController < ApplicationController
   def update
     charge = @invoice.charge_card
     if charge
-
+      redirect_to '/invoices', notice: 'Invoice successfully paid.'
     else
       redirect_to '/paymentmethods', notice: 'Payment method was declined.'
     end
