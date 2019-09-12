@@ -11,7 +11,7 @@
       <div class="container clearfix">
         <p id="notice"><%= notice %></p>
 
-        <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%= @invoice.amount %> - <%= @invoice.paid? ? "Paid" : "Unpaid" %></div>
+        <div class="invoice invoice_<%= @invoice.paid? ? "paid" : "unpaid" %>"><%= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%= @invoice.amount %> - <%= @invoice.paid? ? "Paid" : "Unpaid" %></div>
 
         <% unless @invoice.paid? %>
           <%= link_to "Pay Now", "" %>
