@@ -14,7 +14,7 @@
         <div class="invoice invoice_<%= @invoice.paid? ? "paid" : "unpaid" %>"><%= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%= @invoice.amount %> - <%= @invoice.paid? ? "Paid" : "Unpaid" %></div>
 
         <% unless @invoice.paid? %>
-          <%= link_to "Pay Now", "" %>
+          <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put} %>
         <% end %>
 
       </div>
