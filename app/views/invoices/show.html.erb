@@ -1,24 +1,55 @@
-<section id="page-title" class="nobg">
+<section id="page-title" class="invoice nobg">
+
   <div class="container clearfix">
-    <h1>Invoice</h1>
-    <%= link_to 'Back to Invoices', invoices_path %>
+    <h1>Invoice <%=@invoice.date.strftime("%m/%d/%Y") %></h1>
+    <div class="breadcrumb">
+      <%= link_to 'Back to Invoices', invoices_path %>
+    </div>
   </div>
-</section><!-- #page-title end -->
+
+</section>
+
+<!--<section id="content" class="replies">
+
+  <div class="content-wrap nopadding">
+    <div class="section nomargin notoppadding">
+      <div class="container clearfix">
+        <%#= render file: "replies/index" %>
+      </div>
+    </div>
+  </div>
+
+</section>-->
 
 <section id="content">
   <div class="content-wrap nopadding">
     <div class="section nomargin">
       <div class="container clearfix">
-        <p id="notice"><%= notice %></p>
+<!--        <p id="notice"><%#= notice %></p>-->
+        <div class="row" id="<%= dom_id(@invoice) %>">
+          <div class="col-md-1"></div>
+          <div class="col-md-10 bottommargin-sm">
+            <div class="white-section custom-white-box nopadding">
+              <div class="card">
+                <div class="card-body">
+                  [here will be the invoice filled with information using invoice template]
+                </div>
+                <div class="card-footer norightpadding">
+<!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
+                  <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-rounded button-green button-large button-yellow button-light' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <div class="invoice invoice_<%= @invoice.paid? ? "paid" : "unpaid" %>"><%= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%= @invoice.amount %> - <%= @invoice.paid? ? "Paid" : "Unpaid" %></div>
+<!--        <div class="invoice invoice_<%#= @invoice.paid? ? "paid" : "unpaid" %>"><%#= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%#= @invoice.amount %> - <%#= @invoice.paid? ? "Paid" : "Unpaid" %></div>-->
 
         <% unless @invoice.paid? %>
           <% if current_user.no_paymentmethods? %>
             <%# New paymentmethod %>
           <% else %>
-            <%= link_to "Pay Now with Card XXXX XXXX XXXX #{current_user.default_paymentmethod.card_number}", invoice_path(@invoice), data: {method: :put} %>
-          <% end %>
+             <% end %>
         <% end %>
 
       </div>
