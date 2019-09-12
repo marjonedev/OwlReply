@@ -25,10 +25,10 @@ class Paymentmethod < ApplicationRecord
     Stripe.api_key = Rails.application.credentials.stripe_api_key
     customer = Stripe::Customer.create(
         description: "User ##{self.user.id}",
-        source: token,
+        source: self.token,
         email: "#{self.user.email_address}"
     )
-    #self.update_column(:customer_id,customer.id)
+    self.update_column(:customer_id,customer.id)
   end
 
   def set_default
