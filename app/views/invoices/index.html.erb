@@ -1,1 +1,19 @@
-<%= render partial: "index" %>
+<% content_for :javascript_includes do %>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<% end %>
+
+<!-- Page Title
+============================================= -->
+<section id="page-title" class="nobg">
+
+  <div class="container clearfix">
+    <h1>Invoices</h1>
+  </div>
+
+</section><!-- #page-title end -->
+
+<section id="content">
+  <div class="content-wrap nopadding">
+    <%= render partial: "index" %>
+  </div>
+</section>

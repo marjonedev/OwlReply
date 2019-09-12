@@ -3,7 +3,7 @@ class Invoice < ApplicationRecord
   belongs_to :subscription
   has_many :transactions
   before_create :set_details
-  # after_create :charge_card #todo: temporary commented. charge card after create
+  after_create :charge_card #todo: charge card after create
   after_create :set_next_subscription_date
   attr_accessor :previous_price
 
