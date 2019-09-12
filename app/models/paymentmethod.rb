@@ -3,7 +3,6 @@ class Paymentmethod < ApplicationRecord
   after_save :set_default
   after_create :set_customer_id
   before_create :set_initial_default
-  after_destroy :set_destroy_default
 
   def charge!(amount)
     begin
@@ -42,13 +41,6 @@ class Paymentmethod < ApplicationRecord
   def set_initial_default
     if Paymentmethod.where(user_id: self.user_id).first.nil?
       self.default = true
-    end
-  end
-
-  def set_destroy_default
-    if self.default
-      self.user.paymentmethods.first.update_attribute(:default,true)
-      #Paymentmethod.where(user_id: self.user_id).first.default = true
     end
   end
 end
