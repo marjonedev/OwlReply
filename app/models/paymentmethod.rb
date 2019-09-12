@@ -5,7 +5,7 @@ class Paymentmethod < ApplicationRecord
   before_create :set_initial_default
   after_destroy :set_destroy_default
 
-  def charge!
+  def charge!(amount)
     begin
       Stripe.api_key = Rails.application.credentials.stripe_api_key
       # Note: If the token is cus_XXXX then that's a customer_id.
