@@ -17,9 +17,9 @@ class Invoice < ApplicationRecord
     paymentmethod = self.user.paymentmethods.find_by(default: true)
     result = paymentmethod.charge!(self.amount)
     if (result)
-      #self.paid_amount = self.amount
+      #self.amount_paid = self.amount
       #self.date_paid = DateTime.now
-      self.update_attributes(paid_amount: self.amount, date_paid: DateTime.now)
+      self.update_attributes(amount_paid: self.amount, date_paid: DateTime.now)
 
       #
       # Send an email receipt.
@@ -30,7 +30,7 @@ class Invoice < ApplicationRecord
   end
 
   def paid?
-    self.paid_amount == self.amount
+    self.amount_paid == self.amount
   end
 
   def set_next_subscription_date
