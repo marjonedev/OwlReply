@@ -24,9 +24,9 @@ class Paymentmethod < ApplicationRecord
 
   def set_customer_id
     customer = Stripe::Customer.create(
-        description: "User ##{current_user.id}",
+        description: "User ##{self.user.id}",
         source: token,
-        email: "#{current_user.email.address}"
+        email: "#{self.user.email_address}"
     )
     self.update_column(:customer_id,customer.id)
   end
