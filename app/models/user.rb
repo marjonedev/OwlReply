@@ -37,7 +37,11 @@ class User < ApplicationRecord
   end
 
   def no_paymentmethods?
-    self.paymentmethods.first.nil?
+    self.paymentmethods.empty?
+  end
+
+  def default_paymentmethod
+    self.paymentmethods.where(default: true).first || self.paymentmethods.first
   end
 
   def current_subscription_id
