@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   before_action :logged_in_user
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy]
+  before_action :set_invoice, only: [:show, :update]
 
   # GET /invoices
   # GET /invoices.json
@@ -11,6 +11,16 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   # GET /invoices/1.json
   def show
+  end
+
+  # This is for paying an unpaid invoice only!
+  def update
+    charge = @invoice.charge_card
+    if charge
+
+    else
+      redirect_to '/paymentmethods', notice: 'Payment method was declined.'
+    end
   end
 
 =begin
