@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_11_172459) do
+ActiveRecord::Schema.define(version: 2019_09_12_085236) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_172459) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "subscription_id"
+    t.date "date"
     t.index ["user_id"], name: "index_invoices_on_user_id"
   end
 
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_172459) do
     t.string "card_exp_month"
     t.string "card_exp_year"
     t.string "card_brand"
+    t.string "customer_id"
   end
 
   create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
