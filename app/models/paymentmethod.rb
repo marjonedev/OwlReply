@@ -23,6 +23,7 @@ class Paymentmethod < ApplicationRecord
   end
 
   def set_customer_id
+    Stripe.api_key = Rails.application.credentials.stripe_api_key
     customer = Stripe::Customer.create(
         description: "User ##{self.user.id}",
         source: token,
