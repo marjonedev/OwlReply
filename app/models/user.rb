@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_one :subscription
   has_many :emailaccounts
   has_many :replies, through: :emailaccounts
   has_many :transactions, through: :invoices
