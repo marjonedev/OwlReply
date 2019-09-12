@@ -1,7 +1,7 @@
 class Paymentmethod < ApplicationRecord
   belongs_to :user
-
   after_save :set_default
+  after_create :set_customer_id
   before_create :set_initial_default
   after_destroy :set_destroy_default
 
@@ -20,6 +20,15 @@ class Paymentmethod < ApplicationRecord
     rescue Stripe::CardError => e
       return false
     end
+  end
+
+  def set_customer_id
+    customer = Stripe::Customer.create(
+        description: "User ##{current_user.id}",
+        source: token,
+        email: "#{current_user.email.address}"
+    )
+    self.update_column(:customer_id,customer.id)
   end
 
   def set_default
