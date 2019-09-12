@@ -1,43 +1,21 @@
 <section id="page-title" class="nobg">
   <div class="container clearfix">
     <h1>Invoice</h1>
+    <%= link_to 'Back to Invoices', invoices_path %>
   </div>
 </section><!-- #page-title end -->
 
 <section id="content">
-
   <div class="content-wrap nopadding">
     <div class="section nomargin">
       <div class="container clearfix">
+        <p id="notice"><%= notice %></p>
 
-<p id="notice"><%= notice %></p>
+        <div class="invoice invoice_<%= invoice.paid? ? "paid" : "unpaid" %>"><%= link_to invoice.date.strftime("%m/%d/%Y"), invoice %> - <%= invoice.amount %> - <%= invoice.paid? ? "Paid" : "Unpaid" %></div>
 
-<p>
-  <strong>User:</strong>
-  <%= @invoice.user_id %>
-</p>
-
-<p>
-  <strong>Amount:</strong>
-  <%= @invoice.amount %>
-</p>
-
-<p>
-  <strong>Amount paid:</strong>
-  <%= @invoice.amount_paid %>
-</p>
-
-<p>
-  <strong>Date paid:</strong>
-  <%= @invoice.date_paid %>
-</p>
-
-<p>
-  <strong>Transaction:</strong>
-  <%= @invoice.transaction_id %>
-</p>
-
-<%= link_to 'Back', invoices_path %>
+        <% unless invoice.paid? %>
+          <%= link_to "Pay Now", "" %>
+        <% end %>
 
       </div>
     </div>
