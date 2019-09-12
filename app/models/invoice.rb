@@ -15,10 +15,12 @@ class Invoice < ApplicationRecord
 
   def charge_card
     paymentmethod = self.user.paymentmethods.find_by(default: true)
-    result = paymentmethod.charge(self.amount)
+    result = paymentmethod.charge!(self.amount)
     if (result)
-      self.paid_amount = self.amount
-      self.date_paid = DateTime.now
+      #self.paid_amount = self.amount
+      #self.date_paid = DateTime.now
+      self.update_attributes(paid_amount: self.amount, date_paid: DateTime.now)
+
       #
       # Send an email receipt.
     else
