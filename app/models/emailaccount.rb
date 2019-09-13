@@ -18,6 +18,10 @@ class Emailaccount < ApplicationRecord
     return false
   end
 
+  def skip_words
+    ""
+  end
+
   def template_html
     self.body.gsub("\n","<br>\n")
     # In the future we may support BOLD, Italics, and what else? Should be very limited.
