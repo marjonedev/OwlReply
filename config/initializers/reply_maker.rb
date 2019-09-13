@@ -39,7 +39,7 @@ module ReplyMaker
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
         msg = Mail.read_from_string data
         thebody = msg.body.to_s.downcase
-        next if subject_line_skip?(msg.subject)
+        next if account.subject_line_skip?(msg.subject)
         next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
 
         auto = ""
