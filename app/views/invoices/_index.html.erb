@@ -15,7 +15,7 @@
               <% if current_user.no_paymentmethods? %>
                 <%= link_to "Upgrade / Add Credit Card", new_paymentmethod_path, class: 'button button-large', remote: true %>
               <% else %>
-                <%= link_to "Upgrade", '/plans/', class: 'button button-large', remote: true %>
+                <%= link_to "Upgrade", '/plans/', class: 'button button-large' %>
               <% end %>
             </div>
           <% else %>
