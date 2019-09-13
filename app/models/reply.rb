@@ -12,4 +12,8 @@ class Reply < ApplicationRecord
     return false
   end
 
+  def search
+    "Subject and Body"
+  end
+
 end
