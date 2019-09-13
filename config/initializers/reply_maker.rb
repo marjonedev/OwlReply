@@ -63,7 +63,7 @@ module ReplyMaker
           to      email_to
           subject "Re: #{msg.subject}"
           text_part do
-            body account.template.gsub("+REPLY+",auto)+"\n\nIn reply to:\n\n"+(body_text)
+            body account.template.gsub("%%REPLY%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
           end
           html_part do
             content_type 'text/html; charset=UTF-8'
