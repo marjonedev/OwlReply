@@ -12,7 +12,11 @@
           <% if current_user.invoices.empty? %>
             <div class="bottommargin-sm">You are on the free plan.</div>
             <div>
-              <%= link_to "Upgrade / Add Credit Card", new_paymentmethod_path, class: 'button button-large', remote: true %>
+              <% if current_user.no_paymentmethods? %>
+                <%= link_to "Upgrade / Add Credit Card", new_paymentmethod_path, class: 'button button-large', remote: true %>
+              <% else %>
+                <%= link_to "Upgrade", '/plans/', class: 'button button-large', remote: true %>
+              <% end %>
             </div>
           <% else %>
             <div><a href="/plans/" class="button button-large">Change Plan</a></div>
