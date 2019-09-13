@@ -12,6 +12,7 @@ module ReplyMaker
         begin
           self.create_drafts(account)
           self.touch_last_reply_time
+          puts "Success on account #{account.address}."
         rescue
           puts "Failed on account #{account.address}."
         end
