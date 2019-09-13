@@ -259,3 +259,9 @@ div.list-paymentmethod .list-group-item{
 .list-paymentmethod .list-group-item-action:focus{
     background: inherit;
 }
+
+/*Invoice
+====================================*/
+#invoice_file .header h1.title{
+    text-align: right;
+}

@@ -20,17 +20,20 @@
               <div class="card">
                 <div class="card-body">
                   <div id="invoice_file">
-                    <div class="row">
+                    <div class="row header">
                       <div class="col-md-4">
                         <h2><img src="/images/logo/logo.png" alt="OwlReply"></h2>
                         <p>[Business Address]</p>
                       </div>
                       <div class="col-md-4"></div>
                       <div class="col-md-4">
-                        <h1>Invoice</h1>
+                        <h1 class="title">Invoice</h1>
                       </div>
                     </div>
                     <div class="row">
+
+                    </div>
+                    <div class="row footer">
 
                     </div>
                   </div>
@@ -62,10 +65,10 @@
   <style type="text/css">
     @media print {
       body * {
-        visibility: hidden;
+        display: none;
       }
       #invoice_file, #invoice_file * {
-        visibility: visible;
+        display: block;
       }
       #invoice_file {
         position: absolute;
