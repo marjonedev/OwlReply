@@ -7,7 +7,7 @@ module ReplyMaker
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
 
-      accounts = Emailaccount.where('updated_at < ?',5.minutes.ago)
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> ""').where('updated_at < ?',5.minutes.ago)
       for account in accounts
         self.create_drafts(account)
         self.touch_last_reply_time
