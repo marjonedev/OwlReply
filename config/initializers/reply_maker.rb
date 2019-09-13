@@ -14,7 +14,7 @@ module ReplyMaker
           self.touch_last_reply_time
           puts "Success on account #{account.address}."
         rescue
-          puts "Failed on account #{account.address}."
+          puts "Failure on account #{account.address}."
         end
       end
       self.touch_last_reply_time
@@ -30,6 +30,7 @@ module ReplyMaker
     end
     def self.create_drafts(account)
       require 'net/imap'
+      require 'mail'
       imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
       imap.login(account.address, account.password)
       imap.select('INBOX')
