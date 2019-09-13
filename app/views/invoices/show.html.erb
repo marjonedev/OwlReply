@@ -19,18 +19,20 @@
             <div class="white-section custom-white-box nopadding">
               <div class="card">
                 <div class="card-body">
-                  <div class="row invoice-file">
-                    <div class="col-md-4">
-                      <h2><img src="/images/logo/logo.png" alt="OwlReply"></h2>
-                      <p>[Business Address]</p>
+                  <div id="invoice_file">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <h2><img src="/images/logo/logo.png" alt="OwlReply"></h2>
+                        <p>[Business Address]</p>
+                      </div>
+                      <div class="col-md-4"></div>
+                      <div class="col-md-4">
+                        <h1>Invoice</h1>
+                      </div>
                     </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-                      <h1>Invoice</h1>
-                    </div>
-                  </div>
-                  <div class="row">
+                    <div class="row">
 
+                    </div>
                   </div>
                 </div>
                 <div class="card-footer norightpadding">
@@ -55,3 +57,21 @@
     </div>
   </div>
 </section>
+
+<% content_for :javascript_includes do %>
+  <style type="text/css">
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #invoice_file, #invoice_file * {
+        visibility: visible;
+      }
+      #invoice_file {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  </style>
+<% end %>
