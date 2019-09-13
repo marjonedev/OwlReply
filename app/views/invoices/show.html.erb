@@ -52,16 +52,16 @@
                     </div>
                   </div>
                 </div>
+                <% unless @invoice.paid? %>
                 <div class="card-footer norightpadding">
 <!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
-                  <% unless @invoice.paid? %>
                     <% if current_user.no_paymentmethods? %>
                       <%# New paymentmethod %>
                     <% else %>
                       <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
                     <% end %>
-                  <% end %>
                 </div>
+                <% end %>
               </div>
             </div>
           </div>
