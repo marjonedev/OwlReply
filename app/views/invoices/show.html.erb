@@ -1,7 +1,7 @@
 <section id="page-title" class="invoice nobg">
 
   <div class="container clearfix">
-    <h1>Invoice <%=@invoice.date.strftime("%m/%d/%Y") %></h1>
+    <h1>Invoice: <%= @invoice.number %></h1>
     <div class="breadcrumb">
       <%= link_to 'Back to Invoices', invoices_path %>
     </div>
@@ -30,8 +30,19 @@
                         <h1 class="title">Invoice</h1>
                       </div>
                     </div>
-                    <div class="row">
-
+                    <div class="row body">
+                      <div class="row invoice_info">
+                        <div class="col-md-6 bill_to">
+                          <div><label>Bill To:</label></div>
+                          <div><%= current_user.email_address %></div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-4">Invoice Number: </label>
+                            <div class="col-sm-8"><%= @invoice.number %></div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div class="row footer">
 
@@ -64,29 +75,18 @@
 <% content_for :javascript_includes do %>
   <style type="text/css">
     @media print {
-      body > *:not(.printable) {
-        display: none;
+      body * {
+        visibility: hidden;
+        position: initial;
       }
-      body > .printable {
+      .printable, .printable * {
         display: block;
       }
-      .printable{
-        position: absolute;
+      .printable {
+        position: absolute !important;
         left: 0;
         top: 0;
       }
-      /*body * {*/
-      /*  visibility: hidden;*/
-      /*  position: initial;*/
-      /*}*/
-      /*#invoice_file, #invoice_file * {*/
-      /*  display: block;*/
-      /*}*/
-      /*#invoice_file {*/
-      /*  position: absolute;*/
-      /*  left: 0;*/
-      /*  top: 0;*/
-      /*}*/
     }
   </style>
 <% end %>
