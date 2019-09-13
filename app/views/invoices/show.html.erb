@@ -16,10 +16,10 @@
         <div class="row" id="<%= dom_id(@invoice) %>">
           <div class="col-md-1"></div>
           <div class="col-md-10 bottommargin-sm">
+            <div class="text-right">
+              <button class="print-invoice button button-small button-rounded button-leaf"><i class="icon-line2-printer"></i> Print</button>
+            </div>
             <div class="white-section custom-white-box nopadding">
-              <div class="text-right">
-                <button class="print-invoice button "><i class="icon-line2-printer"></i> Print</button>
-              </div>
               <div class="card">
                 <div class="card-body">
                   <div id="invoice_file" class="printable">
@@ -67,7 +67,9 @@
                       </table>
                     </div>
                     <div class="row invoice_footer">
-                      <small class="font-italic">[note]</small>
+                      <div class="col-md-12">
+                        <small class="font-italic">[note]</small>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -75,7 +77,7 @@
                 <div class="card-footer norightpadding">
 <!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
                   <% if current_user.no_paymentmethods? %>
-                    <%# New paymentmethod %>
+                    <%= link_to "Add Payment Method", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
                   <% else %>
                     <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
                   <% end %>
@@ -85,10 +87,7 @@
             </div>
           </div>
         </div>
-
 <!--        <div class="invoice invoice_<%#= @invoice.paid? ? "paid" : "unpaid" %>"><%#= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%#= @invoice.amount %> - <%#= @invoice.paid? ? "Paid" : "Unpaid" %></div>-->
-
-
       </div>
     </div>
   </div>
@@ -96,7 +95,7 @@
 
 <% content_for :javascript_includes do %>
   <style type="text/css">
-    @media print {
+    /*@media print {
       body * {
         visibility: hidden;
         position: initial;
@@ -109,6 +108,24 @@
         left: 0;
         top: 0;
       }
-    }
+    }*/
   </style>
+<% end %>
+
+
+<% content_for :javascript_footer_includes do %>
+  <script type="text/javascript">
+    $(function(){
+        $('.print-invoice').on('click', function(e) {
+            e.preventDefault();
+
+            var originalContent = $('body').html();
+            var printArea = $('#invoice_file').parent('div').html();
+
+            $('body').html(printArea);
+            window.print();
+            $('body').html(originalContent);
+        });
+    });
+  </script>
 <% end %>
