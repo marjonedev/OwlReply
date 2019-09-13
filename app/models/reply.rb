@@ -12,6 +12,7 @@ class Reply < ApplicationRecord
     return false
   end
 
+  # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
   def search
     "Subject and Body"
   end

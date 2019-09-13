@@ -18,6 +18,7 @@ class Emailaccount < ApplicationRecord
     return false
   end
 
+  # THIS NEEDS TO BECOME A DB FIELD and added to the form
   def skip_words
     ""
   end
