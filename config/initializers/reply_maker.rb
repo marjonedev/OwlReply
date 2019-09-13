@@ -24,6 +24,7 @@ module ReplyMaker
       # REDIS.some_method("last_reply_checked_at",Time.now.to_i)
     end
     def self.create_drafts(account)
+      require 'net/imap'
       imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
       imap.login(account.address, account.password)
       imap.select('INBOX')
