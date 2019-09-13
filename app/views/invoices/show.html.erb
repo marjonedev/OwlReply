@@ -20,7 +20,7 @@
               <div class="card">
                 <div class="card-body">
                   <div id="invoice_file" class="printable">
-                    <div class="row header">
+                    <div class="row invoice_header">
                       <div class="col-md-4">
                         <h2><img src="/images/logo/logo.png" alt="OwlReply"></h2>
                         <p>OwlReply LLC.</p>
@@ -47,7 +47,23 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row footer">
+                    <div class="invoice_body">
+                      <table class="table">
+                        <thead>
+                          <th>Description</th>
+                          <th class="text-right" width="10%">Amount</th>
+                        </thead>
+                        <tbody>
+                          <td><%= @invoice.subscription.name %> - Monthly Charge</td>
+                          <td class="text-right">&#36; <%= "%.2f" % @invoice.amount %></td>
+                        </tbody>
+                        <!--<tfoot>
+                          <td class="text-right"><strong>TOTAL: </strong></td>
+                          <td class="text-right"><%#= "%.2f" % @invoice.amount %></td>
+                        </tfoot>-->
+                      </table>
+                    </div>
+                    <div class="row invoice_footer">
 
                     </div>
                   </div>

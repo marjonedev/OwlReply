@@ -262,11 +262,11 @@ div.list-paymentmethod .list-group-item{
 
 /*Invoice
 ====================================*/
-#invoice_file .header h1.title{
+#invoice_file .invoice_header h1.title{
     text-align: right;
 }
 
-#invoice_file .header p{
+#invoice_file .invoice_header p{
     margin-bottom: 0;
 }
 
