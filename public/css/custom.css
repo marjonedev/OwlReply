@@ -81,7 +81,8 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
     color: #1ABC9C;
 }
 
-#page-title.replies .breadcrumb{
+#page-title.replies .breadcrumb,
+#page-title.invoice .breadcrumb{
     font-size: 16px;
 }
 
