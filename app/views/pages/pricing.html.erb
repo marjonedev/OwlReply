@@ -157,10 +157,11 @@
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title text-center" style="width: 100%">Confirm to Upgrade Plan</h4>
+            <h4 class="modal-title text-center" style="width: 100%">Confirm Plan Change</h4>
           </div>
           <div class="modal-body">
-            <h5 class="text-center">You are selecting <span class="plan-name"></span> plan</h5>
+            <h5 class="text-center">You are selecting <span class="plan-name"></span> plan.</h5>
+            <p class="text-center">Plan will change on <%= current_user.next_subscription_charge_on.strftime("%D") %>.</p>
             <div>
               <%= link_to 'Confirm', '#', method: :put, class: 'button button-large tright', id: 'confirm_plan', remote: true %>
               <button type="button" class="button button-large button-white button-light" data-dismiss="modal">Close</button>

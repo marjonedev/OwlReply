@@ -1,21 +1,36 @@
 module ReplyMaker
   class Replier
     def self.check_accounts
+
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
-      # return if REDIS.some_get_method("last_reply_checked_at").to_i > (Time.now.to_i - (10*60))
-      accounts = Emailaccount.where('last_updated < ?',5.minutes.ago)
-      for account in Emailaccount
-        self.create_drafts(account)
-        self.touch_last_reply_time
+      # return if already_running_fine?
+      # By doing the above, we can probably make sure that this runs faster than without it.
+      # In the future, we may segment email accounts somehow, between multiple servers.
+
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> ""').where('updated_at < ?',5.minutes.ago)
+      for account in accounts
+        begin
+          self.create_drafts(account)
+          self.touch_last_reply_time
+          puts "Success on account #{account.address}. #{$!.to_s}"
+        rescue
+          puts "Failure on account #{account.address}. #{$!.to_s}"
+        end
       end
       self.touch_last_reply_time
       self.check_accounts
     end
+    def self.already_running_fine?
+      REDIS.some_get_method("last_reply_checked_at").to_i > (Time.now.to_i - (10*60))
+    end
     def self.touch_last_reply_time
+
       # INSERT INTO REDIS
       # REDIS.some_method("last_reply_checked_at",Time.now.to_i)
     end
     def self.create_drafts(account)
+      require 'net/imap'
+      require 'mail'
       imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
       imap.login(account.address, account.password)
       imap.select('INBOX')
@@ -24,7 +39,7 @@ module ReplyMaker
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
         msg = Mail.read_from_string data
         thebody = msg.body.to_s.downcase
-        next if subject_line_skip?(msg.subject)
+        next if account.subject_line_skip?(msg.subject)
         next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
 
         auto = ""
@@ -44,15 +59,15 @@ module ReplyMaker
         email_to = (msg.reply_to || msg.from)
 
         mail = Mail.new do
-          from    "#{h account.name} <#{account.address}>"
+          from    "#{account.address} <#{account.address}>"
           to      email_to
           subject "Re: #{msg.subject}"
           text_part do
-            body account.template.gsub("+REPLY+",auto)+"\n\nIn reply to:\n\n"+(body_text)
+            body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
           end
           html_part do
             content_type 'text/html; charset=UTF-8'
-            body account.template_html.gsub("+REPLY+",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
+            body account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
           end
         end
         mail.header['In-Reply-To'] = msg["Message-ID"]#message_id

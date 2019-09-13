@@ -18,8 +18,13 @@ class Emailaccount < ApplicationRecord
     return false
   end
 
+  # THIS NEEDS TO BECOME A DB FIELD and added to the form
+  def skip_words
+    ""
+  end
+
   def template_html
-    self.body.gsub("\n","<br>\n")
+    self.template.gsub("\n","<br>\n")
     # In the future we may support BOLD, Italics, and what else? Should be very limited.
   end
 

@@ -25,7 +25,13 @@
                 </div>
                 <div class="card-footer norightpadding">
 <!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
-                  <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
+                  <% unless @invoice.paid? %>
+                    <% if current_user.no_paymentmethods? %>
+                      <%# New paymentmethod %>
+                    <% else %>
+                      <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
+                    <% end %>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -34,12 +40,6 @@
 
 <!--        <div class="invoice invoice_<%#= @invoice.paid? ? "paid" : "unpaid" %>"><%#= link_to @invoice.date.strftime("%m/%d/%Y"), @invoice %> - <%#= @invoice.amount %> - <%#= @invoice.paid? ? "Paid" : "Unpaid" %></div>-->
 
-        <% unless @invoice.paid? %>
-          <% if current_user.no_paymentmethods? %>
-            <%# New paymentmethod %>
-          <% else %>
-             <% end %>
-        <% end %>
 
       </div>
     </div>
