@@ -265,3 +265,13 @@ div.list-paymentmethod .list-group-item{
 #invoice_file .header h1.title{
     text-align: right;
 }
+
+#invoice_file .header p{
+    margin-bottom: 0;
+}
+
+#invoice_file .invoice_info{
+    border-top: 4px #ccc double;
+    padding-top: 30px;
+    margin-top: 30px;
+}
