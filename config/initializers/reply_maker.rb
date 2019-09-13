@@ -52,7 +52,7 @@ module ReplyMaker
           end
           html_part do
             content_type 'text/html; charset=UTF-8'
-            body account.template_html.gsub("+REPLY+",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
+            body account.template_html.gsub("%%REPLY%%",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
           end
         end
         mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
