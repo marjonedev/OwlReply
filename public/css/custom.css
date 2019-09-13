@@ -279,3 +279,7 @@ div.list-paymentmethod .list-group-item{
 #invoice_file .invoice_body{
     min-height: 175px;
 }
+
+#invoice_file .invoice_footer{
+    padding: 1rem 1.25rem 0;
+}

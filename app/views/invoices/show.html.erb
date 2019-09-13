@@ -17,6 +17,9 @@
           <div class="col-md-1"></div>
           <div class="col-md-10 bottommargin-sm">
             <div class="white-section custom-white-box nopadding">
+              <div class="text-right">
+                <button class="print-invoice button "><i class="icon-line2-printer"></i> Print</button>
+              </div>
               <div class="card">
                 <div class="card-body">
                   <div id="invoice_file" class="printable">
@@ -71,11 +74,11 @@
                 <% unless @invoice.paid? %>
                 <div class="card-footer norightpadding">
 <!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
-                    <% if current_user.no_paymentmethods? %>
-                      <%# New paymentmethod %>
-                    <% else %>
-                      <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
-                    <% end %>
+                  <% if current_user.no_paymentmethods? %>
+                    <%# New paymentmethod %>
+                  <% else %>
+                    <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
+                  <% end %>
                 </div>
                 <% end %>
               </div>
