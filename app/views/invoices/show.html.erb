@@ -64,17 +64,29 @@
 <% content_for :javascript_includes do %>
   <style type="text/css">
     @media print {
-      body * {
+      body > *:not(.printable) {
         display: none;
       }
-      #invoice_file, #invoice_file * {
+      body > .printable {
         display: block;
       }
-      #invoice_file {
+      .printable{
         position: absolute;
         left: 0;
         top: 0;
       }
+      /*body * {*/
+      /*  visibility: hidden;*/
+      /*  position: initial;*/
+      /*}*/
+      /*#invoice_file, #invoice_file * {*/
+      /*  display: block;*/
+      /*}*/
+      /*#invoice_file {*/
+      /*  position: absolute;*/
+      /*  left: 0;*/
+      /*  top: 0;*/
+      /*}*/
     }
   </style>
 <% end %>
