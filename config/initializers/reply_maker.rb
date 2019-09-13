@@ -9,8 +9,12 @@ module ReplyMaker
 
       accounts = Emailaccount.where('password IS NOT NULL AND password <> ""').where('updated_at < ?',5.minutes.ago)
       for account in accounts
-        self.create_drafts(account)
-        self.touch_last_reply_time
+        begin
+          self.create_drafts(account)
+          self.touch_last_reply_time
+        rescue
+          puts "Failed on account #{account.address}."
+        end
       end
       self.touch_last_reply_time
       self.check_accounts
