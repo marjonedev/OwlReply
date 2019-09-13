@@ -59,7 +59,7 @@ module ReplyMaker
         email_to = (msg.reply_to || msg.from)
 
         mail = Mail.new do
-          from    "#{h account.name} <#{account.address}>"
+          from    "#{h account.address} <#{account.address}>"
           to      email_to
           subject "Re: #{msg.subject}"
           text_part do
