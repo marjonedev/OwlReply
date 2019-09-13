@@ -4,7 +4,7 @@ module ReplyMaker
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
       # return if REDIS.some_get_method("last_reply_checked_at").to_i > (Time.now.to_i - (10*60))
       accounts = Emailaccount.where('last_updated < ?',5.minutes.ago)
-      for account in Emailaccount
+      for account in accounts
         self.create_drafts(account)
         self.touch_last_reply_time
       end
