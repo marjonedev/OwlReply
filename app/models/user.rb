@@ -46,7 +46,13 @@ class User < ApplicationRecord
 
   def current_subscription_id
     return nil if self.invoices.empty?
-    self.invoices.first.subscription_id
+    #self.invoices.first.subscription_id
+    self.current_subscription.id
+  end
+
+  def current_subscription
+    return nil if self.invoices.empty?
+    self.invoices.where('created_at > ?',32.days.ago).order('created_at DESC').first
   end
 
   def set_subscription!(subscription)
