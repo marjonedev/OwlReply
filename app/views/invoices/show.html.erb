@@ -68,7 +68,9 @@
                     </div>
                     <div class="row invoice_footer">
                       <div class="col-md-12">
-                        <small class="font-italic">[note]</small>
+                        <% if @invoice.amount_paid %>
+                        <small class="font-italic">Paid <%= @invoice.amount_paid %> on <%= @invoice.date_paid %></small>
+                        <% end %>
                       </div>
                     </div>
                   </div>
