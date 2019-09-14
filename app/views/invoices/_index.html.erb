@@ -32,7 +32,7 @@
             </div>
           <% else %>
             <div class="mt-3"><a href="/plans/" class="noleftmargin button button-large">Change Plan</a></div>
-            <% if current_user.subscription_id != current_user %>
+            <% if current_user.subscription_id != current_user.current_subscription_id %>
               <%# User can change their plan, but it doesn't take affect until the next time they would have been billed. %>
               <div class="allmargin-sm text-center">Your plan will change to <b><%= current_user.subscription.name %></b> at the end of your current billing cycle.</div>
             <% end %>
