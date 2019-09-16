@@ -43,4 +43,12 @@ class Invoice < ApplicationRecord
     self.user.set_next_subscription_date!
   end
 
+  def amount_paid_to_string
+    "$#{self.amount_paid/100}.#{self.amount_paid%100}"
+  end
+
+  def amount_to_string
+    "$#{self.amount/100}.#{self.amount%100}"
+  end
+
 end
