@@ -69,7 +69,7 @@ class PaymentmethodsController < ApplicationController
       elsif session[:invoice]
          if @paymentmethod.save
            invoice_id = session[:invoice]
-           session.delete(:session)
+           session.delete(:invoice)
            format.html { redirect_to invoice_path(invoice_id), notice: "Payment method was successfully created" }
          else
            format.js {  }
