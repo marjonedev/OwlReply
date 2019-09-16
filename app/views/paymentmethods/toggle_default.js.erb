@@ -1,5 +1,9 @@
 $.Custom.notify('Successfully Updated Payment Method.');
 
+if ($( "#user_paymentmethod_list" ).length) {
+    $("#user_paymentmethod_list").replaceWith('<%= j render partial: 'index_user' %>');
+}
+
 if($("#paymentmethod_index").length){
     $("#paymentmethod_index").replaceWith('<%= j render partial: 'index' %>');
 }
