@@ -42,5 +42,7 @@ class Paymentmethod < ApplicationRecord
     if Paymentmethod.where(user_id: self.user_id).first.nil?
       self.default = true
     end
+
+    self.currency = "USD"
   end
 end

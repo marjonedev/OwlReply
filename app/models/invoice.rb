@@ -11,6 +11,7 @@ class Invoice < ApplicationRecord
     self.amount = self.subscription.price
     self.date = Date.today
     self.amount = self.amount - self.previous_price unless (self.previous_price.nil? || (self.previous_price > self.amount))
+    self.payment_currency = "USD"
   end
 
   def set_invoice_number
