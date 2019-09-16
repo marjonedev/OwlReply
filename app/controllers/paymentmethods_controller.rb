@@ -59,6 +59,7 @@ class PaymentmethodsController < ApplicationController
       if session[:upgrade]
         @subscription = Subscription.find(session[:upgrade])
         if @paymentmethod.save
+          session.delete(:upgrade)
           current_user.set_subscription!(@subscription)
           format.html { redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}" }
         else
@@ -66,8 +67,11 @@ class PaymentmethodsController < ApplicationController
           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
         end
       else if session[:invoice]
+
          if @paymentmethod.save
-           format.html { redirect_to invoice_path(session[:invoice]), notice: "Payment method was successfully created" }
+           invoice_id = session[:invoice]
+           session.delete(:session)
+           format.html { redirect_to invoice_path(invoice_id), notice: "Payment method was successfully created" }
          else
            format.js {  }
            format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
