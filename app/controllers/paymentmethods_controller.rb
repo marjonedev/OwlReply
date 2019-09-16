@@ -20,6 +20,8 @@ class PaymentmethodsController < ApplicationController
 
     if(params.has_key?(:upgrade))
       session[:upgrade] = params[:upgrade]
+    else if(params.has_key?(:invoice))
+      session[:invoice] = params[:invoice]
     end
   end
 
@@ -63,6 +65,13 @@ class PaymentmethodsController < ApplicationController
           format.js {  }
           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
         end
+      else if session[:invoice]
+         if @paymentmethod.save
+           format.html { redirect_to invoice_path(session[:invoice]), notice: "Payment method was successfully created" }
+         else
+           format.js {  }
+           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+         end
       else
         if @paymentmethod.save
           @paymentmethods = current_user.paymentmethods

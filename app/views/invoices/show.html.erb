@@ -79,7 +79,7 @@
                 <div class="card-footer norightpadding">
 <!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
                   <%# if current_user.no_paymentmethods? %>
-                    <%= link_to "Add Payment Method", new_paymentmethod_path, remote: true, class: 'button button-3d button-large button-rounded button-green' %>
+                    <%= link_to "Add Payment Method", "/paymentmethods/new?invoice=#{@invoice.id}", remote: true, class: 'button button-3d button-large button-rounded button-green' %>
                   <%# else %>
 <!--                    <button class="pay_btn button button-3d button-large button-rounded button-green">Pay Now</button>-->
                   <%# end %>
