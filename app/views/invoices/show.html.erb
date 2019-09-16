@@ -75,16 +75,16 @@
                     </div>
                   </div>
                 </div>
-                <% unless @invoice.paid? %>
+                <%# unless @invoice.paid? %>
                 <div class="card-footer norightpadding">
 <!--                  On click popup will show to confirm and show the last 4 digits on the popup-->
-                  <% if current_user.no_paymentmethods? %>
-                    <%= link_to "Add Payment Method", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
-                  <% else %>
-                    <%= link_to "Pay Now", invoice_path(@invoice), data: {method: :put}, remote: true, class: 'pay_btn button button-3d button-large button-rounded button-green' %>
-                  <% end %>
+                  <%# if current_user.no_paymentmethods? %>
+                    <%= link_to "Add Payment Method", new_paymentmethod_path, remote: true, class: 'button button-3d button-large button-rounded button-green' %>
+                  <%# else %>
+<!--                    <button class="pay_btn button button-3d button-large button-rounded button-green">Pay Now</button>-->
+                  <%# end %>
                 </div>
-                <% end %>
+                <%# end %>
               </div>
             </div>
           </div>
@@ -95,25 +95,28 @@
   </div>
 </section>
 
-<% content_for :javascript_includes do %>
-  <style type="text/css">
-    /*@media print {
-      body * {
-        visibility: hidden;
-        position: initial;
-      }
-      .printable, .printable * {
-        display: block;
-      }
-      .printable {
-        position: absolute !important;
-        left: 0;
-        top: 0;
-      }
-    }*/
-  </style>
+<% unless @invoice.paid? %>
+  <% unless current_user.no_paymentmethods? %>
+    <% content_for :modals_includes do %>
+      <div class="modal fade" id="ConfirmPayModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmPayModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title text-center" style="width: 100%">Confirm Payment</h4>
+            </div>
+            <div class="modal-body">
+              <h5 class="text-center">Pay using <strong>**** **** **** <%= current_user.default_paymentmethod.card_number %></strong></h5>
+              <div>
+                <%= link_to "Confirm", invoice_path(@invoice), data: {method: :put}, class: 'button button-large tright' %>
+                <button type="button" class="button button-large button-white button-light" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
-
 
 <% content_for :javascript_footer_includes do %>
   <script type="text/javascript">
@@ -128,6 +131,16 @@
             window.print();
             $('body').html(originalContent);
         });
+
+        <% unless @invoice.paid? %>
+          <% unless current_user.no_paymentmethods? %>
+            $('.pay_btn').on('click', function (e) {
+                e.preventDefault();
+                $('#ConfirmPayModal').modal('show');
+                return false;
+            });
+          <% end %>
+        <% end %>
     });
   </script>
 <% end %>
