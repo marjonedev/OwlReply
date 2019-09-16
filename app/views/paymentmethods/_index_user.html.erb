@@ -6,33 +6,38 @@
         <div class="white-section custom-white-box">
           <div class="d-flex w-100 justify-content-between">
             <h3 class="section-title nomargin">Payment Methods</h3>
-            <%= link_to paymentmethods_url, :class => "edit-section" do %>
-              <%= content_tag :i, "", :class => "icon-credit-cards" %> Manage
-            <% end %>
           </div>
-          <div class="divider  divider-rounded divider-right notopmargin"><i class="icon-credit-card"></i></div>
+          <div class="divider  divider-rounded divider-right notopmargin nobottommargin"><i class="icon-credit-card"></i></div>
           <div class="bottommargin-sm">
+            <div id="new_record">
+              <div class="button_container">
+                <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Payment Method</span>'), new_paymentmethod_path, class: 'button button-rounded button-reveal button-small button-dirtygreen', remote: true %>
+              </div>
+            </div>
             <div class="list-group list-paymentmethod">
               <% @paymentmethods.each do |paymentmethod| %>
-              <div class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="list-group-item list-group-item-action flex-column align-items-start" id="<%= dom_id(paymentmethod) %>">
                 <div class="d-flex w-100 justify-content-between">
                   <h4 class="mb-0 cc-number">**** **** **** <%= paymentmethod.card_number %></h4>
-                  <% if paymentmethod.default %>
-                  <small class="cc-default">Default</small>
-                  <% end %>
+                  <div class="actions">
+                    <% if !paymentmethod.default %>
+                      <%= link_to raw('<i class="icon-check-square"></i><span>Set as Default </span>'), toggle_default_paymentmethod_path(paymentmethod), method: :put, data: { confirm: 'Are you sure to set this payment method as default?' }, class: 'button button-rounded button-leaf button-light button-mini nomargin', remote: true %>
+                      <%= link_to raw('<i class="icon-trash"></i><span>Delete</span>'), paymentmethod_url(paymentmethod), remote: true, method: :delete, data: {confirm: "Are you sure to delete this payment method?"}, class: 'button button-rounded button-red button-mini nomargin' %>
+                    <% end %>
+                  </div>
                 </div>
                 <div class="cc-type">
                   <i class="icon icon-cc-<%= paymentmethod.card_brand.to_s.squish.downcase.tr(" ","-") %>"></i> <%= paymentmethod.card_brand&.gsub('-', ' ')&.titleize %>
                 </div>
-                <small class="expiration">Expires in <%= paymentmethod.card_exp_month %>/<%= paymentmethod.card_exp_year %></small>
+                <div class="d-flex w-100 justify-content-between">
+                  <small class="expiration">Expires in <%= paymentmethod.card_exp_month %>/<%= paymentmethod.card_exp_year %></small>
+                  <% if paymentmethod.default %>
+                    <small class="cc-default">Default</small>
+                  <% end %>
+                </div>
               </div>
               <% end %>
             </div>
-          </div>
-          <div>
-            <%= link_to paymentmethods_url, :class => "edit-section" do %>
-              <%= content_tag :i, "", :class => "icon-credit-cards" %> Manage
-            <% end %>
           </div>
         </div>
       </div>
