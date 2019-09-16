@@ -20,7 +20,7 @@ class PaymentmethodsController < ApplicationController
 
     if(params.has_key?(:upgrade))
       session[:upgrade] = params[:upgrade]
-    else if(params.has_key?(:invoice))
+    elsif (params.has_key?(:invoice))
       session[:invoice] = params[:invoice]
     end
   end
@@ -66,8 +66,7 @@ class PaymentmethodsController < ApplicationController
           format.js {  }
           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
         end
-      else if session[:invoice]
-
+      elsif session[:invoice]
          if @paymentmethod.save
            invoice_id = session[:invoice]
            session.delete(:session)
