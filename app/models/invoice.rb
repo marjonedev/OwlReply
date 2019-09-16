@@ -15,7 +15,7 @@ class Invoice < ApplicationRecord
   end
 
   def set_invoice_number
-    number = "INV/#{Date.current.year}/%.4i" % self.id
+    number = "#{Date.current.year}-%.6i" % self.id
     self.update_attribute(:number, number)
   end
 
