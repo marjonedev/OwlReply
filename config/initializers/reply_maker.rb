@@ -1,10 +1,13 @@
 module ReplyMaker
   class Replier
-    def self.check_accounts
+    def self.start_checking
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
       return if already_running_fine?
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
+      self.check_accounts
+    end
+    def self.check_accounts
       accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('updated_at < ?',5.minutes.ago)
       for account in accounts
         begin
