@@ -18,15 +18,19 @@ module ReplyMaker
           account.update_column(:error,$!.to_s)
         end
       end
+      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (2*60)) # The loop must last at least two minutes.
       self.touch_last_reply_time
       self.check_accounts
     end
     def self.already_running_fine?
-      REDIS.get("last_reply_checked_at").to_i > (Time.now.to_i - (10*60))
+      self.get_last_reply_time > (Time.now.to_i - (10*60))
     end
     def self.touch_last_reply_time
       # INSERT INTO REDIS
-      # REDIS.some_method("last_reply_checked_at",Time.now.to_i)
+      REDIS.set("last_reply_checked_at",Time.now.to_i)
+    end
+    def self.get_last_reply_time
+      REDIS.get("last_reply_checked_at").to_i
     end
     def self.create_drafts(account)
       require 'net/imap'
