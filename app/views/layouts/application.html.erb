@@ -323,5 +323,15 @@
 
   <%= yield :javascript_footer_includes %>
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-19677238-14"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-19677238-14');
+  </script>
+
   </body>
 </html>
