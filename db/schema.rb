@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_132255) do
+ActiveRecord::Schema.define(version: 2019_09_17_145855) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 2019_09_16_132255) do
     t.datetime "subscription_start_date"
     t.datetime "subscription_last_payment_date"
     t.date "next_subscription_charge_on"
+    t.boolean "admin", default: false
     t.index ["email_address"], name: "index_users_on_email_address"
   end
 
