@@ -8,9 +8,11 @@ module ReplyMaker
       accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('updated_at < ?',5.minutes.ago)
       for account in accounts
         begin
+          next if (account.last_checked > (Time.now.to_i - (3*60))) #Check a max of every 3 minutes.
           self.create_drafts(account)
           self.touch_last_reply_time
           puts "Success on account #{account.address}. #{$!.to_s}"
+          account.update_column(:last_checked,Time.now.to_i)
         rescue
           puts "Failure on account #{account.address}. #{$!.to_s}"
           account.update_column(:error,$!.to_s)
