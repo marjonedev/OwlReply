@@ -1,12 +1,10 @@
 module ReplyMaker
   class Replier
     def self.check_accounts
-
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
-      # return if already_running_fine?
+      return if already_running_fine?
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
-
       accounts = Emailaccount.where('password IS NOT NULL AND password <> ""').where('updated_at < ?',5.minutes.ago)
       for account in accounts
         begin
@@ -21,10 +19,9 @@ module ReplyMaker
       self.check_accounts
     end
     def self.already_running_fine?
-      REDIS.some_get_method("last_reply_checked_at").to_i > (Time.now.to_i - (10*60))
+      REDIS.get("last_reply_checked_at").to_i > (Time.now.to_i - (10*60))
     end
     def self.touch_last_reply_time
-
       # INSERT INTO REDIS
       # REDIS.some_method("last_reply_checked_at",Time.now.to_i)
     end

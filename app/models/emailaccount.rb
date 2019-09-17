@@ -1,6 +1,7 @@
 class Emailaccount < ApplicationRecord
   belongs_to :user
   has_many :replies
+  before_save :clear_errors
 
   validates_presence_of :address
   validates_format_of :address, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
@@ -21,6 +22,10 @@ class Emailaccount < ApplicationRecord
   # THIS NEEDS TO BECOME A DB FIELD and added to the form
   def skip_words
     ""
+  end
+
+  def clear_errors
+    self.error = nil
   end
 
   def template_html
