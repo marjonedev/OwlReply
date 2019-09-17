@@ -13,6 +13,7 @@ module ReplyMaker
           puts "Success on account #{account.address}. #{$!.to_s}"
         rescue
           puts "Failure on account #{account.address}. #{$!.to_s}"
+          account.update_column(:error,$!.to_s)
         end
       end
       self.touch_last_reply_time
