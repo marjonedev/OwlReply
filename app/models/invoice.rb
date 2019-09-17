@@ -44,11 +44,13 @@ class Invoice < ApplicationRecord
   end
 
   def amount_paid_to_string
-    "$#{self.amount_paid/100}.#{self.amount_paid%100}"
+    tail = "%.2d" % (self.amount_paid%100)
+    "$#{self.amount_paid/100}.#{tail}"
   end
 
   def amount_to_string
-    "$#{self.amount/100}.#{self.amount%100}"
+    tail = "%.2d" % (self.amount%100)
+    "$#{self.amount/100}.#{tail}"
   end
 
 end

@@ -62,7 +62,7 @@
                         </thead>
                         <tbody>
                           <td><%= @invoice.subscription.name %> - Monthly Charge</td>
-                          <td class="text-right">&#36; <%= "%.2f" % @invoice.amount %></td>
+                          <td class="text-right"><%= @invoice.amount_to_string %></td>
                         </tbody>
                         <!--<tfoot>
                           <td class="text-right"><strong>TOTAL: </strong></td>
@@ -73,7 +73,7 @@
                     <div class="row invoice_footer">
                       <div class="col-md-12">
                         <% if @invoice.amount_paid %>
-                        <small class="font-italic">Paid <%= @invoice.amount_paid %> on <%= @invoice.date_paid %></small>
+                        <small class="font-italic">Paid <%= @invoice.amount_paid_to_string %> on <%= @invoice.date_paid %></small>
                         <% end %>
                       </div>
                     </div>
