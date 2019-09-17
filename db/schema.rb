@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_150209) do
+ActiveRecord::Schema.define(version: 2019_09_16_132255) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -23,13 +23,15 @@ ActiveRecord::Schema.define(version: 2019_09_13_150209) do
     t.integer "drafts_created_today"
     t.integer "drafts_created_lifetime"
     t.text "template"
+    t.string "error"
+    t.bigint "last_checked"
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.float "amount"
-    t.float "amount_paid"
+    t.integer "amount"
+    t.integer "amount_paid"
     t.datetime "date_paid"
     t.integer "transaction_id"
     t.datetime "created_at", null: false
@@ -37,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_150209) do
     t.integer "subscription_id"
     t.date "date"
     t.string "number"
+    t.string "payment_currency"
     t.index ["user_id"], name: "index_invoices_on_user_id"
   end
 
@@ -51,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_150209) do
     t.string "card_exp_year"
     t.string "card_brand"
     t.string "customer_id"
+    t.string "currency"
   end
 
   create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -89,7 +93,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_150209) do
     t.string "payment_provider"
     t.timestamp "timestamp"
     t.boolean "reversed"
-    t.float "amount"
+    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_transactions_on_user_id"
