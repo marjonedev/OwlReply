@@ -4,3 +4,4 @@ namespace :reply do
     ReplyMaker::Replier.start_checking
   end
 end
+
