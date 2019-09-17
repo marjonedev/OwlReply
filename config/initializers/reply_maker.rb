@@ -5,7 +5,7 @@ module ReplyMaker
       return if already_running_fine?
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
-      accounts = Emailaccount.where('password IS NOT NULL AND password <> ""').where('updated_at < ?',5.minutes.ago)
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('updated_at < ?',5.minutes.ago)
       for account in accounts
         begin
           self.create_drafts(account)
