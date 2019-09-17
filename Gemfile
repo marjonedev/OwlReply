@@ -36,7 +36,7 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'stripe'
-gem 'redis'
+gem 'redis', '~> 3.0' # Use Redis adapter to run Action Cable in production
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
