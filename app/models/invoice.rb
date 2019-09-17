@@ -21,7 +21,7 @@ class Invoice < ApplicationRecord
 
   def charge_card
     paymentmethod = self.user.paymentmethods.find_by(default: true)
-    result = paymentmethod.charge!(self.amount.to_i*100)
+    result = paymentmethod.charge!(self.amount)
     if (result)
       #self.amount_paid = self.amount
       #self.date_paid = DateTime.now
