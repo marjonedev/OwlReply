@@ -42,11 +42,11 @@ section#content.emailaccounts div.account .card .card-title{
     margin-bottom: 0;
 }
 
-section#content.emailaccounts div.account .card span.numval{
+div.custom_cards .card span.numval{
     font-size: 36px;
 }
 
-section#content.emailaccounts div.account .card > a{
+div.custom_cards .card > a{
     color: #444444;
 }
 
