@@ -19,7 +19,7 @@ module ApplicationHelper
   end
 
   def number_of_email_accounts
-    Emailaccount.joins("left join users on user.id = emailaccounts.user_id").where("users.admin is 0").count
+    Emailaccount.left_joins(:user).where(users: {admin: false}).count
   end
 
   def number_of_replies
