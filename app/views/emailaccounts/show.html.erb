@@ -2,6 +2,10 @@
 
   <div class="container clearfix">
     <h1><%= @emailaccount.address %> <%= link_to raw('Edit<i class="icon icon-pencil"></i>'), edit_emailaccount_path(@emailaccount), class: 'edit' %></h1>
+    <div>
+      <%= link_to "Check Again Now", check_again_emailaccount_path(@emailaccount), remote: true, class: 'button' %>
+      <span>Last checked at <span><%= @emailaccount.last_checked_at %><span></span>
+    </div>
     <div class="breadcrumb">
       <%= link_to 'All Accounts', emailaccounts_path %>
     </div>

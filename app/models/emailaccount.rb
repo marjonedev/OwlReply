@@ -33,4 +33,8 @@ class Emailaccount < ApplicationRecord
     # In the future we may support BOLD, Italics, and what else? Should be very limited.
   end
 
+  def last_checked_at
+    last_checked.strftime("%m/%d/%Y")
+  end
+
 end

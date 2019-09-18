@@ -18,6 +18,10 @@ Rails.application.routes.draw do
   resources :replies
   resources :emailaccounts do
     resources :replies #This will be for new and create ONLY. /emailaccounts/1/replies/2 should just be /replies/2
+    member do
+      patch :check_again
+      put :check_again
+    end
   end
   resources :sessions
   resources :users
