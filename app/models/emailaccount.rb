@@ -35,7 +35,11 @@ class Emailaccount < ApplicationRecord
 
   def last_checked_at
     if last_checked
-     return Time.at(last_checked).utc.strftime("%m/%d/%Y %H:%M:%S")
+      return "Last checked at #{Time.at(last_checked).utc.strftime("%m/%d/%Y %H:%M:%S")}"
+    else
+      if error
+        return "Last error at #{error}"
+      end
     end
   end
 
