@@ -86,6 +86,11 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
     font-size: 16px;
 }
 
+#page-title.replies span.last-check{
+    display: inline-block;
+    font-size: 0.9rem;
+}
+
 section#content.replies .add-reply{
     margin: 30px 0;
 }

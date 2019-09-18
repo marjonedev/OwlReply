@@ -67,7 +67,7 @@ class EmailaccountsController < ApplicationController
   end
 
   def check_again
-    @emailaccount.update_attribute(:last_checked, Time.now.to_i)
+    @emailaccount.update_attribute(:last_checked, nil)
     respond_to do |format|
       format.js {}
     end
