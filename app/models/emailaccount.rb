@@ -34,7 +34,9 @@ class Emailaccount < ApplicationRecord
   end
 
   def last_checked_at
-    last_checked.strftime("%m/%d/%Y")
+    if last_checked
+     return Time.at(last_checked).utc.strftime("%m/%d/%Y %H:%M:%S")
+    end
   end
 
 end

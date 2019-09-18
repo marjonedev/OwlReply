@@ -1,6 +1,6 @@
 class EmailaccountsController < ApplicationController
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -67,6 +67,7 @@ class EmailaccountsController < ApplicationController
   end
 
   def check_again
+    @emailaccount.update_attribute(:last_checked, Time.now.to_i)
     respond_to do |format|
       format.js {}
     end
