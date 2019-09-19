@@ -5,7 +5,9 @@ module ReplyMaker
       return if already_running_fine?
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
-      self.check_accounts
+      while not resetting?
+        self.check_accounts
+      end
     end
     def self.check_accounts
       accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
@@ -23,7 +25,6 @@ module ReplyMaker
       end
       sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
       self.touch_last_reply_time
-      self.check_accounts unless resetting?
     end
     def reset
       REDIS.set("replymaker_reset",1)
