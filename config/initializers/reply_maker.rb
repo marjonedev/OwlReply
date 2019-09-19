@@ -30,8 +30,12 @@ module ReplyMaker
       REDIS.set("replymaker_reset",1)
     end
     def self.resetting?
-      REDIS.get("replymaker_reset").to_i == 1
-      REDIS.del("replymaker_reset")
+      if (REDIS.get("replymaker_reset").to_i == 1)
+        REDIS.del("replymaker_reset")
+        return true
+      else
+        return false
+      end
     end
     def self.already_running_fine?
       self.get_last_reply_time > (Time.now.to_i - (2*60))
