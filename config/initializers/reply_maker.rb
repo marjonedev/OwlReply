@@ -8,12 +8,12 @@ module ReplyMaker
       self.check_accounts
     end
     def self.check_accounts
-      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('updated_at < ?',5.minutes.ago)
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago)#.where('updated_at < ?',2.minutes.ago)
       for account in accounts
         begin
-          next if (account.last_checked > (Time.now.to_i - (3*60))) unless account.last_checked.nil? #Check a max of every 3 minutes.
-          self.create_drafts(account)
+          ###next if (account.last_checked > (Time.now.to_i - (3*60))) unless account.last_checked.nil? #Check a max of every 3 minutes.
           self.touch_last_reply_time
+          self.create_drafts(account)
           puts "Success on account #{account.address}. #{$!.to_s}"
           account.update_column(:last_checked,Time.now.to_i)
         rescue
@@ -26,7 +26,7 @@ module ReplyMaker
       self.check_accounts
     end
     def self.already_running_fine?
-      self.get_last_reply_time > (Time.now.to_i - (10*60))
+      self.get_last_reply_time > (Time.now.to_i - (2*60))
     end
     def self.touch_last_reply_time
       # INSERT INTO REDIS
