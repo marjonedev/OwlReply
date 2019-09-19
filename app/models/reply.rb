@@ -3,11 +3,11 @@ class Reply < ApplicationRecord
 
   def matches?(subject,body)
     content = ""
-    content = "#{subject} #{body}" if self.search == "Subject and Body"
-    content = "#{subject}" if self.search == "Subject Only"
-    content = "#{body}" if self.search == "Body Only"
+    content = "#{subject.downcase} #{body.downcase}" if self.search == "Subject and Body"
+    content = "#{subject.downcase}" if self.search == "Subject Only"
+    content = "#{body.downcase}" if self.search == "Body Only"
     for word in self.keywords.split(",")
-      return true if word.in?(content)
+      return true if word.downcase.in?(content)
     end
     return false
   end
