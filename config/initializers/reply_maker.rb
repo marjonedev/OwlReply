@@ -21,7 +21,7 @@ module ReplyMaker
           account.update_column(:error,$!.to_s)
         end
       end
-      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (2*60)) # The loop must last at least two minutes.
+      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
       self.touch_last_reply_time
       self.check_accounts
     end
