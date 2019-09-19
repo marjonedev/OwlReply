@@ -3,7 +3,7 @@
   <div class="container clearfix">
     <h1><%= @emailaccount.address %> <%= link_to raw('Edit<i class="icon icon-pencil"></i>'), edit_emailaccount_path(@emailaccount), class: 'edit' %></h1>
     <div>
-      <%= link_to "Check Again Now", check_again_emailaccount_path(@emailaccount), method: :put, remote: true, class: 'button button-mini button-rounded button-amber noleftmargin' %>
+      <%= link_to "Check Again Now", check_again_emailaccount_path(@emailaccount), method: :put, remote: true, class: 'check_btn btn button button-mini button-rounded button-amber noleftmargin' %>
       <span class="last-check">
         <%= @emailaccount.last_checked_at %>
       </span>
