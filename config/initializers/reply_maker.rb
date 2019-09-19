@@ -26,10 +26,10 @@ module ReplyMaker
       sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
       self.touch_last_reply_time
     end
-    def reset
+    def self.reset
       REDIS.set("replymaker_reset",1)
     end
-    def resetting?
+    def self.resetting?
       REDIS.get("replymaker_reset").to_i == 1
     end
     def self.already_running_fine?
