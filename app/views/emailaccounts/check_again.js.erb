@@ -1,1 +1,14 @@
 $('span.last-check').text('<%= @emailaccount.last_checked_at %>');
+
+console.log('<%= status_emailaccount_path(@emailaccount, :format => :json) %>');
+
+setInterval(function() {
+    $.ajax({
+        url: "<%= status_emailaccount_path(@emailaccount, :format => :json) %>",
+        type: "GET",
+        contentType: "application/json",
+        success: function(data){
+            console.log(data);
+        }
+    });
+}, 5000);
