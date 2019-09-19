@@ -89,6 +89,8 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
 #page-title.replies span.last-check{
     display: inline-block;
     font-size: 0.9rem;
+    vertical-align: middle;
+    max-width: 600px;
 }
 
 section#content.replies .add-reply{
