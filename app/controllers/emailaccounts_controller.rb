@@ -76,7 +76,7 @@ class EmailaccountsController < ApplicationController
   def status
     respond_to do |format|
       format.html
-      format.json {render json: {status: @emailaccount.last_checked_at}}
+      format.json {render json: {data: @emailaccount.last_checked_at}}
     end
   end
 
