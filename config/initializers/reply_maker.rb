@@ -96,7 +96,7 @@ module ReplyMaker
 
         account.increment!(:drafts_created_today)
         account.increment!(:drafts_created_lifetime)
-        account.increment!(:drafts_missing_replies) unless reply_used
+        #account.increment!(:drafts_missing_replies) unless reply_used
       end
     end
 
