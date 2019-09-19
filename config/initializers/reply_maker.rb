@@ -8,7 +8,7 @@ module ReplyMaker
       self.check_accounts
     end
     def self.check_accounts
-      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago)#.where('updated_at < ?',2.minutes.ago)
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
       for account in accounts
         begin
           ###next if (account.last_checked > (Time.now.to_i - (3*60))) unless account.last_checked.nil? #Check a max of every 3 minutes.
