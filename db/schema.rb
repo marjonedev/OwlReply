@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_17_145855) do
+ActiveRecord::Schema.define(version: 2019_09_19_154431) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_145855) do
     t.text "template"
     t.string "error"
     t.bigint "last_checked"
+    t.integer "drafts_missing_replies"
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_145855) do
     t.datetime "updated_at", null: false
     t.integer "drafts_created_today"
     t.integer "drafts_created_lifetime"
+    t.string "search"
     t.index ["emailaccount_id"], name: "index_replies_on_emailaccount_id"
   end
 
