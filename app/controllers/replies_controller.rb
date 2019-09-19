@@ -79,7 +79,7 @@ class RepliesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def reply_params
       params.require(:reply)
-          .permit(:keywords, :body, :negative_keywords, :catchcall)
+          .permit(:keywords, :body, :negative_keywords, :catchcall, :search)
     end
 
   def set_emailaccount

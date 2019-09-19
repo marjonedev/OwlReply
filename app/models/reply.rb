@@ -13,8 +13,8 @@ class Reply < ApplicationRecord
   end
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
-  def search
-    "Subject and Body"
-  end
+  # def search
+  #   "Subject and Body"
+  # end
 
 end
