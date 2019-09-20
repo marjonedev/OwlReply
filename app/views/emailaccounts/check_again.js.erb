@@ -1,4 +1,4 @@
-$('span.last-check').text('<%= @emailaccount.last_checked_at %>');
+$('span.last-check').text('<%= last_checked_at(@emailaccount) %>');
 
 $('a.check_btn')
     .html('<i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i> Queued for next check...')
@@ -22,4 +22,4 @@ var checkInterval = setInterval(function() {
             }
         }
     });
-}, 20000);
+}, 5000);

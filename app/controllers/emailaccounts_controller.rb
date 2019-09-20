@@ -1,4 +1,5 @@
 class EmailaccountsController < ApplicationController
+  include ActionView::Helpers::DateHelper
   before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status]
 
@@ -74,9 +75,18 @@ class EmailaccountsController < ApplicationController
   end
 
   def status
+    last_checked = nil
+
+    if @emailaccount.error
+      last_checked = "Last error: #{obj.error}"
+    end
+    unless @emailaccount.last_checked.nil?
+      last_checked = "Last checked: #{time_ago_in_words @emailaccount.last_checked} ago"
+    end
+
     respond_to do |format|
       format.html
-      format.json {render json: {data: @emailaccount.last_checked_at}}
+      format.json {render json: {data:last_checked}}
     end
   end
 

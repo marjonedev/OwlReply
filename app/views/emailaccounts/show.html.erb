@@ -5,11 +5,7 @@
     <div>
       <%= link_to "Check Again Now", check_again_emailaccount_path(@emailaccount), method: :put, remote: true, class: 'check_btn btn button button-mini button-rounded button-amber noleftmargin' %>
       <span class="last-check">
-        <% if @emailaccount.error %>
-          Last error: <%= @emailaccount.error %>
-        <% elsif @emailaccount.last_checked %>
-          Last checked: <%= time_ago_in_words @emailaccount.last_checked %> ago
-        <% end %>
+        <%= last_checked_at(@emailaccount) %>
       </span>
     </div>
     <div class="breadcrumb">
