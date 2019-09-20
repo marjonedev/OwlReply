@@ -8,7 +8,7 @@
         <% if @emailaccount.error %>
           Last error: <%= @emailaccount.error %>
         <% elsif @emailaccount.last_checked %>
-          Last checked: <%= time_ago_in_words @emailaccount.last_checked %>
+          Last checked: <%= time_ago_in_words @emailaccount.last_checked %> ago
         <% end %>
       </span>
     </div>
