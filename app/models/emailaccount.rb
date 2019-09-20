@@ -33,13 +33,14 @@ class Emailaccount < ApplicationRecord
     # In the future we may support BOLD, Italics, and what else? Should be very limited.
   end
 
-  def last_checked_at
-    if error
-      return "Last error: #{error}"
-    end
-    unless last_checked.nil?
-       return "Last checked at: #{Time.at(last_checked).utc.strftime("%m/%d/%Y %H:%M:%S")}"
-    end
-  end
+  #def last_checked_at
+  #  if error
+  #    return "Last error: #{error}"
+  #  end
+  #  unless last_checked.nil?
+  #    #return "Last checked at: #{Time.at(last_checked).utc.strftime("%m/%d/%Y %H:%M:%S")}"
+  #  end
+  #end
+  # Probably should be in the view, otherwise maybe a helper if it will be used multiple places.
 
 end
