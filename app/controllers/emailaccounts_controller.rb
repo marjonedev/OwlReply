@@ -1,6 +1,6 @@
 class EmailaccountsController < ApplicationController
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -70,6 +70,13 @@ class EmailaccountsController < ApplicationController
     @emailaccount.update_attribute(:last_checked, nil)
     respond_to do |format|
       format.js {}
+    end
+  end
+
+  def status
+    respond_to do |format|
+      format.html
+      format.json {render json: {data: @emailaccount.last_checked_at}}
     end
   end
 

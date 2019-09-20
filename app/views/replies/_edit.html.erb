@@ -21,6 +21,14 @@
               <label>Keywords</label>
               <%= f.text_field :keywords, class: 'form-control keywords', data: {role: 'tagsinput'} %>
             </div>
+            <div class="form-group">
+              <label>Search By</label>
+               <select name="reply[search]" class="form-control">
+                <option value="Subject and Body" <%= reply.search == "Subject and Body" ? 'selected="selected"' : '' %>>Subject and Body</option>
+                <option value="Subject Only" <%= reply.search == "Subject Only" ? 'selected="selected"' : '' %>>Subject Only</option>
+                <option value="Body Only" <%= reply.search == "Body Only" ? 'selected="selected"' : '' %>>Body Only</option>
+              </select>
+            </div>
             <div class="form-group mb-1">
               <label>Body</label>
               <div>

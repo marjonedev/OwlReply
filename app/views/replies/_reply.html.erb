@@ -22,6 +22,10 @@
               <%= f.text_field :keywords, class: 'form-control readonly keywords', readonly: 'readonly', data: {role: 'tagsinput'} %>
             </div>
             <div class="form-group">
+              <label>Search By</label>
+              <%= f.text_field :search, class: 'form-control readonly', readonly: 'readonly' %>
+            </div>
+            <div class="form-group">
               <label>Body</label>
               <div>
                 <%= f.text_area :body, class: 'form-control readonly', readonly: 'readonly' %>

@@ -65,6 +65,8 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
     min-height: 250px;
 }
 
+
+
 /*REPLIES
 ---------------------------------*/
 #page-title.replies h1 a.edit{
@@ -89,6 +91,28 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
 #page-title.replies span.last-check{
     display: inline-block;
     font-size: 0.9rem;
+    vertical-align: middle;
+    max-width: 600px;
+    margin-top: 0;
+}
+
+#page-title.replies a.check_btn{
+    color: #FFFFFF;
+}
+
+#page-title.replies a.check_btn.disabled{
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+#page-title.replies a.check_btn i{
+    width: 13px;
+    height: 13px;
+}
+
+
+#page-title.replies a.check_btn.disabled:hover{
+    background: #EB9C4D;
 }
 
 section#content.replies .add-reply{
