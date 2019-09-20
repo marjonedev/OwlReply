@@ -42,5 +42,6 @@ class Emailaccount < ApplicationRecord
   #  end
   #end
   # Probably should be in the view, otherwise maybe a helper if it will be used multiple places.
+  #
 
 end
