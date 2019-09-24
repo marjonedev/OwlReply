@@ -64,7 +64,8 @@ module ReplyMaker
         auto = ""
         for reply in account.replies
           next unless reply.matches?(msg.subject, thebody)
-          auto << reply.body
+          body = reply.body.gsub("\n","<br>\n")
+          auto << body
           reply.increment!(:drafts_created_today)
           reply.increment!(:drafts_created_lifetime)
           reply_used = true
