@@ -11,6 +11,15 @@
     <div class="breadcrumb">
       <%= link_to 'All Accounts', emailaccounts_path %>
     </div>
+    <% if @emailaccount.password.blank? %>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          You need to add your password for OwlReply to check your incoming mail.<br>
+          OwlReply will mark all incoming mail as "Read".<br>
+        </div>
+      </div>
+    <% end %>
   </div>
 
 </section>
