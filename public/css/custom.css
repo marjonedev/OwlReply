@@ -7,37 +7,45 @@
 
 /*EMAIL ACCOUNTS
 ---------------------------------*/
+section#content.dashboard .content-wrap,
 section#content.emailaccounts .content-wrap{
     padding-top: 30px;
 }
 
+section#content.dashboard div.account,
 section#content.emailaccounts div.account{
     margin-top: 30px;
 }
 
+section#content.dashboard div.account h2 > a,
 section#content.emailaccounts div.account h2 > a{
     color: #444444;
 }
 
+section#content.dashboard div.account h2 > a:hover,
 section#content.emailaccounts div.account h2 > a:hover{
     color: #1ABC9C;
 }
 
+section#content.dashboard .feature-box,
 section#content.emailaccounts .feature-box{
     padding: 0;
     margin-top: 0;
 }
 
+section#content.dashboard .feature-box .fbox-icon,
 section#content.emailaccounts .feature-box .fbox-icon{
     position: relative;
     float: right;
 }
 
+section#content.dashboard div.account .card .card-body,
 section#content.emailaccounts div.account .card .card-body{
     min-height: 136px;
     position: relative;
 }
 
+section#content.dashboard div.account .card .card-title,
 section#content.emailaccounts div.account .card .card-title{
     margin-bottom: 0;
 }

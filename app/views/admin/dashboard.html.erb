@@ -6,11 +6,12 @@
 
 </section><!-- #page-title end -->
 
-<section id="content" class="emailaccounts">
+<section id="content" class="dashboard">
   <div class="content-wrap">
     <div class="container clearfix">
       <div class="card-deck custom_cards mb-4">
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
+          <%= link_to 'admin/accounts' do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-users i-alt"></i>
@@ -18,8 +19,10 @@
             <h5 class="card-title">Accounts</h5>
             <span class="numval"><%= number_of_accounts %></span>
           </div>
+          <% end %>
         </div>
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
+          <%= link_to 'admin/emailaccounts' do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-mail-bulk i-alt"></i>
@@ -27,8 +30,10 @@
             <h5 class="card-title">Email Accounts</h5>
             <span class="numval"><%= number_of_email_accounts %></span>
           </div>
+          <% end %>
         </div>
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
+          <%= link_to 'admin/replies' do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-email2 i-alt"></i>
@@ -36,6 +41,7 @@
             <h5 class="card-title">Replies</h5>
             <span class="numval"><%= number_of_replies %></span>
           </div>
+          <% end %>
         </div>
       </div>
       <div class="card-deck custom_cards mb-4">
