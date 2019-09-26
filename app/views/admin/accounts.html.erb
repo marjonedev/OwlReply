@@ -26,12 +26,12 @@
           </tr>
           </tfoot>
           <tbody>
-          <% subs = ['Entrepreneur', 'Small Business', 'Big Business'] %>
+          <% subs = ['Entrepreneur', 'Entrepreneur', 'Small Business', 'Big Business'] %>
           <% @accounts.each do |account| %>
             <tr>
               <td><%= account.email_address %></td>
               <td><%= account.username %></td>
-              <td><%= subs[account.subscription_id.nil? ? 1 : account.subscription_id] %></td>
+              <td><%= subs[account.subscription_id.to_i] %></td>
             </tr>
           <% end %>
           </tbody>
