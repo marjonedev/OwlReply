@@ -26,4 +26,16 @@ module ApplicationHelper
     Reply.count
   end
 
+  def total_drafts_created_today
+    Emailaccount.sum(:drafts_created_today)
+  end
+
+  def total_drafts_created_lifetime
+    Emailaccount.sum(:drafts_created_lifetime)
+  end
+
+  def total_signups_today
+    User.where(:created_at => (Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)).count
+  end
+
 end
