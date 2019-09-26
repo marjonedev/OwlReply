@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   def home
     if current_user
       if current_user.admin
-        render file: "users/admin_dashboard"
+        render file: "admin/dashboard"
       else
         @emailaccounts = current_user.emailaccounts
         render file: "emailaccounts/index"
