@@ -9,7 +9,47 @@
 <section id="content" class="admin">
   <div class="content-wrap">
     <div class="container clearfix">
-      This content should show the list of all accounts
+      <div class="table-responsive">
+        <table id="accountsTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th>Email Address</th>
+            <th>Username</th>
+            <th>Subscription</th>
+          </tr>
+          </thead>
+          <tfoot>
+          <tr>
+            <th>Email Address</th>
+            <th>Username</th>
+            <th>Subscription</th>
+          </tr>
+          </tfoot>
+          <tbody>
+          <% subs = ['Entrepreneur', 'Small Business', 'Big Business'] %>
+          <% @accounts.each do |account| %>
+            <tr>
+              <td><%= account.email_address %></td>
+              <td><%= account.username %></td>
+              <td><%= subs[account.subscription_id.nil? ? 1 : account.subscription_id] %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
+
+<% content_for :javascript_includes do %>
+  <link rel="stylesheet" href="/css/components/bs-datatable.css" type="text/css" />
+  <script src="/js/components/bs-datatable.js"></script>
+<% end %>
+
+<% content_for :javascript_footer_includes do %>
+<script>
+    $(document).ready(function() {
+        $('#accountsTable').dataTable();
+    });
+</script>
+<% end %>
