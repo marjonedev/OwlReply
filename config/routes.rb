@@ -26,7 +26,10 @@ Rails.application.routes.draw do
   end
   resources :sessions
   resources :users
-  resources :admin
+
+  get 'admin/accounts'
+  get 'admin/emailaccounts'
+  get 'admin/replies'
 
   root 'pages#home'
 
