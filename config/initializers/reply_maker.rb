@@ -1,6 +1,7 @@
 module ReplyMaker
   class Replier
     def self.start_checking
+      self.reset_draft_created_today
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
       return if already_running_fine?
       # By doing the above, we can probably make sure that this runs faster than without it.
@@ -14,7 +15,6 @@ module ReplyMaker
       for account in accounts
         begin
           ###next if (account.last_checked > (Time.now.to_i - (3*60))) unless account.last_checked.nil? #Check a max of every 3 minutes.
-          self.reset_draft_created_today(account)
           self.touch_last_reply_time
           self.create_drafts(account)
           puts "Success on account #{account.address}. #{$!.to_s}"
@@ -48,11 +48,9 @@ module ReplyMaker
     def self.get_last_reply_time
       REDIS.get("last_reply_checked_at").to_i
     end
-    def self.reset_draft_created_today(account)
-      puts "Time now #{Time.now.day} > #{self.get_last_reply_time.to_time.day}"
-      logger.debug "Time now #{Time.now.day} > #{self.get_last_reply_time.to_time.day}"
-      if Time.now.day > self.get_last_reply_time.to_time.day
-        account.update_column(:drafts_created_today, nil)
+    def self.reset_draft_created_today
+      if Time.now.beginning_of_day > Time.at(self.get_last_reply_time).beginning_of_day
+        Emailaccount.where('drafts_created_today IS NOT NULL').update_all(drafts_created_today: nil)
       end
     end
     def self.create_drafts(account)
