@@ -320,3 +320,9 @@ div.list-paymentmethod .list-group-item{
 #invoice_file .invoice_footer{
     padding: 1rem 1.25rem 0;
 }
+
+/* Admin Pages
+==============================*/
+.admin #repliesTable td{
+    word-break: break-word;
+}
