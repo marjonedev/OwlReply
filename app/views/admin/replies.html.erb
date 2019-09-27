@@ -36,7 +36,7 @@
               <td><%= reply.emailaccount.user.email_address %></td>
               <td><%= reply.emailaccount.address %></td>
               <td><%= reply.keywords %></td>
-              <td><%= reply.search %></td>
+              <td><%= reply.search.nil? ? 'Subject and Body' : reply.search %></td>
               <td><%= reply.drafts_created_today.to_i %></td>
               <td><%= reply.drafts_created_lifetime.to_i %></td>
             </tr>
