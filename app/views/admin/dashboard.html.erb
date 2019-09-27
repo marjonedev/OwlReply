@@ -11,7 +11,7 @@
     <div class="container clearfix">
       <div class="card-deck custom_cards mb-4">
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
-          <%= link_to 'admin/accounts' do  %>
+          <%= link_to 'admin/accounts', method: :get do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-users i-alt"></i>
@@ -22,7 +22,7 @@
           <% end %>
         </div>
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
-          <%= link_to 'admin/emailaccounts' do  %>
+          <%= link_to 'admin/emailaccounts', method: :get do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-mail-bulk i-alt"></i>
@@ -33,7 +33,7 @@
           <% end %>
         </div>
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
-          <%= link_to 'admin/replies' do  %>
+          <%= link_to 'admin/replies', method: :get do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-email2 i-alt"></i>
