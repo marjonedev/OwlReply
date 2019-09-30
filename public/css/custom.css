@@ -22,6 +22,14 @@ section#content.emailaccounts div.account h2 > a{
     color: #444444;
 }
 
+section#content.dashboard div.account h2 span.number-keywords{
+    font-size: 13px;
+    font-weight: normal;
+    color: #888888;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
 section#content.dashboard div.account h2 > a:hover,
 section#content.emailaccounts div.account h2 > a:hover{
     color: #1ABC9C;

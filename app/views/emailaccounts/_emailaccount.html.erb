@@ -1,5 +1,5 @@
 <div class="account">
-  <h2><%= link_to emailaccount.address, emailaccount %></h2>
+  <h2><%= link_to emailaccount.address, emailaccount %> <span class="number-keywords"><%= number_of_keywords(emailaccount) %></span></h2>
   <div class="card-deck custom_cards">
     <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
       <%= link_to emailaccount do  %>

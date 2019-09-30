@@ -8,4 +8,13 @@ module EmailaccountsHelper
        return "Last checked: #{time_ago_in_words obj.last_checked} ago"
      end
   end
+
+  def number_of_keywords(emailaccount)
+    count = 0
+    for reply in emailaccount.replies
+      count += reply.keywords.split(",").count
+    end
+
+    "#{count} keywords"
+  end
 end
