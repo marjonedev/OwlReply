@@ -7,8 +7,8 @@
           <div class="fbox-icon">
             <i class="icon-firstdraft i-alt"></i>
           </div>
-          <h5 class="card-title">Drafts created today</h5>
-          <span class="numval"><%= emailaccount.drafts_created_today.to_i %></span>
+          <h5 class="card-title">Replies Created</h5>
+          <span class="numval"><%= emailaccount.drafts_created_lifetime.to_i %></span>
         </div>
       <% end %>
     </div>
@@ -18,8 +18,8 @@
           <div class="fbox-icon">
             <i class="icon-email2 i-alt"></i>
           </div>
-          <h5 class="card-title">Reply Sets Created</h5>
-          <span class="numval"><%= emailaccount.replies.count  %></span>
+          <h5 class="card-title">Replies Made Today</h5>
+          <span class="numval"><%= emailaccount.drafts_created_today.to_i %></span>
         </div>
       <% end %>
     </div>
@@ -29,8 +29,8 @@
           <div class="fbox-icon">
             <i class="icon-line2-layers i-alt"></i>
           </div>
-          <h5 class="card-title">Draft without a reply set</h5>
-          <span class="numval">0</span>
+          <h5 class="card-title">Replies Missing Automation Today</h5>
+          <span class="numval"><%= emailaccount.drafts_missing_replies.to_i %></span>
         </div>
       <% end %>
     </div>
