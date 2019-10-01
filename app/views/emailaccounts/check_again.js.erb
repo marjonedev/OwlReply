@@ -14,7 +14,7 @@ var checkInterval = setInterval(function() {
             if(data.data != null){
                 $('span.last-check').text(data.data);
 
-                var attr = $('a.check_btn').attr('name');
+                var attr = $('a.check_btn').attr('disabled');
                 if (typeof attr !== typeof undefined && attr !== false) {
                     $('a.check_btn').text('Check Again Now')
                         .removeClass('disabled')
