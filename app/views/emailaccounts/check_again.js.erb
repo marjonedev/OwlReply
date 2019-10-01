@@ -13,13 +13,14 @@ var checkInterval = setInterval(function() {
         success: function(data){
             if(data.data != null){
                 $('span.last-check').text(data.data);
-                clearInterval(checkInterval);
 
-                $('a.check_btn')
-                    .text('Check Again Now')
-                    .removeClass('disabled')
-                    .removeAttr('disabled');
+                var attr = $('a.check_btn').attr('name');
+                if (typeof attr !== typeof undefined && attr !== false) {
+                    $('a.check_btn').text('Check Again Now')
+                        .removeClass('disabled')
+                        .removeAttr('disabled');
+                }
             }
         }
     });
-}, 5000);
+}, 15000);
