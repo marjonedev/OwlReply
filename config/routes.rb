@@ -46,6 +46,6 @@ Rails.application.routes.draw do
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy', :as => "logout"
   get 'privacy-policy', to: 'pages#privacy'
-  get 'terms-of-service', to: 'pages#terms'
+  get 'terms-of-use', to: 'pages#terms'
 end
 
