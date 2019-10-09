@@ -172,6 +172,15 @@ section#content.replies .card .card-footer{
     padding-left: 0;
 }
 
+section#content.replies .authentication{
+    padding-top: 10px;
+}
+
+section#content.replies .authentication .style-msg{
+    background: #555;
+    margin-bottom: 0;
+}
+
 /*EFFECTS: Shake
 ==================================*/
 @-webkit-keyframes kf_shake {
