@@ -23,7 +23,13 @@
           </div>
           <div class="modal-body">
             <%= form_with url: connect_emailaccount_path, model: (emailaccount || emailaccount = Emailaccount.new), html:{class: 'nobottommargin'} do |f| %>
-              <div></div>
+              <div class="form-group">
+                <label for="">Email Provider</label>
+                <select class="form-control" id="emailProvider">
+                  <option value="google">Google</option>
+                  <option value="other">Others</option>
+                </select>
+              </div>
             <% end %>
           </div>
         </div>
