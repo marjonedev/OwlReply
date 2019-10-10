@@ -24,11 +24,20 @@
           <div class="modal-body">
             <%= form_with url: connect_emailaccount_path, model: (emailaccount || emailaccount = Emailaccount.new), html:{class: 'nobottommargin'} do |f| %>
               <div class="form-group">
-                <label for="">Email Provider</label>
-                <select class="form-control" id="emailProvider">
+                <label for="emailProvider">Email Provider</label>
+                <select class="form-control" id="emailProvider" name="emailaccount['email_provider']">
                   <option value="google">Google</option>
                   <option value="other">Others</option>
                 </select>
+              </div>
+              <div>
+                <div class="form-group">
+                  <label>SMTP Host</label>
+                  <input type="text" name="emailaccount['smtp_host']" />
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit">Connect</button>
               </div>
             <% end %>
           </div>
@@ -44,6 +53,10 @@
                 e.preventDefault();
                 $('#ConnectEmailAccount').modal('show');
                 return false;
+            });
+
+            $('#emailProvider').on('change', function () {
+
             });
 
             $('#ConnectEmailAccount').on('hidden.bs.modal', function () {
