@@ -30,9 +30,25 @@
                   <option value="other">Others</option>
                 </select>
               </div>
-              <div>
+              <div id="smtpSettings" style="display:none">
                 <div class="form-group">
                   <label>SMTP Host</label>
+                  <input type="text" name="emailaccount['smtp_host']" />
+                </div>
+                <div class="form-group">
+                  <label>SMTP Email</label>
+                  <input type="text" name="emailaccount['smtp_host']" />
+                </div>
+                <div class="form-group">
+                  <label>SMTP Password</label>
+                  <input type="text" name="emailaccount['smtp_host']" />
+                </div>
+                <div class="form-group">
+                  <label>Use SSL</label>
+                  <input type="checkbox" name="emailaccount['smtp_ssl']">
+                </div>
+                <div class="form-group">
+                  <label>SMTP Port</label>
                   <input type="text" name="emailaccount['smtp_host']" />
                 </div>
               </div>
@@ -56,7 +72,12 @@
             });
 
             $('#emailProvider').on('change', function () {
-
+                var value = $(this).val();
+                if (value == 'others'){
+                    $('#smtpSettings').show();
+                }else{
+                    $('#smtpSettings').hide();
+                }
             });
 
             $('#ConnectEmailAccount').on('hidden.bs.modal', function () {
