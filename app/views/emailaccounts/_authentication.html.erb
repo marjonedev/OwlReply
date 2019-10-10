@@ -4,11 +4,47 @@
     <div class="col-md-10 authentication">
       <div class="style-msg style-msg-light" style="background-color: #333;">
         <div class="sb-msg">
-          <a href="#" class="button button-3d button-mini button-rounded button-white button-light">Connect your email account</a>
-          You need to connect your email account in able for us to be able to create an automated replies for you.
+          <%= link_to 'Connect your email account', '#', class: 'btn-connect button button-3d button-mini button-rounded button-white button-light', remote: true %>
+          You need to connect your email account in order for us to be able to create an automated replies for you.
         </div>
       </div>
     </div>
     <div class="col-md-1"></div>
   </div>
+<% end %>
+
+<% unless @emailaccount.authenticated %>
+  <% content_for :modals_includes do %>
+    <div class="modal fade" id="ConnectEmailAccount" tabindex="-1" role="dialog" aria-labelledby="ConnectEmailAccount" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title text-center" style="width: 100%">Connect Your Email Account</h4>
+          </div>
+          <div class="modal-body">
+
+          </div>
+          <div class="modal-footer">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% content_for :javascript_footer_includes do %>
+    <script type="text/javascript">
+        $(function () {
+            $('.btn-connect').on('click', function (e) {
+                e.preventDefault();
+                $('#ConnectEmailAccount').modal('show');
+                return false;
+            });
+
+            $('#ConnectEmailAccount').on('hidden.bs.modal', function () {
+
+            });
+        });
+    </script>
+  <% end %>
 <% end %>
