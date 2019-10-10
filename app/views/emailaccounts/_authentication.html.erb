@@ -73,7 +73,8 @@
 
             $('#emailProvider').on('change', function () {
                 var value = $(this).val();
-                if (value == 'others'){
+                console.log(value);
+                if (value == 'other'){
                     $('#smtpSettings').show();
                 }else{
                     $('#smtpSettings').hide();
