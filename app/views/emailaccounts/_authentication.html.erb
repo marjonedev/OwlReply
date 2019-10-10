@@ -22,7 +22,7 @@
             <h4 class="modal-title text-center" style="width: 100%">Connect Your Email Account</h4>
           </div>
           <div class="modal-body">
-            <%= form_with url: connect_emailaccount_path, model: (emailaccount || emailaccount = Emailaccount.new), html:{class: 'nobottommargin'} do |f| %>
+            <%= form_with url: connect_emailaccount_path, html:{class: 'nobottommargin'} do |f| %>
               <div class="form-group">
                 <label for="emailProvider">Email Provider</label>
                 <select class="form-control" id="emailProvider" name="emailaccount['email_provider']">
