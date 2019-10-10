@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       patch :check_again
       put :check_again
       get :status
+      patch :connect
+      put :connect
     end
   end
   resources :sessions
