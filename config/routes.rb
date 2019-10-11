@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       get :status
       patch :connect
       put :connect
+      post :connect
     end
   end
   resources :sessions

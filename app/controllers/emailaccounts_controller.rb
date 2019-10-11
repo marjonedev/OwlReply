@@ -1,7 +1,7 @@
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -92,7 +92,9 @@ class EmailaccountsController < ApplicationController
 
   def connect
     respond_to do |format|
-      if @emailaccount.update(emailaccount_params)
+      logger.debug "=============================================="
+      logger.debug connect_params
+      if @emailaccount.update(connect_params)
         # format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
         # format.json { render :show, status: :ok, location: @emailaccount }
         format.js { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
@@ -114,5 +116,11 @@ class EmailaccountsController < ApplicationController
       params
           .require(:emailaccount)
           .permit(:address, :password, :encrypted_password, :encryption_key, :template)
+    end
+
+    def connect_params
+      params
+          .require(:emailaccount)
+          .permit(:email_provider, :smtp_host, :smtp_email, :smtp_password, :smtp_port, :smtp_ssl)
     end
 end
