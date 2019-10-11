@@ -43,18 +43,20 @@
                   <label>SMTP Password</label>
                   <input class="form-control" type="text" name="emailaccount['smtp_host']" />
                 </div>
+                <div class="form-group form-check">
+                  <input class="form-check-input" type="checkbox" name="emailaccount['smtp_ssl']" id="ssl_required">
+                  <label for="ssl_required">Use SSL</label>
+                </div>
                 <div class="form-group">
-                  <label>Use SSL</label>
-                  <input class="form-control" type="checkbox" name="emailaccount['smtp_ssl']">
                 </div>
                 <div class="form-group">
                   <label>SMTP Port</label>
-                  <input type="text" name="emailaccount['smtp_host']" />
+                  <input class="form-control" type="text" name="emailaccount['smtp_host']" />
                 </div>
               </div>
               <div class="form-group">
-                <button type="submit" class="button button-large button-rounded pull-left">Connect</button>
-                <button type="button" data-dismiss="modal" class="button button-white button-light button-large button-rounded ">Close</button>
+                <button type="submit" class="button button-large button-rounded float-left">Connect</button>
+                <button type="button" data-dismiss="modal" class="button button-white button-light button-large button-rounded float-right">Cancel</button>
               </div>
             <% end %>
           </div>
