@@ -92,8 +92,6 @@ class EmailaccountsController < ApplicationController
 
   def connect
     respond_to do |format|
-      logger.debug "=============================================="
-      logger.debug connect_params
       if @emailaccount.update(connect_params)
         # format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
         # format.json { render :show, status: :ok, location: @emailaccount }
