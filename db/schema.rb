@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_170618) do
+ActiveRecord::Schema.define(version: 2019_10_14_174113) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -28,6 +28,12 @@ ActiveRecord::Schema.define(version: 2019_10_09_170618) do
     t.integer "drafts_missing_replies_lifetime"
     t.integer "drafts_missing_replies_today"
     t.boolean "authenticated", default: false
+    t.string "email_provider"
+    t.string "connect_host"
+    t.string "connect_email"
+    t.string "connect_password"
+    t.string "connect_port"
+    t.boolean "connect_ssl"
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
