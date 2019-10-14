@@ -32,24 +32,24 @@
               </div>
               <div id="smtpSettings" style="display:none">
                 <div class="form-group">
-                  <label>SMTP Host</label>
-                  <%= f.text_field :smtp_host, class: 'form-control' %>
+                  <label>Server</label>
+                  <%= f.text_field :connect_host, class: 'form-control' %>
                 </div>
                 <div class="form-group">
-                  <label>SMTP Email</label>
-                  <%= f.text_field :smtp_email, class: 'form-control' %>
+                  <label>Email</label>
+                  <%= f.text_field :connect_email, class: 'form-control', value: @emailaccount.address %>
                 </div>
                 <div class="form-group">
-                  <label>SMTP Password</label>
-                  <%= f.text_field :smtp_password, class: 'form-control' %>
+                  <label>Password</label>
+                  <%= f.text_field :connect_password, class: 'form-control' %>
                 </div>
                 <div class="form-group form-check">
-                  <%= f.check_box :smtp_ssl, class: 'form-check-input', id: 'ssl_required' %>
+                  <%= f.check_box :connect_ssl, class: 'form-check-input', id: 'ssl_required', checked: 'checked' %>
                   <label for="ssl_required">Use SSL</label>
                 </div>
                 <div class="form-group">
-                  <label>SMTP Port</label>
-                  <%= f.text_field :smtp_port, class: 'form-control' %>
+                  <label>Port</label>
+                  <%= f.text_field :connect_port, class: 'form-control' %>
                 </div>
               </div>
               <div class="form-group">
