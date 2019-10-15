@@ -25,6 +25,9 @@ Rails.application.routes.draw do
       patch :connect
       put :connect
       post :connect
+      get :google_redirect
+      get :google_callback
+      get :labels
     end
   end
   resources :sessions
