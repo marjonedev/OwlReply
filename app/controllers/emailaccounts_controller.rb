@@ -116,7 +116,7 @@ class EmailaccountsController < ApplicationController
                   client_secret: api_client_secret,
                   authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
                   scope: Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
-                  redirect_uri: url_for(:action => :google_callback)
+                  redirect_uri: emailaccounts_google_callback_path
               })
 
     redirect_to client.authorization_uri.to_s
@@ -130,7 +130,7 @@ class EmailaccountsController < ApplicationController
                 client_id: api_client_id,
                 client_secret: api_client_secret,
                 token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
-                redirect_uri: url_for(:action => :google_callback),
+                redirect_uri: emailaccounts_google_callback_path,
                 code: params[:code]
             })
 
