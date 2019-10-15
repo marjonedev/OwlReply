@@ -69,3 +69,5 @@ gem 'activerecord-session_store'
 
 gem 'jquery-rails'
 
+gem 'google-api-client', '>= 0.9', require: 'google/apis/gmail_v1'
+
