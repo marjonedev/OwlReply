@@ -1,7 +1,7 @@
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :google_redirect]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -93,9 +93,13 @@ class EmailaccountsController < ApplicationController
   def connect
     respond_to do |format|
       if @emailaccount.update(connect_params)
-        # format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
-        # format.json { render :show, status: :ok, location: @emailaccount }
-        format.js { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
+        if(connect_params[:email_provider] == 'google')
+          redirect_to google_redirect
+        else
+          # format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
+          # format.json { render :show, status: :ok, location: @emailaccount }
+          format.js { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
+        end
       else
         # format.html { render :edit }
         format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
