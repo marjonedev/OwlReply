@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   resources :invoices
   resources :plans
   resources :replies
+
+  get 'emailaccounts/google_redirect'
+  get 'emailaccounts/google_callback'
   resources :emailaccounts do
     resources :replies #This will be for new and create ONLY. /emailaccounts/1/replies/2 should just be /replies/2
     member do
@@ -50,9 +53,5 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy', :as => "logout"
   get 'privacy-policy', to: 'pages#privacy'
   get 'terms-of-use', to: 'pages#terms'
-
-
-  get 'emailaccounts/google_redirect', to: 'emailaccounts#google_redirect'
-  get 'emailaccounts/google_callback', to: 'emailaccounts#google_callback'
 end
 

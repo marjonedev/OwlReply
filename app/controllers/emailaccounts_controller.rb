@@ -1,7 +1,7 @@
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :google_redirect]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -91,18 +91,19 @@ class EmailaccountsController < ApplicationController
   end
 
   def connect
-    respond_to do |format|
-      if @emailaccount.update(connect_params)
-        if(connect_params[:email_provider] == 'google')
-          redirect_to google_redirect
-        else
+    if(connect_params[:email_provider] == 'google')
+      session[:emailaccount_id] = @emailaccount.id
+      redirect_to emailaccounts_google_redirect_url
+    else
+      respond_to do |format|
+        if @emailaccount.update(connect_params)
           # format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
           # format.json { render :show, status: :ok, location: @emailaccount }
           format.js { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
+        else
+          # format.html { render :edit }
+          format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
         end
-      else
-        # format.html { render :edit }
-        format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -116,7 +117,7 @@ class EmailaccountsController < ApplicationController
                   client_secret: api_client_secret,
                   authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
                   scope: Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
-                  redirect_uri: emailaccounts_google_callback_path
+                  redirect_uri: emailaccounts_google_callback_url
               })
 
     redirect_to client.authorization_uri.to_s
@@ -130,7 +131,7 @@ class EmailaccountsController < ApplicationController
                 client_id: api_client_id,
                 client_secret: api_client_secret,
                 token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
-                redirect_uri: emailaccounts_google_callback_path,
+                redirect_uri: emailaccounts_google_callback_url,
                 code: params[:code]
             })
 
@@ -140,18 +141,27 @@ class EmailaccountsController < ApplicationController
 
     session[:access_token] = response['access_token']
 
-    redirect_to url_for(:action => :labels)
+=begin
+  todo:
+    1. access_token and expiry date to database
+    2. save email_provider = google
+    3. set authenticated = true
+=end
+
+    emailaccount_id = session[:emailaccount_id]
+    session.delete(:emailaccount_id)
+    redirect_to url_for(action: 'show', id: emailaccount_id)
   end
 
-  def labels
-    client = Signet::OAuth2::Client.new(access_token: session[:access_token])
-
-    service = Google::Apis::GmailV1::GmailService.new
-
-    service.authorization = client
-
-    @labels_list = service.list_user_labels('me')
-  end
+  # def labels
+  #   client = Signet::OAuth2::Client.new(access_token: session[:access_token])
+  #
+  #   service = Google::Apis::GmailV1::GmailService.new
+  #
+  #   service.authorization = client
+  #
+  #   @labels_list = service.list_user_labels('me')
+  # end
 
 
 
