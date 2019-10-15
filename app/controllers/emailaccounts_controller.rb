@@ -103,6 +103,54 @@ class EmailaccountsController < ApplicationController
     end
   end
 
+  def google_redirect
+    api_client_id = Rails.application.credentials.google_api_client_id
+    api_client_secret = Rails.application.credentials.google_client_secret
+
+    client = Signet::OAuth2::Client.new({
+                  client_id: api_client_id,
+                  client_secret: api_client_secret,
+                  authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
+                  scope: Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
+                  redirect_uri: url_for(:action => :google_callback)
+              })
+
+    redirect_to client.authorization_uri.to_s
+  end
+
+  def google_callback
+    api_client_id = Rails.application.credentials.google_api_client_id
+    api_client_secret = Rails.application.credentials.google_client_secret
+
+    client = Signet::OAuth2::Client.new({
+                client_id: api_client_id,
+                client_secret: api_client_secret,
+                token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+                redirect_uri: url_for(:action => :google_callback),
+                code: params[:code]
+            })
+
+    response = client.fetch_access_token!
+
+    logger.debug response
+
+    session[:access_token] = response['access_token']
+
+    redirect_to url_for(:action => :labels)
+  end
+
+  def labels
+    client = Signet::OAuth2::Client.new(access_token: session[:access_token])
+
+    service = Google::Apis::GmailV1::GmailService.new
+
+    service.authorization = client
+
+    @labels_list = service.list_user_labels('me')
+  end
+
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_emailaccount
