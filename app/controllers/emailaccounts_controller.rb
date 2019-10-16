@@ -92,8 +92,10 @@ class EmailaccountsController < ApplicationController
 
   def connect
     if(connect_params[:email_provider] == 'google')
+
       session[:emailaccount_id] = @emailaccount.id
       redirect_to emailaccounts_google_redirect_url
+
     else
       respond_to do |format|
         if @emailaccount.update(connect_params)
@@ -151,7 +153,7 @@ class EmailaccountsController < ApplicationController
     emailaccount_id = session[:emailaccount_id]
     session.delete(:emailaccount_id)
 
-    emailaccount = Emailaccount.where(id: emailaccount_id)
+    emailaccount = Emailaccount.where(id: emailaccount_id).first
 
     expires_in = Time.now.to_i + response['expires_in']
 
