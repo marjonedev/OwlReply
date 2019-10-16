@@ -150,6 +150,13 @@ class EmailaccountsController < ApplicationController
 
     emailaccount_id = session[:emailaccount_id]
     session.delete(:emailaccount_id)
+
+    emailaccount = Emailaccount.where(id: emailaccount_id)
+
+    expires_in = Time.now.to_i + response['expires_in']
+
+    emailaccount.update(google_access_token: response['access_token'], google_expires_in: expires_in, google_refresh_token: response['refresh_token'], authenticated: true)
+
     redirect_to url_for(action: 'show', id: emailaccount_id)
   end
 
