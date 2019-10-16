@@ -155,9 +155,14 @@ class EmailaccountsController < ApplicationController
 
     expires_in = Time.now.to_i + response['expires_in']
 
-    emailaccount.update(google_access_token: response['access_token'], google_expires_in: expires_in, google_refresh_token: response['refresh_token'], authenticated: true)
+    emailaccount.update(google_access_token: response['access_token'],
+                        google_expires_in: expires_in,
+                        google_refresh_token: response['refresh_token'],
+                        authenticated: true,
+                        email_provider: 'google')
 
     redirect_to url_for(action: 'show', id: emailaccount_id)
+
   end
 
   # def labels
