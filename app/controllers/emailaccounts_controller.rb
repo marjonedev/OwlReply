@@ -161,7 +161,7 @@ class EmailaccountsController < ApplicationController
                         authenticated: true,
                         email_provider: 'google')
 
-    redirect_to url_for(action: 'show', id: emailaccount_id)
+    redirect_to url_for(action: 'show', id: emailaccount_id), notice: emailaccount.address + " successfully authenticated"
 
   end
 
