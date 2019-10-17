@@ -61,11 +61,47 @@ module ReplyMaker
       end
     end
 
+=begin
+todo:
+  1. authenticate email account first
+  2. if not authenticated, reauthorize
+  3. search message from inbox, unread
+  4. get the subject and body and convert to lower case
+  5. skip if matches the skipwords using account.subject_line_skip?
+  6. skip if thread has more than 1 email
+  7. scan the subject and body from every account.replies to match the reply keywords using reply.matches?
+  8. get the body of the reply
+  9. create new draft
+=end
+
     def self.create_draft_google(account)
       if account.authenticated
         client = Signet::OAuth2::Client.new(access_token: account.google_access_token)
         gmail = Google::Apis::GmailV1::GmailService.new
         gmail.authorization = client
+
+        # ids =
+        #     gmail.fetch_all(max: options[:limit], items: :messages) do |token|
+        #       gmail.list_user_messages('me', max_results: [options[:limit], 500].min, q: query, page_token: token)
+        #     end.map(&:id)
+
+        # msg = Mail.new
+        # msg.date = Time.now
+        # msg.subject = options[:subject]
+        # msg.body = Text.new(options[:message])
+        # msg.from = {@_user.email => @_user.full_name}
+        # msg.to   = {
+        #     options[:to] => options[:to_name]
+        # }
+        # @email = @google_api_client.execute(
+        #     api_method: @gmail.users.messages.to_h['gmail.users.messages.send'],
+        #     body_object: {
+        #         raw: Base64.urlsafe_encode64(msg.to_s)
+        #     },
+        #     parameters: {
+        #         userId: 'me',
+        #     }
+        # )
 
       end
     end
@@ -86,7 +122,7 @@ module ReplyMaker
 
         auto = ""
         for reply in account.replies
-          next unless reply.matches?(msg.subject, thebody)
+          next unless reply.matches?(msg.subject, thebody) #check if matches with keywords
           body = reply.body.gsub("\n","<br>\n")
           auto << body
           reply.increment!(:drafts_created_today)
