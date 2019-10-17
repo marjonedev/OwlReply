@@ -54,6 +54,23 @@ module ReplyMaker
       end
     end
     def self.create_drafts(account)
+      if account.email_provider == 'google'
+        self.create_draft_google(account)
+      else
+        self.create_draft_imap(account)
+      end
+    end
+
+    def self.create_draft_google(account)
+      if account.authenticated
+        client = Signet::OAuth2::Client.new(access_token: account.google_access_token)
+        gmail = Google::Apis::GmailV1::GmailService.new
+        gmail.authorization = client
+
+      end
+    end
+
+    def self.create_draft_imap(account)
       require 'net/imap'
       require 'mail'
       imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
