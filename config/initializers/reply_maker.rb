@@ -161,5 +161,26 @@ todo:
       end
     end
 
+    def self.refresh_token(account)
+      api_client_id = Rails.application.credentials.google_api_client_id
+      api_client_secret = Rails.application.credentials.google_client_secret
+      url = URI("https://accounts.google.com/o/oauth2/token")
+      request = Net::HTTP.post_form(url,{ 'refresh_token' => account.google_refresh_token,
+                                           'client_id'     => api_client_id,
+                                           'client_secret' => api_client_secret,
+                                           'grant_type'    => 'refresh_token'})
+      data = JSON.parse(request.body)
+      expires_in = Time.now.to_i + data['expires_in']
+      account.update(google_access_token: data['access_token'],
+             google_expires_in: expires_in,
+             google_refresh_token: data['refresh_token'])
+    end
+
+    def refresh!(account)
+      self.refresh_token if account.google_expires_in.to_i < Time.now.to_i
+    end
+
+
+
   end
 end
