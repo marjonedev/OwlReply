@@ -1,3 +1,16 @@
+=begin
+  todo:
+     1. authenticate email account first
+    2. if not authenticated, reauthorize
+    3. search message from inbox, unread
+    4. get the subject and body and convert to lower case
+                                                     5. skip if matches the skipwords using account.subject_line_skip?
+    6. skip if thread has more than 1 email
+    7. scan the subject and body from every account.replies to match the reply keywords using reply.matches?
+    8. get the body of the reply
+    9. create new draft
+=end
+
 module ReplyMaker
   class Replier
     def self.start_checking
@@ -53,19 +66,6 @@ module ReplyMaker
         Emailaccount.where('drafts_created_today IS NOT NULL').update_all(drafts_created_today: nil, drafts_missing_replies_today: nil)
       end
     end
-
-=begin
-  todo:
-     1. authenticate email account first
-    2. if not authenticated, reauthorize
-    3. search message from inbox, unread
-    4. get the subject and body and convert to lower case
-                                                     5. skip if matches the skipwords using account.subject_line_skip?
-    6. skip if thread has more than 1 email
-    7. scan the subject and body from every account.replies to match the reply keywords using reply.matches?
-    8. get the body of the reply
-    9. create new draft
-=end
 
     def self.create_drafts(account)
       require 'net/imap'
