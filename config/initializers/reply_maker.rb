@@ -76,9 +76,14 @@ todo:
 
     def self.create_draft_google(account)
       if account.authenticated
+
+        self.refresh_token(account)
+
         client = Signet::OAuth2::Client.new(access_token: account.google_access_token)
         gmail = Google::Apis::GmailV1::GmailService.new
         gmail.authorization = client
+
+        # gmail.list_user_messages('me', labels: ['inbox'], max_results: 1000, q: 'is:unread')
 
         # ids =
         #     gmail.fetch_all(max: options[:limit], items: :messages) do |token|
