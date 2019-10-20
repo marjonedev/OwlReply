@@ -53,65 +53,21 @@ module ReplyMaker
         Emailaccount.where('drafts_created_today IS NOT NULL').update_all(drafts_created_today: nil, drafts_missing_replies_today: nil)
       end
     end
-    def self.create_drafts(account)
-      if account.email_provider == 'google'
-        self.create_draft_google(account)
-      else
-        self.create_draft_imap(account)
-      end
-    end
 
 =begin
-todo:
-  1. authenticate email account first
-  2. if not authenticated, reauthorize
-  3. search message from inbox, unread
-  4. get the subject and body and convert to lower case
-  5. skip if matches the skipwords using account.subject_line_skip?
-  6. skip if thread has more than 1 email
-  7. scan the subject and body from every account.replies to match the reply keywords using reply.matches?
-  8. get the body of the reply
-  9. create new draft
+  todo:
+     1. authenticate email account first
+    2. if not authenticated, reauthorize
+    3. search message from inbox, unread
+    4. get the subject and body and convert to lower case
+                                                     5. skip if matches the skipwords using account.subject_line_skip?
+    6. skip if thread has more than 1 email
+    7. scan the subject and body from every account.replies to match the reply keywords using reply.matches?
+    8. get the body of the reply
+    9. create new draft
 =end
 
-    def self.create_draft_google(account)
-      if account.authenticated
-
-        self.refresh_token(account)
-
-        client = Signet::OAuth2::Client.new(access_token: account.google_access_token)
-        gmail = Google::Apis::GmailV1::GmailService.new
-        gmail.authorization = client
-
-        # gmail.list_user_messages('me', labels: ['inbox'], max_results: 1000, q: 'is:unread')
-
-        # ids =
-        #     gmail.fetch_all(max: options[:limit], items: :messages) do |token|
-        #       gmail.list_user_messages('me', max_results: [options[:limit], 500].min, q: query, page_token: token)
-        #     end.map(&:id)
-
-        # msg = Mail.new
-        # msg.date = Time.now
-        # msg.subject = options[:subject]
-        # msg.body = Text.new(options[:message])
-        # msg.from = {@_user.email => @_user.full_name}
-        # msg.to   = {
-        #     options[:to] => options[:to_name]
-        # }
-        # @email = @google_api_client.execute(
-        #     api_method: @gmail.users.messages.to_h['gmail.users.messages.send'],
-        #     body_object: {
-        #         raw: Base64.urlsafe_encode64(msg.to_s)
-        #     },
-        #     parameters: {
-        #         userId: 'me',
-        #     }
-        # )
-
-      end
-    end
-
-    def self.create_draft_imap(account)
+    def self.create_drafts(account)
       require 'net/imap'
       require 'mail'
       imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
@@ -127,7 +83,7 @@ todo:
 
         auto = ""
         for reply in account.replies
-          next unless reply.matches?(msg.subject, thebody) #check if matches with keywords
+          next unless reply.matches?(msg.subject, thebody)
           body = reply.body.gsub("\n","<br>\n")
           auto << body
           reply.increment!(:drafts_created_today)
@@ -165,27 +121,6 @@ todo:
         account.increment!(:drafts_missing_replies_lifetime) unless reply_used
       end
     end
-
-    def self.refresh_token(account)
-      api_client_id = Rails.application.credentials.google_api_client_id
-      api_client_secret = Rails.application.credentials.google_client_secret
-      url = URI("https://accounts.google.com/o/oauth2/token")
-      request = Net::HTTP.post_form(url,{ 'refresh_token' => account.google_refresh_token,
-                                           'client_id'     => api_client_id,
-                                           'client_secret' => api_client_secret,
-                                           'grant_type'    => 'refresh_token'})
-      data = JSON.parse(request.body)
-      expires_in = Time.now.to_i + data['expires_in']
-      account.update(google_access_token: data['access_token'],
-             google_expires_in: expires_in,
-             google_refresh_token: data['refresh_token'])
-    end
-
-    def refresh!(account)
-      self.refresh_token if account.google_expires_in.to_i < Time.now.to_i
-    end
-
-
 
   end
 end
