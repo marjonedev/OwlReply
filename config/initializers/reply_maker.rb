@@ -4,7 +4,7 @@
     2. if not authenticated, reauthorize
     3. search message from inbox, unread
     4. get the subject and body and convert to lower case
-                                                     5. skip if matches the skipwords using account.subject_line_skip?
+    5. skip if matches the skipwords using account.subject_line_skip?
     6. skip if thread has more than 1 email
     7. scan the subject and body from every account.replies to match the reply keywords using reply.matches?
     8. get the body of the reply
