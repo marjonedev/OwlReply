@@ -1,14 +1,19 @@
 
-if(confirm('Are you sure to delete <%= @emailaccount.address %>?')){
+var remove = <%= @remove %>;
+
+if(remove){
+  if(confirm('Are you sure to delete <%= @emailaccount.address %>?')){
     $.ajax({
-        type: "POST",
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-        url:  "<%= emailaccount_path(@emailaccount) %>",
-        data: {"_method":"delete"},
-        success: function(result){
-            console.log(result);
-        }
+      type: "POST",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      url:  "<%= emailaccount_path(@emailaccount) %>",
+      data: {"_method":"delete"},
+      success: function(result){
+          console.log(result);
+      }
     });
+  }
 }else{
-    alert('note sure');
+    alert('Sorry. You cannot remove the main account.');
 }
+

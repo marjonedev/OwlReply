@@ -1,5 +1,6 @@
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
+  include EmailaccountsHelper
   before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove]
 
@@ -68,8 +69,9 @@ class EmailaccountsController < ApplicationController
   end
 
   def remove
+    @remove = is_main_account(@emailaccount) ? false : true
     respond_to do |format|
-      format.js {}
+        format.js {}
     end
   end
 
