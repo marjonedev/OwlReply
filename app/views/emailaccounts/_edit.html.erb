@@ -67,7 +67,9 @@
       <div class="card-footer noleftpadding norightpadding nobottompadding bg-white">
         <%= f.submit 'Save', :class => 'button nomargin' %>
         <%= link_to 'Cancel', emailaccount_url(emailaccount), class: 'button-cancel button button-white button-light' %>
-        <%= link_to 'Remove', remove_emailaccount_path(emailaccount), class: 'button-remove button button-red float-right', method: :delete, remote: true %>
+        <% unless is_main_account(emailaccount) %>
+          <%= link_to 'Remove', remove_emailaccount_path(emailaccount), class: 'button-remove button button-red float-right', method: :delete, remote: true %>
+        <% end %>
       </div>
 
     <% end %>

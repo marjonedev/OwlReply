@@ -17,4 +17,8 @@ module EmailaccountsHelper
 
     "#{count} keywords"
   end
+
+  def is_main_account(emailaccount)
+    current_user.email_address == emailaccount.address
+  end
 end
