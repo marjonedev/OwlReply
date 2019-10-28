@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       patch :connect
       put :connect
       post :connect
+      delete :remove
     end
   end
   resources :sessions

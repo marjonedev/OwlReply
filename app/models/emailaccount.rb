@@ -1,6 +1,6 @@
 class Emailaccount < ApplicationRecord
   belongs_to :user
-  has_many :replies
+  has_many :replies, :dependent => :destroy
   before_save :clear_errors
 
   validates_presence_of :address

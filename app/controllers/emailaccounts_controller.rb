@@ -1,7 +1,7 @@
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -64,6 +64,12 @@ class EmailaccountsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to emailaccounts_url, notice: 'Email Account was successfully removed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def remove
+    respond_to do |format|
+      format.js {}
     end
   end
 
@@ -138,8 +144,6 @@ class EmailaccountsController < ApplicationController
             })
 
     response = client.fetch_access_token!
-
-    logger.debug response
 
     session[:access_token] = response['access_token']
 
