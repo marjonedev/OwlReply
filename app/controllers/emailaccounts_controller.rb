@@ -61,11 +61,19 @@ class EmailaccountsController < ApplicationController
   # DELETE /emailaccounts/1
   # DELETE /emailaccounts/1.json
   def destroy
-    @emailaccount.destroy
-    respond_to do |format|
-      format.html { redirect_to emailaccounts_url, notice: 'Email Account was successfully removed.' }
-      format.json { head :no_content }
+    unless is_main_account(@emailaccount)
+      @emailaccount.destroy
+      respond_to do |format|
+        format.html { redirect_to emailaccounts_url, notice: 'Email Account was successfully removed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to emailaccount_url(@emailaccount), notice: 'Cannot remove main email account' }
+        format.json { head :no_content }
+      end
     end
+
   end
 
   def remove
