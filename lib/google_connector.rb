@@ -70,6 +70,7 @@ module GoogleConnector
                                          "grant_type" => 'refresh_token'}
 
     data = JSON.parse(request.body)
+
     expires_in = Time.now.to_i + data['expires_in']
     account.update(google_access_token: data['access_token'],
                    google_expires_in: expires_in)
@@ -80,11 +81,40 @@ module GoogleConnector
   end
 
   def revoke_access(account)
-    uri = URI("https://accounts.google.com/o/oauth2/revoke")
 
-    puts uri.request_uri
+    refresh_api!(account)
 
-    request = Net::HTTP::Post.new(uri.request_uri)
+    revoke = false
+    token = nil
+
+    if account.google_access_token?
+      token = account.google_access_token
+      revoke = true
+    elsif account.google_refresh_token?
+      token = account.google_refresh_token
+      revoke = true
+    end
+
+    if revoke
+      url = URI("https://accounts.google.com/o/oauth2/revoke")
+      request = Net::HTTP.post_form url, { "token" => token }
+
+      if request.code == 200
+        account.update(google_access_token: nil,
+                       google_expires_in: nil,
+                       google_refresh_token: nil,
+                       authenticated: false,
+                       email_provider: nil)
+        true
+      else
+        false
+      end
+
+    else
+
+      false
+
+    end
 
   end
 end
