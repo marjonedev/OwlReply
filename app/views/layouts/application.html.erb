@@ -319,6 +319,13 @@
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       </div>
     <% end %>
+
+    <% if alert %>
+        <div class="style-msg errormsg">
+          <div class="sb-msg"><%=alert%></div>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        </div>
+    <% end %>
   </div>
 
   <%= yield :javascript_footer_includes %>

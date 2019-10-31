@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       put :connect
       post :connect
       delete :remove
+      get :revoke_account_access
     end
   end
   resources :sessions

@@ -100,6 +100,7 @@ module GoogleConnector
       request = Net::HTTP.post_form url, { "token" => token }
 
       if request.code == 200
+
         account.update(google_access_token: nil,
                        google_expires_in: nil,
                        google_refresh_token: nil,

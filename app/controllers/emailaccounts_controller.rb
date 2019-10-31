@@ -1,6 +1,7 @@
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   include EmailaccountsHelper
+  include GoogleConnector
   before_action :logged_in_user
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove, :revoke_account_access]
 
@@ -184,19 +185,23 @@ class EmailaccountsController < ApplicationController
   def revoke_account_access
 
     if @emailaccount.email_provider == "google"
-      include GoogleConnector
       respond_to do |format|
         if revoke_access(@emailaccount)
           format.html { redirect_to @emailaccount, notice: 'Account access has been revoked' }
           format.json { render :show, status: :ok, location: @emailaccount }
         else
+          format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Account has problem revoking access' }
           format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
         end
       end
     elsif @emailaccount.email_provider == "other"
-
+      respond_to do |format|
+        format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Nothing to revoke as of now' }
+      end
     else
-
+      respond_to do |format|
+        format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'System Error.' }
+      end
     end
 
   end
