@@ -78,4 +78,13 @@ module GoogleConnector
   def refresh_api!(account)
     refresh_token(account) if account.google_expires_in.to_i < Time.now.to_i
   end
+
+  def revoke_access(account)
+    uri = URI("https://accounts.google.com/o/oauth2/revoke")
+
+    puts uri.request_uri
+
+    request = Net::HTTP::Post.new(uri.request_uri)
+
+  end
 end
