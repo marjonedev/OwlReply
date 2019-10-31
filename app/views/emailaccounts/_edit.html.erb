@@ -72,6 +72,9 @@
         <% end %>
       </div>
 
+      <% if emailaccount.authenticated %>
+      <div class="pt-lg-4"><small>Your account have been authenticated.</small> <%= link_to 'Revoke Access', '#', onclick: "return confirm('Are you sure to revoke access?')", class: "button button-3d button-mini button-rounded button-leaf" %></div>
+      <% end %>
     <% end %>
   </div>
 </div>

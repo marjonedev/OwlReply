@@ -2,7 +2,7 @@ class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   include EmailaccountsHelper
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove, :revoke_account_access]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -178,6 +178,26 @@ class EmailaccountsController < ApplicationController
                         email_provider: 'google')
 
     redirect_to url_for(action: 'show', id: emailaccount_id), notice: emailaccount.address + " successfully authenticated"
+
+  end
+
+  def revoke_account_access
+
+    if @emailaccount.email_provider == "google"
+      include GoogleConnector
+      respond_to do |format|
+        if revoke_access(@emailaccount)
+          format.html { redirect_to @emailaccount, notice: 'Account access has been revoked' }
+          format.json { render :show, status: :ok, location: @emailaccount }
+        else
+          format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
+        end
+      end
+    elsif @emailaccount.email_provider == "other"
+
+    else
+
+    end
 
   end
 
