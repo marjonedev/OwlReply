@@ -343,3 +343,10 @@ div.list-paymentmethod .list-group-item{
 .admin #repliesTable td{
     word-break: break-word;
 }
+
+
+/* Helpers
+==============================*/
+#content .post ul{
+    margin-left: 20px;
+}
