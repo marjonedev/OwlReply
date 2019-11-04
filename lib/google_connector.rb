@@ -6,7 +6,9 @@ module GoogleConnector
 
     service.authorization = client
 
-    unless refresh_api!(account).nil?
+    refresh = refresh_token(emailaccount)
+
+    if refresh && refresh.nil?
       return false
     end
 
@@ -73,7 +75,7 @@ module GoogleConnector
                                          "grant_type" => 'refresh_token'}
 
     data = JSON.parse(request.body)
-    result = {}
+    result = nil
 
     if data.key?("error")
      result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
@@ -84,11 +86,7 @@ module GoogleConnector
                      google_expires_in: expires_in)
     end
 
-    logger.debug "==============================="
-    logger.debug data
-    puts data
-
-    result
+    return result
 
   end
 
@@ -98,7 +96,9 @@ module GoogleConnector
 
   def revoke_access(account)
 
-    unless refresh_api!(account).nil?
+    refresh = refresh_token(account)
+
+    if refresh && refresh.nil?
       return false
     end
 
@@ -114,11 +114,12 @@ module GoogleConnector
       revoke = true
     end
 
+
     if revoke
       url = URI("https://accounts.google.com/o/oauth2/revoke")
       request = Net::HTTP.post_form url, { "token" => token }
 
-      if request.code == 200
+      if request.code.to_i == 200
         empty_account(account)
         true
       else
