@@ -5,7 +5,10 @@ module GoogleConnector
     service = Google::Apis::GmailV1::GmailService.new
 
     service.authorization = client
-    refresh_api!(emailaccount)
+
+    unless refresh_api!(account).nil?
+      return false
+    end
 
     list = service.list_user_messages('me', label_ids: ["UNREAD"])
 
@@ -70,10 +73,23 @@ module GoogleConnector
                                          "grant_type" => 'refresh_token'}
 
     data = JSON.parse(request.body)
+    result = {}
 
-    expires_in = Time.now.to_i + data['expires_in']
-    account.update(google_access_token: data['access_token'],
-                   google_expires_in: expires_in)
+    if data.key?("error")
+     result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
+     empty_account(account)
+    else
+      expires_in = Time.now.to_i + data['expires_in']
+      account.update(google_access_token: data['access_token'],
+                     google_expires_in: expires_in)
+    end
+
+    logger.debug "==============================="
+    logger.debug data
+    puts data
+
+    result
+
   end
 
   def refresh_api!(account)
@@ -82,7 +98,10 @@ module GoogleConnector
 
   def revoke_access(account)
 
-    refresh_api!(account)
+    unless refresh_api!(account).nil?
+      return false
+    end
+
 
     revoke = false
     token = nil
@@ -100,12 +119,7 @@ module GoogleConnector
       request = Net::HTTP.post_form url, { "token" => token }
 
       if request.code == 200
-
-        account.update(google_access_token: nil,
-                       google_expires_in: nil,
-                       google_refresh_token: nil,
-                       authenticated: false,
-                       email_provider: nil)
+        empty_account(account)
         true
       else
         false
@@ -118,4 +132,13 @@ module GoogleConnector
     end
 
   end
+
+  def empty_account(account)
+    account.update(google_access_token: nil,
+                   google_expires_in: nil,
+                   google_refresh_token: nil,
+                   authenticated: false,
+                   email_provider: nil)
+  end
+
 end
