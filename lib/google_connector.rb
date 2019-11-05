@@ -37,9 +37,10 @@ module GoogleConnector
       end
     end
 
-    email_array.each do |i|
-      create_drafts(i, emailaccount)
-    end
+    email_array
+    # email_array.each do |i|
+    #   create_drafts(emailaccount)
+    # end
   end
 
 
