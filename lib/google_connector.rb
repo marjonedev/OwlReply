@@ -42,9 +42,13 @@ module GoogleConnector
     end
   end
 
-  def create_drafts(userid, emailaccount)
+
+
+  def create_drafts(emailaccount)
     client = Signet::OAuth2::Client.new(access_token: emailaccount.google_access_token)
     service = Google::Apis::GmailV1::GmailService.new
+
+    gmail = Google::Apis::GmailV1
 
     service.authorization = client
     # refresh_api!(emailaccount)
@@ -56,9 +60,13 @@ module GoogleConnector
     message.header['Subject'] = 'Test Draft'
     message.body = 'Test Body'
 
-    service.create_user_draft(userid,
-                              upload_source: StringIO.new(message.to_s),
-                              content_type: 'message/rfc822')
+    draft = gmail::Draft.new
+    draft.message = message
+    service.create_user_draft("me", draft)
+
+    # service.create_user_draft("me",
+    #                           upload_source: StringIO.new(message.to_s),
+    #                           content_type: 'message/rfc822')
     puts "====================================="
     puts message
 
