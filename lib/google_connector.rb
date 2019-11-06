@@ -8,7 +8,7 @@ module GoogleConnector
 
     refresh = refresh_token(emailaccount)
 
-    if refresh && refresh.nil?
+    if refresh && !refresh.nil?
       return false
     end
 
@@ -88,14 +88,14 @@ module GoogleConnector
 
     if data.key?("error")
      result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
-     empty_account(account)
+     # empty_account(account)
     else
       expires_in = Time.now.to_i + data['expires_in']
       account.update(google_access_token: data['access_token'],
                      google_expires_in: expires_in)
     end
 
-    return result
+    result
 
   end
 
@@ -107,7 +107,7 @@ module GoogleConnector
 
     refresh = refresh_token(account)
 
-    if refresh && refresh.nil?
+    if refresh && !refresh.nil?
       return false
     end
 
