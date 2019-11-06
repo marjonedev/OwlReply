@@ -45,7 +45,7 @@ module GoogleConnector
 
 
 
-  def create_drafts(emailaccount)
+  def create_draft(emailaccount)
     client = Signet::OAuth2::Client.new(access_token: emailaccount.google_access_token)
     service = Google::Apis::GmailV1::GmailService.new
 
