@@ -108,6 +108,7 @@ module GoogleConnector
     refresh = refresh_token(account)
 
     if refresh && !refresh.nil?
+      empty_account(account)
       return false
     end
 
