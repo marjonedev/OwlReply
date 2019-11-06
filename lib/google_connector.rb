@@ -61,13 +61,13 @@ module GoogleConnector
     message.header['Subject'] = 'Test Draft'
     message.body = 'Test Body'
 
-    draft = gmail::Draft.new
-    draft.message = message
-    service.create_user_draft("me", draft)
+    # draft = gmail::Draft.new
+    # draft.message = message
+    # service.create_user_draft("me", draft)
 
-    # service.create_user_draft("me",
-    #                           upload_source: StringIO.new(message.to_s),
-    #                           content_type: 'message/rfc822')
+    service.create_user_draft("me",
+                              upload_source: StringIO.new(message.to_s),
+                              content_type: 'message/rfc822')
     puts "====================================="
     puts message
 
