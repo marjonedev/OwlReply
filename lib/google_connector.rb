@@ -77,25 +77,38 @@ module GoogleConnector
     api_client_id = Rails.application.credentials.google_api_client_id
     api_client_secret = Rails.application.credentials.google_client_secret
 
-    url = URI("https://accounts.google.com/o/oauth2/token")
-    request = Net::HTTP.post_form url, { "refresh_token" => account.google_refresh_token,
-                                         "client_id" => api_client_id,
-                                         "client_secret" => api_client_secret,
-                                         "grant_type" => 'refresh_token'}
+    credentials = Google::Auth::UserRefreshCredentials.new(
+        client_id: api_client_id,
+        client_secret: api_client_secret,
+        scope: %w(https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify), # enter the scope for a service whichever you want to use
+        additional_parameters: { "access_type" => "offline" })
 
-    data = JSON.parse(request.body)
-    result = nil
+    credentials.refresh_token = account.google_refresh_token
 
-    if data.key?("error")
-     result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
-     # empty_account(account)
-    else
-      expires_in = Time.now.to_i + data['expires_in']
-      account.update(google_access_token: data['access_token'],
-                     google_expires_in: expires_in)
-    end
+    credentials.fetch_access_token!
 
-    result
+    puts "==================================="
+    puts credentials
+
+    # url = URI("https://accounts.google.com/o/oauth2/token")
+    # request = Net::HTTP.post_form url, { "refresh_token" => account.google_refresh_token,
+    #                                      "client_id" => api_client_id,
+    #                                      "client_secret" => api_client_secret,
+    #                                      "grant_type" => 'refresh_token'}
+    #
+    # data = JSON.parse(request.body)
+    # result = nil
+    #
+    # if data.key?("error")
+    #  result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
+    #  # empty_account(account)
+    # else
+    #   expires_in = Time.now.to_i + data['expires_in']
+    #   account.update(google_access_token: data['access_token'],
+    #                  google_expires_in: expires_in)
+    # end
+    #
+    # result
 
   end
 

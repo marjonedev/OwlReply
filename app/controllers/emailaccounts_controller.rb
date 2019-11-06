@@ -135,7 +135,7 @@ class EmailaccountsController < ApplicationController
                   client_id: api_client_id,
                   client_secret: api_client_secret,
                   authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-                  scope: Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
+                  scope: %w(https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify), # enter the scope for a service whichever you want to use
                   redirect_uri: emailaccounts_google_callback_url
               })
 
