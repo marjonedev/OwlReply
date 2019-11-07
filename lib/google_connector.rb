@@ -40,16 +40,12 @@ module GoogleConnector
         end
       end
 
-      puts "===================="
-      puts email_array
-
       email_array
 
     end
 
 
-    def create_reply_draft
-      # refresh_api!(emailaccount)
+    def create_reply_draft to, from, subject, body
 
       require 'rmail'
       message = RMail::Message.new
