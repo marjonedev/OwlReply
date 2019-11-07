@@ -158,13 +158,6 @@ class EmailaccountsController < ApplicationController
 
     session[:access_token] = response['access_token']
 
-=begin
-  todo:
-    1. access_token and expiry date to database
-    2. save email_provider = google
-    3. set authenticated = true
-=end
-
     emailaccount_id = session[:emailaccount_id]
     session.delete(:emailaccount_id)
 
@@ -186,7 +179,9 @@ class EmailaccountsController < ApplicationController
 
     if @emailaccount.email_provider == "google"
       respond_to do |format|
-        if revoke_access(@emailaccount)
+        api = GmailApi.new @emailaccount
+
+        if api.revoke_access
           format.html { redirect_to @emailaccount, notice: 'Account access has been revoked' }
           format.json { render :show, status: :ok, location: @emailaccount }
         else
