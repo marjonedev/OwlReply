@@ -40,23 +40,37 @@ module GoogleConnector
         end
       end
 
+      # create_reply_draft "16e41a27e9e06a32"
+      # puts "=============================="
+      # puts email_array[0]['id']
+
       email_array
 
     end
 
 
-    def create_reply_draft to, from, subject, body
+    def create_reply_draft thread_id
 
       require 'rmail'
       message = RMail::Message.new
       message.header['To'] = 'marjonedev@gmail.com'
-      message.header['From'] = 'marjone.owlreply@gmail.com'
+      # message.header['From'] = 'marjone@owlreply.com'
       message.header['Subject'] = 'Test Draft'
       message.body = 'Test Body'
 
-      @service.create_user_draft("me",
-                                upload_source: StringIO.new(message.to_s),
-                                content_type: 'message/rfc822')
+      @service.create_user_draft(
+          "me",
+          Google::Apis::GmailV1::Draft.new(
+              :message => Google::Apis::GmailV1::Message.new(
+                  :raw => message.to_s,
+                  :thread_id => thread_id
+              )
+          )
+      )
+
+      # @service.create_user_draft("me",
+      #                           upload_source: StringIO.new(message.to_s),
+      #                           content_type: 'message/rfc822')
 
       puts "====================================="
       puts message
