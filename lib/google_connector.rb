@@ -11,8 +11,10 @@ module GoogleConnector
 
       refresh = refresh_api!
 
-      if refresh && !refresh.nil?
-        return false
+      if refresh
+        unless refresh.nil?
+          return false
+        end
       end
 
       list = @service.list_user_messages('me', label_ids: ["UNREAD"])
@@ -74,6 +76,17 @@ module GoogleConnector
 
       puts "====================================="
       puts message
+
+    end
+
+    def read_message email_id
+
+      modify = @service.modify_message("me", email_id, {
+          "remove_label_ids": ["UNREAD"],
+      })
+
+      puts "=================================="
+      puts modify
 
     end
 
