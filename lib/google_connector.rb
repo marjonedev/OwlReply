@@ -17,7 +17,7 @@ module GoogleConnector
         end
       end
 
-      list = @service.list_user_messages('me', label_ids: ["UNREAD"])
+      list = @service.list_user_messages('me', label_ids: ['UNSEEN'])
 
       email_array = []
 
@@ -76,7 +76,7 @@ module GoogleConnector
 
       @service.batch_modify_messages("me", {
           ids: email_ids,
-          remove_label_ids: ['UNREAD'],
+          remove_label_ids: %w(UNREAD UNSEEN),
       }, options: {})
 
     end

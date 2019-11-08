@@ -122,5 +122,13 @@ module ReplyMaker
       end
     end
 
+    def self.test_google_draft account
+      include GoogleConnector
+      api = GmailApi.new account
+
+      messages = api.get_messages
+
+    end
+
   end
 end
