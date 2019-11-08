@@ -30,6 +30,7 @@ module GoogleConnector
 
           obj['id'] = i.id
           obj['subject'] = subject
+          obj['thread_id'] = i.thread_id
 
           email.payload.parts.each do |part|
             if part.body.data
@@ -41,10 +42,6 @@ module GoogleConnector
           email_array.push(obj)
         end
       end
-
-      # create_reply_draft "16e41a27e9e06a32"
-      # puts "=============================="
-      # puts email_array[0]['id']
 
       email_array
 
