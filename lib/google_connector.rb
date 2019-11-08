@@ -79,14 +79,12 @@ module GoogleConnector
 
     end
 
-    def read_message email_id
+    def read_messages email_ids
 
-      modify = @service.modify_message("me", email_id, {
-          "remove_label_ids": ["UNREAD"],
-      })
-
-      puts "=================================="
-      puts modify
+      @service.batch_modify_messages("me", {
+          ids: email_ids,
+          remove_label_ids: ['UNREAD'],
+      }, options: {})
 
     end
 
