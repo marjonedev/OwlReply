@@ -67,10 +67,6 @@ module GoogleConnector
           )
       )
 
-      # @service.create_user_draft("me",
-      #                           upload_source: StringIO.new(message.to_s),
-      #                           content_type: 'message/rfc822')
-
       puts "====================================="
       puts message
 
