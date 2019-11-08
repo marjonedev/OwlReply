@@ -128,6 +128,11 @@ module ReplyMaker
 
       messages = api.get_messages
 
+      ids = messages.map{|m| m['thread_id'] }
+
+      puts "============================"
+      puts ids
+
     end
 
   end

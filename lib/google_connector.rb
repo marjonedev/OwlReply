@@ -17,7 +17,7 @@ module GoogleConnector
         end
       end
 
-      list = @service.list_user_messages('me', label_ids: ['UNSEEN'])
+      list = @service.list_user_messages('me', label_ids: ['UNREAD', 'INBOX'])
 
       email_array = []
 
@@ -32,12 +32,19 @@ module GoogleConnector
           obj['subject'] = subject
           obj['thread_id'] = i.thread_id
 
-          email.payload.parts.each do |part|
-            if part.body.data
-              obj['message'] = part.body.data
-              break
-            end
+          body = email.payload.body.data
+          if body.nil? && email.payload.parts.any?
+            body = email.payload.parts.map { |part| part.body.data }.join
           end
+
+          obj['message'] = body
+
+          # email.payload.parts.each do |part|
+          #   if part.body.data
+          #     obj['message'] = part.body.data
+          #     break
+          #   end
+          # end
 
           email_array.push(obj)
         end
@@ -67,8 +74,8 @@ module GoogleConnector
           )
       )
 
-      puts "====================================="
-      puts message
+      # puts "====================================="
+      # puts message
 
     end
 
@@ -76,7 +83,7 @@ module GoogleConnector
 
       @service.batch_modify_messages("me", {
           ids: email_ids,
-          remove_label_ids: %w(UNREAD UNSEEN),
+          remove_label_ids: %w(UNREAD),
       }, options: {})
 
     end
@@ -106,7 +113,7 @@ module GoogleConnector
     end
 
     def refresh_api!
-      if @emailaccount.google_expires_in.to_i < Time.now.to_i
+      if @emailaccount.google_expires_in.to_i > Time.now.to_i
         refresh_token
       else
         false
