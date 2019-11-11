@@ -128,10 +128,16 @@ module ReplyMaker
 
       messages = api.get_messages
 
-      ids = messages.map{|m| m['thread_id'] }
+      thread_ids = messages.map{|m| m['thread_id'] }
+      ids = messages.map{|m| m['id'] }
 
-      puts "============================"
-      puts ids
+      #read_emails
+      api.read_messages(ids)
+
+      thread_ids.each do |thread|
+        api.create_reply_draft thread
+      end
+
 
     end
 

@@ -113,7 +113,8 @@ module GoogleConnector
     end
 
     def refresh_api!
-      if @emailaccount.google_expires_in.to_i > Time.now.to_i
+
+      if Time.now.to_i > @emailaccount.google_expires_in.to_i
         refresh_token
       else
         false
