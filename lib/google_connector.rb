@@ -25,26 +25,38 @@ module GoogleConnector
         set.each do |i|
           obj = {}
           email = @service.get_user_message('me', i.id)
-          headers = email.payload.headers
+          payload = email.payload
+          headers = payload.headers
           subject = headers.any? { |h| h.name == 'Subject' } ? headers.find { |h| h.name == 'Subject' }.value : ''
+          date = headers.any? { |h| h.name == 'Date' } ? headers.find { |h| h.name == 'Date' }.value : ''
+          from = headers.any? { |h| h.name == 'From' } ? headers.find { |h| h.name == 'From' }.value : ''
 
           obj['id'] = i.id
           obj['subject'] = subject
           obj['thread_id'] = i.thread_id
+          obj['date'] = date
+          obj['from'] = from
+          obj['body_text'] = nil
+          obj['body_html'] = nil
 
-          body = email.payload.body.data
-          if body.nil? && email.payload.parts.any?
-            body = email.payload.parts.map { |part| part.body.data }.join
+          # if body.nil? && payload.parts.any?
+          #   body = payload.parts.map { |part| part.body.data }.join
+          # end
+          body = payload.body.data
+          if body.nil? && payload.parts.any?
+            payload.parts.each do |part|
+              mime = part.mime_type
+              if mime == "text/plain"
+                obj['body_text'] = part.body.data
+              elsif mime == "text/html"
+                obj['body_html'] = part.body.data
+              else
+                body = part.body.data
+              end
+            end
           end
 
-          obj['message'] = body
-
-          # email.payload.parts.each do |part|
-          #   if part.body.data
-          #     obj['message'] = part.body.data
-          #     break
-          #   end
-          # end
+          obj['body'] = body
 
           email_array.push(obj)
         end
@@ -54,28 +66,27 @@ module GoogleConnector
 
     end
 
-
-    def create_reply_draft thread_id
+    def create_reply_draft id, thread_id, to: nil, from: nil, subject: "", body_text: "",  body_html: ""
 
       require 'rmail'
       message = RMail::Message.new
-      message.header['To'] = 'marjonedev@gmail.com'
-      # message.header['From'] = 'marjone@owlreply.com'
-      message.header['Subject'] = 'Test Draft'
-      message.body = 'Test Body'
+      message.header['To'] = to
+      message.header['From'] = from.nil? ? @emailaccount.address : from
+      message.header['Subject'] = subject
+      # message.header['In-Reply-To'] = id
+      # message.header['References'] = id
+      message.body = body_text
 
       @service.create_user_draft(
           "me",
           Google::Apis::GmailV1::Draft.new(
               :message => Google::Apis::GmailV1::Message.new(
                   :raw => message.to_s,
-                  :thread_id => thread_id
+                  # :thread_id => thread_id,
+                  :id => id,
               )
           )
       )
-
-      # puts "====================================="
-      # puts message
 
     end
 
