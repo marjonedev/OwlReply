@@ -36,8 +36,10 @@ module GoogleConnector
           obj['thread_id'] = i.thread_id
           obj['date'] = date
           obj['from'] = from
-          obj['body_text'] = nil
+          obj['body'] = ""
           obj['body_html'] = nil
+          obj['body_text'] = nil
+          obj['body_size'] = payload.body.size rescue 0
 
           # if body.nil? && payload.parts.any?
           #   body = payload.parts.map { |part| part.body.data }.join
@@ -47,16 +49,15 @@ module GoogleConnector
             payload.parts.each do |part|
               mime = part.mime_type
               if mime == "text/plain"
+                obj['body'] = part.body.data
                 obj['body_text'] = part.body.data
               elsif mime == "text/html"
                 obj['body_html'] = part.body.data
               else
-                body = part.body.data
+                obj['body'] = part.body.data
               end
             end
           end
-
-          obj['body'] = body
 
           email_array.push(obj)
         end
