@@ -20,29 +20,51 @@ module ReplyMaker
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
       while not resetting?
-        self.check_accounts
+        self.check_accounts_using_imap
+        self.check_accounts_using_google
       end
     end
-    def self.check_accounts
+
+    def self.check_accounts_using_imap
       accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
       for account in accounts
         begin
-          ###next if (account.last_checked > (Time.now.to_i - (3*60))) unless account.last_checked.nil? #Check a max of every 3 minutes.
+          ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
           self.touch_last_reply_time
-          self.create_drafts(account)
-          puts "Success on account #{account.address}. #{$!.to_s}"
+          self.create_drafts_using_imap(account)
+          puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
           account.update_column(:last_checked,Time.now.to_i)
         rescue
-          puts "Failure on account #{account.address}. #{$!.to_s}"
+          puts "IMAP - Failure on account #{account.address}. #{$!.to_s}"
           account.update_column(:error,$!.to_s)
         end
       end
       sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
       self.touch_last_reply_time
     end
+
+    def self.check_accounts_using_google
+      accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
+      for account in accounts
+        begin
+          ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
+          self.touch_last_reply_time
+          self.create_drafts_using_google(account)
+          puts "Google - Success on account #{account.address}. #{$!.to_s}"
+          account.update_column(:last_checked,Time.now.to_i)
+        rescue
+          puts "Google - Failure on account #{account.address}. #{$!.to_s}"
+          account.update_column(:error,$!.to_s)
+        end
+      end
+      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
+      self.touch_last_reply_time
+    end
+
     def self.reset
       REDIS.set("replymaker_reset",1)
     end
+
     def self.resetting?
       if (REDIS.get("replymaker_reset").to_i == 1)
         REDIS.del("replymaker_reset")
@@ -51,23 +73,27 @@ module ReplyMaker
         return false
       end
     end
+
     def self.already_running_fine?
       self.get_last_reply_time > (Time.now.to_i - (2*60))
     end
+
     def self.touch_last_reply_time
       # INSERT INTO REDIS
       REDIS.set("last_reply_checked_at",Time.now.to_i)
     end
+
     def self.get_last_reply_time
       REDIS.get("last_reply_checked_at").to_i
     end
+
     def self.reset_drafts_daycount
       if Time.now.beginning_of_day > Time.at(self.get_last_reply_time).beginning_of_day
         Emailaccount.where('drafts_created_today IS NOT NULL').update_all(drafts_created_today: nil, drafts_missing_replies_today: nil)
       end
     end
 
-    def self.create_drafts(account)
+    def self.create_drafts_using_imap(account)
       require 'net/imap'
       require 'mail'
       imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
@@ -120,6 +146,13 @@ module ReplyMaker
         account.increment!(:drafts_missing_replies_today) unless reply_used
         account.increment!(:drafts_missing_replies_lifetime) unless reply_used
       end
+    end
+
+
+
+    # To be finished, or just rename test_google_draft once it works.
+    def self.create_drafts_using_google(account)
+
     end
 
     def self.test_google_draft account
