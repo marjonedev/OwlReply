@@ -66,15 +66,19 @@ module GoogleConnector
 
     end
 
-    def create_reply_draft id, thread_id, to: nil, from: nil, subject: "", body_text: "",  body_html: ""
+    def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", body_text: "",  body_html: "")
+
+      if thread_id.nil?
+        thread_id = id
+      end
 
       require 'rmail'
       message = RMail::Message.new
       message.header['To'] = to
       message.header['From'] = from.nil? ? @emailaccount.address : from
       message.header['Subject'] = subject
-      # message.header['In-Reply-To'] = id
-      # message.header['References'] = id
+      message.header['In-Reply-To'] = id
+      message.header['References'] = id
       message.body = body_text
 
       @service.create_user_draft(
@@ -82,7 +86,7 @@ module GoogleConnector
           Google::Apis::GmailV1::Draft.new(
               :message => Google::Apis::GmailV1::Message.new(
                   :raw => message.to_s,
-                  # :thread_id => thread_id,
+                  :thread_id => thread_id,
                   :id => id,
               )
           )
