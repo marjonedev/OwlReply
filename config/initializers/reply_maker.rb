@@ -148,8 +148,6 @@ module ReplyMaker
       end
     end
 
-
-
     # To be finished, or just rename test_google_draft once it works.
     def self.create_drafts_using_google account
       include GoogleConnector
