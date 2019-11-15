@@ -73,14 +73,38 @@ module GoogleConnector
         thread_id = id
       end
 
-      require 'rmail'
-      message = RMail::Message.new
-      message.header['To'] = to
-      message.header['From'] = from.nil? ? @emailaccount.address : from
-      message.header['Subject'] = subject
-      message.header['In-Reply-To'] = id
-      message.header['References'] = id
-      message.body = body_text
+      # require 'rmail'
+      # message = RMail::Message.new
+      # message.header['To'] = to
+      # message.header['From'] = from.nil? ? @emailaccount.address : from
+      # message.header['Subject'] = subject
+      # # message.header['In-Reply-To'] = id
+      # # message.header['References'] = id
+      # message.header.set_boundary('----------------')
+      #
+      # text_part = RMail::Message.new
+      # text_part.header['Content-Type'] = 'text/plain; charset="UTF-8"'
+      # text_part.body = body_text
+      # message.add_part(text_part)
+      #
+      # html_part = RMail::Message.new
+      # html_part.header['Content-Type'] = 'text/html; charset="UTF-8"'
+      # html_part.header['Content-Transfer-Encoding'] = 'quoted-printable'
+      # html_part.body = body_html
+      # message.add_part(html_part)
+
+      require 'mail'
+      message         = Mail.new
+      message.date    = Time.now
+      message.subject = subject
+      message.from    = from.nil? ? @emailaccount.address : from
+      message.to      = to
+
+      message.part content_type: 'multipart/alternative' do |part|
+        part.html_part = Mail::Part.new(body: body_html, content_type: 'text/html; charset=UTF-8')
+        part.text_part = Mail::Part.new(body: body_text)
+      end
+
 
       @service.create_user_draft(
           "me",
@@ -96,8 +120,7 @@ module GoogleConnector
     end
 
     def read_messages email_ids
-
-      if email_ids
+      if email_ids.any?
         @service.batch_modify_messages("me", {
             ids: email_ids,
             remove_label_ids: %w(UNREAD),

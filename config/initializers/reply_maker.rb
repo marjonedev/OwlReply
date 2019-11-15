@@ -151,23 +151,12 @@ module ReplyMaker
 
 
     # To be finished, or just rename test_google_draft once it works.
-    def self.create_drafts_using_google(account)
-
-    end
-
-    def self.test_google_draft2 account
-      include GoogleConnector
-      api = GmailApi.new account
-
-    end
-
-    def self.test_google_draft account
+    def self.create_drafts_using_google account
       include GoogleConnector
       api = GmailApi.new account
 
       messages = api.get_messages
 
-      # thread_ids = messages.map{|m| m['thread_id'] }
       ids = []
 
       messages.each do |msg|
@@ -207,11 +196,7 @@ module ReplyMaker
         account.increment!(:drafts_missing_replies_lifetime) unless reply_used
       end
 
-      puts "==================================="
-      puts ids
-
       api.read_messages(ids)
-
 
     end
 
