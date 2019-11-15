@@ -155,6 +155,12 @@ module ReplyMaker
 
     end
 
+    def self.test_google_draft2 account
+      include GoogleConnector
+      api = GmailApi.new account
+
+    end
+
     def self.test_google_draft account
       include GoogleConnector
       api = GmailApi.new account
@@ -162,14 +168,12 @@ module ReplyMaker
       messages = api.get_messages
 
       # thread_ids = messages.map{|m| m['thread_id'] }
-      ids = messages.map{|m| m['id'] }
-      #
-      api.read_messages(ids)
-      #
+      ids = []
+
       messages.each do |msg|
         thebody = msg['body'].to_s.downcase
         next if account.subject_line_skip?(msg['subject'])
-        next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
+        next if api.is_thread_message! msg['thread_id'] # Skip if this thread has more than one email! Secret sauce!
 
         auto = ""
         for reply in account.replies
@@ -190,10 +194,11 @@ module ReplyMaker
         subject = "Re: #{msg['subject']}"
 
         text_part = account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-        html_part = body account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n"+body_html
+        html_part = account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n"+body_html
 
         if reply_used
           api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, body_text: text_part, body_html: html_part)
+          ids.push(msg['id'])
         end
 
         account.increment!(:drafts_created_today)
@@ -201,6 +206,11 @@ module ReplyMaker
         account.increment!(:drafts_missing_replies_today) unless reply_used
         account.increment!(:drafts_missing_replies_lifetime) unless reply_used
       end
+
+      puts "==================================="
+      puts ids
+
+      api.read_messages(ids)
 
 
     end

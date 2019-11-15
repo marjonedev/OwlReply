@@ -97,11 +97,18 @@ module GoogleConnector
 
     def read_messages email_ids
 
-      @service.batch_modify_messages("me", {
-          ids: email_ids,
-          remove_label_ids: %w(UNREAD),
-      }, options: {})
+      if email_ids
+        @service.batch_modify_messages("me", {
+            ids: email_ids,
+            remove_label_ids: %w(UNREAD),
+        }, options: {})
+      end
 
+    end
+
+    def is_thread_message! thread_id
+      thread = @service.get_user_thread("me", thread_id, format: 'minimal')
+      thread.messages.count > 1
     end
 
     def refresh_token
