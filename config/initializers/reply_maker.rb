@@ -19,9 +19,11 @@ module ReplyMaker
       return if already_running_fine?
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
+      loops = 0
       while not resetting?
         self.check_accounts_using_imap
         self.check_accounts_using_google
+        loops += 1 # Possibly end after a certain number of loops, so as to free up memory.
       end
     end
 
