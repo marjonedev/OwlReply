@@ -95,7 +95,7 @@ class EmailaccountsController < ApplicationController
     last_checked = nil
 
     if @emailaccount.error
-      last_checked = "Last error: #{obj.error}"
+      last_checked = "Last error: #{@emailaccount.error}"
     end
     unless @emailaccount.last_checked.nil?
       last_checked = "Last checked: #{time_ago_in_words @emailaccount.last_checked} ago"
