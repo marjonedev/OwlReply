@@ -1,6 +1,6 @@
 =begin
   todo:
-     1. authenticate email account first
+    1. authenticate email account first
     2. if not authenticated, reauthorize
     3. search message from inbox, unread
     4. get the subject and body and convert to lower case
@@ -20,7 +20,7 @@ module ReplyMaker
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
       loops = 0
-      while not resetting?
+      while not (resetting? || (loops > 25))
         self.check_accounts_using_imap
         self.check_accounts_using_google
         loops += 1 # Possibly end after a certain number of loops, so as to free up memory.
