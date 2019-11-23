@@ -29,7 +29,7 @@ module ReplyMaker
 
     def self.check_accounts_using_imap
       # accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND authenticated = 1 AND (email_provider IS NULL OR email_provider = "other") AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND authenticated <> 1 AND (email_provider IS NULL OR email_provider = "other") AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
       for account in accounts
         begin
           ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
