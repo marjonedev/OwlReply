@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <style media="all" type="text/css">
+    td {font-family:Verdana, Geneva, sans-serif;}
+    #thebody { text-align: center; }
+    table { margin: 0px auto 20px auto; border: 1px solid #CCC; text-align: left; }
+    h1,.footer { text-align: center; }
+  </style>
+  <title>OwlReply Email</title>
+  <body style="color: #000000; font-family: arial, helvetica, sans-serif; background: #f7f7f7;">
+    <div id="thebody" style="font-family: arial, helvetica, sans-serif; background: #f7f7f7;padding:20px;">
+
+      <table style="margin: 0px auto;border: 1px solid #CCC;text-align:left;"><tr><td width="540" bgcolor="#FFFFFF" style="padding: 10px;max-width:100%;">
+
+        <h1>Welcome to OwlReply</h1>
+        <b><%= @user.name %> --</b>
+        <p>
+          You have successfully signed up for OwlReply's world-class email automation. OwlReply will let you save hours answering emails by helping to automate your replies.
+        </p>
+        <p>Customers will thank you too.</p>
+        <p>
+          To login to the site, just follow this link: <%= @url %>.
+        </p>
+        <p>
+          Thanks for joining and have a great day!
+        </p>
+        <p></p>
+
+      </td></tr></table>
+    </div>
+  </body>
+</html>

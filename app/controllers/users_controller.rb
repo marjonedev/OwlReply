@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  #TEST1
   # GET /users
   # GET /users.json
   def index
@@ -42,15 +41,13 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       if @user.save
+        UserMailer.with(user: @user).welcome_email.deliver_later
         session[:user_id] = @user.id # Make sure the user is logged in after signing in!
         format.html { redirect_to @user.emailaccounts.first }
-        #format.html { redirect_to @user, notice: 'You signed up successfully.' }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
-        #format.js { @emailaccount = @user.emailaccounts.first }
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity, color: 'invalid' }
-        #format.js { render :new }
       end
     end
   end

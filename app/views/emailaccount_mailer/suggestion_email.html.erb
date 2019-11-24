@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <style media="all" type="text/css">
+    td {font-family:Verdana, Geneva, sans-serif;}
+    #thebody { text-align: center; }
+    table { margin: 0px auto 20px auto; border: 1px solid #CCC; text-align: left; }
+    h1,.footer { text-align: center; }
+  </style>
+  <title>OwlReply Email</title>
+  <body style="color: #000000; font-family: arial, helvetica, sans-serif; background: #f7f7f7;">
+  <div id="thebody" style="font-family: arial, helvetica, sans-serif; background: #f7f7f7;padding:20px;">
+
+    <table style="margin: 0px auto;border: 1px solid #CCC;text-align:left;"><tr><td width="540" bgcolor="#FFFFFF" style="padding: 10px;max-width:100%;">
+
+      <h1>Suggested Reply</h1>
+      <b><%= @user.name %> --</b>
+      <p>
+        You get a lot of emails with the word "<%= @word %>" in it.
+      </p>
+      <p>
+        <a href="https://owlreply.com/emailaccounts/<%= @emailaccount.id %>/replies/new?keyword=<%= @word %>">Click here to create an automated reply for that word.</a>
+      </p>
+      <p>
+        Hope this helps!
+      </p>
+      <p></p>
+
+    </td></tr></table>
+  </div>
+  </body>
+</html>
