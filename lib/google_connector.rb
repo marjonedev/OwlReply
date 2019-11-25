@@ -29,7 +29,7 @@ module GoogleConnector
           headers = payload.headers
           subject = headers.any? { |h| h.name == 'Subject' } ? headers.find { |h| h.name == 'Subject' }.value : ''
           date = headers.any? { |h| h.name == 'Date' } ? headers.find { |h| h.name == 'Date' }.value : ''
-          from = headers.any? { |h| h.name == 'From' } ? headers.find { |h| h.name == 'From' }.value : ''
+          from = headers.any? { |h| h.name == 'From' } ? headers.find { |h| h.name == 'From' }.value.to_s : ''
 
           obj['id'] = i.id
           obj['subject'] = subject
@@ -46,18 +46,23 @@ module GoogleConnector
           # end
           body = payload.body.data
           if body.nil? && payload.parts.any?
+            obj['multipart'] = true
             payload.parts.each do |part|
               mime = part.mime_type
-              if mime == "text/plain"
-                obj['body'] = part.body.data
-                obj['body_text'] = part.body.data
-              elsif mime == "text/html"
+              if mime == "text/html"
                 obj['body_html'] = part.body.data
-              else
                 obj['body'] = part.body.data
+              else
+                obj['body_text'] = part.body.data
               end
             end
+          else
+            obj['multipart'] = false
+            obj['body_text'] = body
+            obj['body_html'] = body
+            obj['body'] = body
           end
+
 
           email_array.push(obj)
         end
@@ -67,31 +72,11 @@ module GoogleConnector
 
     end
 
-    def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", body_text: "",  body_html: "")
+    def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "")
 
       if thread_id.nil?
         thread_id = id
       end
-
-      # require 'rmail'
-      # message = RMail::Message.new
-      # message.header['To'] = to
-      # message.header['From'] = from.nil? ? @emailaccount.address : from
-      # message.header['Subject'] = subject
-      # # message.header['In-Reply-To'] = id
-      # # message.header['References'] = id
-      # message.header.set_boundary('----------------')
-      #
-      # text_part = RMail::Message.new
-      # text_part.header['Content-Type'] = 'text/plain; charset="UTF-8"'
-      # text_part.body = body_text
-      # message.add_part(text_part)
-      #
-      # html_part = RMail::Message.new
-      # html_part.header['Content-Type'] = 'text/html; charset="UTF-8"'
-      # html_part.header['Content-Transfer-Encoding'] = 'quoted-printable'
-      # html_part.body = body_html
-      # message.add_part(html_part)
 
       require 'mail'
       message         = Mail.new
@@ -100,11 +85,14 @@ module GoogleConnector
       message.from    = from.nil? ? @emailaccount.address : from
       message.to      = to
 
-      message.part content_type: 'multipart/alternative' do |part|
-        part.html_part = Mail::Part.new(body: body_html, content_type: 'text/html; charset=UTF-8')
-        part.text_part = Mail::Part.new(body: body_text)
+      if multipart
+        message.part content_type: 'multipart/alternative' do |part|
+          part.text_part = Mail::Part.new(body: body_text, content_type: 'text/plain; charset=UTF-8')
+          part.html_part = Mail::Part.new(body: body_html, content_type: 'text/html; charset=UTF-8')
+          end
+      else
+        message.body = body_text
       end
-
 
       @service.create_user_draft(
           "me",

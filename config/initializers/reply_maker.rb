@@ -188,11 +188,16 @@ module ReplyMaker
           email_to = msg['from']
           subject = "Re: #{msg['subject']}"
 
-          text_part = account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-          html_part = account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n"+body_html
+          body_text2 = ""
+          body_text.each_line do |tline|
+            body_text2 << "> #{tline}"
+          end
+
+          text_part = account.template.gsub("%%reply%%",auto)+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n"+(body_text2)
+          html_part = account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
 
           if reply_used
-            api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, body_text: text_part, body_html: html_part)
+            api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part)
             ids.push(msg['id'])
           end
 
@@ -204,9 +209,8 @@ module ReplyMaker
 
         api.read_messages(ids)
       rescue Google::Apis::AuthorizationError => exception
-        puts "=================ERRROR==================="
-        puts exception
         api.refresh_api!
+        retry
       end
 
     end
