@@ -131,12 +131,18 @@ module ReplyMaker
         body_text = thebody if body_text.blank?
         email_to = (msg.reply_to || msg.from)
 
+        body_text2 = ""
+        body_text.each_line do |tline|
+          body_text2 << "> #{tline}"
+        end
+
         mail = Mail.new do
           from    "#{account.address} <#{account.address}>"
           to      email_to
           subject "Re: #{msg.subject}"
           text_part do
-            body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
+            # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
+            body account.template.gsub("%%reply%%",auto)+"\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:\n>\n#{body_text2}"
           end
           html_part do
             content_type 'text/html; charset=UTF-8'
@@ -193,7 +199,7 @@ module ReplyMaker
             body_text2 << "> #{tline}"
           end
 
-          text_part = account.template.gsub("%%reply%%",auto)+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n"+(body_text2)
+          text_part = account.template.gsub("%%reply%%",auto)+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
           html_part = account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
 
           if reply_used
