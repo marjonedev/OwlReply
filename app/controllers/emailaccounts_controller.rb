@@ -108,7 +108,7 @@ class EmailaccountsController < ApplicationController
   end
 
   def connect
-    if(connect_params[:email_provider] == 'google')
+    if connect_params[:email_provider] == "google"
 
       session[:emailaccount_id] = @emailaccount.id
       redirect_to emailaccounts_google_redirect_url
@@ -116,9 +116,11 @@ class EmailaccountsController < ApplicationController
     else
       respond_to do |format|
         if @emailaccount.update(connect_params)
-          # format.html { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
+          @emailaccount.update(authenticated: true)
+          # redirect_to @emailaccount, notice: "#{@emailaccount.address} successfully authenticated."
+          format.html { redirect_to @emailaccount, notice: "#{@emailaccount.address} successfully authenticated." }
           # format.json { render :show, status: :ok, location: @emailaccount }
-          format.js { redirect_to @emailaccount, notice: 'Email account was successfully updated.' }
+          # format.js { redirect_to @emailaccount, notice: "Email account was successfully updated." }
         else
           # format.html { render :edit }
           format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
