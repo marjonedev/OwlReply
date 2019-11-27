@@ -30,40 +30,47 @@ module ReplyMaker
     def self.check_accounts_using_imap
       # accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
       accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND authenticated <> 1 AND (email_provider IS NULL OR email_provider = "other") AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-      for account in accounts
-        begin
-          ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
-          self.touch_last_reply_time
-          self.create_drafts_using_imap(account)
-          puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
-          account.update_column(:last_checked,Time.now.to_i)
-        rescue
-          puts "IMAP - Failure on account #{account.address}. #{$!.to_s}"
-          account.update_column(:error,$!.to_s)
+
+      if accounts
+        for account in accounts
+          begin
+            ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
+            self.touch_last_reply_time
+            self.create_drafts_using_imap(account)
+            puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
+            account.update_column(:last_checked,Time.now.to_i)
+          rescue
+            puts "IMAP - Failure on account #{account.address}. #{$!.to_s}"
+            account.update_column(:error,$!.to_s)
+          end
         end
+
+        sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
+        self.touch_last_reply_time
       end
-      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
-      self.touch_last_reply_time
     end
 
     def self.check_accounts_using_google
       # accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
       accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND authenticated = 1 AND (email_provider IS NOT NULL AND email_provider = "google") AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
 
-      for account in accounts
-        begin
-          ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
-          self.touch_last_reply_time
-          self.create_drafts_using_google(account)
-          puts "Google - Success on account #{account.address}. #{$!.to_s}"
-          account.update_column(:last_checked,Time.now.to_i)
-        rescue
-          puts "Google - Failure on account #{account.address}. #{$!.to_s}"
-          account.update_column(:error,$!.to_s)
+      if accounts
+        for account in accounts
+          begin
+            ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
+            self.touch_last_reply_time
+            self.create_drafts_using_google(account)
+            puts "Google - Success on account #{account.address}. #{$!.to_s}"
+            account.update_column(:last_checked,Time.now.to_i)
+          rescue
+            puts "Google - Failure on account #{account.address}. #{$!.to_s}"
+            account.update_column(:error,$!.to_s)
+          end
         end
+        sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
+        self.touch_last_reply_time
       end
-      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
-      self.touch_last_reply_time
+
     end
 
     def self.reset

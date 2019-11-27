@@ -26,11 +26,12 @@
               <div class="form-group">
                 <label for="emailProvider">Email Provider</label>
                 <select class="form-control" id="emailProvider" name="emailaccount[email_provider]">
-                  <option value="google">Google</option>
-                  <option value="other">Others</option>
+                  <option value="google" <%= html_attr_selected @emailaccount.email_provider, 'google' %>>Google</option>
+                  <option value="other" <%= html_attr_selected @emailaccount.email_provider, 'other' %>>Others</option>
                 </select>
               </div>
-              <div id="smtpSettings" style="display:none">
+              <% display_smtp = html_attr_selected @emailaccount.email_provider, 'other' === "selected=selected" ? '' : 'style="display:none"' %>
+              <div id="smtpSettings <%= display_smtp %>">
                 <div class="form-group">
                   <label>Email</label>
                   <%= f.text_field :address, class: 'form-control', readonly: 'readonly' %>
@@ -46,10 +47,10 @@
                 <div class="form-group">
                   <label for="emailProvider">Encryption Method</label>
                   <select class="form-control" id="emailProvider" name="emailaccount[smtp_encryption_type]">
-                    <option value="none">None</option>
-                    <option value="tls">TLS</option>
-                    <option value="ssl">SSL</option>
-                    <option value="starttls">STARTTLS</option>
+                    <option value="none" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'none' %>>None</option>
+                    <option value="tls" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'tls' %>>TLS</option>
+                    <option value="ssl" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'ssl' %>>SSL</option>
+                    <option value="starttls" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'starttls' %>>STARTTLS</option>
                   </select>
                 </div>
                 <div class="form-group">

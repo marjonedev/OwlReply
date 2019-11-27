@@ -38,4 +38,13 @@ module ApplicationHelper
     User.where(:created_at => (Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)).count
   end
 
+  def html_attr_selected data = nil, value = nil
+    if !data.nil? and !value.nil?
+      if data.to_s === value.to_s
+        return 'selected=selected'
+      end
+    end
+    "#{data} - #{value}"
+  end
+
 end
