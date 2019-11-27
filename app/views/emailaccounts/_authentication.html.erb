@@ -33,23 +33,28 @@
               <div id="smtpSettings" style="display:none">
                 <div class="form-group">
                   <label>Server</label>
-                  <%= f.text_field :connect_host, class: 'form-control' %>
+                  <%= f.text_field :smtp_host, class: 'form-control' %>
                 </div>
                 <div class="form-group">
                   <label>Email</label>
-                  <%= f.text_field :connect_email, class: 'form-control', value: @emailaccount.address %>
+                  <%= f.text_field :address, class: 'form-control', readonly: 'readonly' %>
                 </div>
                 <div class="form-group">
                   <label>Password</label>
-                  <%= f.text_field :connect_password, class: 'form-control' %>
+                  <%= f.text_field :password, class: 'form-control' %>
                 </div>
-                <div class="form-group form-check">
-                  <%= f.check_box :connect_ssl, class: 'form-check-input', id: 'ssl_required', checked: 'checked' %>
-                  <label for="ssl_required">Use SSL</label>
+                <div class="form-group">
+                  <label for="emailProvider">Encryption Method</label>
+                  <select class="form-control" id="emailProvider" name="emailaccount[smtp_encryption_type]">
+                    <option value="none">None</option>
+                    <option value="tls">TLS</option>
+                    <option value="ssl">SSL</option>
+                    <option value="starttls">STARTTLS</option>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label>Port</label>
-                  <%= f.text_field :connect_port, class: 'form-control' %>
+                  <%= f.text_field :smtp_port, class: 'form-control' %>
                 </div>
               </div>
               <div class="form-group">
