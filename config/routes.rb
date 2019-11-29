@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     member do
       patch :check_again
       put :check_again
+      get :authenticate_imap
       get :status
       patch :connect
       put :connect

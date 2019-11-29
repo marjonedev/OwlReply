@@ -3,7 +3,7 @@ class EmailaccountsController < ApplicationController
   include EmailaccountsHelper
   include GoogleConnector
   before_action :logged_in_user
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove, :revoke_account_access]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -105,6 +105,27 @@ class EmailaccountsController < ApplicationController
       format.html
       format.json {render json: {data:last_checked}}
     end
+  end
+
+  def authenticate_imap
+    require 'net/imap'
+
+    ssl = @emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
+    port = @emailaccount.imap_port ? @emailaccount.imap_port : 993
+    host = @emailaccount.imap_host ? @emailaccount.imap_host : 'imap.gmail.com'
+    imap = Net::IMAP.new(host, ssl: ssl, port: port)
+
+    begin
+      imap.authenticate('PLAIN', @emailaccount.address, @emailaccount.password)
+      respond_to do |format|
+        format.json {render json: {success: true}}
+      end
+    rescue
+      respond_to do |format|
+        format.json {render json: {success: false}}
+      end
+    end
+
   end
 
   def connect

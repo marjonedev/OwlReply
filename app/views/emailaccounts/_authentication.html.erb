@@ -22,7 +22,7 @@
             <h4 class="modal-title text-center" style="width: 100%">Connect Your Email Account</h4>
           </div>
           <div class="modal-body">
-            <%= form_for @emailaccount, url: connect_emailaccount_path, remote:true, html:{class: 'nobottommargin'} do |f| %>
+            <%= form_for @emailaccount, url: connect_emailaccount_path, remote:true, html:{class: 'nobottommargin'}, local: false do |f| %>
               <div class="form-group">
                 <label for="emailProvider">Email Provider</label>
                 <select class="form-control" id="emailProvider" name="emailaccount[email_provider]">
@@ -47,7 +47,7 @@
                 <div class="form-group">
                   <label>Port</label>
                   <% port = @emailaccount.imap_port ?  @emailaccount.imap_port : 993 %>
-                  <%= f.text_field :imap_port, class: 'form-control', value: port %>
+                  <%= f.text_field :imap_port, class: 'form-control', value: port %>`
                 </div>
                 <div class="form-group">
                   <div class="form-group form-check">
@@ -86,8 +86,19 @@
                 }
             });
 
-            $('#ConnectEmailAccount').on('hidden.bs.modal', function () {
+            $('#ConnectEmailAccount').on('hidden.bs.modal', function () {});
 
+            $('#ConnectEmailAccount').find('button[type=submit]').on('click', function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: "<%= authenticate_imap_emailaccount_path(@emailaccount, :format => :json) %>",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
             });
         });
     </script>
