@@ -109,7 +109,10 @@ module ReplyMaker
     def self.create_drafts_using_imap(account)
       require 'net/imap'
       require 'mail'
-      imap = Net::IMAP.new('imap.gmail.com', ssl: {ssl_version: :TLSv1_2}, port: 993 )
+      ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
+      port = account.port ? account.port : 993
+      host = account.imap_host ? account.imap_host : 'imap.gmail.com'
+      imap = Net::IMAP.new(host, ssl: ssl, port: port )
       imap.login(account.address, account.password)
       imap.select('INBOX')
       imap.search(['UNSEEN']).each do |message_id|

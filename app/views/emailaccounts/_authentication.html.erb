@@ -38,24 +38,22 @@
                 </div>
                 <div class="form-group">
                   <label>Server</label>
-                  <%= f.text_field :smtp_host, class: 'form-control' %>
+                  <%= f.text_field :imap_host, class: 'form-control' %>
                 </div>
                 <div class="form-group">
                   <label>Password</label>
                   <%= f.text_field :password, class: 'form-control' %>
                 </div>
                 <div class="form-group">
-                  <label for="emailProvider">Encryption Method</label>
-                  <select class="form-control" id="emailProvider" name="emailaccount[smtp_encryption_type]">
-                    <option value="none" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'none' %>>None</option>
-                    <option value="tls" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'tls' %>>TLS</option>
-                    <option value="ssl" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'ssl' %>>SSL</option>
-                    <option value="starttls" <%= html_attr_selected @emailaccount.smtp_encryption_type, 'starttls' %>>STARTTLS</option>
-                  </select>
+                  <label>Port</label>
+                  <% port = if @emailaccount.imap_port ?  @emailaccount.imap_port : 993 %>
+                  <%= f.text_field :imap_port, class: 'form-control', value: port %>
                 </div>
                 <div class="form-group">
-                  <label>Port</label>
-                  <%= f.text_field :smtp_port, class: 'form-control' %>
+                  <div class="form-group form-check">
+                    <%= f.check_box :imap_ssl, class: 'form-check-input', id: 'ssl_required', checked: false %>
+                    <label for="ssl_required">Use SSL</label>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
