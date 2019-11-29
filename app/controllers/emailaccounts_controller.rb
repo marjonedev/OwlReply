@@ -184,20 +184,21 @@ class EmailaccountsController < ApplicationController
         api = GmailApi.new @emailaccount
 
         if api.revoke_access
-          format.html { redirect_to @emailaccount, notice: 'Account access has been revoked' }
+          format.html { redirect_to @emailaccount, notice: 'Account access has been revoked.' }
           format.json { render :show, status: :ok, location: @emailaccount }
         else
-          format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Account has problem revoking access' }
+          format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Account has problem revoking access.' }
           format.json { render json: @emailaccount.errors, status: :unprocessable_entity }
         end
       end
     elsif @emailaccount.email_provider == "other"
+      @emailaccount.update(authenticated: false)
       respond_to do |format|
-        format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Nothing to revoke as of now' }
+        format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Account access has been revoked.' }
       end
     else
       respond_to do |format|
-        format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'System Error.' }
+        format.html { redirect_to edit_emailaccount_path(@emailaccount), alert: 'Something doesn\'t seem right.' }
       end
     end
 
