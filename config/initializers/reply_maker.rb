@@ -28,8 +28,8 @@ module ReplyMaker
     end
 
     def self.check_accounts_using_imap
-      # accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND authenticated <> 1 AND (email_provider IS NULL OR email_provider = "other") AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
+      # now we need to detect all account that has been authenticated (authenticated = 1)
+      accounts = Emailaccount.where('password IS NOT NULL AND password <> "" AND authenticated = 1 AND (email_provider IS NULL OR email_provider = "other") AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
 
       if accounts
         for account in accounts
