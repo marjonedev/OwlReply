@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group">
                   <label>Port</label>
-                  <% port = if @emailaccount.imap_port ?  @emailaccount.imap_port : 993 %>
+                  <% port = @emailaccount.imap_port ?  @emailaccount.imap_port : 993 %>
                   <%= f.text_field :imap_port, class: 'form-control', value: port %>
                 </div>
                 <div class="form-group">
