@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_29_114953) do
+ActiveRecord::Schema.define(version: 2019_11_29_131658) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_11_29_114953) do
     t.string "google_refresh_token"
     t.string "imap_host"
     t.string "imap_port"
-    t.string "imap_encryption_type"
+    t.boolean "imap_ssl"
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
