@@ -220,6 +220,6 @@ class EmailaccountsController < ApplicationController
     def connect_params
       params
           .require(:emailaccount)
-          .permit(:email_provider, :address, :password, :smtp_host, :smtp_port, :smtp_encryption_type)
+          .permit(:email_provider, :address, :password, :imap_host, :imap_port, :imap_ssl)
     end
 end
