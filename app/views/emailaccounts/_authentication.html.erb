@@ -51,7 +51,8 @@
                 </div>
                 <div class="form-group">
                   <div class="form-group form-check">
-                    <%= f.check_box :imap_ssl, class: 'form-check-input', id: 'ssl_required', checked: false %>
+                    <% sslcheck = @emailaccount.imap_ssl ? @emailaccount.imap_ssl : false %>
+                    <%= f.check_box :imap_ssl, class: 'form-check-input', id: 'ssl_required', checked: sslcheck %>
                     <label for="ssl_required">Use SSL</label>
                   </div>
                 </div>
