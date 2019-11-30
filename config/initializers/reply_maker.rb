@@ -172,6 +172,8 @@ module ReplyMaker
 
     # To be finished, or just rename test_google_draft once it works.
     def self.create_drafts_using_google account
+      Rails.logger.debug "===============create_drafts_using_google==========="
+      Rails.logger.debug account
       include GoogleConnector
       api = GmailApi.new account
 

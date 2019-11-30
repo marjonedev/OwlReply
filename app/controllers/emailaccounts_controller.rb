@@ -108,15 +108,18 @@ class EmailaccountsController < ApplicationController
   end
 
   def authenticate_imap
+
     require 'net/imap'
 
-    ssl = @emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
-    port = @emailaccount.imap_port ? @emailaccount.imap_port : 993
-    host = @emailaccount.imap_host ? @emailaccount.imap_host : 'imap.gmail.com'
-    imap = Net::IMAP.new(host, ssl: ssl, port: port)
+    ssl = connect_params[:imap_ssl] ? {ssl_version: :TLSv1_2} : false
+    port = connect_params[:imap_port] ? connect_params[:imap_port]  : 993
+    host = connect_params[:imap_host] ? connect_params[:imap_host] : 'imap.gmail.com'
+    address = connect_params[:address]
+    password = connect_params[:password]
 
     begin
-      imap.authenticate('PLAIN', @emailaccount.address, @emailaccount.password)
+      imap = Net::IMAP.new(host, ssl: ssl, port: port)
+      imap.authenticate('PLAIN', address, password)
       respond_to do |format|
         format.json {render json: {success: true}}
       end

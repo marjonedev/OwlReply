@@ -31,7 +31,7 @@
                 </select>
               </div>
               <% display_smtp = html_attr_selected @emailaccount.email_provider, 'other' === "selected=selected" ? '' : 'style="display:none"' %>
-              <div id="smtpSettings <%= display_smtp %>">
+              <div id="smtpSettings" <%= display_smtp %>>
                 <div class="form-group">
                   <label>Email</label>
                   <%= f.text_field :address, class: 'form-control', readonly: 'readonly' %>
@@ -90,15 +90,58 @@
 
             $('#ConnectEmailAccount').find('button[type=submit]').on('click', function(e){
                 e.preventDefault();
+                var $this = this;
+                var form = $($this).closest('form');
 
-                $.ajax({
-                    url: "<%= authenticate_imap_emailaccount_path(@emailaccount, :format => :json) %>",
-                    type: "GET",
-                    contentType: "application/json",
-                    success: function(data){
-                        console.log(data);
-                    }
-                });
+                var send = function(form){
+                    var elem = $(form)[0];
+                    Rails.fire(elem, 'submit');
+                };
+
+                if(form.find('#emailProvider').val() == "google"){
+                    send(form);
+                }else{
+                    var authenticating = function(elem){
+                        $(elem).html('<i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i> Authenticating...')
+                            .addClass('disabled')
+                            .attr({'disabled': 'disabled', 'value': 'Authenticating...'});
+                    };
+
+                    var doneErrorAuth = function(elem){
+                        console.log('error');
+                        $('#smtpSettings').find('.errorMsg').remove();
+                        $('#smtpSettings').append('<div class="errorMsg">' +
+                            '<div class="alert alert-danger" role="alert">Opps. Authentication Error. Please try again.</div>' +
+                            '</div>');
+                        $(elem).text('Connect')
+                            .removeClass('disabled')
+                            .removeAttr('disabled');
+                    };
+
+                    authenticating($this);
+
+                    $.ajax({
+                        url: "<%= authenticate_imap_emailaccount_path(@emailaccount, :format => :json) %>",
+                        type: "GET",
+                        data: $(form).serialize(),
+                        contentType: "application/json",
+                        success: function(data){
+                            console.log(data);
+                            if(data){
+                                if(data.success){
+                                    $($this).text('Authenticated');
+                                    send(form);
+                                }else{
+                                    doneErrorAuth($this);
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+
+
             });
         });
     </script>
