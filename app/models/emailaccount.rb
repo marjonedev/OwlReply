@@ -29,7 +29,7 @@ class Emailaccount < ApplicationRecord
   end
 
   def template_html
-    self.template.gsub("\n","<br>\n")
+    self.template.to_s.gsub("\n","<br>\n")
     # In the future we may support BOLD, Italics, and what else? Should be very limited.
   end
 

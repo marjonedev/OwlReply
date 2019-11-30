@@ -112,13 +112,16 @@ module ReplyMaker
       ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
       port = account.imap_port ? account.imap_port : 993
       host = account.imap_host ? account.imap_host : 'imap.gmail.com'
+
       imap = Net::IMAP.new(host, ssl: ssl, port: port )
       imap.login(account.address, account.password)
       imap.select('INBOX')
       imap.search(['UNSEEN']).each do |message_id|
+
         reply_used = false
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
         msg = Mail.read_from_string data
+
         thebody = msg.body.to_s.downcase
         next if account.subject_line_skip?(msg.subject)
         next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
@@ -126,7 +129,7 @@ module ReplyMaker
         auto = ""
         for reply in account.replies
           next unless reply.matches?(msg.subject, thebody)
-          body = reply.body.gsub("\n","<br>\n")
+          body = reply.body.to_s.gsub("\n","<br>\n")
           auto << body
           reply.increment!(:drafts_created_today)
           reply.increment!(:drafts_created_lifetime)
@@ -151,11 +154,11 @@ module ReplyMaker
           subject "Re: #{msg.subject}"
           text_part do
             # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-            body account.template.gsub("%%reply%%",auto)+"\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:\n>\n#{body_text2}"
+            body account.template.to_s.gsub("%%reply%%",auto)+"\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:\n>\n#{body_text2}"
           end
           html_part do
             content_type 'text/html; charset=UTF-8'
-            body account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
+            body account.template_html.to_s.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
           end
         end
         mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
@@ -172,8 +175,7 @@ module ReplyMaker
 
     # To be finished, or just rename test_google_draft once it works.
     def self.create_drafts_using_google account
-      Rails.logger.debug "===============create_drafts_using_google==========="
-      Rails.logger.debug account
+
       include GoogleConnector
       api = GmailApi.new account
 
@@ -210,8 +212,8 @@ module ReplyMaker
             body_text2 << "> #{tline}"
           end
 
-          text_part = account.template.gsub("%%reply%%",auto)+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
-          html_part = account.template_html.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
+          text_part = account.template.to_s.gsub("%%reply%%",auto)+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
+          html_part = account.template_html.to_s.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
 
           if reply_used
             api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part)
