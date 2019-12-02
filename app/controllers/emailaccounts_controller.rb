@@ -142,7 +142,8 @@ class EmailaccountsController < ApplicationController
         if @emailaccount.update(connect_params)
           @emailaccount.update(authenticated: true)
           # redirect_to @emailaccount, notice: "#{@emailaccount.address} successfully authenticated."
-          format.html { redirect_to @emailaccount, notice: "#{@emailaccount.address} successfully authenticated." }
+          redirect_to = connect_params[:redirect_to] ? connect_params[:redirect_to] : @emailaccount
+          format.html { redirect_to redirect_to, notice: "#{@emailaccount.address} successfully authenticated." }
           # format.json { render :show, status: :ok, location: @emailaccount }
           # format.js { redirect_to @emailaccount, notice: "Email account was successfully updated." }
         else
@@ -244,6 +245,6 @@ class EmailaccountsController < ApplicationController
     def connect_params
       params
           .require(:emailaccount)
-          .permit(:email_provider, :address, :password, :imap_host, :imap_port, :imap_ssl)
+          .permit(:email_provider, :address, :password, :imap_host, :imap_port, :imap_ssl, :redirect_to)
     end
 end

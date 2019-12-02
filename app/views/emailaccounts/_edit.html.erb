@@ -55,6 +55,7 @@
       </div>
 
       <div class="card-footer noleftpadding norightpadding nobottompadding bg-white">
+        <input type="hidden" name="emailaccount[redirect_to]" value="<%= request.path %>" />
         <%= f.submit 'Save', :class => 'button nomargin' %>
         <%= link_to 'Cancel', emailaccount_url(emailaccount), class: 'button-cancel button button-white button-light' %>
         <% unless is_main_account(emailaccount) %>
@@ -112,7 +113,6 @@
                 </div>
               </div>
               <div class="form-group">
-                <input type="hidden" name="redirect" value="<%= request.path %>" />
                 <button type="submit" class="button button-large button-rounded float-left">Connect</button>
                 <button type="button" data-dismiss="modal" class="button button-white button-light button-large button-rounded float-right">Cancel</button>
               </div>
