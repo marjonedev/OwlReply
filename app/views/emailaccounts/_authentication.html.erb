@@ -30,7 +30,7 @@
                   <option value="other" <%= html_attr_selected @emailaccount.email_provider, 'other' %>>Others</option>
                 </select>
               </div>
-              <% display_smtp = html_attr_selected @emailaccount.email_provider, 'other' === "selected=selected" ? '' : 'style="display:none"' %>
+              <% display_smtp = html_attr_selected(@emailaccount.email_provider, 'other') === "selected=selected" ? '' : 'style="display:none"' %>
               <div id="smtpSettings" <%= display_smtp %>>
                 <div class="form-group">
                   <label>Email</label>

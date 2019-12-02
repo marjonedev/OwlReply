@@ -134,7 +134,7 @@ class EmailaccountsController < ApplicationController
   def connect
     if connect_params[:email_provider] == "google"
 
-      session[:emailaccount_id] = @emailaccount.id
+      session["emailaccount_id_#{current_user.id}"] = @emailaccount.id
       redirect_to emailaccounts_google_redirect_url
 
     else
@@ -184,8 +184,8 @@ class EmailaccountsController < ApplicationController
 
     session[:access_token] = response['access_token']
 
-    emailaccount_id = session[:emailaccount_id]
-    session.delete(:emailaccount_id)
+    emailaccount_id = session["emailaccount_id_#{current_user.id}"]
+    session.delete("emailaccount_id_#{current_user.id}")
 
     emailaccount = Emailaccount.where(id: emailaccount_id).first
 
