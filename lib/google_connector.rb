@@ -9,9 +9,6 @@ module GoogleConnector
 
     def get_messages
 
-      Rails.logger.debug "===============get_messages==========="
-      Rails.logger.debug @emailaccount
-
       refresh = refresh_api!
 
       if refresh

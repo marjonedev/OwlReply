@@ -115,7 +115,13 @@ module ReplyMaker
 
       imap = Net::IMAP.new(host, ssl: ssl, port: port )
       imap.login(account.address, account.password)
-      imap.select('INBOX')
+
+      folders =  imap.list('', "*")
+
+      inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+      drafts = folders.any? { |h| h.name.to_s.downcase == 'drafts' } ? folders.find { |h| h.name.to_s.downcase == 'drafts' }.name : 'DRAFTS'
+
+      imap.select(inbox)
       imap.search(['UNSEEN']).each do |message_id|
 
         reply_used = false
@@ -148,23 +154,28 @@ module ReplyMaker
           body_text2 << "> #{tline}"
         end
 
+        reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template_html.to_s.gsub("%%reply%%",auto)
+
         mail = Mail.new do
           from    "#{account.address} <#{account.address}>"
           to      email_to
           subject "Re: #{msg.subject}"
           text_part do
+            content_type 'text/plain; charset=UTF-8'
             # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-            body account.template.to_s.gsub("%%reply%%",auto)+"\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:\n>\n#{body_text2}"
+            body reply_body+"\n\nOn #{msg.date}, #{email_to} wrote:\n>\n#{body_text2}\nEOF"
           end
           html_part do
             content_type 'text/html; charset=UTF-8'
-            body account.template_html.to_s.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg.date}, #{msg.reply_to || msg.from} wrote:<br>\n<br>\n"+body_html
+            body reply_body+"<br><br>\n\nOn #{msg.date}, #{email_to} wrote:<br>\n<br>\n#{body_html}\nEOF"
           end
         end
+
         mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
         mail.header['References'] = msg["Message-ID"]
         message = mail.to_s
-        imap.append("[Gmail]/Drafts", message, [:Seen], Time.now)
+
+        imap.append(drafts, message, [:Seen], Time.now)
 
         account.increment!(:drafts_created_today)
         account.increment!(:drafts_created_lifetime)
@@ -212,8 +223,10 @@ module ReplyMaker
             body_text2 << "> #{tline}"
           end
 
-          text_part = account.template.to_s.gsub("%%reply%%",auto)+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
-          html_part = account.template_html.to_s.gsub("%%reply%%",auto)+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
+          reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template_html.to_s.gsub("%%reply%%",auto)
+
+          text_part = reply_body+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
+          html_part = reply_body+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
 
           if reply_used
             api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part)
@@ -227,9 +240,39 @@ module ReplyMaker
         end
 
         api.read_messages(ids)
+
       rescue Google::Apis::AuthorizationError => exception
         api.refresh_api!
         retry
+      end
+
+    end
+
+    def self.test_imap account
+      require 'net/imap'
+      require 'mail'
+      ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
+      port = account.imap_port ? account.imap_port : 993
+      host = account.imap_host ? account.imap_host : 'imap.gmail.com'
+
+      imap = Net::IMAP.new(host, ssl: ssl, port: port )
+      imap.login(account.address, account.password)
+
+      folders =  imap.list('', "*")
+
+      inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+      drafts = folders.any? { |h| h.name.to_s.downcase == 'drafts' } ? folders.find { |h| h.name.to_s.downcase == 'drafts' }.name : 'DRAFTS'
+
+
+      puts "==========FOLDERS==================="
+      puts folders
+      puts inbox
+      puts drafts
+
+      imap.select(inbox)
+      imap.search(["UNSEEN"]).each do |message_id|
+        puts "==========message_id==================="
+        puts message_id
       end
 
     end
