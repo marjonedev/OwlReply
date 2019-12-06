@@ -108,8 +108,9 @@ module ReplyMaker
 
     def self.create_drafts_using_imap(account)
 
+
       unless account.replies.count > 0
-        return false
+        return false #return if there's no replies created on the email account. fixed
       end
 
       require 'net/imap'
@@ -147,7 +148,7 @@ module ReplyMaker
           reply_used = true
         end
 
-        if reply_used
+        if reply_used #only reply_used true can create draft.
           body_html = (msg.html_part.body.to_s rescue "")
           body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
           body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
