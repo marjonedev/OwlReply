@@ -135,6 +135,7 @@ class EmailaccountsController < ApplicationController
     if connect_params[:email_provider] == "google"
 
       session["emailaccount_id_#{current_user.id}"] = @emailaccount.id
+      session["redirect_to_#{current_user.id}"] = connect_params[:redirect_to] ? connect_params[:redirect_to] : false
       redirect_to emailaccounts_google_redirect_url
 
     else
@@ -198,7 +199,15 @@ class EmailaccountsController < ApplicationController
                         authenticated: true,
                         email_provider: 'google')
 
-    redirect_to url_for(action: 'show', id: emailaccount_id), notice: emailaccount.address + " successfully authenticated"
+    redirect_path = session["redirect_to_#{current_user.id}"]
+    session.delete("redirect_to_#{current_user.id}")
+
+    if redirect_path
+      redirect_to redirect_path, notice: emailaccount.address + " successfully authenticated"
+    else
+      redirect_to url_for(action: 'show', id: emailaccount_id), notice: emailaccount.address + " successfully authenticated"
+    end
+
 
   end
 
