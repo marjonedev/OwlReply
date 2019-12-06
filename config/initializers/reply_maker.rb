@@ -266,34 +266,5 @@ module ReplyMaker
 
     end
 
-    def self.test_imap account
-      require 'net/imap'
-      require 'mail'
-      ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
-      port = account.imap_port ? account.imap_port : 993
-      host = account.imap_host ? account.imap_host : 'imap.gmail.com'
-
-      imap = Net::IMAP.new(host, ssl: ssl, port: port )
-      imap.login(account.address, account.password)
-
-      folders =  imap.list('', "*")
-
-      inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
-      drafts = folders.any? { |h| h.name.to_s.downcase == 'drafts' } ? folders.find { |h| h.name.to_s.downcase == 'drafts' }.name : 'DRAFTS'
-
-
-      puts "==========FOLDERS==================="
-      puts folders
-      puts inbox
-      puts drafts
-
-      imap.select(inbox)
-      imap.search(["UNSEEN"]).each do |message_id|
-        puts "==========message_id==================="
-        puts message_id
-      end
-
-    end
-
   end
 end
