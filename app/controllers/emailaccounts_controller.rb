@@ -112,6 +112,7 @@ class EmailaccountsController < ApplicationController
     require 'net/imap'
 
     ssl = connect_params[:imap_ssl] ? {ssl_version: :TLSv1_2} : false
+    # ssl = connect_params[:imap_ssl] ? true : false
     port = connect_params[:imap_port] ? connect_params[:imap_port]  : 993
     host = connect_params[:imap_host] ? connect_params[:imap_host] : 'imap.gmail.com'
     address = connect_params[:address]
@@ -125,7 +126,7 @@ class EmailaccountsController < ApplicationController
       end
     rescue
       respond_to do |format|
-        format.json {render json: {success: false}}
+        format.json {render json: {success: false, message: "#{$!.to_s}"}}
       end
     end
 

@@ -107,6 +107,11 @@ module ReplyMaker
     end
 
     def self.create_drafts_using_imap(account)
+
+      unless account.replies.count > 0
+        return false
+      end
+
       require 'net/imap'
       require 'mail'
       ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
@@ -119,7 +124,7 @@ module ReplyMaker
       folders =  imap.list('', "*")
 
       inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
-      drafts = folders.any? { |h| h.name.to_s.downcase == 'drafts' } ? folders.find { |h| h.name.to_s.downcase == 'drafts' }.name : 'DRAFTS'
+      drafts = folders.any? { |h| h.attr.include? :Drafts } ? folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
 
       imap.select(inbox)
       imap.search(['UNSEEN']).each do |message_id|
@@ -142,50 +147,57 @@ module ReplyMaker
           reply_used = true
         end
 
-        body_html = (msg.html_part.body.to_s rescue "")
-        body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
-        body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
-        body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
-        body_text = thebody if body_text.blank?
-        email_to = (msg.reply_to || msg.from)
+        if reply_used
+          body_html = (msg.html_part.body.to_s rescue "")
+          body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
+          body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
+          body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
+          body_text = thebody if body_text.blank?
+          email_to = (msg.reply_to || msg.from)
 
-        body_text2 = ""
-        body_text.each_line do |tline|
-          body_text2 << "> #{tline}"
-        end
-
-        reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template_html.to_s.gsub("%%reply%%",auto)
-
-        mail = Mail.new do
-          from    "#{account.address} <#{account.address}>"
-          to      email_to
-          subject "Re: #{msg.subject}"
-          text_part do
-            content_type 'text/plain; charset=UTF-8'
-            # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-            body reply_body+"\n\nOn #{msg.date}, #{email_to} wrote:\n>\n#{body_text2}\nEOF"
+          body_text2 = ""
+          body_text.each_line do |tline|
+            body_text2 << "> #{tline}"
           end
-          html_part do
-            content_type 'text/html; charset=UTF-8'
-            body reply_body+"<br><br>\n\nOn #{msg.date}, #{email_to} wrote:<br>\n<br>\n#{body_html}\nEOF"
+
+          reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+
+          mail = Mail.new do
+            from    "#{account.address} <#{account.address}>"
+            to      email_to
+            subject "Re: #{msg.subject}"
+            text_part do
+              content_type 'text/plain; charset=UTF-8'
+              # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
+              body reply_body+"\n\nOn #{msg.date}, #{email_to} wrote:\n>\n#{body_text2}"
+            end
+            html_part do
+              content_type 'text/html; charset=UTF-8'
+              body reply_body+"<br><br>\n\nOn #{msg.date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
+            end
           end
+
+          mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
+          mail.header['References'] = msg["Message-ID"]
+          message = mail.to_s
+
+          imap.append(drafts, message, [:Seen], Time.now)
+
+          account.increment!(:drafts_created_today)
+          account.increment!(:drafts_created_lifetime)
+        else
+          account.increment!(:drafts_missing_replies_today) unless reply_used
+          account.increment!(:drafts_missing_replies_lifetime) unless reply_used
         end
-
-        mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
-        mail.header['References'] = msg["Message-ID"]
-        message = mail.to_s
-
-        imap.append(drafts, message, [:Seen], Time.now)
-
-        account.increment!(:drafts_created_today)
-        account.increment!(:drafts_created_lifetime)
-        account.increment!(:drafts_missing_replies_today) unless reply_used
-        account.increment!(:drafts_missing_replies_lifetime) unless reply_used
       end
     end
 
     # To be finished, or just rename test_google_draft once it works.
     def self.create_drafts_using_google account
+
+      unless account.replies.count > 0
+        return false
+      end
 
       include GoogleConnector
       api = GmailApi.new account
@@ -196,9 +208,12 @@ module ReplyMaker
         ids = []
 
         messages.each do |msg|
+
           thebody = msg['body'].to_s.downcase
           next if account.subject_line_skip?(msg['subject'])
           next if api.is_thread_message! msg['thread_id'] # Skip if this thread has more than one email! Secret sauce!
+
+          reply_used = false
 
           auto = ""
           for reply in account.replies
@@ -210,33 +225,36 @@ module ReplyMaker
             reply_used = true
           end
 
-          body_html = (msg['body_html'].body.to_s rescue "")
-          body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
-          body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
-          body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
-          body_text = thebody if body_text.blank?
-          email_to = msg['from']
-          subject = "Re: #{msg['subject']}"
-
-          body_text2 = ""
-          body_text.each_line do |tline|
-            body_text2 << "> #{tline}"
-          end
-
-          reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template_html.to_s.gsub("%%reply%%",auto)
-
-          text_part = reply_body+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
-          html_part = reply_body+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
-
           if reply_used
+
+            body_html = (msg['body_html'].body.to_s rescue "")
+            body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
+            body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
+            body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
+            body_text = thebody if body_text.blank?
+            email_to = msg['from']
+            subject = "Re: #{msg['subject']}"
+
+            body_text2 = ""
+            body_text.each_line do |tline|
+              body_text2 << "> #{tline}"
+            end
+
+            reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+
+            text_part = reply_body+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
+            html_part = reply_body+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
+
             api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part)
             ids.push(msg['id'])
-          end
 
-          account.increment!(:drafts_created_today)
-          account.increment!(:drafts_created_lifetime)
-          account.increment!(:drafts_missing_replies_today) unless reply_used
-          account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+            account.increment!(:drafts_created_today)
+            account.increment!(:drafts_created_lifetime)
+
+          else
+            account.increment!(:drafts_missing_replies_today) unless reply_used
+            account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+          end
         end
 
         api.read_messages(ids)
