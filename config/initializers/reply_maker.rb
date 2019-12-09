@@ -190,7 +190,7 @@ module ReplyMaker
           mail.header['References'] = msg["Message-ID"]
           message = mail.to_s
 
-          imap.append(drafts, message, [:Seen], Time.now)
+          imap.append(drafts, message, [:Seen, :Draft], Time.now)
 
           account.increment!(:drafts_created_today)
           account.increment!(:drafts_created_lifetime)
