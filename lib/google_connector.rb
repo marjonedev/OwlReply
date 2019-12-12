@@ -30,6 +30,7 @@ module GoogleConnector
           subject = headers.any? { |h| h.name == 'Subject' } ? headers.find { |h| h.name == 'Subject' }.value : ''
           date = headers.any? { |h| h.name == 'Date' } ? headers.find { |h| h.name == 'Date' }.value : ''
           from = headers.any? { |h| h.name == 'From' } ? headers.find { |h| h.name == 'From' }.value.to_s : ''
+          msgid = headers.any? { |h| h.name == 'Message-ID' } ? headers.find { |h| h.name == 'Message-ID' }.value.to_s : ''
 
           obj['id'] = i.id
           obj['subject'] = subject
@@ -40,6 +41,7 @@ module GoogleConnector
           obj['body_html'] = nil
           obj['body_text'] = nil
           obj['body_size'] = payload.body.size rescue 0
+          obj['msgid'] = msgid.tr('<>', '')
 
           # if body.nil? && payload.parts.any?
           #   body = payload.parts.map { |part| part.body.data }.join
@@ -72,27 +74,34 @@ module GoogleConnector
 
     end
 
-    def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "")
+    def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
 
       if thread_id.nil?
         thread_id = id
       end
 
       require 'mail'
-      message         = Mail.new
-      message.date    = Time.now
-      message.subject = subject
-      message.from    = from.nil? ? @emailaccount.address : from
-      message.to      = to
 
-      if multipart
-        message.part content_type: 'multipart/alternative' do |part|
-          part.text_part = Mail::Part.new(body: body_text, content_type: 'text/plain; charset=UTF-8')
-          part.html_part = Mail::Part.new(body: body_html, content_type: 'text/html; charset=UTF-8')
-          end
-      else
-        message.body = body_text
+      message = Mail.new do
+        from    from
+        to      to
+        subject subject
+        text_part do
+          content_type 'text/plain; charset=UTF-8'
+          body body_text
+        end
+        html_part do
+          content_type 'text/html; charset=UTF-8'
+          body body_html
+        end
       end
+
+      unless msgid.to_s.strip.empty?
+        message.header['In-Reply-To'] = "<#{msgid}>"
+        message.header['References'] = "<#{msgid}>"
+      end
+
+      puts message.to_s
 
       @service.create_user_draft(
           "me",
