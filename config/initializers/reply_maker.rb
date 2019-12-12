@@ -123,6 +123,8 @@ module ReplyMaker
 
       require 'net/imap'
       require 'mail'
+      require 'date'
+
       ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
       port = account.imap_port ? account.imap_port : 993
       host = account.imap_host ? account.imap_host : 'imap.gmail.com'
@@ -141,6 +143,9 @@ module ReplyMaker
         reply_used = false
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
         msg = Mail.read_from_string data
+
+        date = DateTime.parse(msg.date)
+        formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
 
         thebody = msg.body.to_s.downcase
         next if account.subject_line_skip?(msg.subject)
@@ -170,6 +175,9 @@ module ReplyMaker
           end
 
           reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+          html_reply_body = reply_body.gsub("\n","<br>\n")
+
+          email_to_html = CGI::escapeHTML(email_to)
 
           mail = Mail.new do
             from    "#{account.address} <#{account.address}>"
@@ -178,11 +186,11 @@ module ReplyMaker
             text_part do
               content_type 'text/plain; charset=UTF-8'
               # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-              body reply_body+"\n\nOn #{msg.date}, #{email_to} wrote:\n>\n#{body_text2}"
+              body reply_body+"\n\nOn #{formatted_date}, #{email_to} wrote:\n>\n#{body_text2}"
             end
             html_part do
               content_type 'text/html; charset=UTF-8'
-              body reply_body+"<br><br>\n\nOn #{msg.date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
+              body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to_html} wrote:<br>\n<br>\n#{body_html}"
             end
           end
 
@@ -212,11 +220,17 @@ module ReplyMaker
       api = GmailApi.new account
 
       begin
+
+        require 'date'
+
         messages = api.get_messages
 
         ids = []
 
         messages.each do |msg|
+
+          date = DateTime.parse(msg['date'])
+          formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
 
           thebody = msg['body'].to_s.downcase
           next if account.subject_line_skip?(msg['subject'])
@@ -250,9 +264,13 @@ module ReplyMaker
             end
 
             reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+            html_reply_body = reply_body.gsub("\n","<br>\n")
+
 
             text_part = reply_body+"\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
-            html_part = reply_body+"<br><br>\n\nOn #{msg['date']}, #{email_to} wrote:<br>\n<br>\n<blockquote>#{body_html}</blockquote>"
+
+            email_to_html = CGI::escapeHTML(email_to)
+            html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html}</blockquote></div></div>"
 
             api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part)
             ids.push(msg['id'])
