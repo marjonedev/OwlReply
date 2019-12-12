@@ -144,8 +144,8 @@ module ReplyMaker
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
         msg = Mail.read_from_string data
 
-        date = DateTime.parse(msg.date)
-        formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+        date = DateTime.rfc3339(msg.date.to_s)
+        formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
 
         thebody = msg.body.to_s.downcase
         next if account.subject_line_skip?(msg.subject)
@@ -177,8 +177,6 @@ module ReplyMaker
           reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
           html_reply_body = reply_body.gsub("\n","<br>\n")
 
-          email_to_html = CGI::escapeHTML(email_to)
-
           mail = Mail.new do
             from    "#{account.address} <#{account.address}>"
             to      email_to
@@ -190,7 +188,7 @@ module ReplyMaker
             end
             html_part do
               content_type 'text/html; charset=UTF-8'
-              body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to_html} wrote:<br>\n<br>\n#{body_html}"
+              body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
             end
           end
 
