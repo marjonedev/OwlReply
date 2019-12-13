@@ -114,7 +114,7 @@ class EmailaccountsController < ApplicationController
     ssl = connect_params[:imap_ssl] ? {ssl_version: :TLSv1_2} : false
     # ssl = connect_params[:imap_ssl] ? true : false
     port = connect_params[:imap_port] ? connect_params[:imap_port]  : 993
-    host = connect_params[:imap_host] ? connect_params[:imap_host] : 'imap.gmail.com'
+    host = connect_params[:imap_host].to_s.empty? ? connect_params[:address].to_s.split("@").last : connect_params[:imap_host]
     address = connect_params[:address]
     password = connect_params[:password]
 

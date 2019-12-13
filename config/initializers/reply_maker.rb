@@ -127,7 +127,7 @@ module ReplyMaker
 
       ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
       port = account.imap_port ? account.imap_port : 993
-      host = account.imap_host ? account.imap_host : 'imap.gmail.com'
+      host = account.imap_host.to_s.empty? ? account.address.to_s.split("@").last : account.imap_host
 
       imap = Net::IMAP.new(host, ssl: ssl, port: port )
       imap.login(account.address, account.password)
