@@ -147,13 +147,14 @@ module ReplyMaker
         date = DateTime.rfc3339(msg.date.to_s)
         formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
 
-        thebody = msg.body.to_s.downcase
+        thebody = msg.body.to_s
+        thebody_downcase = thebody.downcase
         next if account.subject_line_skip?(msg.subject)
         next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
 
         auto = ""
         for reply in account.replies
-          next unless reply.matches?(msg.subject, thebody)
+          next unless reply.matches?(msg.subject, thebody_downcase)
           body = reply.body.to_s.gsub("\n","<br>\n")
           auto << body
           reply.increment!(:drafts_created_today)
@@ -230,7 +231,8 @@ module ReplyMaker
           date = DateTime.parse(msg['date'])
           formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
 
-          thebody = msg['body'].to_s.downcase
+          thebody = msg['body'].to_s
+          thebody_downcase = thebody.downcase
           next if account.subject_line_skip?(msg['subject'])
           next if api.is_thread_message! msg['thread_id'] # Skip if this thread has more than one email! Secret sauce!
 
@@ -238,7 +240,7 @@ module ReplyMaker
 
           auto = ""
           for reply in account.replies
-            next unless reply.matches?(msg['subject'], thebody)
+            next unless reply.matches?(msg['subject'], thebody_downcase)
             body = reply.body.gsub("\n","<br>\n")
             auto << body
             reply.increment!(:drafts_created_today)
