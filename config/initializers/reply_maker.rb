@@ -247,9 +247,9 @@ module ReplyMaker
             reply.increment!(:drafts_created_lifetime)
             reply_used = true
           end
+          account_has_no_template = (account.template.nil? || account.template.to_s.strip == "")
 
-          if reply_used
-
+          if (reply_used || (!account_has_no_template))
             body_html = (msg['body_html'].body.to_s rescue "")
             body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
             body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
@@ -264,7 +264,7 @@ module ReplyMaker
               body_text2 << "> #{tline}"
             end
 
-            reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+            reply_body = account_has_no_template ? auto : account.template.to_s.gsub("%%reply%%",auto)
             html_reply_body = reply_body.gsub("\n","<br>\n")
 
 
@@ -276,10 +276,11 @@ module ReplyMaker
 
             api.create_reply_draft(msg['id'], thread_id: msg['tread_id'], from: from, to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part, msgid: msg['msgid'])
             ids.push(msg['id'])
+          end
 
+          if reply_used
             account.increment!(:drafts_created_today)
             account.increment!(:drafts_created_lifetime)
-
           else
             account.increment!(:drafts_missing_replies_today) unless reply_used
             account.increment!(:drafts_missing_replies_lifetime) unless reply_used
