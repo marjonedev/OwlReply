@@ -99,6 +99,22 @@ class User < ApplicationRecord
     end
   end
 
+  def generate_password_token!
+    self.reset_password_token = generate_token
+    self.reset_password_sent_at = Time.now.to_i
+    save!
+  end
+
+  def password_token_valid?
+    (self.reset_password_sent_at.to_i + (60*60*4)) > Time.now.to_i
+  end
+
+  def reset_password!(password)
+    self.reset_password_token = nil
+    self.password = password
+    save!
+  end
+
   protected
     # before filter
     def encrypt_password
@@ -109,5 +125,10 @@ class User < ApplicationRecord
 
     def password_required?
       encrypted_password.blank? || !password.blank?
+    end
+
+  private
+    def generate_token
+      SecureRandom.hex(10)
     end
 end

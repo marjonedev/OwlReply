@@ -56,5 +56,8 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy', :as => "logout"
   get 'privacy-policy', to: 'pages#privacy'
   get 'terms-of-use', to: 'pages#terms'
+
+  post 'password/forgot', to: 'password#forgot'
+  post 'password/reset', to: 'password#reset'
 end
 
