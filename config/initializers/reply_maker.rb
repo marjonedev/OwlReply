@@ -255,7 +255,9 @@ module ReplyMaker
             body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
             body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
             body_text = thebody if body_text.blank?
-            email_to = msg['from']
+
+            #email_to = msg['from']
+            email_to = msg['reply_to'].blank ? msg['from'] : msg['reply_to']
             subject = "Re: #{msg['subject']}"
             from = "#{account.address}"
 
