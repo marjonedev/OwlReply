@@ -57,8 +57,8 @@ Rails.application.routes.draw do
   get 'privacy-policy', to: 'pages#privacy'
   get 'terms-of-use', to: 'pages#terms'
 
-  get 'forgot_password', to: 'password#request'
-  post 'password/forgot', to: 'password#forgot'
+  get 'forgot_password', to: 'pages#forgot_password'
+  post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'password#reset'
 end
 
