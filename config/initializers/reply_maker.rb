@@ -260,6 +260,7 @@ module ReplyMaker
             email_to = msg['reply_to'].blank? ? msg['from'] : msg['reply_to']
             subject = "Re: #{msg['subject']}"
             from = "#{account.address}"
+            auto << msg.to_s
 
             body_text2 = ""
             body_text.each_line do |tline|
