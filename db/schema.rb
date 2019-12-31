@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_29_131658) do
+ActiveRecord::Schema.define(version: 2019_12_30_171105) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -122,6 +122,8 @@ ActiveRecord::Schema.define(version: 2019_11_29_131658) do
     t.datetime "subscription_last_payment_date"
     t.date "next_subscription_charge_on"
     t.boolean "admin", default: false
+    t.string "reset_password_token"
+    t.bigint "reset_password_sent_at"
     t.index ["email_address"], name: "index_users_on_email_address"
   end
 
