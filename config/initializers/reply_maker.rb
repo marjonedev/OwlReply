@@ -261,6 +261,7 @@ module ReplyMaker
             subject = "Re: #{msg['subject']}"
             from = "#{account.address}"
 
+
             body_text2 = ""
             body_text.each_line do |tline|
               body_text2 << "> #{tline}"
