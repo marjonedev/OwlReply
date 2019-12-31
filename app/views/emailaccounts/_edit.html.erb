@@ -24,7 +24,7 @@
       </div>
       <% if emailaccount.authenticated %>
         <div class="style-msg" style="background-color: #EEE;">
-          <div class="sb-msg"><%= link_to 'Revoke Access', revoke_account_access_emailaccount_path(emailaccount), onclick: "return confirm('Are you sure to revoke access?')", class: "button button-3d button-mini button-rounded button-leaf" %> Your account have been authenticated.</div>
+          <div class="sb-msg"><%= link_to 'Revoke Access', revoke_account_access_emailaccount_path(emailaccount), onclick: "return confirm('Are you sure to revoke access?')", class: "button button-3d button-mini button-rounded button-leaf" %> Your account has been authenticated.</div>
         </div>
        <% else %>
         <div class="style-msg style-msg-light" style="background-color: #333;">

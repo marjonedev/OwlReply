@@ -61,7 +61,7 @@ class PaymentmethodsController < ApplicationController
         if @paymentmethod.save
           session.delete(:upgrade)
           current_user.set_subscription!(@subscription)
-          format.html { redirect_to root_url, notice: "Your account have been successfully upgraded to #{@subscription.name}" }
+          format.html { redirect_to root_url, notice: "Your account has been successfully upgraded to #{@subscription.name}" }
         else
           format.js {  }
           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
