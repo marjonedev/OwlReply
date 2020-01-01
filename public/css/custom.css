@@ -350,3 +350,41 @@ div.list-paymentmethod .list-group-item{
 #content .post ul{
     margin-left: 20px;
 }
+
+/* Google Button
+===============================*/
+button.button-connect,
+.button.button-connect,
+.button-connect{
+    -webkit-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+.googled,
+.button.googled,
+button.googled{
+    background-image: url('/images/google/google_signin_btn.png');
+    background-repeat:  no-repeat;
+    background-color: #FFFFFF;
+    background-position: 0 0;
+    text-indent: 999px;
+    width: 191px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.googled:focus,
+.button.googled:focus,
+button.googled:focus{
+    /*background-image: url('/images/google/google_signin_btn_pressed.png');*/
+    background-image: url('/images/google/google_signin_btn.png');
+    background-position: -191px;
+}
+
+.googled:hover,
+.button.googled:hover,
+button.googled:hover{
+    /*background-image: url('/images/google/google_signin_btn_focus.png');*/
+    background-image: url('/images/google/google_signin_btn.png');
+    background-position: -382px;
+}

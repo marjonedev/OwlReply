@@ -58,7 +58,13 @@
                 </div>
               </div>
               <div class="form-group">
-                <button type="submit" class="button button-large button-rounded float-left">Connect</button>
+                <%
+                  google_class = html_attr_selected(@emailaccount.email_provider, 'google') === "selected=selected" ? 'googled' : ''
+                  if @emailaccount.email_provider.nil?
+                    google_class = 'googled'
+                  end
+                %>
+                <button type="submit" class="button button-large button-rounded button-connect float-left <%= google_class %>">Connect</button>
                 <button type="button" data-dismiss="modal" class="button button-white button-light button-large button-rounded float-right">Cancel</button>
               </div>
             <% end %>
@@ -81,8 +87,10 @@
                 var value = $(this).val();
                 if (value == 'other'){
                     $('#smtpSettings').show();
+                    $('button.button-connect').removeClass('googled');
                 }else{
                     $('#smtpSettings').hide();
+                    $('button.button-connect').addClass('googled');
                 }
             });
 
