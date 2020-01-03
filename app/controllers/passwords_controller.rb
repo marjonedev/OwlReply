@@ -1,17 +1,23 @@
 class PasswordsController < ApplicationController
 
   def forgot
-    if params[:email_address].blank? # check if email is present
-      return render json: {error: 'Email not present'}
-    end
 
-    user = User.find_by(email_address: params[:email_address]) # if present find user by email
+    respond_to do |format|
+      if params[:email_address].blank? # check if email is present
+        format.js { render :template => 'passwords/forgot_blank'}
+        format.json {render json: {error: 'Email not present'}, status: :not_found}
+      else
+        user = User.find_by(email_address: params[:email_address]) # if present find user by email
 
-    if user.present?
-      # send email function here
-      render json: {status: 'ok'}, status: :ok
-    else
-      render json: {error: ['Email address not found. Please check and try again.']}, status: :not_found
+        if user.present?
+          # send email function here
+          format.js { render :template => 'passwords/forgot_success' }
+          format.json {render json: {status: 'ok'}, status: :ok}
+        else
+          format.js { render :template => 'passwords/forgot_error' }
+          format.json {render json: {error: 'Email address not found. Please check and try again.'}, status: :not_found}
+        end
+      end
     end
 
   end
@@ -35,4 +41,11 @@ class PasswordsController < ApplicationController
       render json: {error:  ['Link not valid or expired. Try generating a new link.']}, status: :not_found
     end
   end
+
+  private
+    def emailaccount_params
+      params
+          .require(:user)
+          .permit(:email_address)
+    end
 end
