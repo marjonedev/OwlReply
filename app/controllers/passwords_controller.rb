@@ -1,5 +1,7 @@
 class PasswordsController < ApplicationController
 
+  before_action :validate_token, only: :reset
+
   def forgot
 
     respond_to do |format|
@@ -10,6 +12,7 @@ class PasswordsController < ApplicationController
         user = User.find_by(email_address: params[:email_address]) # if present find user by email
 
         if user.present?
+          user.generate_password_token! #generate pass token
           # send email function here
           format.js { render :template => 'passwords/forgot_success' }
           format.json {render json: {status: 'ok'}, status: :ok}
@@ -22,7 +25,7 @@ class PasswordsController < ApplicationController
 
   end
 
-  def reset
+  def reset_submit
     token = params[:token].to_s
 
     if params[:email].blank?
@@ -42,7 +45,25 @@ class PasswordsController < ApplicationController
     end
   end
 
+  def reset
+    @token = params[:token].to_s
+  end
+
   private
+    def validate_token
+      token = params[:token].to_s
+
+      if token.blank?
+        redirect_to forgot_password_url, alert: "Token is not present. Try to request password reset again."
+      end
+    end
+
+    def reset_params
+      params
+          .require(:user)
+          .permit(:email_address, :password, :token)
+    end
+
     def emailaccount_params
       params
           .require(:user)

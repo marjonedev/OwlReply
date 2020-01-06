@@ -58,7 +58,9 @@ Rails.application.routes.draw do
   get 'terms-of-use', to: 'pages#terms'
 
   get 'forgot_password', to: 'pages#forgot_password'
+
+  get 'password/reset', to: 'passwords#reset'
   post 'password/forgot', to: 'passwords#forgot'
-  post 'password/reset', to: 'password#reset'
+  post 'password/reset_submit', to: 'password#reset_submit'
 end
 
