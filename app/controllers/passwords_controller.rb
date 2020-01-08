@@ -5,11 +5,11 @@ class PasswordsController < ApplicationController
   def forgot
 
     respond_to do |format|
-      if params[:email_address].blank? # check if email is present
+      if emailaccount_params[:email_address].blank? # check if email is present
         format.js { render :template => 'passwords/forgot_blank'}
         format.json {render json: {error: 'Email not present'}, status: :not_found}
       else
-        user = User.find_by(email_address: params[:email_address]) # if present find user by email
+        user = User.find_by(email_address: emailaccount_params[:email_address]) # if present find user by email
 
         if user.present?
           user.generate_password_token! #generate pass token
@@ -26,22 +26,29 @@ class PasswordsController < ApplicationController
   end
 
   def reset_submit
-    token = params[:token].to_s
 
-    if params[:email].blank?
-      return render json: {error: 'Token not present'}
+    token = reset_params[:token].to_s
+
+    if reset_params[:password] != reset_params[:password_confirm]
+     return render :template => 'passwords/change_password_nomatch'
+    end
+
+    if reset_params[:password].length < 8
+      return render :template => 'passwords/change_password_error', :locals => { :message => 'Password too short.' }
+    elsif reset_params[:password].length > 40
+      return render :template => 'passwords/change_password_error', :locals => { :message => 'Password too long.' }
     end
 
     user = User.find_by(reset_password_token: token)
 
     if user.present? && user.password_token_valid?
-      if user.reset_password!(params[:password])
-        render json: {status: 'ok'}, status: :ok
+      if user.reset_password!(reset_params[:password])
+        return redirect_to login_url, notice: 'Your password has been changed. Try to login with the new password now.'
       else
-        render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+        return render :template => 'passwords/change_password_error', :locals => { :message => 'Opps. There\'s an error. Please try different password.' }
       end
     else
-      render json: {error:  ['Link not valid or expired. Try generating a new link.']}, status: :not_found
+      render :template => 'passwords/change_password_error', :locals => { :message => 'Link not valid or expired. Try generating a new link.'}
     end
   end
 
@@ -56,12 +63,19 @@ class PasswordsController < ApplicationController
       if token.blank?
         redirect_to forgot_password_url, alert: "Token is not present. Try to request password reset again."
       end
+
+      user = User.find_by(reset_password_token: token)
+
+      if user.present? && user.password_token_valid?
+      else
+        redirect_to forgot_password_url, alert: "Token is not valid. Try to request password reset again."
+      end
     end
 
     def reset_params
       params
           .require(:user)
-          .permit(:email_address, :password, :token)
+          .permit(:email_address, :password, :password_confirm, :token)
     end
 
     def emailaccount_params

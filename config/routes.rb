@@ -61,6 +61,6 @@ Rails.application.routes.draw do
 
   get 'password/reset', to: 'passwords#reset'
   post 'password/forgot', to: 'passwords#forgot'
-  post 'password/reset_submit', to: 'password#reset_submit'
+  post 'password/reset_submit', to: 'passwords#reset_submit'
 end
 

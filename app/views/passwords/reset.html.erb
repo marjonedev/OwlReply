@@ -1,1 +1,35 @@
-Reset form here <%= @token %>
+<section id="content">
+
+  <div class="content-wrap nopadding">
+
+    <div class="section nomargin">
+      <div class="container clearfix">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10">
+            <div class="white-section custom-white-box divcenter" style="max-width: 550px;">
+              <%= form_with(html: {id: 'forgot_password_request', class: 'nobottommargin', name: 'forgot-password-request'}, url: password_reset_submit_path) do %>
+                <div id="forgot_password_msg" class="style-msg" style="display: none"></div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" name="user[password]" class="form-control" required="required"  />
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" name="user[password_confirm]" class="form-control" required="required" />
+                </div>
+                <div class="form-group nobottommargin">
+                  <input type="hidden" name="user[token]" value="<%= @token %>" />
+                  <button type="submit" class="button button-rounded noleftmargin">Submit</button>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section><!-- #content end -->
