@@ -13,9 +13,10 @@ class PasswordsController < ApplicationController
 
         if user.present?
           user.generate_password_token! #generate pass token
-          PasswordMailer.with(user: user).reset_password_email.deliver_now #deliver email
+          # PasswordMailer.with(user: user).reset_password_email.deliver_now #deliver email
           # format.js { render :template => 'passwords/forgot_success' }
-          format.html {redirect_to login_url, notice: "An email with password reset instructions has been sent to your email address."}
+          flash[:successmsg] = "An email with password reset instructions has been sent to your email address."
+          format.html {redirect_to login_url}
           format.json {render json: {status: 'ok'}, status: :ok}
         else
           format.js { render :template => 'passwords/forgot_error' }
@@ -44,7 +45,8 @@ class PasswordsController < ApplicationController
 
     if user.present? && user.password_token_valid?
       if user.reset_password!(reset_params[:password])
-        return redirect_to login_url, notice: 'Your password has been changed. Try to login with the new password now.'
+        flash[:successmsg] = "Your password has been changed. Try to login with the new password now."
+            return redirect_to login_url
       else
         return render :template => 'passwords/change_password_error', :locals => { :message => 'Opps. There\'s an error. Please try different password.' }
       end
