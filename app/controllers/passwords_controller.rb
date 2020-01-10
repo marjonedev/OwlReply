@@ -46,7 +46,7 @@ class PasswordsController < ApplicationController
     if user.present? && user.password_token_valid?
       if user.reset_password!(reset_params[:password])
         flash[:successmsg] = "Your password has been changed. Try to login with the new password now."
-            return redirect_to login_url
+        return redirect_to login_url
       else
         return render :template => 'passwords/change_password_error', :locals => { :message => 'Opps. There\'s an error. Please try different password.' }
       end
