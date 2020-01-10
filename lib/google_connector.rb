@@ -31,12 +31,14 @@ module GoogleConnector
           date = headers.any? { |h| h.name == 'Date' } ? headers.find { |h| h.name == 'Date' }.value : ''
           from = headers.any? { |h| h.name == 'From' } ? headers.find { |h| h.name == 'From' }.value.to_s : ''
           msgid = headers.any? { |h| h.name == 'Message-ID' } ? headers.find { |h| h.name == 'Message-ID' }.value.to_s : ''
+          reply_to = headers.any? { |h| h.name == 'Reply-To' } ? headers.find { |h| h.name == 'Reply-To' }.value.to_s : ''
 
           obj['id'] = i.id
           obj['subject'] = subject
           obj['thread_id'] = i.thread_id
           obj['date'] = date
           obj['from'] = from
+          obj['reply_to'] = reply_to
           obj['body'] = ""
           obj['body_html'] = nil
           obj['body_text'] = nil
