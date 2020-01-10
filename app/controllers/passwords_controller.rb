@@ -13,8 +13,9 @@ class PasswordsController < ApplicationController
 
         if user.present?
           user.generate_password_token! #generate pass token
-          # send email function here
-          format.js { render :template => 'passwords/forgot_success' }
+          PasswordMailer.with(user: user).reset_password_email.deliver_now #deliver email
+          # format.js { render :template => 'passwords/forgot_success' }
+          format.html {redirect_to login_url, notice: "An email with password reset instructions has been sent to your email address."}
           format.json {render json: {status: 'ok'}, status: :ok}
         else
           format.js { render :template => 'passwords/forgot_error' }
