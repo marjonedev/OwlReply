@@ -97,5 +97,7 @@ Rails.application.configure do
   
   #config.serve_static_assets = true
   REDIS = Redis.new(host: 'localhost', port: 6379, db: 1)
+
+  config.action_mailer.delivery_method = :sendmail
   
 end
