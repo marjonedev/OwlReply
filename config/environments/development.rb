@@ -59,4 +59,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   REDIS = Redis.new(host: 'localhost', port: 6379, db: 1)
+
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 2525 }
 end
