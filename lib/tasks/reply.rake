@@ -8,7 +8,7 @@ namespace :reply do
   end
   desc "This will reset every account's error status"
   task :reset_error => :environment do
-    ReplyMaker::Replier.reset_error_status
+    ReplyMaker::Replier.reset_account_error
   end
 end
 

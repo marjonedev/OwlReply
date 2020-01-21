@@ -95,7 +95,7 @@ module ReplyMaker
       end
     end
 
-    def self.reset_error_status
+    def self.reset_account_error
       Emailaccount.where('error IS NOT NULL AND error <> ""').update_all(error: nil)
     end
 
