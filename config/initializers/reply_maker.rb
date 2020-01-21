@@ -95,6 +95,10 @@ module ReplyMaker
       end
     end
 
+    def self.reset_error_status
+      Emailaccount.where('error IS NOT NULL AND error <> ""').update_all(error: nil)
+    end
+
     def self.already_running_fine?
       self.get_last_reply_time > (Time.now.to_i - (2*60))
     end
