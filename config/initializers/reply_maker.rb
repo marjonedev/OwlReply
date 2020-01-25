@@ -13,6 +13,10 @@
 
 module ReplyMaker
   class Replier
+    def replier_logger
+      @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
+    end
+
     def self.start_checking
       self.reset_drafts_daycount
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
@@ -41,9 +45,11 @@ module ReplyMaker
             ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
             self.touch_last_reply_time
             self.create_drafts_using_imap(account)
+            replier_logger.info("IMAP - Success on account #{account.address}. #{$!.to_s}")
             puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
             account.update_column(:last_checked,Time.now.to_i)
           rescue
+            replier_logger.info("IMAP - Failure on account #{account.address}. #{$!.to_s}")
             puts "IMAP - Failure on account #{account.address}. #{$!.to_s}"
             account.update_column(:error,$!.to_s)
           end
@@ -68,9 +74,12 @@ module ReplyMaker
             ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
             self.touch_last_reply_time
             self.create_drafts_using_google(account)
+
+            replier_logger.info("Google - Success on account #{account.address}. #{$!.to_s}")
             puts "Google - Success on account #{account.address}. #{$!.to_s}"
             account.update_column(:last_checked,Time.now.to_i)
           rescue
+            replier_logger.info("Google - Failure on account #{account.address}. #{$!.to_s}")
             puts "Google - Failure on account #{account.address}. #{$!.to_s}"
             account.update_column(:error,$!.to_s)
           end
@@ -297,8 +306,13 @@ module ReplyMaker
         api.read_messages(ids)
 
       rescue Google::Apis::AuthorizationError => exception
+        replier_logger.error exception.message
+        exception.backtrace.each { |line| replier_logger.error line }
         api.refresh_api!
         retry
+      rescue Exception => e
+        replier_logger.error e.message
+        e.backtrace.each { |line| replier_logger.error line }
       end
 
     end
