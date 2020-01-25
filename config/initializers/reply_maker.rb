@@ -16,6 +16,9 @@ module ReplyMaker
     def replier_logger
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
+    def self.replier_logger
+      @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
+    end
 
     def self.start_checking
       self.reset_drafts_daycount
