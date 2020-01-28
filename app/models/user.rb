@@ -22,6 +22,18 @@ class User < ApplicationRecord
   before_validation :set_initial_content, on: [:create]
   before_validation :lowercase_username
   after_create :create_initial_emailaccount
+  after_commit :create_newuser_job, on: :create
+
+  def create_newuser_job
+    #NewuserJob.set(wait: 1.hour).perform_later(self)
+  end
+
+  def send_welcome_email
+    UserMailer.with(user: self).welcome_email.deliver_later
+  end
+  def send_informational_email
+    UserMailer.with(user: self).informational_email.deliver_later
+  end
 
   def set_initial_content
     self.password = self.email_address

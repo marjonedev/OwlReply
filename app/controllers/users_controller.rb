@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       if @user.save
-        UserMailer.with(user: @user).welcome_email.deliver_later
+        @user.send_welcome_email
         session[:user_id] = @user.id # Make sure the user is logged in after signing in!
         format.html { redirect_to @user.emailaccounts.first }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
