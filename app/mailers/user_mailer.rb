@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: 'ceo@owlreply.com'
+  default from: 'OwlReply <ceo@owlreply.com>'
 
   def welcome_email
     @user = params[:user]
