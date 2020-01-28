@@ -42,6 +42,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         @user.send_welcome_email
+        @user.send_how_to_email
         session[:user_id] = @user.id # Make sure the user is logged in after signing in!
         format.html { redirect_to @user.emailaccounts.first }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
