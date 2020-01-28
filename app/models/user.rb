@@ -27,7 +27,6 @@ class User < ApplicationRecord
   def create_newuser_job
     #NewuserJob.set(wait: 1.hour).perform_later(self)
   end
-
   def send_welcome_email
     UserMailer.with(user: self).welcome_email.deliver_later
   end
