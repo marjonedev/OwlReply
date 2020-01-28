@@ -30,6 +30,9 @@ class User < ApplicationRecord
   def send_welcome_email
     UserMailer.with(user: self).welcome_email.deliver_later
   end
+  def send_how_to_email
+    UserMailer.with(user: self).how_to_email.deliver_later
+  end
   def send_informational_email
     UserMailer.with(user: self).informational_email.deliver_later
   end
