@@ -73,6 +73,60 @@
           </div>
         </div>
       </div>
+      <div class="divider divider-center"><i class="icon-chart-bar"></i></div>
+      <div>
+        <h4>New users for the last 30 days</h4>
+        <canvas id="usersStat"></canvas>
+      </div>
     </div>
   </div>
 </section>
+
+<%
+  users = users_per_day(30)
+  labels = []
+  data = []
+  users.each do |date, count|
+    labels.push(date.strftime("%m/%d/%Y"))
+    data.push(count)
+  end
+%>
+
+<% content_for :javascript_includes do %>
+<link rel="stylesheet" href="/css/admin.css" type="text/css" />
+<script src="/js/chart.js"></script>
+<script src="/js/chart-utils.js"></script>
+<% end %>
+
+
+<% content_for :javascript_footer_includes do %>
+<script>
+    var ctx = document.getElementById('usersStat').getContext('2d');
+    var color = Chart.helpers.color;
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <%= raw labels.to_json %>,
+            datasets: [{
+                label: '# of users',
+                fill: false,
+                data: <%= raw data.to_json %>,
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.blue,
+                borderWidth: 1,
+                // lineTension: 0.1
+            }],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+<% end %>
