@@ -102,7 +102,6 @@
 <% content_for :javascript_footer_includes do %>
 <script>
     var ctx = document.getElementById('usersStat').getContext('2d');
-    var color = Chart.helpers.color;
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -111,10 +110,8 @@
                 label: '# of users',
                 fill: false,
                 data: <%= raw data.to_json %>,
-                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                backgroundColor: window.chartColors.blue,
                 borderColor: window.chartColors.blue,
-                borderWidth: 1,
-                // lineTension: 0.1
             }],
         },
         options: {

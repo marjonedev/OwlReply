@@ -16,6 +16,7 @@
             <th>Email Address</th>
             <th>Username</th>
             <th>Subscription</th>
+            <th>Created At</th>
           </tr>
           </thead>
           <!--<tfoot>
@@ -32,6 +33,7 @@
               <td><%= account.email_address %></td>
               <td><%= account.username %></td>
               <td><%= subs[account.subscription_id.to_i] %></td>
+              <td><%= account.created_at.strftime("%b %d, %Y") %></td>
             </tr>
           <% end %>
           </tbody>
@@ -49,7 +51,9 @@
 <% content_for :javascript_footer_includes do %>
 <script>
     $(document).ready(function() {
-        $('#accountsTable').dataTable();
+        $('#accountsTable').dataTable({
+            "order": [[ 3, "desc" ]]
+        });
     });
 </script>
 <% end %>
