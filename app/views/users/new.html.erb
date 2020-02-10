@@ -51,6 +51,8 @@
               <%= f.password_field :password, class: 'form-control required', id: 'password', required: 'required' %>
             </div>-->
 
+            <input type="hidden" name="user[referer]" value="<%= cookies[:referer] %>" />
+
             <div class="col_full nobottommargin">
               <button class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Get Started</button>
             </div>
