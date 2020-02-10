@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
 
   helper_method :current_user
+  before_action :set_referer_cookies
 
   def current_user
     if session[:user_id]
@@ -22,6 +23,10 @@ class ApplicationController < ActionController::Base
     if !logged_in?
       redirect_to login_url
     end
+  end
+
+  def set_referer_cookies
+    cookies[:referer] = request.referer
   end
 
 end
