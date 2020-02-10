@@ -1,5 +1,5 @@
 class UserReferer < ActiveRecord::Migration[5.2]
   def change
-    add_column :user, :referer, :string
+    add_column :users, :referer, :string
   end
 end
