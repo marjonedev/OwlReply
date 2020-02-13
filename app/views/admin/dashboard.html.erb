@@ -74,9 +74,17 @@
         </div>
       </div>
       <div class="divider divider-center"><i class="icon-chart-bar"></i></div>
-      <div>
+      <div class="pb-5">
         <h4>New users for the last 30 days</h4>
         <canvas id="usersStat"></canvas>
+      </div>
+      <div class="pb-5">
+        <h4>Users came from for the last 30 days</h4>
+        <canvas id="referersStat"></canvas>
+      </div>
+      <div class="pb-5">
+        <h4>New subscriptions for the last 30 days</h4>
+        <canvas id="subscriptionsStat"></canvas>
       </div>
     </div>
   </div>
@@ -90,6 +98,22 @@
     labels.push(date.strftime("%m/%d/%Y"))
     data.push(count)
   end
+
+  subscriptions = users_subscribed(30)
+  s_labels = []
+  s_data = []
+  subscriptions.each do |date, count|
+    s_labels.push(date.strftime("%m/%d/%Y"))
+    s_data.push(count)
+  end
+
+  referers = users_referer(30)
+  r_labels = []
+  r_data = []
+  referers.each do |ref, count|
+   r_labels.push(ref)
+   r_data.push(count)
+  end
 %>
 
 <% content_for :javascript_includes do %>
@@ -101,29 +125,67 @@
 
 <% content_for :javascript_footer_includes do %>
 <script>
-    var ctx = document.getElementById('usersStat').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: <%= raw labels.to_json %>,
-            datasets: [{
-                label: '# of users',
-                fill: false,
-                data: <%= raw data.to_json %>,
-                backgroundColor: window.chartColors.blue,
-                borderColor: window.chartColors.blue,
-            }],
-        },
-        options: {
-            responsive: true,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+    var chart_options = {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
         }
-    });
+    };
+
+
+    window.onload = function() {
+        var usersStat = document.getElementById('usersStat').getContext('2d');
+        new Chart(usersStat, {
+            type: 'line',
+            data: {
+                labels: <%= raw labels.to_json %>,
+                datasets: [{
+                    label: '# of users',
+                    fill: false,
+                    data: <%= raw data.to_json %>,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                }],
+            },
+            options: chart_options
+        });
+
+        var referersStat = document.getElementById('referersStat').getContext('2d');
+        new Chart(referersStat, {
+            type: 'line',
+            data: {
+                labels: <%= raw r_labels.to_json %>,
+                datasets: [{
+                    label: '# of users',
+                    fill: false,
+                    data: <%= raw r_data.to_json %>,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                }],
+            },
+            options: chart_options
+        });
+
+        var subscriptionsStat = document.getElementById('subscriptionsStat').getContext('2d');
+        new Chart(subscriptionsStat, {
+            type: 'line',
+            data: {
+                labels: <%= raw s_labels.to_json %>,
+                datasets: [{
+                    label: '# of users',
+                    fill: false,
+                    data: <%= raw s_data.to_json %>,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                }],
+            },
+            options: chart_options
+        });
+    };
+
 </script>
 <% end %>

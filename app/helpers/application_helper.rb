@@ -47,4 +47,12 @@ module ApplicationHelper
     "#{data} - #{value}"
   end
 
+  def is_valid_url? url
+    require 'uri'
+    uri = URI.parse(url)
+    uri.is_a?(URI::HTTP) && !uri.host.nil?
+  rescue URI::InvalidURIError
+    false
+  end
+
 end
