@@ -11,7 +11,6 @@ var checkInterval = setInterval(function() {
         type: "GET",
         contentType: "application/json",
         success: function(data){
-            console.log(data);
             if(data.data != null){
                 $('span.last-check').text(data.data);
 
@@ -24,4 +23,4 @@ var checkInterval = setInterval(function() {
             }
         }
     });
-}, 30000);
+}, 15000);
