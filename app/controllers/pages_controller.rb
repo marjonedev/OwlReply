@@ -5,7 +5,13 @@ class PagesController < ApplicationController
         render file: "admin/dashboard"
       else
         @emailaccounts = current_user.emailaccounts
-        render file: "emailaccounts/index"
+        if @emailaccounts.count == 1
+          @emailaccount = @emailaccounts.first
+          @replies = @emailaccount.replies.order("created_at DESC")
+          render file: "emailaccounts/index"
+        else
+          render file: "emailaccounts/index"
+        end
       end
     else
 
