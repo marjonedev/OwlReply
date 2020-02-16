@@ -8,7 +8,7 @@ class PagesController < ApplicationController
         if @emailaccounts.count == 1
           @emailaccount = @emailaccounts.first
           @replies = @emailaccount.replies.order("created_at DESC")
-          render file: "emailaccounts/index"
+          render file: "emailaccounts/show"
         else
           render file: "emailaccounts/index"
         end
