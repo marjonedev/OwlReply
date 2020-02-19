@@ -10,6 +10,7 @@ class Emailaccount < ApplicationRecord
   #validates_presence_of :password
   #validates_presence_of :encrypted_password
   #validates_presence_of :encryption_key
+  validate :address_exist_validator
 
   def subject_line_skip_words
     self.skip_words.split(",")
@@ -45,5 +46,14 @@ class Emailaccount < ApplicationRecord
   #end
   # Probably should be in the view, otherwise maybe a helper if it will be used multiple places.
   #
+  private
+
+  def address_exist_validator
+    accounts = Emailaccount.where(address: self.address)
+
+    unless accounts.blank?
+      errors.add(:address, "#{self.address} is already in use. Please use different email address.")
+    end
+  end
 
 end

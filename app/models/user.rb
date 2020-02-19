@@ -17,6 +17,7 @@ class User < ApplicationRecord
   validates_presence_of :email_address
   validates_format_of :email_address, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_format_of :username, :with => /\A[a-z][a-z0-9\_]*?\Z/, :message => "must start with a letter and include only letters, numbers, and underscore."
+  validate :address_exist_validator
 
   before_save :encrypt_password
   before_validation :set_initial_content, on: [:create]
@@ -144,5 +145,13 @@ class User < ApplicationRecord
   private
     def generate_token
       SecureRandom.hex(10)
+    end
+
+    def address_exist_validator
+      accounts = Emailaccount.where(address: self.email_address)
+
+      unless accounts.blank?
+        errors.add(:email_address, "#{self.email_address} is already in use. Please use different email address.")
+      end
     end
 end
