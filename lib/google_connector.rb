@@ -238,4 +238,7 @@ module GoogleConnector
 
   end
 
+  class UnauthorizedError < StandardError
+  end
+
 end

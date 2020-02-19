@@ -307,7 +307,7 @@ module ReplyMaker
             end
           end
         else
-          replier_logger.error "GOOGLE - Messages = #{messages.to_s}"
+          replier_logger.error("GOOGLE - Messages = #{messages.to_s}. #{$!.to_s}")
         end
 
         api.read_messages(ids)
