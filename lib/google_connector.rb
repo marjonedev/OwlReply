@@ -7,15 +7,24 @@ module GoogleConnector
       @service = get_service
     end
 
+    def replier_logger
+      @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
+    end
+
     def get_messages
 
-      refresh = refresh_api!
-
-      if refresh
-        unless refresh.nil?
-          return false
-        end
+      begin
+        refresh_api!
+      rescue RefreshTokenFailureError => error
+        replier_logger.error("GOOGLE - Failed to refresh user token. #{error.to_s}")
+        return []
       end
+
+      #if refresh
+        #unless refresh.nil?
+          #return false
+        #end
+      #end
 
       list = @service.list_user_messages('me', label_ids: ['UNREAD', 'INBOX'])
 
@@ -133,7 +142,7 @@ module GoogleConnector
       thread.messages.count > 1
     end
 
-    def refresh_token
+    def refresh_this_token!
 
       url = URI("https://accounts.google.com/o/oauth2/token")
       request = Net::HTTP.post_form url, { "refresh_token" => @emailaccount.google_refresh_token,
@@ -145,7 +154,8 @@ module GoogleConnector
       result = nil
 
       if data.key?("error")
-        result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
+        raise RefreshTokenFailureError.new(data['error_description'] ? data['error_description'] : data['error'])
+        #result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
         # empty_account(account)
       else
         expires_in = Time.now.to_i + data['expires_in']
@@ -160,7 +170,7 @@ module GoogleConnector
     def refresh_api!
 
       if Time.now.to_i > @emailaccount.google_expires_in.to_i
-        refresh_token
+        refresh_this_token!
       else
         false
       end
@@ -239,6 +249,11 @@ module GoogleConnector
   end
 
   class UnauthorizedError < StandardError
+  end
+  class RefreshTokenFailureError < StandardError
+    def initialize(message = "Refresh token failure.")
+      super(message)
+    end
   end
 
 end
