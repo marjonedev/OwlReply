@@ -242,11 +242,7 @@ module ReplyMaker
 
         ids = []
 
-        if messages.empty?
-          replier_logger.error("GOOGLE - Messages are empty.")
-        end
-
-        #if messages != false
+        unless messages.empty?
           messages.each do |msg|
 
             date = DateTime.parse(msg['date'])
@@ -310,9 +306,9 @@ module ReplyMaker
               account.increment!(:drafts_missing_replies_lifetime) unless reply_used
             end
           end
-        #else
-          #replier_logger.error("GOOGLE - Messages = #{messages.to_s}. #{$!.to_s}")
-        #end
+        else
+          replier_logger.error("GOOGLE - Messages are empty.")
+        end
 
         api.read_messages(ids)
 
