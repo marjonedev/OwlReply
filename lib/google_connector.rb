@@ -16,7 +16,7 @@ module GoogleConnector
       begin
         refresh_api!
       rescue RefreshTokenFailureError => error
-        replier_logger.error("GOOGLE - Failed to refresh user token. #{error.to_s}")
+        replier_logger.error("GOOGLE: #{@emailaccount.address} - Failed to refresh user token. #{error.to_s}")
         return []
       end
 
