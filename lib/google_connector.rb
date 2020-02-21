@@ -144,7 +144,7 @@ module GoogleConnector
 
     def refresh_this_token!
 
-      url = URI("https://accounts.google.com/o/oauth2/token")
+      url = URI("https://oauth2.googleapis.com/token")
       request = Net::HTTP.post_form url, { "refresh_token" => @emailaccount.google_refresh_token,
                                            "client_id" => api_client_id,
                                            "client_secret" => api_client_secret,
@@ -152,6 +152,10 @@ module GoogleConnector
 
       data = JSON.parse(request.body)
       result = nil
+
+      logger.debug "==============================================="
+      logger.debug data
+      puts data
 
       if data.key?("error")
         raise RefreshTokenFailureError.new(data['error_description'] ? data['error_description'] : data['error'])
@@ -168,20 +172,17 @@ module GoogleConnector
     end
 
     def refresh_api!
-
       if Time.now.to_i > @emailaccount.google_expires_in.to_i
         refresh_this_token!
-      else
-        false
       end
     end
 
     def revoke_access
 
-      refresh = refresh_api!
-
-      if refresh && !refresh.nil?
-        empty_account
+      begin
+        refresh_api!
+      rescue RefreshTokenFailureError => error
+        replier_logger.error("GOOGLE: #{@emailaccount.address} - Failed to refresh user token. #{error.to_s}")
         return false
       end
 

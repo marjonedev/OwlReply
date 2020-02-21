@@ -315,7 +315,14 @@ module ReplyMaker
       rescue Google::Apis::AuthorizationError => exception
         replier_logger.error exception.message
         exception.backtrace.each { |line| replier_logger.error line }
-        api.refresh_api!
+
+        begin
+          api.refresh_api!
+        rescue RefreshTokenFailureError => error
+          replier_logger.error("GOOGLE: #{account.address} - Failed to refresh user token. #{error.to_s}")
+          # return []
+        end
+
         retry
       rescue Exception => e
         replier_logger.error e.message
