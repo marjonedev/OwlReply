@@ -153,8 +153,6 @@ module GoogleConnector
       data = JSON.parse(request.body)
       result = nil
 
-      logger.debug "==============================================="
-      logger.debug data
       puts data
 
       if data.key?("error")
