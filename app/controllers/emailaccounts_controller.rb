@@ -193,23 +193,25 @@ class EmailaccountsController < ApplicationController
     emailaccount_id = session["emailaccount_id_#{current_user.id}"]
     session.delete("emailaccount_id_#{current_user.id}")
 
-    emailaccount = Emailaccount.where(id: emailaccount_id).first
 
     expires_in = Time.now.to_i + response['expires_in']
 
-    emailaccount.update(google_access_token: response['access_token'],
-                        google_expires_in: expires_in,
-                        google_refresh_token: response['refresh_token'],
-                        authenticated: true,
-                        email_provider: 'google')
+
+
+    @emailaccount = Emailaccount.update(emailaccount_id, {google_access_token: response["access_token"],
+                                          google_expires_in: expires_in,
+                                          google_refresh_token: response["refresh_token"],
+                                          authenticated: 1,
+                                          email_provider: 'google'})
+
 
     redirect_path = session["redirect_to_#{current_user.id}"]
     session.delete("redirect_to_#{current_user.id}")
 
     if redirect_path
-      redirect_to redirect_path, notice: emailaccount.address + " successfully authenticated"
+      redirect_to redirect_path, notice: @emailaccount.address + " successfully authenticated"
     else
-      redirect_to url_for(action: 'show', id: emailaccount_id), notice: emailaccount.address + " successfully authenticated"
+      redirect_to url_for(action: 'show', id: emailaccount_id), notice: @emailaccount.address + " successfully authenticated"
     end
 
 

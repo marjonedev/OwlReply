@@ -10,7 +10,7 @@ class Emailaccount < ApplicationRecord
   #validates_presence_of :password
   #validates_presence_of :encrypted_password
   #validates_presence_of :encryption_key
-  validate :address_exist_validator
+  validate :address_exist_validator, on: :create
 
   def subject_line_skip_words
     self.skip_words.split(",")
