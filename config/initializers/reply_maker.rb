@@ -24,13 +24,14 @@ module ReplyMaker
       self.reset_drafts_daycount
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
       return if already_running_fine?
+      return if too_many_of_myself_running?
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
       loops = 0
       while not (resetting? || (loops > 25))
         self.check_accounts_using_imap
         self.check_accounts_using_google
-        loops += 1 # Possibly end after a certain number of loops, so as to free up memory.
+        loops += 1 # End after 25 loops, in case of memory leak errors. A new process will be run later.
       end
     end
 
@@ -100,7 +101,6 @@ module ReplyMaker
     def self.resetting?
       if (REDIS.get("replymaker_reset").to_i == 1)
         REDIS.del("replymaker_reset")
-
         return true
       else
         return false
@@ -113,6 +113,18 @@ module ReplyMaker
 
     def self.already_running_fine?
       self.get_last_reply_time > (Time.now.to_i - (2*60))
+    end
+
+    def self.too_many_of_myself_running?
+      # This will make sure there's not more than 4 of this process running.
+      # This should not be necessary. It's a stopgap measure to prevent errors.
+      processes = `ps aux | grep -i rails`.to_s
+      if processes.scan(/reply/).size > 8
+        return true
+        # Consider sending an email to the admins.... but only once, not every 1 minute that this tries to run....
+      else
+        return false
+      end
     end
 
     def self.touch_last_reply_time
