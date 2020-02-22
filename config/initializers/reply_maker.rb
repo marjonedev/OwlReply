@@ -72,25 +72,24 @@ module ReplyMaker
                      .where('error IS NULL OR error = ""')
                      .where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
 
-      if accounts
-        for account in accounts
-          begin
-            ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
-            self.touch_last_reply_time
-            self.create_drafts_using_google(account)
 
-            replier_logger.info("Google - Success on account #{account.address}. #{$!.to_s}")
-            puts "Google - Success on account #{account.address}. #{$!.to_s}"
-            account.update_column(:last_checked,Time.now.to_i)
-          rescue
-            replier_logger.info("Google - Failure on account #{account.address}. #{$!.to_s}")
-            puts "Google - Failure on account #{account.address}. #{$!.to_s}"
-            account.update_column(:error,$!.to_s)
-          end
+      for account in accounts
+        begin
+          ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
+          self.touch_last_reply_time
+          self.create_drafts_using_google(account)
+
+          replier_logger.info("Google - Success on account #{account.address}. #{$!.to_s}")
+          puts "Google - Success on account #{account.address}. #{$!.to_s}"
+          account.update_column(:last_checked,Time.now.to_i)
+        rescue
+          replier_logger.info("Google - Failure on account #{account.address}. #{$!.to_s}")
+          puts "Google - Failure on account #{account.address}. #{$!.to_s}"
+          account.update_column(:error,$!.to_s)
         end
-        sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
-        self.touch_last_reply_time
       end
+      sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
+      self.touch_last_reply_time
 
     end
 
