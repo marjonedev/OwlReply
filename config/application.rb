@@ -23,6 +23,7 @@ module Website
     config.exceptions_app = self.routes
 
     # config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/app/channels/application_cable)
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
   end
