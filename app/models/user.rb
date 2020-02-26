@@ -150,7 +150,7 @@ class User < ApplicationRecord
     def address_exist_validator
       accounts = Emailaccount.where(address: self.email_address)
 
-      unless accounts.blank?
+      unless accounts.empty?
         errors.add(:email_address, "#{self.email_address} is already in use. Please use different email address.")
       end
     end
