@@ -322,6 +322,8 @@ module ReplyMaker
           end
         end
 
+        UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails."})
+
         api.read_messages(ids)
 
       rescue Google::Apis::AuthorizationError => exception
