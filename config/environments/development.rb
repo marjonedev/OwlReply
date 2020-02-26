@@ -27,6 +27,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_cable.mount_path = '/cable'
+  config.action_cable.url = 'wss://owlreply.com/cable'
+  config.action_cable.allowed_request_origins = [ 'https://dev.owlreply.com', /https:\/\/dev.owlreply.*/ ]
+
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 
