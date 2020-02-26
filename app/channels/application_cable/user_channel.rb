@@ -18,5 +18,4 @@ class UserChannel < ApplicationCable::Channel
   def send_data(data)
     UserChannel.broadcast_to(current_user, data)
   end
-
 end
