@@ -1,4 +1,3 @@
-App = {};
 (function() {
   this.App || (this.App = {});
   App.chat = {};
