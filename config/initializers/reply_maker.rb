@@ -337,7 +337,7 @@ module ReplyMaker
           # return []
         end
 
-        retry
+        #retry # This could cause an infinite loop I think.
       rescue Exception => e
         replier_logger.error e.message
         e.backtrace.each { |line| replier_logger.error line }
