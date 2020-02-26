@@ -3,7 +3,7 @@ class UserChannel < ApplicationCable::Channel
     stream_for current_user
     send_data({message:"Connected."})
     transmit({message: "Test"})
-    transmit({message: "#{current_user}"})
+    transmit({message: "#{current_user.id}"})
   end
   def unsubscribed
   end
