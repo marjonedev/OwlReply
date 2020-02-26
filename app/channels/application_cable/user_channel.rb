@@ -1,7 +1,7 @@
 class UserChannel < ApplicationCable::Channel
   def subscribed
     stream_for current_user
-    send_data({message:"Connected."})
+    send_data({message:"Connected, #{current_user.login}."})
   end
   def unsubscribed
   end
