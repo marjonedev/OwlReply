@@ -12,10 +12,10 @@
 }).call(this);
 App.received_data = function (data) {
   if (data['action'] == "rechecked") {
-    //$(".check_status").html("Last checked: Less than 1 minute ago.");
+    $(".last-check").html("Last checked: Less than 1 minute ago.");
   }
   if (data["message"]) {
-    //popup_message(data["message"]);
-    //Needs defined.
+    $.Custom.notify(data["message"]);
+    $(".last-check").html("Last checked: Less than 1 minute ago.");
   }
 }
