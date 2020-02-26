@@ -1,6 +1,6 @@
 module ApplicationCable
   class Channel < ActionCable::Channel::Base
-    def current_usr
+    def current_user
       @current_user ||= (login_from_session || login_from_cookie || :false)
     end
     def login_from_session
