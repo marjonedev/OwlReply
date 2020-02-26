@@ -1,7 +1,7 @@
 development:
   adapter: redis
   url: redis://localhost:6379/1
-  channel_prefix: website_development
+  #channel_prefix: website_development
 
 test:
   adapter: async
@@ -9,4 +9,4 @@ test:
 production:
   adapter: redis
   url: redis://localhost:6379/1
-  channel_prefix: website_production
+  #channel_prefix: website_production
