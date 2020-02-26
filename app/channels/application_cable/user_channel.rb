@@ -1,5 +1,6 @@
 class UserChannel < ApplicationCable::Channel
   def subscribed
+    send_data({message:"Connected."})
   end
   def unsubscribed
   end
