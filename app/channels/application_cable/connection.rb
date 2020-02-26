@@ -6,8 +6,8 @@ module ApplicationCable
     end
     private
     def find_verified_user
-      if current_user = User.find_by_id(request.session[:user_id])
-        current_user
+      if verified_user = User.find_by_id(request.session[:user_id])
+        verified_user
       else
         reject_unauthorized_connection
       end
