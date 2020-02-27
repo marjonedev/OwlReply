@@ -165,7 +165,10 @@ module ReplyMaker
       drafts = folders.any? { |h| h.attr.include? :Drafts } ? folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
 
       imap.select(inbox)
-      imap.search(['UNSEEN']).each do |message_id|
+
+      start_date = 1.week.ago.strftime("%d-%b-%Y")
+
+      imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
 
         reply_used = false
         data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
