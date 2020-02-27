@@ -73,6 +73,26 @@
           </div>
         </div>
       </div>
+      <div class="card-deck custom_cards mb-4">
+        <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
+          <div class="card-body">
+            <div class="fbox-icon">
+              <i class="icon-check-double i-alt"></i>
+            </div>
+            <h5 class="card-title">Last Checked</h5>
+            <span class="numval"><%= time_ago_in_words(Time.at(REDIS.get("last_reply_checked_at").to_i)).humanize %> ago</span>
+          </div>
+        </div>
+        <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
+          <div class="card-body">
+            <div class="fbox-icon">
+              <i class="icon-user-check i-alt"></i>
+            </div>
+            <h5 class="card-title">Reply Maker Running</h5>
+            <span class="numval"><%= reply_maker_process_size %></span>
+          </div>
+        </div>
+      </div>
       <div class="divider divider-center"><i class="icon-chart-bar"></i></div>
       <div class="pb-5">
         <h4>New users for the last 30 days</h4>

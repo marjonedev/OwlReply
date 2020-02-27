@@ -23,4 +23,10 @@ module AdminHelper
     obj
 
   end
+
+  def reply_maker_process_size
+    processes = `ps aux | grep -i rails`.to_s
+
+    processes.scan(/reply/).size
+  end
 end
