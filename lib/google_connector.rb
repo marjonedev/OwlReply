@@ -25,7 +25,7 @@ module GoogleConnector
           #return false
         #end
       #end
-      query = "before:#{Time.now.to_i} after:#{1.week.ago.to_i}"
+      query = "after: #{1.week.ago.to_i}"
       list = @service.list_user_messages('me', label_ids: ['UNREAD', 'INBOX'], q: query)
 
       email_array = []
