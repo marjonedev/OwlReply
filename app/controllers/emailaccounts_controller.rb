@@ -14,6 +14,11 @@ class EmailaccountsController < ApplicationController
   # GET /emailaccounts/1
   # GET /emailaccounts/1.json
   def show
+    @newly_su = false
+    if session[:new_sign_up]
+      @newly_su = true
+      session.delete(:new_sign_up)
+    end
     @replies = @emailaccount.replies.order("created_at DESC")
   end
 

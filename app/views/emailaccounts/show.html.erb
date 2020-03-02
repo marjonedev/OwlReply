@@ -25,14 +25,20 @@
 <!--    </div>-->
 <!--  </div>-->
   <%# end %>
-
   <div class="content-wrap nopadding">
     <div class="section nomargin notoppadding">
       <div class="container clearfix">
-        <%= render 'emailaccounts/authentication' %>
+        <% unless @newly_su %>
+         <%= render 'emailaccounts/authentication' %>
+        <% end %>
         <%= render file: "replies/index" %>
       </div>
     </div>
   </div>
 
+  <% if @newly_su %>
+
+    <%= render 'email_viewer/wizard' %>
+
+  <% end %>
 </section>

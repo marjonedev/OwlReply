@@ -41,16 +41,6 @@
               <%= f.text_field :email_address, class: 'form-control required', id: 'email_address', required: 'required' %>
             </div>
 
-            <!--<div class="col_full">
-              <label for="username">Choose a Username:</label>
-              <%= f.text_field :username, class: 'form-control required', id: 'username', required: 'required' %>
-            </div>
-
-            <div class="col_full">
-              <label for="password">Choose Password:</label>
-              <%= f.password_field :password, class: 'form-control required', id: 'password', required: 'required' %>
-            </div>-->
-
             <input type="hidden" name="user[referer]" value="<%= cookies[:referer] %>" />
 
             <div class="col_full nobottommargin">
