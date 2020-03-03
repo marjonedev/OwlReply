@@ -1,0 +1,94 @@
+<section id="content">
+
+  <div class="content-wrap">
+
+    <div class="container clearfix">
+      <div id="processTabs">
+        <ul class="process-steps process-2 bottommargin clearfix">
+          <li class="active">
+            <a href="javascript: void(0)" class="i-circled i-alt divcenter bgcolor">1</a>
+            <h5>Connect your account</h5>
+          </li>
+          <li>
+            <a href="javascript: void(0)" class="i-bordered i-circled divcenter">2</a>
+            <h5>Confirm Messages</h5>
+          </li>
+        </ul>
+        <div>
+          <div id="process1">
+            <%= form_for @emailaccount, url: connect_emailaccount_path(@emailaccount), remote:true, html:{class: 'nobottommargin'}, local: false do |f| %>
+              <div class="form-group">
+                <label for="emailProvider">Email Provider</label>
+                <select class="form-control" id="emailProvider" name="emailaccount[email_provider]">
+                  <option value="google" <%= html_attr_selected @emailaccount.email_provider, 'google' %>>Google</option>
+                  <option value="other" <%= html_attr_selected @emailaccount.email_provider, 'other' %>>Others</option>
+                </select>
+              </div>
+              <% display_smtp = html_attr_selected(@emailaccount.email_provider, 'other') === "selected=selected" ? '' : 'style=display:none' %>
+              <div id="smtpSettings" <%= display_smtp %>>
+                <div class="form-group">
+                  <label>Email</label>
+                  <%= f.text_field :address, class: 'form-control', readonly: 'readonly' %>
+                </div>
+                <div class="form-group">
+                  <label>Server</label>
+                  <%= f.text_field :imap_host, class: 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <%= f.text_field :password, class: 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <label>Port</label>
+                  <% port = @emailaccount.imap_port ?  @emailaccount.imap_port : 993 %>
+                  <%= f.text_field :imap_port, class: 'form-control', value: port %>
+                </div>
+                <div class="form-group">
+                  <div class="form-group form-check">
+                    <% sslcheck = @emailaccount.imap_ssl ? @emailaccount.imap_ssl : false %>
+                    <%= f.check_box :imap_ssl, class: 'form-check-input', id: 'ssl_required', checked: sslcheck %>
+                    <label for="ssl_required">Use SSL</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+
+                <%= f.hidden_field :redirect_to, value: email_viewer_step2_url %>
+                <%
+                  google_class = html_attr_selected(@emailaccount.email_provider, 'google') === "selected=selected" ? 'googled' : ''
+                  if @emailaccount.email_provider.nil?
+                    google_class = 'googled'
+                  end
+                %>
+                <button type="submit" class="button button-large button-rounded button-connect float-right <%= google_class %>">Connect</button>
+             </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+</section>
+
+<% content_for :javascript_footer_includes do %>
+<script type="text/javascript">
+    $(function () {
+        $('.btn-connect').on('click', function (e) {
+            e.preventDefault();
+            $('#ConnectEmailAccount').modal('show');
+            return false;
+        });
+
+        $('#emailProvider').on('change', function () {
+            var value = $(this).val();
+            if (value == 'other') {
+                $('#smtpSettings').show();
+                $('button.button-connect').removeClass('googled');
+            } else {
+                $('#smtpSettings').hide();
+                $('button.button-connect').addClass('googled');
+            }
+        });
+    });
+</script>
+<% end %>

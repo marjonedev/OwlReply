@@ -62,5 +62,10 @@ Rails.application.routes.draw do
   get 'password/reset', to: 'passwords#reset'
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset_submit', to: 'passwords#reset_submit'
+
+  get 'email_viewer/step1', to: 'email_viewer#connect_account'
+  get 'email_viewer/step2', to: 'email_viewer#view_messages'
+
+  resources :email_viewer
 end
 
