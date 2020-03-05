@@ -4,14 +4,18 @@
 
     <div class="container clearfix">
       <div id="processTabs">
-        <ul class="process-steps process-2 bottommargin clearfix">
+        <ul class="process-steps bottommargin clearfix">
           <li class="active">
             <a href="javascript: void(0)" class="i-circled i-alt divcenter bgcolor">1</a>
             <h5>Connect your account</h5>
           </li>
           <li>
             <a href="javascript: void(0)" class="i-bordered i-circled divcenter">2</a>
-            <h5>Confirm Messages</h5>
+            <h5>Preview Messages</h5>
+          </li>
+          <li>
+            <a href="javascript: void(0)" class="i-bordered i-circled divcenter">3</a>
+            <h5>Done</h5>
           </li>
         </ul>
         <div>
@@ -60,8 +64,11 @@
                     google_class = 'googled'
                   end
                 %>
-                <button type="submit" class="button button-large button-rounded button-connect float-right <%= google_class %>">Connect</button>
-             </div>
+                <div class="mt-5 d-flex w-100 justify-content-between">
+                  <a href="/" class="skip">Skip</a>
+                  <button type="submit" class="button button-large button-rounded button-connect float-right <%= google_class %>">Connect</button>
+                </div>
+           </div>
             <% end %>
           </div>
         </div>

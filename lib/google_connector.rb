@@ -11,7 +11,7 @@ module GoogleConnector
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def get_messages
+    def get_messages max:500
 
       begin
         refresh_api!
@@ -26,7 +26,7 @@ module GoogleConnector
         #end
       #end
       query = "after: #{1.week.ago.to_i}"
-      list = @service.list_user_messages('me', label_ids: ['UNREAD', 'INBOX'], q: query)
+      list = @service.list_user_messages('me', max_results: max, label_ids: ['UNREAD', 'INBOX'], q: query)
 
       email_array = []
 

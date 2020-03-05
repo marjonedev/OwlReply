@@ -388,3 +388,19 @@ button.googled:hover{
     background-image: url('/images/google/google_signin_btn.png');
     background-position: -382px;
 }
+
+/* Process Steps
+******************************/
+ul.process-steps li{
+    width: 33.333333333%;
+}
+
+ul.messages-preview,
+ul.messages-preview li{
+    list-style: none;
+}
+
+ul.messages-preview h6,
+ul.messages-preview h4{
+    margin-bottom: 5px;
+}
