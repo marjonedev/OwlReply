@@ -67,6 +67,13 @@ Rails.application.routes.draw do
   get 'email_viewer/step2', to: 'email_viewer#view_messages'
   get 'email_viewer/step3', to: 'email_viewer#done'
 
+  resources :email_viewer do
+    member do
+      patch :skip_activation
+      put :skip_activation
+    end
+  end
+
   resources :email_viewer
 end
 

@@ -4,6 +4,14 @@ class EmailViewerController < ApplicationController
   include GoogleConnector
 
   def connect_account
+
+    unless @user.active
+      account = @user.emailaccounts.first
+      if account.authenticated
+        redirect_to email_viewer_step2_url
+      end
+    end
+
     @emailaccount = current_user.emailaccounts.first
   end
 
@@ -66,13 +74,8 @@ class EmailViewerController < ApplicationController
   end
 
   def validate
-    # if user.active=0
-      # connected account should redirect to step 2
-    # if user.active=1, redirect to root
-
-    accounts = current_user.emailaccounts
-
-    if accounts.count > 1
+    @user = current_user
+    if @user.skip_activation or @user.active
       redirect_to root_url
     end
 
