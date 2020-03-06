@@ -45,6 +45,11 @@ module ReplyMaker
 
       if accounts
         for account in accounts
+
+          unless account.user.active
+            return false
+          end
+
           begin
             ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
             self.touch_last_reply_time
@@ -75,6 +80,11 @@ module ReplyMaker
 
       for account in accounts
         begin
+
+          unless account.user.active
+            return false
+          end
+
           ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
           self.touch_last_reply_time
           self.create_drafts_using_google(account)
@@ -142,7 +152,6 @@ module ReplyMaker
     end
 
     def self.create_drafts_using_imap(account)
-
 
       unless account.replies.count > 0
         return false #return if there's no replies created on the email account. fixed

@@ -60,6 +60,47 @@ class EmailViewerController < ApplicationController
         end
     else
 
+      # Here is the imap process
+
+      require 'net/imap'
+      require 'mail'
+      require 'date'
+
+      ssl = @emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
+      port = @emailaccount.imap_port ? @emailaccount.imap_port : 993
+      host = @emailaccount.imap_host.to_s.empty? ? @emailaccount.address.to_s.split("@").last : @emailaccount.imap_host
+
+      imap = Net::IMAP.new(host, ssl: ssl, port: port )
+      imap.login(@emailaccount.address, @emailaccount.password)
+
+      folders =  imap.list('', "*")
+
+      inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+
+      imap.examine(inbox)
+
+      start_date = 1.week.ago.strftime("%d-%b-%Y")
+
+      showMessages = 5
+
+      imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
+        # reply_used = false
+        # data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
+        # msg = Mail.read_from_string data
+        #
+        # date = DateTime.rfc3339(msg.date.to_s)
+        # formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
+        #
+        # thebody = msg.body.to_s.gsub("\r\n", " ")
+        # thebody = thebody.truncate(60)
+        envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+
+        replier_logger.debug "==============1212123213123============================="
+        replier_logger.debug "#{envelope.from[0].name}: \t#{envelope.subject}"
+
+      end
+
+
     end
 
   end
@@ -88,7 +129,14 @@ class EmailViewerController < ApplicationController
   end
 
   def validate
+    #skip if account more than 1
+
     @user = current_user
+
+    if @user.current_user.emaiaccounts.count > 1
+      redirect_to root_url
+    end
+
     if @user.skip_activation or @user.active
       redirect_to root_url, alert: "Your account is already activated."
     end
