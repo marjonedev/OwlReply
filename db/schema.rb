@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_06_142505) do
+ActiveRecord::Schema.define(version: 2020_03_06_142824) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 2020_03_06_142505) do
     t.bigint "reset_password_sent_at"
     t.string "referer"
     t.boolean "active", default: false
-    t.boolean "skip_activation"
+    t.boolean "skip_activation", default: false
     t.index ["email_address"], name: "index_users_on_email_address"
   end
 
