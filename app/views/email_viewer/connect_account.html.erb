@@ -18,7 +18,7 @@
             <h5>Done</h5>
           </li>
         </ul>
-        <div>
+        <div class="activation-process">
           <div id="process1">
             <%= form_for @emailaccount, url: connect_emailaccount_path(@emailaccount), remote:true, html:{class: 'nobottommargin'}, local: false do |f| %>
               <div class="form-group">
@@ -65,7 +65,7 @@
                   end
                 %>
                 <div class="mt-5 d-flex w-100 justify-content-between">
-                  <a href="/" class="skip">Skip</a>
+                  <%= link_to 'Skip. Activate Manually.', email_viewer_skip_url, method: :patch, class: 'skip', remote: true %>
                   <button type="submit" class="button button-large button-rounded button-connect float-right <%= google_class %>">Connect</button>
                 </div>
            </div>

@@ -404,3 +404,16 @@ ul.messages-preview h6,
 ul.messages-preview h4{
     margin-bottom: 5px;
 }
+
+div.activation-process a.skip{
+    color: #666;
+}
+div.activation-process a.skip:hover{
+    text-decoration: underline !important;
+}
+div.activation-process div.feature-box.fbox-center .fbox-icon{
+    width: 150px;
+}
+div.activation-process div.feature-box.fbox-center.fbox-plain .fbox-icon i{
+    font-size: 150px;
+}

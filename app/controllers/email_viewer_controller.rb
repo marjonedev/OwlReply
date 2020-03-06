@@ -8,7 +8,7 @@ class EmailViewerController < ApplicationController
     unless @user.active
       account = @user.emailaccounts.first
       if account.authenticated
-        redirect_to email_viewer_step2_url
+        redirect_to email_viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
       end
     end
 
@@ -68,6 +68,20 @@ class EmailViewerController < ApplicationController
 
   end
 
+  def skip_activation
+    respond_to do |format|
+      current_user.update_attribute(:skip_activation, true)
+      format.html { redirect_to root_url, notice: 'Skipped! You connect your account manually.' }
+    end
+  end
+
+  def activate
+    respond_to do |format|
+      current_user.update_attribute(:active, true)
+      format.html { redirect_to root_url, notice: 'Congratulations! Your account is now activated.' }
+    end
+  end
+
   private
   def replier_logger
     @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
@@ -76,8 +90,7 @@ class EmailViewerController < ApplicationController
   def validate
     @user = current_user
     if @user.skip_activation or @user.active
-      redirect_to root_url
+      redirect_to root_url, alert: "Your account is already activated."
     end
-
   end
 end
