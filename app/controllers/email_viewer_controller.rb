@@ -133,7 +133,7 @@ class EmailViewerController < ApplicationController
 
     @user = current_user
 
-    if @user.emaiaccounts.count > 1
+    if @user.emailaccounts.count > 1
       redirect_to root_url
     end
 
