@@ -38,7 +38,7 @@ class EmailViewerController < ApplicationController
             subject = msg['subject']
             from = msg['from']
             thebody = msg['body_text'].to_s.gsub("\r\n", " ")
-            thebody = thebody.truncate(60)
+            thebody = thebody.truncate(80, separator: " ")
 
             @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
           end
@@ -84,19 +84,37 @@ class EmailViewerController < ApplicationController
       showMessages = 5
 
       imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
-        # reply_used = false
-        # data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
-        # msg = Mail.read_from_string data
-        #
-        # date = DateTime.rfc3339(msg.date.to_s)
-        # formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
-        #
-        # thebody = msg.body.to_s.gsub("\r\n", " ")
-        # thebody = thebody.truncate(60)
-        envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+        if showMessages < 1
+          break
+        end
 
-        replier_logger.debug "==============1212123213123============================="
-        replier_logger.debug "#{envelope.from[0].name}: \t#{envelope.subject}"
+        envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+        body = imap.fetch(message_id, "RFC822.TEXT")[0].attr["RFC822.TEXT"]
+
+        replier_logger.debug "==============888888888============================="
+        mid = body.to_s[0, 30]
+        body = body.to_s.split(mid)
+        thebody = ""
+        body.each do |m|
+          if m.include?("Content-Type: text/plain; charset=\"UTF-8\"")
+            text = m.gsub("\r\n\r\n", "")
+            text = text.gsub("\r\nContent-Type: text/plain; charset=\"UTF-8\"", "")
+            thebody << text
+            break
+          end
+        end
+
+        thebody = thebody.to_s.gsub("\r\n", " ")
+        thebody = thebody.truncate(80, separator: " ")
+
+        date = DateTime.parse(envelope.date)
+        formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+        subject = envelope.subject
+        from = envelope.from[0].name
+
+        @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
+
+        showMessages -= 1
 
       end
 
@@ -133,9 +151,9 @@ class EmailViewerController < ApplicationController
 
     @user = current_user
 
-    if @user.emailaccounts.count > 1
-      redirect_to root_url
-    end
+    # if @user.emailaccounts.count > 1
+    #   redirect_to root_url
+    # end
 
     if @user.skip_activation or @user.active
       redirect_to root_url, alert: "Your account is already activated."
