@@ -151,9 +151,9 @@ class EmailViewerController < ApplicationController
 
     @user = current_user
 
-    # if @user.emailaccounts.count > 1
-    #   redirect_to root_url
-    # end
+    if @user.emailaccounts.count > 1
+      redirect_to root_url
+    end
 
     if @user.skip_activation or @user.active
       redirect_to root_url, alert: "Your account is already activated."
