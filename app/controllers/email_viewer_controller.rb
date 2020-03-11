@@ -88,17 +88,19 @@ class EmailViewerController < ApplicationController
           break
         end
 
-        envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
-        body = imap.fetch(message_id, "RFC822.TEXT")[0].attr["RFC822.TEXT"]
+        email = imap.fetch(message_id, "RFC822")[0].attr["RFC822"]
 
-        replier_logger.debug "==============888888888============================="
-        mid = body.to_s[0, 30]
-        body = body.to_s.split(mid)
+        msg = Mail.read_from_string email
+        from = msg[:from].display_names.first
+
+        mid = msg.body.to_s[0, 30]
+        body = msg.body.to_s.split(mid)
         thebody = ""
+
         body.each do |m|
           if m.include?("Content-Type: text/plain; charset=\"UTF-8\"")
-            text = m.gsub("\r\n\r\n", "")
-            text = text.gsub("\r\nContent-Type: text/plain; charset=\"UTF-8\"", "")
+            text = m.gsub("\n\n", "")
+            text = text.gsub("\nContent-Type: text/plain; charset=\"UTF-8\"", "")
             thebody << text
             break
           end
@@ -107,10 +109,10 @@ class EmailViewerController < ApplicationController
         thebody = thebody.to_s.gsub("\r\n", " ")
         thebody = thebody.truncate(80, separator: " ")
 
-        date = DateTime.parse(envelope.date)
+        date = DateTime.parse(msg.date.to_s)
         formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
-        subject = envelope.subject
-        from = envelope.from[0].name
+        subject = msg.subject
+        from = from
 
         @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
 
@@ -151,9 +153,9 @@ class EmailViewerController < ApplicationController
 
     @user = current_user
 
-    if @user.emailaccounts.count > 1
-      redirect_to root_url
-    end
+    # if @user.emailaccounts.count > 1
+    #   redirect_to root_url
+    # end
 
     if @user.skip_activation or @user.active
       redirect_to root_url, alert: "Your account is already activated."
