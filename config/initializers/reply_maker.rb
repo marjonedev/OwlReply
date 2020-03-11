@@ -318,7 +318,9 @@ module ReplyMaker
             text_part = reply_body + "\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
 
             email_to_html = CGI::escapeHTML(email_to)
-            html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html}</blockquote></div></div>"
+
+            html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body.force_encoding('UTF-8')}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html.force_encoding('UTF-8')}</blockquote></div></div>"
+
 
             api.create_reply_draft(msg['id'], thread_id: msg['thread_id'], from: from, to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part, msgid: msg['msgid'])
             ids.push(msg['id'])
