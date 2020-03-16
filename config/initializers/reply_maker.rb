@@ -11,6 +11,8 @@
     9. create new draft
 =end
 
+include ActionView::Helpers::DateHelper
+
 module ReplyMaker
   class Replier
     def replier_logger
@@ -21,6 +23,7 @@ module ReplyMaker
     end
 
     def self.start_checking
+      self.check_last_reply
       self.reset_drafts_daycount
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
       return if already_running_fine?
@@ -358,5 +361,18 @@ module ReplyMaker
 
     end
 
+    def self.check_last_reply
+      last_checked = time_ago_in_words(Time.at(REDIS.get("last_reply_checked_at").to_i)).humanize
+      processes = `ps aux | grep -i rails`.to_s
+
+      admins = User.where(admin: true)
+      admins.each do |admin|
+        data = {
+            last_checked: last_checked,
+            rm_running: processes.scan(/reply/).size
+        }
+        AdminChannel.broadcast_to(admin, data)
+      end
+    end
   end
 end

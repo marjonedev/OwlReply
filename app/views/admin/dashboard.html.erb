@@ -80,7 +80,7 @@
               <i class="icon-check-double i-alt"></i>
             </div>
             <h5 class="card-title">Last Checked</h5>
-            <span class="numval"><%= time_ago_in_words(Time.at(REDIS.get("last_reply_checked_at").to_i)).humanize %> ago</span>
+            <span class="numval admin_last_checked"><%= time_ago_in_words(Time.at(REDIS.get("last_reply_checked_at").to_i)).humanize %> ago</span>
           </div>
         </div>
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
@@ -89,7 +89,7 @@
               <i class="icon-settings i-alt"></i>
             </div>
             <h5 class="card-title">Reply Maker Running</h5>
-            <span class="numval"><%= reply_maker_process_size %></span>
+            <span class="numval admin_rm_running"><%= reply_maker_process_size %></span>
           </div>
         </div>
       </div>
