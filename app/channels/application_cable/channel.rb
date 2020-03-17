@@ -17,5 +17,13 @@ module ApplicationCable
         self.current_user = user
       end
     end
+
+    def current_admin
+      @current_admin ||= (login_as_admin || :false)
+    end
+
+    def login_as_admin
+      self.current_admin = current_user if current_user.admin
+    end
   end
 end

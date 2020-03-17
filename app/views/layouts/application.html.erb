@@ -6,6 +6,10 @@
 	<meta name="author" content="SemiColonWeb" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <% if @emailaccount.present? %>
+    <meta name="emailaccount" content="<%= @emailaccount.id %>" />
+  <% end %>
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 

@@ -24,6 +24,7 @@ module ReplyMaker
 
     def self.start_checking
       self.check_last_reply
+      self.account_last_checked
       self.reset_drafts_daycount
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
       return if already_running_fine?
@@ -359,6 +360,16 @@ module ReplyMaker
         e.backtrace.each { |line| replier_logger.error line }
       end
 
+    end
+
+    def self.account_last_checked
+      accounts = Emailaccount.where("last_checked IS NOT NULL")
+
+      accounts.each do |account|
+        last_checked = account.last_checked.to_i ? time_ago_in_words(account.last_checked.to_i).humanize : ""
+        data = {last_checked: "Last checked: #{last_checked} ago"}
+        EmailaccountChannel.broadcast_to(account, data)
+      end
     end
 
     def self.check_last_reply

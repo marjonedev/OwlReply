@@ -6,13 +6,17 @@ $('a.check_btn')
     .attr('disabled', 'disabled');
 
 var checkInterval = setInterval(function() {
+
     $.ajax({
         url: "<%= status_emailaccount_path(@emailaccount, :format => :json) %>",
         type: "GET",
         contentType: "application/json",
         success: function(data){
             if(data.data != null){
+
                 $('span.last-check').text(data.data);
+
+                clearInterval(checkInterval);
 
                 var attr = $('a.check_btn').attr('disabled');
                 if (typeof attr !== typeof undefined && attr !== false) {

@@ -13,12 +13,11 @@
 __data = "";
 App.received_data = function (data) {
   // __data = data;
-  console.log('UserChannel', data);
   if (data['action'] == "rechecked") {
-    $(".last-check").html("Last checked: Less than 1 minute ago.");
+    // $(".last-check").html("Last checked: Less than 1 minute ago.");
   }
   if (data["message"]) {
     $.Custom.notify(data["message"]);
-    $(".last-check").html("Last checked: Less than 1 minute ago.");
+    // $(".last-check").html("Last checked: Less than 1 minute ago.");
   }
 };

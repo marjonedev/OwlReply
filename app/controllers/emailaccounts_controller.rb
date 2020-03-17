@@ -91,6 +91,9 @@ class EmailaccountsController < ApplicationController
 
   def check_again
     @emailaccount.update_attribute(:last_checked, nil)
+
+    EmailaccountChannel.broadcast_to(@emailaccount, {last_checked: ""})
+
     respond_to do |format|
       format.js {}
     end

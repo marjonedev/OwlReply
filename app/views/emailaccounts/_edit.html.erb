@@ -171,7 +171,6 @@
                     };
 
                     var doneErrorAuth = function(elem){
-                        console.log('error');
                         $('#smtpSettings').find('.errorMsg').remove();
                         $('#smtpSettings').append('<div class="errorMsg">' +
                             '<div class="alert alert-danger" role="alert">Opps. Authentication Error. Please try again.</div>' +
@@ -189,7 +188,6 @@
                         data: $(form).serialize(),
                         contentType: "application/json",
                         success: function(data){
-                            console.log(data);
                             if(data){
                                 if(data.success){
                                     $($this).text('Authenticated');
