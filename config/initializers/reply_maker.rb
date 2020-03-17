@@ -61,10 +61,16 @@ module ReplyMaker
             replier_logger.info("IMAP - Success on account #{account.address}. #{$!.to_s}")
             puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
             account.update_column(:last_checked,Time.now.to_i)
+
+            data = {last_checked: "Last checked: Checked now."}
+            EmailaccountChannel.broadcast_to(account, data)
           rescue
             replier_logger.info("IMAP - Failure on account #{account.address}. #{$!.to_s}")
             puts "IMAP - Failure on account #{account.address}. #{$!.to_s}"
             account.update_column(:error,$!.to_s)
+
+            data = {last_checked: "#{$!.to_s}"}
+            EmailaccountChannel.broadcast_to(account, data)
           end
         end
 
@@ -96,10 +102,16 @@ module ReplyMaker
           replier_logger.info("Google - Success on account #{account.address}. #{$!.to_s}")
           puts "Google - Success on account #{account.address}. #{$!.to_s}"
           account.update_column(:last_checked,Time.now.to_i)
+
+          data = {last_checked: "Last checked: Checked now."}
+          EmailaccountChannel.broadcast_to(account, data)
         rescue
           replier_logger.info("Google - Failure on account #{account.address}. #{$!.to_s}")
           puts "Google - Failure on account #{account.address}. #{$!.to_s}"
           account.update_column(:error,$!.to_s)
+
+          data = {last_checked: "#{$!.to_s}"}
+          EmailaccountChannel.broadcast_to(account, data)
         end
       end
       sleep 1 if self.get_last_reply_time > (Time.now.to_i - (1*60)) # The loop must last at least a minute.
@@ -363,7 +375,11 @@ module ReplyMaker
     end
 
     def self.account_last_checked
-      accounts = Emailaccount.where("last_checked IS NOT NULL")
+      accounts = Emailaccount.where('authenticated = 1')
+                     .where('email_provider IS NOT NULL')
+                     .where("last_checked IS NOT NULL")
+                     .where('error IS NULL OR error = ""')
+                     # .where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)
 
       accounts.each do |account|
         last_checked = account.last_checked.to_i ? time_ago_in_words(account.last_checked.to_i).humanize : ""
