@@ -401,5 +401,13 @@ module ReplyMaker
         AdminChannel.broadcast_to(admin, data)
       end
     end
+
+    def self.update_admin_checked(account, emails = 0, replies = 0)
+      admins = User.where(admin: true)
+      admins.each do |admin|
+        data = {checked_update: "Checked #{account.address}. #{emails} emails. #{replies} replies."}
+        AdminChannel.broadcast_to(admin, data)
+      end
+    end
   end
 end
