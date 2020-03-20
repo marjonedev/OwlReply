@@ -4,7 +4,7 @@
 
     function trim_notif_box(){
         let notif = $('#checked-notification').find('li');
-        if(notif.size() > 2){
+        if(notif.size() > 50){
             notif.last().remove();
         }
     }
