@@ -3,7 +3,7 @@
     App.chat = {};
 
     function trim_notif_box(){
-        let notif = $('#checked-notification').find('li');
+        let notif = $('#checked-notification').find('li.list-group-item');
         if(notif.size() > 50){
             notif.last().remove();
         }
