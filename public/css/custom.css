@@ -418,7 +418,9 @@ div.activation-process div.feature-box.fbox-center.fbox-plain .fbox-icon i{
     font-size: 150px;
 }
 
-div#checked-notification{
+div#checked-notification {
     max-height: 250px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    min-height: 150px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }

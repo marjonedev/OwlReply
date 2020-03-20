@@ -8,15 +8,20 @@
             notif.last().remove();
         }
     }
-    function prepend_checked_update(notif){
+    function prepend_checked_update(notif, type=''){
         trim_notif_box();
-        let str = '<li class="list-group-item">'+notif+'</li>';
+        let cls = '';
+        if(type){
+            cls = 'list-group-item-'+type
+        }
+        let str = '<li class="list-group-item '+cls+'">'+notif+'</li>';
         $('#checked-notification').find('ul').prepend(str);
     }
 
     App.subscribe_to_channel = function () {
         App.cable.subscriptions.create({channel: "AdminChannel"},{
             received: function(data) {
+                console.log('AdminChannel', data);
                 if(data['last_checked']){
                     $('span.admin_last_checked').text(data['last_checked'])
                 }
@@ -26,7 +31,7 @@
                 }
 
                 if(data['checked_update']){
-                    prepend_checked_update(data['checked_update']);
+                    prepend_checked_update(data['checked_update']['message'], data['checked_update']['type']);
                 }
             }
         });

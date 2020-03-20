@@ -173,93 +173,117 @@ module ReplyMaker
         return false #return if there's no replies created on the email account. fixed
       end
 
-      require 'net/imap'
-      require 'mail'
-      require 'date'
+      begin
 
-      ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
-      port = account.imap_port ? account.imap_port : 993
-      host = account.imap_host.to_s.empty? ? account.address.to_s.split("@").last : account.imap_host
+        require 'net/imap'
+        require 'mail'
+        require 'date'
 
-      imap = Net::IMAP.new(host, ssl: ssl, port: port )
-      imap.login(account.address, account.password)
+        ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
+        port = account.imap_port ? account.imap_port : 993
+        host = account.imap_host.to_s.empty? ? account.address.to_s.split("@").last : account.imap_host
 
-      folders =  imap.list('', "*")
+        imap = Net::IMAP.new(host, ssl: ssl, port: port )
+        imap.login(account.address, account.password)
 
-      inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
-      drafts = folders.any? { |h| h.attr.include? :Drafts } ? folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
+        folders =  imap.list('', "*")
 
-      imap.select(inbox)
+        inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+        drafts = folders.any? { |h| h.attr.include? :Drafts } ? folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
 
-      start_date = 1.week.ago.strftime("%d-%b-%Y")
+        imap.select(inbox)
 
-      imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
+        start_date = 1.week.ago.strftime("%d-%b-%Y")
 
-        reply_used = false
-        data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
-        msg = Mail.read_from_string data
+        messages_size = 0
+        replies_size = 0
 
-        date = DateTime.rfc3339(msg.date.to_s)
-        formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
+        imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
 
-        thebody = msg.body.to_s
-        thebody_downcase = thebody.downcase
-        next if account.subject_line_skip?(msg.subject)
-        next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
+          reply_used = false
+          data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
+          msg = Mail.read_from_string data
 
-        auto = ""
-        for reply in account.replies
-          next unless reply.matches?(msg.subject, thebody_downcase)
-          body = reply.body.to_s.gsub("\n","<br>\n")
-          auto << body
-          reply.increment!(:drafts_created_today)
-          reply.increment!(:drafts_created_lifetime)
-          reply_used = true
+          date = DateTime.rfc3339(msg.date.to_s)
+          formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
+
+          thebody = msg.body.to_s
+          thebody_downcase = thebody.downcase
+          next if account.subject_line_skip?(msg.subject)
+          next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
+
+          auto = ""
+          for reply in account.replies
+            next unless reply.matches?(msg.subject, thebody_downcase)
+            body = reply.body.to_s.gsub("\n","<br>\n")
+            auto << body
+            reply.increment!(:drafts_created_today)
+            reply.increment!(:drafts_created_lifetime)
+            replies_size += 1
+            reply_used = true
+          end
+
+          if reply_used #only reply_used true can create draft.
+            body_html = (msg.html_part.body.to_s rescue "")
+            body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
+            body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
+            body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
+            body_text = thebody if body_text.blank?
+            email_to = (msg.reply_to || msg.from)
+
+            body_text2 = ""
+            body_text.each_line do |tline|
+              body_text2 << "> #{tline}"
+            end
+
+            reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+            html_reply_body = reply_body.gsub("\n","<br>\n")
+
+            mail = Mail.new do
+              from    "#{account.address} <#{account.address}>"
+              to      email_to
+              subject "Re: #{msg.subject}"
+              text_part do
+                content_type 'text/plain; charset=UTF-8'
+                # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
+                body reply_body+"\n\nOn #{formatted_date}, #{email_to} wrote:\n>\n#{body_text2}"
+              end
+              html_part do
+                content_type 'text/html; charset=UTF-8'
+                body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
+              end
+            end
+
+            mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
+            mail.header['References'] = msg["Message-ID"]
+            message = mail.to_s
+
+            imap.append(drafts, message, [:Seen, :Draft], Time.now)
+
+            account.increment!(:drafts_created_today)
+            account.increment!(:drafts_created_lifetime)
+          else
+            account.increment!(:drafts_missing_replies_today) unless reply_used
+            account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+          end
+
+          messages_size += 1
+
         end
 
-        if reply_used #only reply_used true can create draft.
-          body_html = (msg.html_part.body.to_s rescue "")
-          body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
-          body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
-          body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
-          body_text = thebody if body_text.blank?
-          email_to = (msg.reply_to || msg.from)
-
-          body_text2 = ""
-          body_text.each_line do |tline|
-            body_text2 << "> #{tline}"
-          end
-
-          reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
-          html_reply_body = reply_body.gsub("\n","<br>\n")
-
-          mail = Mail.new do
-            from    "#{account.address} <#{account.address}>"
-            to      email_to
-            subject "Re: #{msg.subject}"
-            text_part do
-              content_type 'text/plain; charset=UTF-8'
-              # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-              body reply_body+"\n\nOn #{formatted_date}, #{email_to} wrote:\n>\n#{body_text2}"
-            end
-            html_part do
-              content_type 'text/html; charset=UTF-8'
-              body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
-            end
-          end
-
-          mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
-          mail.header['References'] = msg["Message-ID"]
-          message = mail.to_s
-
-          imap.append(drafts, message, [:Seen, :Draft], Time.now)
-
-          account.increment!(:drafts_created_today)
-          account.increment!(:drafts_created_lifetime)
+        if messages_size > 1
+          self.update_admin_checked(account, emails: messages_size, replies: replies_size)
         else
-          account.increment!(:drafts_missing_replies_today) unless reply_used
-          account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+          replier_logger.error("IMAP - Messages are empty.")
+          self.update_admin_checked(account, message: "Messages on #{account.address} are empty")
         end
+
+      rescue Exception => e
+
+        replier_logger.error e.message
+
+        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}")
+
       end
     end
 
@@ -283,8 +307,14 @@ module ReplyMaker
 
         if messages.empty?
           replier_logger.error("GOOGLE - Messages are empty.")
+          self.update_admin_checked(account, message: "Messages on #{account.address} are empty")
+
           return
         end
+
+        replies_size = 0
+
+        messages_size = messages.count
 
         messages.each do |msg|
 
@@ -299,12 +329,14 @@ module ReplyMaker
           reply_used = false
 
           auto = ""
+
           for reply in account.replies
             next unless reply.matches?(msg['subject'], thebody_downcase)
             body = reply.body.gsub("\n", "<br>\n")
             auto << body
             reply.increment!(:drafts_created_today)
             reply.increment!(:drafts_created_lifetime)
+            replies_size += 1
             reply_used = true
           end
           account_has_no_template = (account.template.nil? || account.template.to_s.strip == "")
@@ -351,6 +383,8 @@ module ReplyMaker
           end
         end
 
+        self.update_admin_checked(account, emails: messages_size, replies: replies_size)
+
         UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails."})
 
         api.read_messages(ids)
@@ -366,9 +400,14 @@ module ReplyMaker
           # return []
         end
 
+        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{exception.message}")
+
         #retry # This could cause an infinite loop I think.
       rescue Exception => e
         replier_logger.error e.message
+
+        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}")
+
         e.backtrace.each { |line| replier_logger.error line }
       end
 
@@ -395,18 +434,36 @@ module ReplyMaker
       admins = User.where(admin: true)
       admins.each do |admin|
         data = {
-            last_checked: last_checked,
+            last_checked: "#{last_checked} ago",
             rm_running: processes.scan(/reply/).size
         }
         AdminChannel.broadcast_to(admin, data)
       end
     end
 
-    def self.update_admin_checked(account, emails = 0, replies = 0)
+    def self.update_admin_checked(account, emails: 0, replies: 0, message: nil)
+
       admins = User.where(admin: true)
       admins.each do |admin|
-        data = {checked_update: "Checked #{account.address}. #{emails} emails. #{replies} replies."}
-        AdminChannel.broadcast_to(admin, data)
+
+      if message.nil?
+        data = {
+            checked_update: {
+              message: "Checked #{account.address}. #{emails} emails. #{replies} replies.",
+              type: 'info'
+            }
+        }
+      else
+        data = {
+            checked_update: {
+                message: "#{message}",
+                type: 'warning'
+            }
+        }
+      end
+
+      AdminChannel.broadcast_to(admin, data)
+
       end
     end
   end
