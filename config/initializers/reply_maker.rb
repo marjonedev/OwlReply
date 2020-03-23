@@ -143,8 +143,25 @@ module ReplyMaker
     def self.too_many_of_myself_running?
       # This will make sure there's not more than 4 of this process running.
       # This should not be necessary. It's a stopgap measure to prevent errors.
+
       processes = `ps aux | grep -i rails`.to_s
-      if processes.scan(/reply/).size > 8
+      process_size = processes.scan(/reply/).size
+
+      process_checked = REDIS.get('processes_checked_at')
+
+      unless process_checked.nil? and process_checked.to_i == 0
+        if process_checked.to_i < (Time.now.to_i - (1*60*60*24)) #set to 0 if more than a day
+          REDIS.set("processes_checked_at", 0)
+        end
+      end
+
+      if process_size > 8
+
+        if process_checked.nil? || process_checked.to_i == 0
+          REDIS.set("processes_checked_at", Time.now.to_i)
+          AdminMailer.with(process: process_size, subject: "Processes Running High").notification_email.deliver_now
+        end
+
         return true
         # Consider sending an email to the admins.... but only once, not every 1 minute that this tries to run....
       else
@@ -272,17 +289,17 @@ module ReplyMaker
         end
 
         if messages_size > 1
-          self.update_admin_checked(account, emails: messages_size, replies: replies_size)
+          self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
         else
           replier_logger.error("IMAP - Messages are empty.")
-          self.update_admin_checked(account, message: "Messages on #{account.address} are empty")
+          self.update_admin_checked(account, message: "Messages on #{account.address} are empty", type: 'warning')
         end
 
       rescue Exception => e
 
         replier_logger.error e.message
 
-        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}")
+        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}", type: 'danger')
 
       end
     end
@@ -307,7 +324,7 @@ module ReplyMaker
 
         if messages.empty?
           replier_logger.error("GOOGLE - Messages are empty.")
-          self.update_admin_checked(account, message: "Messages on #{account.address} are empty")
+          self.update_admin_checked(account, message: "Messages on #{account.address} are empty", type: 'warning')
 
           return
         end
@@ -383,7 +400,7 @@ module ReplyMaker
           end
         end
 
-        self.update_admin_checked(account, emails: messages_size, replies: replies_size)
+        self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
 
         UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails."})
 
@@ -400,13 +417,13 @@ module ReplyMaker
           # return []
         end
 
-        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{exception.message}")
+        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{exception.message}", type: 'danger')
 
         #retry # This could cause an infinite loop I think.
       rescue Exception => e
         replier_logger.error e.message
 
-        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}")
+        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}", type: 'danger')
 
         e.backtrace.each { |line| replier_logger.error line }
       end
@@ -441,7 +458,7 @@ module ReplyMaker
       end
     end
 
-    def self.update_admin_checked(account, emails: 0, replies: 0, message: nil)
+    def self.update_admin_checked(account, emails: 0, replies: 0, message: nil, type: 'info')
 
       admins = User.where(admin: true)
       admins.each do |admin|
@@ -450,14 +467,14 @@ module ReplyMaker
         data = {
             checked_update: {
               message: "Checked #{account.address}. #{emails} emails. #{replies} replies.",
-              type: 'info'
+              type: type
             }
         }
       else
         data = {
             checked_update: {
                 message: "#{message}",
-                type: 'warning'
+                type: type
             }
         }
       end
