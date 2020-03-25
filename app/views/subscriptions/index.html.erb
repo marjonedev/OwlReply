@@ -22,7 +22,8 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Frequency</th>
-                    <th colspan="2"></th>
+                    <th style="width: 120px;">Recommended</th>
+                    <th colspan="2">Actions</th>
                   </tr>
                   </thead>
 
@@ -31,9 +32,10 @@
                     <tr>
                       <td><%= subscription.name %></td>
                       <td><%= subscription.price %></td>
-                      <td><%= subscription.frequency %></td>
-                      <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
-                      <td><%= link_to 'Remove', subscription, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= frequency_str(subscription.frequency) %></td>
+                      <td><%= recommended_str(subscription.id, subscription.recommended) %></td>
+                      <td style="width: 25px"><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
+                      <td style="width: 75px"><%= link_to 'Remove', subscription, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     </tr>
                   <% end %>
                   </tbody>
@@ -48,3 +50,12 @@
     </div>
   </div>
 </section>
+
+<% content_for :javascript_includes do %>
+  <link rel="stylesheet" href="/css/components/radio-checkbox.css" type="text/css" />
+<% end %>
+
+
+<% content_for :javascript_footer_includes do %>
+
+<% end %>

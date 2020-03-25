@@ -70,7 +70,7 @@ class SubscriptionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def subscription_params
-      params.require(:subscription).permit(:name, :price, :frequency)
+      params.require(:subscription).permit(:name, :price, :frequency, :recommended, :feature)
     end
 
     # def require_admin

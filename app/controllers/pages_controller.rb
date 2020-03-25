@@ -25,6 +25,7 @@ class PagesController < ApplicationController
   end
 
   def pricing
+    @plans = Subscription.all
   end
 
   def signup

@@ -26,123 +26,50 @@
       </div>
 
       <div class="row pricing bottommargin clearfix">
+        <%#= @plans %>
+        <% @plans.each do |plan| %>
+          <div class="col-lg">
 
-        <div class="col-lg-4">
-
-          <div class="pricing-box">
-            <div class="pricing-title">
-              <h3>Entrepreneur</h3>
-            </div>
-            <div class="pricing-price">Free</div>
-            <div class="pricing-features">
-              <ul>
-                <li><strong>Automated</strong> replies</li>
-                <li>Improve your customer service</li>
-                <li><strong>100</strong> drafts per day</li>
-                <li><strong>30</strong> keyword sets</li>
-                <li>Basic keyword suggestions</li>
-                <!--<li>Email Support</li>-->
-              </ul>
-            </div>
-            <div class="pricing-action"><% s1 = Subscription.find_by(name: "Entrepreneur").id %>
-              <% if current_user %>
-                <% if current_user.subscription_id == s1 || current_user.subscription_id.nil? #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
-                  <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
-                <% else %>
-<!--                  <a href="/plans/<%#= s1 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
-                  <% if current_user.no_paymentmethods? %>
-                    <%= link_to 'Choose Plan', "/paymentmethods/new?upgrade=#{s1}", class: 'btn btn-danger btn-block btn-lg', remote: true %>
-                  <% else %>
-                    <%= link_to 'Choose Plan', plan_path(s1), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Entrepreneur'} %>
-                  <% end %>
+            <div class="pricing-box <%= plan.recommended ? 'best-price' : '' %>">
+              <div class="pricing-title">
+                <h3><%= plan.name %></h3>
+                <% if plan.recommended %>
+                  <span>Most Popular</span>
                 <% end %>
-              <% else %>
-                <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
-              <% end %>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="col-lg-4">
-
-          <div class="pricing-box best-price">
-            <div class="pricing-title">
-              <h3>Small Business</h3>
-              <span>Most Popular</span>
-            </div>
-            <div class="pricing-price">
-              <span class="price-unit">USD</span>12<span class="price-tenure">/mo</span>
-            </div>
-            <div class="pricing-features">
-              <ul>
-                <li><strong>Unlimited</strong> keyword sets</li>
-                <li>Improve your customer service</li>
-                <li><strong>1,000</strong> drafts per day</li>
-                <li><strong>Faster</strong> draft creation</li>
-                <li>AI enhanced keyword suggestions</li>
-                <!--<li><strong>2 Years</strong> License</li>-->
-                <!--<li>Phone &amp; Email Support</li>-->
-              </ul>
-            </div>
-            <div class="pricing-action"><% s2 = Subscription.find_by(name: "Small Business").id %>
-              <% if current_user %>
-                <% if current_user.subscription_id == s2 #current_user.subscription_id != (s=Subscription.find_by(name: "Small Business").id) %>
-                  <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
-                <% else %>
-<!--                  <a href="/plans/<%#= s2 %>" class="btn btn-danger btn-block btn-lg bgcolor border-color" data-method="patch">Choose Plan</a>-->
-                  <% if current_user.no_paymentmethods? %>
-                    <%= link_to 'Choose Plan', "/paymentmethods/new?upgrade=#{s2}", class: 'btn btn-danger btn-block btn-lg bgcolor border-color', remote: true %>
-                  <% else %>
-                    <%= link_to 'Choose Plan', plan_path(s2), class: 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan', data:{toggle: 'modal', plan: 'Small Business'} %>
-                  <% end %>
+              </div>
+              <div class="pricing-price">
+                <% if plan.price.to_i > 0 %>
+                  <span class="price-unit">USD</span>
                 <% end %>
-              <% else %>
-                <a href="/signup" class="btn btn-danger btn-block btn-lg bgcolor border-color">Sign Up</a>
-              <% end %>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="col-lg-4">
-
-          <div class="pricing-box">
-            <div class="pricing-title">
-              <h3>Big Business</h3>
-            </div>
-            <div class="pricing-price">
-              <span class="price-unit">USD</span>16<span class="price-tenure">/mo</span>
-            </div>
-            <div class="pricing-features">
-              <ul>
-                <li><strong>Unlimited</strong> keyword sets</li>
-                <li>Improve your customer service</li>
-                <li><strong>Unlimited</strong> replies daily</li>
-                <li><strong>Fastest</strong> draft creation</li>
-                <li>AI enhanced keyword suggestions</li>
-                <li>Automated reply content suggestion</li>
-              </ul>
-            </div>
-            <div class="pricing-action"><% s3 = Subscription.find_by(name: "Big Business").id %>
-              <% if current_user %>
-                <% if current_user.subscription_id == s3 #current_user.subscription_id != (s=Subscription.find_by(name: "Big Business").id) %>
-                  <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
-                <% else %>
-<!--                  <a href="/plans/<%#= s3 %>" class="btn btn-danger btn-block btn-lg" data-method="patch">Choose Plan</a>-->
-                  <% if current_user.no_paymentmethods? %>
-                    <%= link_to 'Choose Plan', "/paymentmethods/new?upgrade=#{s3}", class: 'btn btn-danger btn-block btn-lg', remote: true %>
+                <%= plan_amount(plan.price) %>
+                <% if plan.price.to_i > 0 %>
+                  <span class="price-tenure">/<%= plan_frequency(plan.frequency) %></span>
+                <% end %>
+             </div>
+              <div class="pricing-features">
+                <%= raw(plan.feature) %>
+              </div>
+              <div class="pricing-action"><% s1 = Subscription.find_by(name: plan.name).id %>
+                <% if current_user %>
+                  <% if current_user.subscription_id == s1 || current_user.subscription_id.nil? #current_user.subscription_id != (s=Subscription.find_by(name: "Entrepreneur").id) %>
+                    <a href="#" class="btn btn-block btn-lg ls3" onclick="return false;">Current Plan</a>
                   <% else %>
-                    <%= link_to 'Choose Plan', plan_path(s3), class: 'btn btn-danger btn-block btn-lg confirm-plan', data:{toggle: 'modal', plan: 'Big Business'} %>
+                    <% if current_user.no_paymentmethods? %>
+                      <% button_class = plan.recommended ? 'btn btn-danger btn-block btn-lg bgcolor border-color' : 'btn btn-danger btn-block btn-lg' %>
+                      <%= link_to 'Choose Plan', "/paymentmethods/new?upgrade=#{s1}", class: button_class, remote: true %>
+                    <% else %>
+                      <% button_class = plan.recommended ? 'btn btn-danger btn-block btn-lg bgcolor border-color confirm-plan' : 'btn btn-danger btn-block btn-lg confirm-plan' %>
+                      <%= link_to 'Choose Plan', plan_path(s1), class: button_class, data:{toggle: 'modal', plan: plan.name} %>
+                    <% end %>
                   <% end %>
-            <% end %>
-              <% else %>
-                <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
-              <% end %>
+                <% else %>
+                  <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
+                <% end %>
+              </div>
             </div>
-          </div>
 
-        </div>
+          </div>
+        <% end %>
 
       </div>
 
