@@ -63,7 +63,8 @@
                     <% end %>
                   <% end %>
                 <% else %>
-                  <a href="/signup" class="btn btn-danger btn-block btn-lg">Sign Up</a>
+                  <% button_class = plan.recommended ? 'btn btn-danger btn-block btn-lg bgcolor border-color' : 'btn btn-danger btn-block btn-lg' %>
+                  <a href="/signup" class="<%= button_class %>">Sign Up</a>
                 <% end %>
               </div>
             </div>
