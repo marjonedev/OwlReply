@@ -1,32 +1,45 @@
-<%= form_with(model: subscription, local: true) do |form| %>
-  <% if subscription.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(subscription.errors.count, "error") %> prohibited this subscription from being saved:</h2>
+<div class="form-wrapper">
+  <%= form_with(model: subscription, local: true, html:{class: 'nobottommargin'}) do |form| %>
+  <%#= form_with model: (subscription || subscription = Subscription.new), html:{class: 'nobottommargin'} do |form| %>
+    <% if subscription.errors.any? %>
+      <div class="style-msg2 errormsg">
+        <div class="msgtitle">Oops! There's an error upon submitting.</div>
+        <div class="sb-msg">
+          <ul>
+            <% for message in subscription.errors.full_messages %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Name</label>
+      <div class="col-sm-10">
+        <%= form.text_field :name, class: 'form-control required', required: "required" %>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Price</label>
+      <div class="col-sm-10">
+        <%= form.number_field :price, class: 'form-control required', required: "required" %>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Frequency</label>
+      <div class="col-sm-10">
+        <select class="form-control" name="subscription[frequency]">
+          <option value="daily">Daily</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+    </div>
 
-      <ul>
-      <% subscription.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <div class="actions col_full nobottommargin">
+      <%= form.submit subscription.new_record? ? 'Add New' : 'Save', class: 'button button nomargin' %>
+      <%= link_to 'Cancel', subscriptions_path, type: "reset", class: "button-cancel button button-white button-light button" %>
     </div>
   <% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :price %>
-    <%= form.number_field :price %>
-  </div>
-
-  <div class="field">
-    <%= form.label :frequency %>
-    <%= form.text_field :frequency %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>

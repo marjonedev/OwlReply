@@ -1,6 +1,30 @@
-<h1>Editing Subscription</h1>
+<section id="page-title" class="nobg">
 
-<%= render 'form', subscription: @subscription %>
+  <div class="container clearfix">
+    <h1>Edit Plan</h1>
+    <div class="breadcrumb">
+      <%= link_to 'Back to Plans', subscriptions_url %>
+    </div>
+  </div>
 
-<%= link_to 'Show', @subscription %> |
-<%= link_to 'Back', subscriptions_path %>
+</section><!-- #page-title end -->
+
+<section id="content" class="emailaccount_edit">
+
+  <div class="content-wrap nopadding">
+    <div class="section nomargin">
+      <div class="container clearfix">
+        <div class="row">
+          <div class="col-lg-1 col-sm-1"></div>
+          <div class="col-lg-10 col-sm-10 bottommargin-sm">
+            <div class="white-section custom-white-box">
+              <%= render 'form', subscription: @subscription %>
+            </div>
+          </div>
+          <div class="col-lg-1 col-sm-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

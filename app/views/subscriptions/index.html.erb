@@ -1,31 +1,50 @@
-<p id="notice"><%= notice %></p>
+<section id="page-title" class="nobg">
 
-<h1>Subscriptions</h1>
+  <div class="container clearfix">
+    <h1>Plans</h1>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Frequency</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+</section><!-- #page-title end -->
 
-  <tbody>
-    <% @subscriptions.each do |subscription| %>
-      <tr>
-        <td><%= subscription.name %></td>
-        <td><%= subscription.price %></td>
-        <td><%= subscription.frequency %></td>
-        <td><%= link_to 'Show', subscription %></td>
-        <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
-        <td><%= link_to 'Destroy', subscription, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<section id="content">
 
-<br>
+  <div class="content-wrap nopadding">
+    <div class="section nomargin nobottompadding">
+      <div class="container clearfix">
+        <div class="row">
+          <div class="col-lg-1 col-sm-1"></div>
+          <div class="col-lg-10 col-sm-10 bottommargin-sm">
+            <div class="white-section custom-white-box">
+              <div>
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Frequency</th>
+                    <th colspan="2"></th>
+                  </tr>
+                  </thead>
 
-<%= link_to 'New Subscription', new_subscription_path %>
+                  <tbody>
+                  <% @subscriptions.each do |subscription| %>
+                    <tr>
+                      <td><%= subscription.name %></td>
+                      <td><%= subscription.price %></td>
+                      <td><%= subscription.frequency %></td>
+                      <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
+                      <td><%= link_to 'Remove', subscription, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+
+                <%= link_to 'New Plan', new_subscription_path, class: "button" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
