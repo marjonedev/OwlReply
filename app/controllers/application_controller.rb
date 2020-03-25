@@ -25,6 +25,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_admin
+    if !logged_in?
+      redirect_to login_url
+    end
+
+    if current_user and !current_user.admin
+      redirect_to login_url
+    end
+  end
+
   def set_referer_cookies
     cookies[:referer] = request.referer
   end

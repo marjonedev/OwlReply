@@ -1,6 +1,8 @@
 class Subscription < ApplicationRecord
   has_many :invoices
 
+  validates :name, :price, :frequency, :presence => true
+
   def self.update_subscriptions_today
     users = User.where("next_subscription_charge_on IS NOT NULL").where("subscription_id > 1")
     for user in users

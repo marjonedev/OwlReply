@@ -1,5 +1,5 @@
 class SubscriptionsController < ApplicationController
-  #before_action :require_admin
+  before_action :require_admin
   before_action :set_subscription, only: [:show, :edit, :update, :destroy]
 
   # GET /subscriptions
@@ -43,7 +43,7 @@ class SubscriptionsController < ApplicationController
   def update
     respond_to do |format|
       if @subscription.update(subscription_params)
-        format.html { redirect_to @subscription, notice: 'Subscription was successfully updated.' }
+        format.html { redirect_to subscriptions_url, notice: 'Subscription was successfully updated.' }
         format.json { render :show, status: :ok, location: @subscription }
       else
         format.html { render :edit }
@@ -72,4 +72,12 @@ class SubscriptionsController < ApplicationController
     def subscription_params
       params.require(:subscription).permit(:name, :price, :frequency)
     end
+
+    # def require_admin
+    #
+    #   if !current_user and !current_user.admin
+    #     redirect_to root_url, alert: "You are not an admin."
+    #   end
+    #
+    # end
 end
