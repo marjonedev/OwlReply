@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_190116) do
+ActiveRecord::Schema.define(version: 2020_03_25_131135) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -96,7 +96,8 @@ ActiveRecord::Schema.define(version: 2020_03_24_190116) do
     t.string "frequency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "featured", default: false
+    t.boolean "recommended", default: false
+    t.text "feature"
   end
 
   create_table "transactions", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
