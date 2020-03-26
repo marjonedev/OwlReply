@@ -99,5 +99,7 @@ Rails.application.configure do
   REDIS = Redis.new(host: 'localhost', port: 6379, db: 1)
 
   config.action_mailer.delivery_method = :sendmail
+
+  ActionCable.server.config.logger = Logger.new("#{Rails.root}/log/actioncable.log")
   
 end
