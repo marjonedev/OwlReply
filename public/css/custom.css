@@ -424,3 +424,7 @@ div#checked-notification {
     min-height: 150px;
     border: 1px solid rgba(0, 0, 0, 0.125);
 }
+
+div.custom_cards .card span.numval.admin_last_checked{
+    font-size: 20px;
+}

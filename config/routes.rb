@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   get 'admin/accounts'
   get 'admin/emailaccounts'
   get 'admin/replies'
+  get 'admin/subscribers'
 
   root 'pages#home'
 

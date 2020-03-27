@@ -13,6 +13,10 @@ class AdminController < ApplicationController
     @replies = Reply.all
   end
 
+  def subscribers
+    @subscribers = User.joins(:subscription).where('subscriptions.price > 0')
+  end
+
   private
   def verify_admin
     unless current_user.admin

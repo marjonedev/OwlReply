@@ -181,6 +181,7 @@ module ReplyMaker
     def self.reset_drafts_daycount
       if Time.now.beginning_of_day > Time.at(self.get_last_reply_time).beginning_of_day
         Emailaccount.where('drafts_created_today IS NOT NULL').update_all(drafts_created_today: nil, drafts_missing_replies_today: nil)
+        Reply.where('drafts_created_today IS NOT NULL').update_all(drafts_created_today: nil)
       end
     end
 
@@ -230,6 +231,7 @@ module ReplyMaker
           next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
 
           auto = ""
+
           for reply in account.replies
             next unless reply.matches?(msg.subject, thebody_downcase)
             body = reply.body.to_s.gsub("\n","<br>\n")
