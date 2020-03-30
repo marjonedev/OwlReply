@@ -18,6 +18,7 @@
             <th>Start Date</th>
             <th>Next Charge On</th>
             <th>Invoices</th>
+            <th>Status</th>
           </tr>
           </thead>
           <tbody>
@@ -28,6 +29,7 @@
               <td><%= user.subscription_start_date.strftime("%b %d, %Y") %></td>
               <td><%= user.next_subscription_charge_on.strftime("%b %d, %Y") %></td>
               <td><%= user.invoices.count %></td>
+              <td></td>
             </tr>
           <% end %>
           </tbody>

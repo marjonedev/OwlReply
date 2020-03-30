@@ -130,6 +130,7 @@ class User < ApplicationRecord
     save!
   end
 
+
   protected
     # before filter
     def encrypt_password

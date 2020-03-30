@@ -31,6 +31,8 @@ class Invoice < ApplicationRecord
       # Send an email receipt.
     else
 
+      return
+
       # Send an email "Please update your billing information."
     end
   end
