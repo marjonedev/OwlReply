@@ -130,6 +130,29 @@ class User < ApplicationRecord
     save!
   end
 
+  def subscription_status
+
+    unsettled = []
+
+    invoices.each do |invoice|
+      if invoice.amount_paid.nil? or invoice.date_paid.nil?
+        unsettled.push(invoice.number.to_s)
+      end
+    end
+
+    if unsettled.empty?
+      return "Paid"
+    end
+
+    str = "Unsettled Payment:"
+
+    if unsettled.count > 1
+      str = "Unsettled Payments:"
+    end
+    "#{str} #{unsettled.to_sentence}"
+
+  end
+
 
   protected
     # before filter
