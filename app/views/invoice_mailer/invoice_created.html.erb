@@ -1,6 +1,8 @@
-<div class="invoice_header" style="border-bottom: 4px #CCCCCC double; padding-bottom: 10px;">
+<div style="border-bottom: 1px #CCCCCC solid; padding-bottom: 0px;">
   <h4>OwlReply LLC.</h4>
   <p>[Business Address]</p>
+</div>
+<div style="border-bottom: 4px #CCCCCC double; padding-bottom: 10px;">
   <br />
   <table>
     <tr>
@@ -17,8 +19,9 @@
     </tr>
   </table>
 </div>
+
 <div class="invoice_body">
-  <table class="table">
+  <table cellspacing="10">
     <thead>
     <th>Description</th>
     <th class="text-right" width="10%">Amount</th>
@@ -29,8 +32,12 @@
     </tbody>
   </table>
 </div>
+<br />
+<br />
+<br />
 <div class="invoice_footer">
   <% if @invoice.amount_paid %>
-    <small class="font-italic">Paid <%= @invoice.amount_paid_to_string %> on <%= @invoice.date_paid %></small>
+    <p><small><i>Paid <%= @invoice.amount_paid_to_string %> on <%= @invoice.date_paid %></i></small></p>
   <% end %>
+  <p><small>View the web version here: <a href="<%= @url %>"><%= @url %></a></small></p>
 </div>

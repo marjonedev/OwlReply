@@ -26,9 +26,11 @@ class Invoice < ApplicationRecord
       #self.amount_paid = self.amount
       #self.date_paid = DateTime.now
       self.update_attributes(amount_paid: self.amount, date_paid: DateTime.now)
-
       #
       # Send an email receipt.
+      user = self.user
+      invoice = Invoice.find(self.id)
+      InvoiceMailer.with(user: user, invoice: invoice).invoice_created.deliver_now
     else
 
       return
