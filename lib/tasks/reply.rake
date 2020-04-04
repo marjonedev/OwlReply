@@ -1,6 +1,7 @@
 namespace :reply do
   desc "This will generate replies."
   task :do => :environment do
+    #ARGV.each { |a| task a.to_sym do ; end }
     ReplyMaker::Replier.start_checking
   end
   task :reset => :environment do

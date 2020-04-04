@@ -22,16 +22,17 @@ module ReplyMaker
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def self.start_checking
+    def self.start_checking(*args)
       self.check_last_reply
       self.account_last_checked
       self.reset_drafts_daycount
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
-      return if already_running_fine?
-      return if too_many_of_myself_running?
+      return if already_running_fine? unless args[:force]
+      return if too_many_of_myself_running? unless args[:force]
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
       loops = 0
+      loops = 24 if args[:force]
       while not (resetting? || (loops > 25))
         self.check_accounts_using_imap
         self.check_accounts_using_google
