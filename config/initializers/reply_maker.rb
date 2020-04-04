@@ -456,11 +456,11 @@ module ReplyMaker
       processes = `ps aux | grep -i rails`.to_s
 
       admins = User.where(admin: true)
+      data = {
+        last_checked: "#{last_checked} ago",
+        rm_running: processes.scan(/reply/).size
+      }
       admins.each do |admin|
-        data = {
-            last_checked: "#{last_checked} ago",
-            rm_running: processes.scan(/reply/).size
-        }
         AdminChannel.broadcast_to(admin, data)
       end
     end
