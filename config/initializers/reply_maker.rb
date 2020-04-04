@@ -79,14 +79,18 @@ module ReplyMaker
       end
     end
 
+    # Made this a separate function to make it easier to use from the command line when debugging.
+    def self.accounts_to_check_using_google
+       Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> ""')
+        .where('authenticated = 1')
+        .where('email_provider IS NOT NULL AND email_provider = "google"')
+        .where('error IS NULL OR error = ""')
+        .where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
+    end
+
     def self.check_accounts_using_google
       # accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-      accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> ""')
-                     .where('authenticated = 1')
-                     .where('email_provider IS NOT NULL AND email_provider = "google"')
-                     .where('error IS NULL OR error = ""')
-                     .where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-
+      accounts = Emailaccount.accounts_to_check_using_google
 
       for account in accounts
         begin
