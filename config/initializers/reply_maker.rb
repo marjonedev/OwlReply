@@ -22,7 +22,7 @@ module ReplyMaker
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def self.start_checking(*args)
+    def self.start_checking(args = {})
       self.check_last_reply
       self.account_last_checked
       self.reset_drafts_daycount
