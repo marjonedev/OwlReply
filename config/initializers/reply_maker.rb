@@ -91,7 +91,7 @@ module ReplyMaker
 
     def self.check_accounts_using_google
       # accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-      accounts = Emailaccount.accounts_to_check_using_google
+      accounts = accounts_to_check_using_google
 
       for account in accounts
         begin
