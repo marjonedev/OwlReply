@@ -96,9 +96,9 @@ module ReplyMaker
       for account in accounts
         begin
 
-          unless account.user.active
-            return false
-          end
+          #unless account.user.active
+          #  return false
+          #end
 
           ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
           self.touch_last_reply_time
