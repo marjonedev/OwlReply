@@ -28,7 +28,7 @@
   <div class="content-wrap nopadding">
     <div class="section nomargin notoppadding">
       <div class="container clearfix">
-        <% unless @newly_su %>
+        <% unless @emailaccount.setupcomplete %>
          <%= render 'emailaccounts/authentication' %>
         <% end %>
         <%= render file: "replies/index" %>
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <% if @newly_su %>
+  <% if @emailaccount.setupcomplete %>
 
     <%= render 'email_viewer/wizard' %>
 
