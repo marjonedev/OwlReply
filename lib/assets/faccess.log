@@ -1,0 +1,1 @@
+tail --lines=100 /var/log/nginx/access.log | cut -c -200
