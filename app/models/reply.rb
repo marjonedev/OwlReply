@@ -19,6 +19,10 @@ class Reply < ApplicationRecord
       word = word.downcase
       !word.in?(Stopwords.words)
     }
+    words.delete_if do |word|
+      (word.include?('http') || word.include?('@') || word.include?('$'))
+    end
+    words.sort!
     return words.join(" ")
   end
 
