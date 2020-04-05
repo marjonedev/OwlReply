@@ -6,7 +6,7 @@ class ViewerController < ApplicationController
 
   def connect_account
 
-    unless @user.active
+    unless @emailaccount.setupcomplete
       account = @user.emailaccounts.first
       if account.authenticated
         redirect_to viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
