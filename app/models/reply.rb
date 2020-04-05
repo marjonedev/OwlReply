@@ -15,7 +15,7 @@ class Reply < ApplicationRecord
   def self.suggest_keywords(text)
     words = text.select{|word|
       word = word.downcase
-      !word.in?(Stopwords.words)
+      !word.in?(Stopwords::Stopwords.words)
     }
     return text.join(" ")
   end
