@@ -56,8 +56,6 @@
                 </div>
               </div>
               <div class="form-group">
-
-                <%= f.hidden_field :redirect_to, value: viewer_step2_url %>
                 <%
                   google_class = html_attr_selected(@emailaccount.email_provider, 'google') === "selected=selected" ? 'googled' : ''
                   if @emailaccount.email_provider.nil?

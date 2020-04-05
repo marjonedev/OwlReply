@@ -139,16 +139,13 @@ class EmailaccountsController < ApplicationController
     if connect_params[:email_provider] == "google"
 
       session["emailaccount_id_#{current_user.id}"] = @emailaccount.id
-      session["redirect_to_#{current_user.id}"] = connect_params[:redirect_to] ? connect_params[:redirect_to] : false
       redirect_to emailaccounts_google_redirect_url
 
     else
       respond_to do |format|
         if @emailaccount.update(connect_params)
           @emailaccount.update(authenticated: true)
-          # redirect_to @emailaccount, notice: "#{@emailaccount.address} successfully authenticated."
-          redirect_to = connect_params[:redirect_to] ? connect_params[:redirect_to] : @emailaccount
-          format.html { redirect_to redirect_to, notice: "#{@emailaccount.address} successfully authenticated." }
+          format.html { redirect_to (@emailaccount.setupcomplete ? @emailaccount : viewer_step2_url), notice: "#{@emailaccount.address} successfully authenticated." }
           # format.json { render :show, status: :ok, location: @emailaccount }
           # format.js { redirect_to @emailaccount, notice: "Email account was successfully updated." }
         else
@@ -196,10 +193,7 @@ class EmailaccountsController < ApplicationController
     emailaccount_id = session["emailaccount_id_#{current_user.id}"]
     session.delete("emailaccount_id_#{current_user.id}")
 
-
     expires_in = Time.now.to_i + response['expires_in']
-
-
 
     @emailaccount = Emailaccount.update(emailaccount_id, {google_access_token: response["access_token"],
                                           google_expires_in: expires_in,
@@ -207,12 +201,8 @@ class EmailaccountsController < ApplicationController
                                           authenticated: 1,
                                           email_provider: 'google'})
 
-
-    redirect_path = session["redirect_to_#{current_user.id}"]
-    session.delete("redirect_to_#{current_user.id}")
-
-    if redirect_path
-      redirect_to redirect_path, notice: @emailaccount.address + " successfully authenticated"
+    if !@emailaccount.setupcomplete
+      redirect_to viewer_step2_url, notice: @emailaccount.address + " successfully authenticated"
     else
       redirect_to url_for(action: 'show', id: emailaccount_id), notice: @emailaccount.address + " successfully authenticated"
     end

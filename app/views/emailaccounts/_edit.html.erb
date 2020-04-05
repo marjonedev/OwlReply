@@ -112,7 +112,6 @@
                 </div>
               </div>
               <div class="form-group">
-                <input type="hidden" name="emailaccount[redirect_to]" value="<%= request.path %>" />
                 <%
                   google_class = html_attr_selected(@emailaccount.email_provider, 'google') === "selected=selected" ? 'googled' : ''
                   if @emailaccount.email_provider.nil?
