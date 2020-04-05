@@ -28,12 +28,7 @@ class PasswordsController < ApplicationController
   end
 
   def reset_submit
-
     token = reset_params[:token].to_s
-
-    if reset_params[:password] != reset_params[:password_confirm]
-     return render :template => 'passwords/change_password_nomatch'
-    end
 
     if reset_params[:password].length < 8
       return render :template => 'passwords/change_password_error', :locals => { :message => 'Password too short.' }
@@ -48,7 +43,7 @@ class PasswordsController < ApplicationController
         flash[:successmsg] = "Your password has been changed. Try to login with the new password now."
         return redirect_to login_url
       else
-        return render :template => 'passwords/change_password_error', :locals => { :message => 'Opps. There\'s an error. Please try different password.' }
+        return render :template => 'passwords/change_password_error', :locals => { :message => 'Ops. There is an error. Please try different password.' }
       end
     else
       render :template => 'passwords/change_password_error', :locals => { :message => 'Link not valid or expired. Try generating a new link.'}
@@ -78,7 +73,7 @@ class PasswordsController < ApplicationController
     def reset_params
       params
           .require(:user)
-          .permit(:email_address, :password, :password_confirm, :token)
+          .permit(:email_address, :password, :token)
     end
 
     def emailaccount_params
