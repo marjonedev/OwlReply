@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
           session[:user_id] = user.id
           redirect_to root_url, id: user.id
         else
-          flash.now[:errormsg] = "Username or password is invalid"
+          flash.now[:errormsg] = "Username or password is not valid"
           render "new"
         end
       end
