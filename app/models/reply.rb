@@ -12,6 +12,10 @@ class Reply < ApplicationRecord
     return false
   end
 
+  def self.suggest_keywords(text)
+    return ""
+  end
+
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
   # def search
   #   "Subject and Body"
