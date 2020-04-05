@@ -14,11 +14,12 @@ class Reply < ApplicationRecord
   end
 
   def self.suggest_keywords(text)
+    text = text.uniq
     words = text.select{|word|
       word = word.downcase
       !word.in?(Stopwords.words)
     }
-    return text.join(" ")
+    return words.join(" ")
   end
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
