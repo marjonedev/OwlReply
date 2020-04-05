@@ -31,6 +31,9 @@
         <% unless @emailaccount.authenticated %>
          <%= render 'emailaccounts/authentication' %>
         <% end %>
+        <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
+          <%= render partial: 'viewerlink' %>
+        <% end %>
         <%= render file: "replies/index" %>
       </div>
     </div>
@@ -38,7 +41,7 @@
 
   <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
 
-    <%= render 'email_viewer/wizard' %>
+    <%#= render 'email_viewer/wizard' %><%# The wizard isn't quite done yet. %>
 
   <% end %>
 </section>
