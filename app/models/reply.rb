@@ -1,5 +1,6 @@
 class Reply < ApplicationRecord
   belongs_to :emailaccount
+  include Stopwords
 
   def matches?(subject,body)
     content = ""
