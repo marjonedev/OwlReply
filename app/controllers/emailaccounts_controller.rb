@@ -2,7 +2,7 @@ class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   include EmailaccountsHelper
   include GoogleConnector
-  before_action :logged_in_user
+  before_action :require_login
   before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap]
 
   # GET /emailaccounts

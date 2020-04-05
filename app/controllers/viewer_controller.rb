@@ -1,7 +1,7 @@
 class ViewerController < ApplicationController
-  before_action :logged_in_user
-  before_action :validate
+  before_action :require_login
   before_action :set_emailaccount
+  before_action :validate
   include GoogleConnector
 
   def connect_account

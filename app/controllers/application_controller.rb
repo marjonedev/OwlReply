@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
 
-  def logged_in_user
+  def require_login
     if !logged_in?
       redirect_to login_url
     end
