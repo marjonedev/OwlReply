@@ -13,7 +13,11 @@ class Reply < ApplicationRecord
   end
 
   def self.suggest_keywords(text)
-    return ""
+    text = text.downcase
+    words = text.select{|word|
+      !word.in?(Stopwords.words)
+    }
+    return text.join(" ")
   end
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
