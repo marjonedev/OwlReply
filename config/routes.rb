@@ -82,4 +82,3 @@ Rails.application.routes.draw do
   patch 'viewer/activate', to: 'viewer#activate'
 
 end
-
