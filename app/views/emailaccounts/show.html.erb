@@ -32,7 +32,7 @@
          <%= render 'emailaccounts/authentication' %>
         <% end %>
         <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
-          <%= render partial: 'viewerlink' %>
+          <%= render partial: 'emailaccounts/viewerlink' %>
         <% end %>
         <%= render file: "replies/index" %>
       </div>
