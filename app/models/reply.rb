@@ -20,7 +20,7 @@ class Reply < ApplicationRecord
       !word.in?(Stopwords.words)
     }
     words.delete_if do |word|
-      (word.include?('http') || word.include?('@') || word.include?('$'))
+      (word.include?('http') || word.include?('@') || word.include?('$') || (word.length<5))
     end
     words.sort!
     return words.join(" ")
