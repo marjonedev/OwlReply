@@ -3,14 +3,11 @@ class SessionsController < ApplicationController
   end
 
   def create
-
     username = params[:user][:username]
     password = params[:user][:password]
-
-    if !!username.match(/\A[\w.+-]+@\w+\.\w+\z/)
-      usermail = User.where(email_address: username)
-
-      if usermail.count > 1
+    if (!!username.match(/\A[\w.+-]+@\w+\.\w+\z/))
+      users_with_email = User.where(email_address: username)
+      if users_with_email.count > 1
         flash.now[:errormsg] = "Please enter your username, not your email."
         render "new"
       else
