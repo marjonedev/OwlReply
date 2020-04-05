@@ -160,6 +160,7 @@ class User < ApplicationRecord
       a.address = "_deleted_#{r}" + a.address
       a.save
     end
+    self.email_address = "_deleted_#{r}" + self.email_address
     self.username = self.username + "_deleted_#{r}"
     self.save
   end
