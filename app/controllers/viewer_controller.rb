@@ -1,6 +1,7 @@
 class ViewerController < ApplicationController
   before_action :logged_in_user
   before_action :validate
+  before_action :set_emailaccount
   include GoogleConnector
 
   def connect_account
@@ -159,5 +160,9 @@ class ViewerController < ApplicationController
     if @user.skip_activation or @user.active
       redirect_to root_url, alert: "Your account is already activated."
     end
+  end
+  def set_emailaccount
+    @emailaccount = current_user.emailaccounts.first
+    @emailaccount = current_user.emailaccounts.find(params[:id]) if params[:id]
   end
 end
