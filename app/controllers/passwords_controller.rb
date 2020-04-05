@@ -43,7 +43,7 @@ class PasswordsController < ApplicationController
         flash[:successmsg] = "Your password has been changed. Try to login with the new password now."
         return redirect_to login_url
       else
-        return render :template => 'passwords/change_password_error', :locals => { :message => 'Ops. There is an error. Please try different password.' }
+        return render :template => 'passwords/change_password_error', :locals => { :message => 'Oops. There is an error. Please try different password.' }
       end
     else
       render :template => 'passwords/change_password_error', :locals => { :message => 'Link not valid or expired. Try generating a new link.'}

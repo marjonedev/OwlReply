@@ -35,6 +35,15 @@ Rails.application.routes.draw do
   end
   resources :sessions
   resources :users
+  resources :email_viewer do
+    member do
+      get :connect_account
+      get :view_messages
+      get :done
+      patch :skip_activation
+      patch :activate
+    end
+  end
 
   get 'admin/accounts'
   get 'admin/emailaccounts'

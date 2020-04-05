@@ -51,9 +51,11 @@ module ReplyMaker
       if accounts
         for account in accounts
 
-          unless account.user.active
-            return false
-          end
+          #unless account.user.active
+          #  return false
+          #end
+          # NEW:
+          #return false unless account.setupcomplete
 
           begin
             ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
