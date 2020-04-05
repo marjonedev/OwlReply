@@ -1,2 +1,2 @@
-module EmailViewerHelper
+module ViewerHelper
 end

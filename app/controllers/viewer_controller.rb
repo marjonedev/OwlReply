@@ -1,4 +1,4 @@
-class EmailViewerController < ApplicationController
+class ViewerController < ApplicationController
   before_action :logged_in_user
   before_action :validate
   include GoogleConnector
@@ -8,7 +8,7 @@ class EmailViewerController < ApplicationController
     unless @user.active
       account = @user.emailaccounts.first
       if account.authenticated
-        redirect_to email_viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
+        redirect_to viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
       end
     end
 

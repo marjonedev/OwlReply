@@ -35,15 +35,17 @@ Rails.application.routes.draw do
   end
   resources :sessions
   resources :users
-  resources :email_viewer do
-    member do
-      get :connect_account
-      get :view_messages
-      get :done
-      patch :skip_activation
-      patch :activate
-    end
-  end
+
+  #Fix later.
+  #resources :viewer do
+  #  member do
+  #    get :connect_account
+  #    get :view_messages
+  #    get :done
+  #    patch :skip_activation
+  #    patch :activate
+  #  end
+  #end
 
   get 'admin/accounts'
   get 'admin/emailaccounts'
@@ -73,11 +75,11 @@ Rails.application.routes.draw do
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset_submit', to: 'passwords#reset_submit'
 
-  get 'email_viewer/step1', to: 'email_viewer#connect_account'
-  get 'email_viewer/step2', to: 'email_viewer#view_messages'
-  get 'email_viewer/step3', to: 'email_viewer#done'
-  patch 'email_viewer/skip', to: 'email_viewer#skip_activation'
-  patch 'email_viewer/activate', to: 'email_viewer#activate'
+  get 'viewer/step1', to: 'viewer#connect_account'
+  get 'viewer/step2', to: 'viewer#view_messages'
+  get 'viewer/step3', to: 'viewer#done'
+  patch 'viewer/skip', to: 'viewer#skip_activation'
+  patch 'viewer/activate', to: 'viewer#activate'
 
 end
 
