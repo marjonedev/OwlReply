@@ -1,7 +1,7 @@
 module ViewerHelper
 
   def improved_message_body(message)
-    body = message["body"]
+    body = message[:body]
     if body.length < 100
       return
     end
