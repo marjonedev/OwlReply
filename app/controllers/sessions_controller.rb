@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
         render "new"
       else
         user = User.find_by(email_address: username)
-        authenticate = User.authenticate(username, password)
+        authenticate = User.authenticate(user.username, password)
         if user && authenticate
           session[:user_id] = user.id
           redirect_to root_url, id: user.id
