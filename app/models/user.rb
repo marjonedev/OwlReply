@@ -34,6 +34,9 @@ class User < ApplicationRecord
   def send_how_to_email
     UserMailer.with(user: self).how_to_email.deliver_later
   end
+  def send_first_test_email
+    UserMailer.with(user: self).first_test_email.deliver_later
+  end
   def send_informational_email
     UserMailer.with(user: self).informational_email.deliver_later
   end
