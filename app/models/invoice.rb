@@ -22,6 +22,8 @@ class Invoice < ApplicationRecord
   def charge_card
     paymentmethod = self.user.paymentmethods.find_by(default: true)
     result = paymentmethod.charge!(self.amount)
+    user = self.user
+    invoice = Invoice.find(self.id)
     if (result)
       #self.amount_paid = self.amount
       #self.date_paid = DateTime.now
@@ -32,6 +34,8 @@ class Invoice < ApplicationRecord
       invoice = Invoice.find(self.id)
       InvoiceMailer.with(user: user, invoice: invoice).invoice_created.deliver_now
     else
+
+      InvoiceMailer.with(user: user, invoice: invoice).invoice_failed.deliver_now
 
       return
 
