@@ -29,4 +29,26 @@ module AdminHelper
 
     processes.scan(/reply/).size
   end
+
+  def late_invoices
+    Invoice.where('(amount_paid IS NULL OR amount_paid = "") OR (date_paid IS NULL OR date_paid = "")').count
+  end
+
+  def daily_revenue
+    sum = Invoice.where('amount_paid IS NOT NULL AND amount_paid <> ""')
+        .where('date_paid IS NOT NULL AND date_paid <> ""')
+        .where(date_paid: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+        .sum(:amount_paid)
+
+    "$#{sum / 100}"
+  end
+
+  def monthly_revenue
+    sum = Invoice.where('amount_paid IS NOT NULL AND amount_paid <> ""')
+        .where('date_paid IS NOT NULL AND date_paid <> ""')
+        .where('extract(month from date_paid) = ?', Time.now.month)
+        .sum(:amount_paid)
+
+    "$#{sum / 100}"
+  end
 end
