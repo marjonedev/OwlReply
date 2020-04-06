@@ -26,8 +26,8 @@
             <tr>
               <td><%= user.email_address %></td>
               <td><%= user.subscription.name %></td>
-              <td><%= user.subscription_start_date.strftime("%b %d, %Y") %></td>
-              <td><%= user.next_subscription_charge_on.strftime("%b %d, %Y") %></td>
+              <td data-order="<%= user.subscription_start_date %>"><%= user.subscription_start_date.strftime("%b %d, %Y") %></td>
+              <td data-order="<%= user.next_subscription_charge_on %>"><%= user.next_subscription_charge_on.strftime("%b %d, %Y") %></td>
               <td><%= user.invoices.count %></td>
               <td><%= user.subscription_status %></td>
             </tr>
