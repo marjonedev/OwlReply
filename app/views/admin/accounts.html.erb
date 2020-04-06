@@ -33,7 +33,7 @@
               <td><%= account.email_address %></td>
               <td><%= account.username %></td>
               <td><%= subs[account.subscription_id.to_i] %></td>
-              <td><%= account.created_at.strftime("%b %d, %Y") %></td>
+              <td data-order="<%= account.created_at.to_i %>"><%= account.created_at.strftime("%b %d, %Y") %></td>
             </tr>
           <% end %>
           </tbody>

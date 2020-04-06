@@ -9,4 +9,11 @@ class InvoiceMailer < ApplicationMailer
     mail(to: @user.email_address, subject: "Invoice #{@invoice.number} from OwlReply")
   end
 
+  def invoice_failed
+    @user = params[:user]
+    @invoice = params[:invoice]
+    @url  = "https://owlreply.com/invoices/#{@invoice.id}"
+    mail(to: @user.email_address, subject: "Payment Failed on Invoice #{@invoice.number}")
+  end
+
 end

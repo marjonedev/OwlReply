@@ -1,0 +1,44 @@
+<div style="border-bottom: 1px #CCCCCC solid; ">
+  <p><strong><span style="color: #FF0000">The payment has failed. Please update your billing information and do the payment again on</span> <a href="<%= @url %>"><%= @url %></a></strong></p>
+</div>
+<div style="border-bottom: 1px #CCCCCC solid; padding-bottom: 0px;">
+  <h4>OwlReply LLC.</h4>
+  <p>[Business Address]</p>
+</div>
+<div style="border-bottom: 4px #CCCCCC double; padding-bottom: 10px;">
+  <br />
+  <table>
+    <tr>
+      <td><strong>INVOICE NUMBER:</strong></td>
+      <td><%= @invoice.number %></td>
+    </tr>
+    <tr>
+      <td><strong>BILL TO:</strong></td>
+      <td><%= @user.email_address %></td>
+    </tr>
+    <tr>
+      <td><strong>DATE:</strong></td>
+      <td><%= @invoice.date.strftime("%m/%d/%Y") %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="invoice_body">
+  <table cellspacing="10">
+    <thead>
+    <th>Description</th>
+    <th class="text-right" width="10%">Amount</th>
+    </thead>
+    <tbody>
+    <td><%= @invoice.subscription.name %> - Monthly Charge</td>
+    <td class="text-right"><%= @invoice.amount_to_string %></td>
+    </tbody>
+  </table>
+</div>
+<br />
+<br />
+<br />
+<div class="invoice_footer">
+
+  <p><small>View the web version here: <a href="<%= @url %>"><%= @url %></a></small></p>
+</div>
