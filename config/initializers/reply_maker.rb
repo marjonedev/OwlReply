@@ -316,9 +316,11 @@ module ReplyMaker
     # To be finished, or just rename test_google_draft once it works.
     def self.create_drafts_using_google account
 
-      unless account.replies.count > 0
-        return false
-      end
+      # We should stop checking this. It makes it so errors can appear at weird times; ie only after they've added replies.
+      # The messages.each already does not run if there are no replies.
+      #unless account.replies.count > 0
+      #  return false
+      #end
 
       include GoogleConnector
       api = GmailApi.new account
@@ -365,6 +367,13 @@ module ReplyMaker
             replies_size += 1
             reply_used = true
           end
+
+          if thebody_downcase.include?("testman100@fakedomain.com")
+            reply = Reply.find(58)
+            body = reply.body.gsub("\n", "<br>\n")
+            auto << body
+          end
+
           account_has_no_template = (account.template.nil? || account.template.to_s.strip == "")
 
           if (reply_used || (!account_has_no_template))
