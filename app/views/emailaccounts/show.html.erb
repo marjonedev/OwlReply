@@ -31,6 +31,14 @@
         <% unless @emailaccount.authenticated %>
          <%= render 'emailaccounts/authentication' %>
         <% end %>
+        <% if @emailaccount.authenticated && (!@emailaccount.last_checked.nil?) && (@emailaccount.drafts_created_lifetime.nil?) %>
+          <div class="style-msg style-msg-light" style="background-color: #333;">
+            <div class="sb-msg">
+              We checked and found no emails to auto-reply to yet.<br>
+              <b>Emails must be <u>unread</u> and sent in the last week for us to auto-reply.</b>
+            </div>
+          </div>
+        <% end %>
         <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
           <%= render partial: 'emailaccounts/viewerlink' %>
         <% end %>
