@@ -1,14 +1,15 @@
-class EmailViewerController < ApplicationController
-  before_action :logged_in_user
+class ViewerController < ApplicationController
+  before_action :require_login
+  before_action :set_emailaccount
   before_action :validate
   include GoogleConnector
 
   def connect_account
 
-    unless @user.active
+    unless @emailaccount.setupcomplete
       account = @user.emailaccounts.first
       if account.authenticated
-        redirect_to email_viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
+        redirect_to viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
       end
     end
 
@@ -40,7 +41,7 @@ class EmailViewerController < ApplicationController
             thebody = msg['body_text'].to_s.gsub("\r\n", " ")
             thebody = thebody.truncate(80, separator: " ")
 
-            @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
+            @messages.push({date: formatted_date, subject:subject, body: msg['body'], body_text: thebody, from: from})
           end
 
         rescue Google::Apis::AuthorizationError => exception
@@ -152,12 +153,16 @@ class EmailViewerController < ApplicationController
 
     @user = current_user
 
-    if @user.emailaccounts.count > 1
-      redirect_to root_url
-    end
+    #if @user.emailaccounts.count > 1
+    #  redirect_to root_url
+    #end
 
-    if @user.skip_activation or @user.active
+    if @user.skip_activation or @emailaccount.setupcomplete
       redirect_to root_url, alert: "Your account is already activated."
     end
+  end
+  def set_emailaccount
+    @emailaccount = current_user.emailaccounts.first
+    @emailaccount = current_user.emailaccounts.find(params[:id]) if params[:id]
   end
 end

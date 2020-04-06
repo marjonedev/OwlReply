@@ -22,16 +22,17 @@ module ReplyMaker
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def self.start_checking
+    def self.start_checking(args = {})
       self.check_last_reply
       self.account_last_checked
       self.reset_drafts_daycount
       # This cronjob should technically loop forever. Just make sure it's still looping, and if it is, then go ahead and exit.
-      return if already_running_fine?
-      return if too_many_of_myself_running?
+      return if already_running_fine? unless args[:force]
+      return if too_many_of_myself_running? unless args[:force]
       # By doing the above, we can probably make sure that this runs faster than without it.
       # In the future, we may segment email accounts somehow, between multiple servers.
       loops = 0
+      loops = 24 if args[:force]
       while not (resetting? || (loops > 25))
         self.check_accounts_using_imap
         self.check_accounts_using_google
@@ -50,9 +51,11 @@ module ReplyMaker
       if accounts
         for account in accounts
 
-          unless account.user.active
-            return false
-          end
+          #unless account.user.active
+          #  return false
+          #end
+          # NEW:
+          #return false unless account.setupcomplete
 
           begin
             ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
@@ -79,21 +82,25 @@ module ReplyMaker
       end
     end
 
+    # Made this a separate function to make it easier to use from the command line when debugging.
+    def self.accounts_to_check_using_google
+       Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> ""')
+        .where('authenticated = 1')
+        .where('email_provider IS NOT NULL AND email_provider = "google"')
+        .where('error IS NULL OR error = ""')
+        .where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
+    end
+
     def self.check_accounts_using_google
       # accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-      accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> ""')
-                     .where('authenticated = 1')
-                     .where('email_provider IS NOT NULL AND email_provider = "google"')
-                     .where('error IS NULL OR error = ""')
-                     .where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
-
+      accounts = accounts_to_check_using_google
 
       for account in accounts
         begin
 
-          unless account.user.active
-            return false
-          end
+          #unless account.user.active
+          #  return false
+          #end
 
           ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
           self.touch_last_reply_time
@@ -451,11 +458,11 @@ module ReplyMaker
       processes = `ps aux | grep -i rails`.to_s
 
       admins = User.where(admin: true)
+      data = {
+        last_checked: "#{last_checked} ago",
+        rm_running: processes.scan(/reply/).size
+      }
       admins.each do |admin|
-        data = {
-            last_checked: "#{last_checked} ago",
-            rm_running: processes.scan(/reply/).size
-        }
         AdminChannel.broadcast_to(admin, data)
       end
     end

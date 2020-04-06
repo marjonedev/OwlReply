@@ -28,17 +28,18 @@
   <div class="content-wrap nopadding">
     <div class="section nomargin notoppadding">
       <div class="container clearfix">
-        <% unless @newly_su %>
+        <% unless @emailaccount.authenticated %>
          <%= render 'emailaccounts/authentication' %>
+        <% end %>
+        <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
+          <%= render partial: 'emailaccounts/viewerlink' %>
         <% end %>
         <%= render file: "replies/index" %>
       </div>
     </div>
   </div>
 
-  <% if @newly_su %>
-
-    <%= render 'email_viewer/wizard' %>
-
+  <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
+    <%#= render 'viewer/wizard' %><%# The wizard isn't quite done yet. %>
   <% end %>
 </section>

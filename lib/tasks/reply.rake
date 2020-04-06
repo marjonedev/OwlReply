@@ -3,6 +3,9 @@ namespace :reply do
   task :do => :environment do
     ReplyMaker::Replier.start_checking
   end
+  task :force => :environment do
+    ReplyMaker::Replier.start_checking(force: true)
+  end
   task :reset => :environment do
     ReplyMaker::Replier.reset
   end

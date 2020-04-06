@@ -1,5 +1,5 @@
 class CommunicationsController < ApplicationController
-  before_action :logged_in_user
+  before_action :require_login
   before_action :set_communication, only: [:new, :create, :edit, :update, :destroy]
 
   def index

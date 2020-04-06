@@ -153,6 +153,18 @@ class User < ApplicationRecord
 
   end
 
+  def destroy_this_user_for_testing_only
+    r = rand(10 ** 5)
+    for a in self.emailaccounts
+      a.update_attributes(setupcomplete: false, authenticated: false)
+      a.address = "_deleted_#{r}" + a.address
+      a.save
+    end
+    self.email_address = "_deleted_#{r}" + self.email_address
+    self.username = self.username + "_deleted_#{r}"
+    self.save
+  end
+
 
   protected
     # before filter

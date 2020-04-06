@@ -1,5 +1,6 @@
 class Reply < ApplicationRecord
   belongs_to :emailaccount
+  include Stopwords
 
   def matches?(subject,body)
     content = ""
@@ -10,6 +11,19 @@ class Reply < ApplicationRecord
       return true if word.downcase.in?(content)
     end
     return false
+  end
+
+  def self.suggest_keywords(text)
+    text = text.uniq
+    words = text.select{|word|
+      word = word.downcase
+      !word.in?(Stopwords.words)
+    }
+    words.delete_if do |word|
+      (word.include?('http') || word.include?('@') || word.include?('$') || (word.length<5))
+    end
+    words.sort!
+    return words.join(" ")
   end
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?

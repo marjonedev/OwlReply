@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :logged_in_user
+  before_action :require_login
   before_action :set_invoice, only: [:show, :update]
 
   # GET /invoices

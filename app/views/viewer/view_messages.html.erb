@@ -22,20 +22,21 @@
       <div class="activation-process">
         <div id="process2">
           <div class="list-group">
-            <% @messages.each do |i| %>
+            <% @messages.each do |message| %>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-2"><%= i[:from] %></h4>
-                    <small><%= i[:date] %></small>
+                    <h4 class="mb-2"><%= message[:from] %></h4>
+                    <small><%= message[:date] %></small>
                   </div>
-                  <h5 class="mb-1"><%= i[:subject] %></h5>
-                  <p class="mb-1"><%= i[:body] %></p>
+                  <h5 class="mb-1"><%= message[:subject] %></h5>
+                  <p class="mb-1"><%= b=improved_message_body(message);b[0..20].join(' ') %></p>
+                  <p class="mb-1">Potential keywords: <%= Reply.suggest_keywords(b) %></p>
                 </a>
             <% end %>
             </div>
           <div class="mt-5 d-flex w-100 justify-content-between">
-            <%= link_to 'Skip. Activate Manually.', email_viewer_skip_url, method: :patch, class: 'skip', remote: true %>
-            <a href="/email_viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a>
+            <%= link_to 'Skip. Activate Manually.', viewer_skip_url, method: :patch, class: 'skip', remote: true %>
+            <a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a>
           </div>
         </div>
       </div>
