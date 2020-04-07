@@ -344,6 +344,8 @@ module ReplyMaker
 
         messages_size = messages.count
 
+        account_has_no_template = account.template_blank?
+
         messages.each do |msg|
 
           date = DateTime.parse(msg['date'])
@@ -374,8 +376,6 @@ module ReplyMaker
             auto << body
             reply_used = true
           end
-
-          account_has_no_template = account.template_blank?
 
           if (reply_used || (!account_has_no_template))
             body_html = (msg['body_html'].body.to_s rescue "")
@@ -418,10 +418,20 @@ module ReplyMaker
             account.increment!(:drafts_missing_replies_lifetime) unless reply_used
           end
         end
+        informational_message = ""
+        if messages.size == 0
+          informational_message = "Found no unread emails."
+        elsif replies_size == 0
+          if account_has_no_template
+            informational_message = "No default template reply."
+          elsif account.replies.empty?
+            informational_message = "No auto-replies have been setup."
+          end
+        end
 
         self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
 
-        UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails."})
+        UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails. #{informational_message}"})
 
         api.read_messages(ids)
 
