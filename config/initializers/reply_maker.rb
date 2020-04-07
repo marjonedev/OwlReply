@@ -360,7 +360,7 @@ module ReplyMaker
 
           for reply in account.replies
             next unless reply.matches?(msg['subject'], thebody_downcase)
-            body = reply.body.gsub("\n", "<br>\n")
+            #body = reply.body.gsub("\n", "<br>\n") # This is done later on.
             auto << body
             reply.increment!(:drafts_created_today)
             reply.increment!(:drafts_created_lifetime)
@@ -370,7 +370,7 @@ module ReplyMaker
 
           if thebody_downcase.include?("testman100@fakedomain.com")
             reply = Reply.find(58)
-            body = reply.body.gsub("\n", "<br>\n")
+            #body = reply.body.gsub("\n", "<br>\n") # This is done later on.
             auto << body
             reply_used = true
           end
