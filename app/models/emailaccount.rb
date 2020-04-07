@@ -20,6 +20,10 @@ class Emailaccount < ApplicationRecord
     return false
   end
 
+  def template_blank?
+    (self.template.nil? || self.template.to_s.strip == "")
+  end
+
   # THIS NEEDS TO BECOME A DB FIELD and added to the form
   def skip_words
     ""

@@ -372,9 +372,10 @@ module ReplyMaker
             reply = Reply.find(58)
             body = reply.body.gsub("\n", "<br>\n")
             auto << body
+            reply_used = true
           end
 
-          account_has_no_template = (account.template.nil? || account.template.to_s.strip == "")
+          account_has_no_template = account.template_blank?
 
           if (reply_used || (!account_has_no_template))
             body_html = (msg['body_html'].body.to_s rescue "")
