@@ -51,10 +51,7 @@ module ReplyMaker
       if accounts
         for account in accounts
 
-          #unless account.user.active
-          #  return false
-          #end
-          # NEW:
+          # NEEDS EXTENSIVE TESTING. IGNORE FOR NOW:
           #return false unless account.setupcomplete
 
           begin
