@@ -53,9 +53,10 @@
           use  <strong>%%reply%%</strong>  short tag to insert the content of the reply
         </small>
         <% if @emailaccount&.template.blank? %><%# this is the same as if @emailaccount && @emailaccount.template.blank? %>
-          <div class="style-msg style-msg-light" style="background-color: #333;">
+          <div class="style-msg" style="margin: 5px 0;">
             <div class="sb-msg">
               <%= link_to 'Use our suggested reply', '#', class: 'btn-suggest button button-3d button-mini button-rounded button-white button-light' %>
+              You don't have a default email reply yet. Click this for an example.
             </div>
           </div>
         <% end %>
