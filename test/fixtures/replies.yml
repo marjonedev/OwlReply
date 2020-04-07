@@ -5,9 +5,11 @@ one:
   body: MyText
   negative_keywords: MyString
   catchcall: false
+  emailaccount_id: 1
 
 two:
   keywords: MyString
   body: MyText
   negative_keywords: MyString
   catchcall: false
+  emailaccount_id: 1
