@@ -200,6 +200,7 @@ class EmailaccountsController < ApplicationController
                                           google_refresh_token: response["refresh_token"],
                                           authenticated: 1,
                                           email_provider: 'google'})
+    @emailaccount.user.send_first_test_email
 
     if !@emailaccount.setupcomplete
       redirect_to viewer_step2_url, notice: @emailaccount.address + " successfully authenticated"

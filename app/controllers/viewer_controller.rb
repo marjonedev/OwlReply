@@ -139,6 +139,7 @@ class ViewerController < ApplicationController
   def activate
     respond_to do |format|
       current_user.update_attribute(:active, true)
+      current_user.emailaccounts.first.update_attribute(:setupcomplete,true) # This is BAD.
       format.html { redirect_to root_url, notice: 'Congratulations! Your account is now activated.' }
     end
   end

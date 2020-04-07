@@ -2,16 +2,22 @@
 
 one:
   user_id: 1
-  method: MyString
-  card_name: MyString
-  card_type: MyString
-  customer_id: MyString
-  card_exp_date: 2019-08-29
+  token: MyString
+  default: false
+  card_number: 4879
+  card_exp_month: 08
+  card_exp_year: 24
+  card_brand: Visa
+  customer_id: dfjkdkdkdkdkdkdk
+  currency: USD
 
 two:
-  user_id: 1
-  method: MyString
-  card_name: MyString
-  card_type: MyString
-  customer_id: MyString
-  card_exp_date: 2019-08-29
+  user_id: 2
+  token: MyString
+  default: false
+  card_number: 4879
+  card_exp_month: 08
+  card_exp_year: 24
+  card_brand: Visa
+  customer_id: dfjkdkdkdkdkdkdk
+  currency: USD
