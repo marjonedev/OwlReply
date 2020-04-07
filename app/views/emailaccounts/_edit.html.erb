@@ -52,6 +52,13 @@
         <small class="form-text text-muted">
           use  <strong>%%reply%%</strong>  short tag to insert the content of the reply
         </small>
+        <% if @emailaccount&.template.blank? %><%# this is the same as if @emailaccount && @emailaccount.template.blank? %>
+          <div class="style-msg style-msg-light" style="background-color: #333;">
+            <div class="sb-msg">
+              <%= link_to 'Use our suggested reply', '#', class: 'btn-suggest button button-3d button-mini button-rounded button-white button-light' %>
+            </div>
+          </div>
+        <% end %>
       </div>
 
       <div class="card-footer noleftpadding norightpadding nobottompadding bg-white">
@@ -203,6 +210,11 @@
 
 
             });
+          $('.btn-suggest').on('click', function (e) {
+            e.preventDefault();
+            $("#emailaccount_template").val("Hello there!\n\nThank you so much for emailing our company.\n\n%%reply%%\n\nWe hope to work with you more soon.\n\nSincerely,\n\nJohn\nCustomer Service Agent");
+            return false;
+          });
         });
     </script>
   <% end %>
