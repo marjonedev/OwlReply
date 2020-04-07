@@ -106,6 +106,7 @@
       </div>
       <div class="card-deck custom_cards mb-4">
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
+          <%= link_to 'admin/late_invoices', method: :get do  %>
           <div class="card-body">
             <div class="fbox-icon">
               <i class="icon-file-invoice i-alt"></i>
@@ -113,6 +114,7 @@
             <h5 class="card-title">Late Invoices</h5>
             <span class="numval"><%= late_invoices %></span>
           </div>
+            <% end %>
         </div>
         <div class="col_card card feature-box fbox-large fbox-border fbox-rounded fbox-light fbox-effect">
           <div class="card-body">

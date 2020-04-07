@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   get 'admin/emailaccounts'
   get 'admin/replies'
   get 'admin/subscribers'
+  get 'admin/late_invoices'
+  get 'admin/show_invoice/:id', to: 'admin#show_invoice'
 
   root 'pages#home'
 
