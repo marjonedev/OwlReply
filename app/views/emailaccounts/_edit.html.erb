@@ -138,6 +138,13 @@
 
   <% content_for :javascript_footer_includes do %>
     <script type="text/javascript">
+      $(function () {
+        $('.btn-suggest').on('click', function (e) {
+          e.preventDefault();
+          $("#emailaccount_template").val("Hello there!\n\nThank you so much for emailing our company.\n\n%%reply%%\n\nWe hope to work with you more soon.\n\nSincerely,\n\nJohn\nCustomer Service Agent");
+          return false;
+        });
+      })();
         $(function () {
             $('.btn-connect').on('click', function (e) {
                 e.preventDefault();
@@ -211,11 +218,6 @@
 
 
             });
-          $('.btn-suggest').on('click', function (e) {
-            e.preventDefault();
-            $("#emailaccount_template").val("Hello there!\n\nThank you so much for emailing our company.\n\n%%reply%%\n\nWe hope to work with you more soon.\n\nSincerely,\n\nJohn\nCustomer Service Agent");
-            return false;
-          });
         });
     </script>
   <% end %>
