@@ -93,17 +93,12 @@ module ReplyMaker
     end
 
     def self.check_accounts_using_google
-      # accounts = Emailaccount.where('google_access_token IS NOT NULL AND google_access_token <> "" AND (error IS NULL OR error = "")').where('last_checked IS NULL OR last_checked < ?',2.minutes.ago.to_i)#.where('updated_at < ?',2.minutes.ago)
       accounts = accounts_to_check_using_google
 
       for account in accounts
         begin
 
-          #unless account.user.active
-          #  return false
-          #end
-
-          ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
+          # next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
           self.touch_last_reply_time
           self.create_drafts_using_google(account)
 
