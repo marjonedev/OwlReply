@@ -29,6 +29,11 @@ class Emailaccount < ApplicationRecord
     ""
   end
 
+  def set_debug_message(message)
+    account.update_attribute(:debugmessage,message)
+    UserChannel.broadcast_to(account.user, {debug: debug})
+  end
+
   def clear_errors
     self.error = nil
   end

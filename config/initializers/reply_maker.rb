@@ -340,8 +340,8 @@ module ReplyMaker
 
         if messages.empty?
           replier_logger.error("GOOGLE - Messages are empty.")
-          self.update_admin_checked(account, message: "Messages on #{account.address} are empty", type: 'warning')
-
+          account.set_debug_message("No unread emails available to check.")
+          self.update_admin_checked(account, message: "Messages on #{account.address} are empty.", type: 'warning')
           return
         end
 
@@ -435,7 +435,7 @@ module ReplyMaker
         end
 
         self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
-
+        account.set_debug_message(informational_message) unless informational_message.blank?
         UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails. #{informational_message}"})
 
         api.read_messages(ids)

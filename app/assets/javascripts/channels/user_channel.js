@@ -20,4 +20,9 @@ App.received_data = function (data) {
     $.Custom.notify(data["message"]);
     // $(".last-check").html("Last checked: Less than 1 minute ago.");
   }
+  if (data["debug"]) {
+    if ($(".debug_checkbox:checked").length > 0) {
+      $(".debug_message").text(message);
+    }
+  }
 };
