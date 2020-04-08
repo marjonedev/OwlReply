@@ -57,9 +57,13 @@ module ReplyMaker
           begin
             ##next if (account.last_checked > (Time.now.to_i - (1*60))) unless account.last_checked.nil? #Check a max of every 1 minutes.
             self.touch_last_reply_time
-            self.create_drafts_using_imap(account)
-            replier_logger.info("IMAP - Success on account #{account.address}. #{$!.to_s}")
-            puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
+            if self.create_drafts_using_imap(account)
+              replier_logger.info("IMAP - Success on account #{account.address}. #{$!.to_s}")
+              puts "IMAP - Success on account #{account.address}. #{$!.to_s}"
+            else
+              replier_logger.info("IMAP - Error on account #{account.address}. #{$!.to_s}")
+              puts "IMAP - Error on account #{account.address}. #{$!.to_s}"
+            end
             account.update_column(:last_checked,Time.now.to_i)
 
             data = {last_checked: "Last checked: Checked now."}
@@ -300,13 +304,11 @@ module ReplyMaker
           replier_logger.error("IMAP - Messages are empty.")
           self.update_admin_checked(account, message: "Messages on #{account.address} are empty", type: 'warning')
         end
-
+        return true
       rescue Exception => e
-
         replier_logger.error e.message
-
         self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}", type: 'danger')
-
+        return false
       end
     end
 
