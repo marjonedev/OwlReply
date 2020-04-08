@@ -31,7 +31,7 @@ class Emailaccount < ApplicationRecord
 
   def set_debug_message(message)
     self.update_attribute(:debugmessage,message)
-    EmailaccountChannel.broadcast_to(self.user, {debug: message})
+    EmailaccountChannel.broadcast_to(self, {debug: message})
   end
 
   def update_last_checked(time)
