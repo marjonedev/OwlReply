@@ -41,6 +41,8 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  REDIS = Redis.new(host: 'localhost', port: 6379, db: 1)
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

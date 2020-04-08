@@ -349,6 +349,7 @@ module ReplyMaker
 
           thebody = msg['body'].to_s
           thebody_downcase = thebody.downcase
+          Wordcount.count(account,thebody)
           next if account.subject_line_skip?(msg['subject'])
           next if api.is_thread_message! msg['thread_id'] # Skip if this thread has more than one email! Secret sauce!
 
