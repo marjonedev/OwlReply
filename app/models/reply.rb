@@ -14,16 +14,15 @@ class Reply < ApplicationRecord
   end
 
   def self.suggest_keywords(text)
-    text = text.uniq
+    text = text.uniq.map{|word|word.downcase.gsub(/[^0-9a-z ]/i, '')}.uniq
     words = text.select{|word|
-      word = word.downcase
       !word.in?(Stopwords.words)
     }
     words.delete_if do |word|
-      (word.include?('http') || word.include?('@') || word.include?('$') || (word.length<5))
+      (word.match(/[^a-zA-Z0-9]*$/).nil?) || (word.include?('http') || word.include?('@') || word.include?('$') || (word.length<5))
     end
     words.sort!
-    return words.join(" ")
+    return words
   end
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?

@@ -13998,3 +13998,15 @@ body:not(.no-transition) #wrapper,
 	margin: -10px;
 	padding: 10px;
 }
+.pot_keywords span {
+	border-radius: 2px;
+	margin: 2px;
+	display: inline-block;
+	padding: 2px;
+}
+.pot_keywords span:hover {
+	background: #FCF;
+}
+.pot_keywords span.selected {
+	background: #FBF;
+}

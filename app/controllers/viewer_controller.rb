@@ -18,18 +18,13 @@ class ViewerController < ApplicationController
 
   def view_messages
     @messages = []
-
+    @errors = nil
     if @emailaccount.email_provider == "google"
       api = GmailApi.new @emailaccount
 
         begin
-
           messages = api.get_messages(max: 2)
-
-          if messages.empty?
-            replier_logger.error("GOOGLE - Messages are empty.")
-            return
-          end
+          @errors = "No unread emails." if messages.empty?
 
           messages.each do |msg|
             date = DateTime.parse(msg['date'])
@@ -43,6 +38,7 @@ class ViewerController < ApplicationController
           end
 
         rescue Google::Apis::AuthorizationError => exception
+          @error = "Could not access your account."
           replier_logger.error exception.message
           exception.backtrace.each { |line| replier_logger.error line }
 
@@ -50,7 +46,6 @@ class ViewerController < ApplicationController
             api.refresh_api!
           rescue RefreshTokenFailureError => error
             replier_logger.error("GOOGLE: #{account.address} - Failed to refresh user token. #{error.to_s}")
-            # return []
           end
 
         rescue Exception => e

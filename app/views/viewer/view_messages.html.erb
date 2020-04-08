@@ -22,6 +22,7 @@
       <div class="activation-process">
         <div id="process2">
           <div class="list-group">
+            <%= @errors %>
             <% @messages.each do |message| %>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="d-flex w-100 justify-content-between">
@@ -30,7 +31,7 @@
                   </div>
                   <h5 class="mb-1"><%= message[:subject] %></h5>
                   <p class="mb-1"><%= b=improved_message_body(message);b[0..20].join(' ') %></p>
-                  <p class="mb-1">Potential keywords: <%= Reply.suggest_keywords(b) %></p>
+                  <p class="mb-1 pot_keywords">Potential keywords: <% for reply in Reply.suggest_keywords(b) %><span onclick='select_keyword(\"<%= reply %>\");' class='suggested_<%= reply %>'><%= reply %></span><% end %></p>
                 </a>
             <% end %>
             </div>
@@ -43,3 +44,14 @@
     </div>
   </div>
 </section>
+<script>
+  var selected_keywords = [];
+  function select_keyword(name) {
+    if (selected_keywords.indexOf(name) >= 0) {
+      $('.pot_keywords .suggested_'+name).removeClass('selected');
+      return;
+    }
+    $('.pot_keywords .suggested_'+name).addClass('selected');
+    selected_keywords.push(name);
+  }
+</script>
