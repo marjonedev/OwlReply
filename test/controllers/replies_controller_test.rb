@@ -2,6 +2,7 @@ require 'test_helper'
 
 class RepliesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    setup_everything_necessary!
     @reply = replies(:one)
   end
 

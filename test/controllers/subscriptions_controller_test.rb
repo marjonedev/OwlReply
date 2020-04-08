@@ -2,8 +2,8 @@ require 'test_helper'
 
 class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    setup_everything_necessary!
     @subscription = subscriptions(:one)
-    login
   end
 
   test "should get index" do

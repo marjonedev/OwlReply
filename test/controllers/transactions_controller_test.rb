@@ -2,6 +2,7 @@ require 'test_helper'
 
 class TransactionsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    setup_everything_necessary!
     @transaction = transactions(:one)
   end
 

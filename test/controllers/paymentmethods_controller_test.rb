@@ -2,6 +2,7 @@ require 'test_helper'
 
 class PaymentmethodsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    setup_everything_necessary!
     @paymentmethod = paymentmethods(:one)
   end
 

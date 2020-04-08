@@ -2,6 +2,7 @@ require 'test_helper'
 
 class InvoicesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    setup_everything_necessary!
     @invoice = invoices(:one)
   end
 
