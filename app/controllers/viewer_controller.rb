@@ -17,8 +17,6 @@ class ViewerController < ApplicationController
   end
 
   def view_messages
-    @emailaccount = current_user.emailaccounts.first
-
     @messages = []
 
     if @emailaccount.email_provider == "google"
