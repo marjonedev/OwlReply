@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user_id: 1
-  address: MyString
+email1:
+  user: username1
+  address: someone1@example.com
   password: MyString
   encrypted_password: MyString
   encryption_key: MyString
 
-two:
-  user_id: 1
-  address: MyString
+email2:
+  user: username2
+  address: someone2@example.com
   password: MyString
   encrypted_password: MyString
   encryption_key: MyString

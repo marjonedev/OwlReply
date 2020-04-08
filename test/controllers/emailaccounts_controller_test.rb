@@ -2,10 +2,9 @@ require 'test_helper'
 
 class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    create_the_basic_subscription
-    create_the_first_user
-    self.current_user = User.first
-    @emailaccount = emailaccounts(:one)
+    setup_everything_necessary!
+
+    @emailaccount = emailaccounts(:email1)
   end
 
   test "should get index" do
