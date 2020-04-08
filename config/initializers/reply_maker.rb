@@ -310,6 +310,14 @@ module ReplyMaker
       end
     end
 
+    def self.single_use_test account
+      api = GoogleConnector::GmailApi.new account
+      @service = api.send(:get_service)
+      list = @service.list_user_messages('me', max_results: 500, label_ids: ['INBOX'], q: "after: #{1.week.ago.to_i}")
+      @service.get_user_message('me',list.messages.first.id)
+
+    end
+
     # To be finished, or just rename test_google_draft once it works.
     def self.create_drafts_using_google account
 
