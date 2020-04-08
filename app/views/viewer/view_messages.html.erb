@@ -30,13 +30,27 @@
                     <small><%= message[:date] %></small>
                   </div>
                   <h5 class="mb-1"><%= message[:subject] %></h5>
-                  <% unless b.nil? %>
+                  <% unless b.nil? %><% sug = Reply.suggest_keywords(b) %><% @has_keywords = true unless sug.empty? %>
                     <p class="mb-1"><%= b[0..20].join(' ') %></p>
-                    <p class="mb-1 pot_keywords">Potential keywords: <% for reply in Reply.suggest_keywords(b) %><span onclick='select_keyword("<%= reply %>");' class='suggested_<%= reply %>'><%= reply %></span><% end %></p>
+                    <p class="mb-1 pot_keywords">Potential keywords: <% for reply in sug %><span onclick='select_keyword("<%= reply %>");' class='suggested_<%= reply %>'><%= reply %></span><% end %></p>
                   <% end %>
                 </a>
             <% end %>
-            </div>
+            <% unless (params[:more] || @messages.empty?) %>
+              <div class="style-msg" style="background-colorx: #333;">
+                <div class="sb-msg">
+                  <a href="?more=1">Show More Emails</a>
+                </div>
+              </div>
+            <% end %>
+            <% if @has_keywords %>
+              <div class="allmargin-sm divcenter ls3" style="background-colorx: #333;">
+                <div class="sb-msg">
+                  Click a few keywords and these will be used to generate your first auto replies.
+                </div>
+              </div>
+            <% end %>
+          </div>
           <div class="mt-5 d-flex w-100 justify-content-between">
             <%= link_to 'Skip. Activate Manually.', viewer_skip_url, method: :patch, class: 'skip', remote: true %>
             <!--a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a-->

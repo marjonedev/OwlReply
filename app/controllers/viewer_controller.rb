@@ -23,7 +23,7 @@ class ViewerController < ApplicationController
       api = GmailApi.new @emailaccount
 
         begin
-          messages = api.get_messages(max: 2)
+          messages = api.get_messages(max: (params[:more] ? 20 : 2))
           @errors = "No unread emails." if messages.empty?
 
           messages.each do |msg|
@@ -119,7 +119,10 @@ class ViewerController < ApplicationController
   end
 
   def done
-
+    keywords = (params[:keywords] || '').split(",")
+    for keyword in keywords
+      @emailaccount.replies.create(keywords: keyword, search: "Subject and Body", body: "")
+    end
   end
 
   def skip_activation
