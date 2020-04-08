@@ -25,7 +25,7 @@ App.received_data_for_emailaccount = function (data) {
   }
   if (data["debug"]) {
     if ($(".debug_checkbox:checked").length > 0) {
-      $(".debug_message").text(message);
+      $(".debug_message").text(data["debug"]);
     }
   }
 }
