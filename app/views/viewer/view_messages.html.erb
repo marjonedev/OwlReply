@@ -31,7 +31,7 @@
                   </div>
                   <h5 class="mb-1"><%= message[:subject] %></h5>
                   <p class="mb-1"><%= b=improved_message_body(message);b[0..20].join(' ') %></p>
-                  <p class="mb-1 pot_keywords">Potential keywords: <% for reply in Reply.suggest_keywords(b) %><span onclick='select_keyword(\"<%= reply %>\");' class='suggested_<%= reply %>'><%= reply %></span><% end %></p>
+                  <p class="mb-1 pot_keywords">Potential keywords: <% for reply in Reply.suggest_keywords(b) %><span onclick='select_keyword("<%= reply %>");' class='suggested_<%= reply %>'><%= reply %></span><% end %></p>
                 </a>
             <% end %>
             </div>
