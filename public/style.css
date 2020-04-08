@@ -3380,6 +3380,16 @@ body:not(.stretched) .slider-parallax .slider-parallax-inner { left: auto; }
 	font-size: 12px;
 }
 
+.debug_div {
+	padding: 5px;
+}
+.debug_div:empty {
+	display: none;
+}
+.debug_option {
+	display: none;
+}
+
 body.stretched .container-fullwidth .breadcrumb { right: 60px !important; }
 
 #header.transparent-header + #page-title.page-title-parallax .breadcrumb { margin-top: 35px !important; }
