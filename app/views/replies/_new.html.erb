@@ -45,3 +45,8 @@
     </div>
   </div>
 </div>
+<script>
+  <% for wordcount in Wordcount.most_frequent(@emailaccount) %>
+    Replymaker.suggested_keywords.unshift("<%= wordcount.word %>");
+  <% end %>
+</script>

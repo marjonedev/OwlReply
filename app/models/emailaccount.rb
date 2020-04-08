@@ -36,7 +36,7 @@ class Emailaccount < ApplicationRecord
 
   def update_last_checked(time)
     self.update_column(:last_checked,time)
-    data = {last_checked: "Last checked: Checked now."}
+    data = {last_checked: "Last checked: Just now."}
     EmailaccountChannel.broadcast_to(self, data)
   end
 

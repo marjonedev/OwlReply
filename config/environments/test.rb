@@ -12,6 +12,9 @@ Rails.application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
+  config.action_cable.url = 'wss://test.owlreply.com/cable'
+  config.action_cable.allowed_request_origins = [ 'https://test.owlreply.com', /https:\/\/test.owlreply.*/ ]
+
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {

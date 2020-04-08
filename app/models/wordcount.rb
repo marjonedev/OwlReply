@@ -17,4 +17,8 @@ class Wordcount < ApplicationRecord
     end
   end
 
+  def self.most_frequent(account)
+    Wordcount.where(emailaccount_id: account.id).order(count: :desc).limit(10)
+  end
+
 end
