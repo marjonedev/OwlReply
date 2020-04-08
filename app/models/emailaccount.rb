@@ -34,6 +34,12 @@ class Emailaccount < ApplicationRecord
     EmailaccountChannel.broadcast_to(self.user, {debug: message})
   end
 
+  def update_last_checked(time)
+    self.update_column(:last_checked,time)
+    data = {last_checked: "Last checked: Checked now."}
+    EmailaccountChannel.broadcast_to(self, data)
+  end
+
   def clear_errors
     self.error = nil
   end

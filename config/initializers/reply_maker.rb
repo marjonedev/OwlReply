@@ -64,10 +64,7 @@ module ReplyMaker
               replier_logger.info("IMAP - Error on account #{account.address}. #{$!.to_s}")
               puts "IMAP - Error on account #{account.address}. #{$!.to_s}"
             end
-            account.update_column(:last_checked,Time.now.to_i)
-
-            data = {last_checked: "Last checked: Checked now."}
-            EmailaccountChannel.broadcast_to(account, data)
+            account.update_last_checked(Time.now.to_i)
           rescue
             replier_logger.info("IMAP - Failure on account #{account.address}. #{$!.to_s}")
             puts "IMAP - Failure on account #{account.address}. #{$!.to_s}"
@@ -104,10 +101,7 @@ module ReplyMaker
 
           replier_logger.info("Google - Success on account #{account.address}. #{$!.to_s}")
           puts "Google - Success on account #{account.address}. #{$!.to_s}"
-          account.update_column(:last_checked,Time.now.to_i)
-
-          data = {last_checked: "Last checked: Checked now."}
-          EmailaccountChannel.broadcast_to(account, data)
+          account.update_last_checked(Time.now.to_i)
         rescue
           replier_logger.info("Google - Failure on account #{account.address}. #{$!.to_s}")
           puts "Google - Failure on account #{account.address}. #{$!.to_s}"
