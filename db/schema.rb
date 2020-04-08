@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_131135) do
+ActiveRecord::Schema.define(version: 2020_04_08_185355) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -35,6 +35,9 @@ ActiveRecord::Schema.define(version: 2020_03_25_131135) do
     t.string "imap_host"
     t.string "imap_port"
     t.boolean "imap_ssl"
+    t.boolean "setupcomplete"
+    t.string "debugmessage"
+    t.boolean "skip_activation", default: false
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
   end
 
