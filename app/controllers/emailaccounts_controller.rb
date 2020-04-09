@@ -38,9 +38,9 @@ class EmailaccountsController < ApplicationController
 
     respond_to do |format|
       if @emailaccount.save
-        format.html { redirect_to viewer_step1_url(@emailaccount), notice: 'Email account was successfully created.' }
+        format.html { redirect_to "/viewer/step1/#{@emailaccount.id}", notice: 'Email account was successfully created.' }
         format.json { render :show, status: :created, location: @emailaccount }
-        format.js {  }
+        # format.js {  }
       else
         format.js { render :new }
         format.html { render :new }
@@ -150,7 +150,7 @@ class EmailaccountsController < ApplicationController
       respond_to do |format|
         if @emailaccount.update(connect_params)
           @emailaccount.update(authenticated: true)
-          format.html { redirect_to (@emailaccount.setupcomplete ? @emailaccount : viewer_step2_url(@emailaccount)), notice: "#{@emailaccount.address} successfully authenticated." }
+          format.html { redirect_to (@emailaccount.setupcomplete ? @emailaccount : "/viewer/step2/#{@emailaccount.id}"), notice: "#{@emailaccount.address} successfully authenticated." }
           # format.json { render :show, status: :ok, location: @emailaccount }
           # format.js { redirect_to @emailaccount, notice: "Email account was successfully updated." }
         else
@@ -208,7 +208,7 @@ class EmailaccountsController < ApplicationController
     @emailaccount.user.send_first_test_email
 
     if !@emailaccount.setupcomplete
-      redirect_to viewer_step2_url(@emailaccount), notice: @emailaccount.address + " successfully authenticated"
+      redirect_to "/viewer/step2/#{@emailaccount.id}", notice: @emailaccount.address + " successfully authenticated"
     else
       redirect_to url_for(action: 'show', id: emailaccount_id), notice: @emailaccount.address + " successfully authenticated"
     end

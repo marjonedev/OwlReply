@@ -8,7 +8,7 @@ class ViewerController < ApplicationController
 
     unless @emailaccount.setupcomplete
       if @emailaccount.authenticated
-        redirect_to viewer_step2_url @emailaccount, notice: "Your account is already connected. Preview your messages to finish the process."
+        redirect_to "/viewer/step2/#{@emailaccount.id}", notice: "Your account is already connected. Preview your messages to finish the process."
       end
     end
 
