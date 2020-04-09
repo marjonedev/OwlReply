@@ -133,8 +133,9 @@ class ViewerController < ApplicationController
   def activate
     respond_to do |format|
       # current_user.update_attribute(:active, true)
-      @emailaccount.update_attribute(:setupcomplete,true) # This is BAD.
-      format.html { redirect_to root_url, notice: 'Congratulations! Your account is now activated.' }
+      if @emailaccount.update_attribute(:setupcomplete,true) # This is BAD.
+        format.html { redirect_to root_url, notice: 'Congratulations! Your account is now activated.', :status => :moved_permanently }
+      end
     end
   end
 

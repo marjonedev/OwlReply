@@ -6,7 +6,7 @@
   </div>
   <h5 class="mb-1"><%= message[:subject] %></h5>
   <% unless b.nil? %><% sug = Reply.suggest_keywords(b) %><% @has_keywords = true unless sug.empty? %>
-    <p class="mb-1"><%= b[0..20].join(' ') %></p>
+    <p class="mb-2 pb-3" style="border-bottom: 1px solid #efefef"><%= b[0..20].join(' ') %></p>
     <p class="mb-1 pot_keywords"><strong>Potential keywords:</strong> <% for reply in sug %><span onclick='select_keyword("<%= reply %>");' class='potential_keyword suggested_<%= reply %>'><%= reply %></span><% end %></p>
   <% end %>
 </a>
