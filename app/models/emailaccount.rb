@@ -9,6 +9,11 @@ class Emailaccount < ApplicationRecord
   #validates_presence_of :encrypted_password
   #validates_presence_of :encryption_key
   validate :address_exist_validator, on: :create
+  after_commit :create_emailaccount_job, on: :create
+
+  def create_emailaccount_job
+    NewemailaccountJob.perform_later(self)
+  end
 
   def subject_line_skip_words
     self.skip_words.split(",")
