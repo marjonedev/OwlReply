@@ -100,6 +100,10 @@ class User < ApplicationRecord
     self.username.downcase!
   end
 
+  def can_authenticate_with?(password)
+    self.encrypted_password == User.encrypt(password, self.salt)
+  end
+
   def encrypt(password)
     self.class.encrypt(password, salt)
   end

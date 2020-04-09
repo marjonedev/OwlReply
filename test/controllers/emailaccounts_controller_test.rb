@@ -18,7 +18,7 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create emailaccount" do
     assert_difference('Emailaccount.count') do
-      post emailaccounts_url, params: { emailaccount: { address: @emailaccount.address, encrypted_password: @emailaccount.encrypted_password, encryption_key: @emailaccount.encryption_key, password: @emailaccount.password, user_id: @emailaccount.user_id } }
+      post emailaccounts_url, params: { emailaccount: { address: "smithaccount@yahoo.com" } }
     end
 
     assert_redirected_to emailaccount_url(Emailaccount.last)
