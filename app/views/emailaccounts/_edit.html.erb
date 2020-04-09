@@ -53,7 +53,7 @@
           use  <strong>%%reply%%</strong>  short tag to insert the content of the reply
         </small>
         <% if @emailaccount&.template.blank? %><%# this is the same as if @emailaccount && @emailaccount.template.blank? %>
-          <div class="style-msg" style="margin: 5px 0;">
+          <div class="style-msg suggested-template-button" style="margin: 5px 0;">
             <div class="sb-msg">
               <%= link_to 'Use our suggested reply', '#', class: 'btn-suggest button button-3d button-mini button-rounded button-white button-light' %>
               You don't have a default email reply yet. Click this for an example.
@@ -219,7 +219,14 @@
   $(function () {
     $('.btn-suggest').on('click', function (e) {
       e.preventDefault();
+      $('.btn-suggest').text('Make it even better');
       $("#emailaccount_template").val("Hello there!\n\nThank you so much for emailing our company.\n\n%%reply%%\n\nWe hope to work with you more soon.\n\nSincerely,\n\nJohn\nCustomer Service Agent");
+      $('.btn-suggest').off('click').on('click', function (e) {
+        e.preventDefault();
+        $('.suggested-template-button').remove();
+        $("#emailaccount_template").val("Hello there!\n\nWe are absolutely thrilled to hear from you. Thanks a lot for emailing.\n\n%%reply%%\n\nIf that doesn't solve your problem, email me back and I will look further into it for you! We're really glad to have you on board with the best company in the world.\n\nSincerely,\n\nJohn\nCustomer Enthusiast");
+        return false;
+      });
       return false;
     });
   });

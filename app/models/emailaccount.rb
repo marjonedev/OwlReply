@@ -45,6 +45,20 @@ class Emailaccount < ApplicationRecord
     end
   end
 
+  def my_gmail_api
+    @gmail_api ||= GoogleConnector::GmailApi.new self
+  end
+
+  def crunch_initial_words
+    #return if self.crunched
+    messages = my_gmail_api.get_messages(limit: 30, unread: false)
+    for msg in messages
+      thebody = msg['body'].to_s
+      thebody_downcase = thebody.downcase
+      Wordcount.count(self,thebody_downcase)
+    end
+  end
+
   def set_debug_message(message)
     self.update_attribute(:debugmessage,message)
     EmailaccountChannel.broadcast_to(self, {debug: message})
