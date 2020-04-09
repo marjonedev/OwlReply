@@ -23,7 +23,7 @@ class ViewerController < ApplicationController
       api = GmailApi.new @emailaccount
 
         begin
-          messages = api.get_messages(max: (params[:more] ? 20 : 2))
+          messages = api.get_messages(limit: (params[:more] ? 20 : 2))
           @errors = "No unread emails." if messages.empty?
 
           messages.each do |msg|

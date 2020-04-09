@@ -1,0 +1,24 @@
+<script>
+  var selected_keywords = [];
+  function select_keyword(name) {
+    if (selected_keywords.indexOf(name) >= 0) {
+      i = selected_keywords.indexOf(name);
+      $('.pot_keywords .suggested_'+name).removeClass('selected');
+      selected_keywords.splice(i,i+1);
+      //selected_keywords.slice(selected_keywords.indexOf(name),-1);
+    } else {
+      $('.pot_keywords .suggested_'+name).addClass('selected');
+      selected_keywords.push(name);
+    }
+    if (selected_keywords.length > 0) {
+      $(".submit-keywords").val("Write Replies")
+    } else {
+      $(".submit-keywords").val("Yup, these sure are emails.")
+    }
+    $('.selected_keywords').val(selected_keywords);
+  }
+</script>
+<form action="/viewer/step3" method="post">
+  <input type="hidden" name="keywords" class="selected_keywords" value="">
+  <input type="submit" value="Looks Good!" class="submit-keywords button button-large button-rounded button-connect text-white">
+</form>

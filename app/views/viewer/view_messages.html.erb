@@ -54,29 +54,10 @@
           <div class="mt-5 d-flex w-100 justify-content-between">
             <%= link_to 'Skip. Activate Manually.', viewer_skip_url, method: :patch, class: 'skip', remote: true %>
             <!--a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a-->
-
-            <form action="/viewer/step3" method="post">
-              <input type="hidden" name="keywords" class="selected_keywords" value="">
-              <input type="submit" value="Looks Good!" class="button button-large button-rounded button-connect text-white">
-            </form>
+            <%= render file: "emailaccounts/keywordscript" %>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<script>
-  var selected_keywords = [];
-  function select_keyword(name) {
-    if (selected_keywords.indexOf(name) >= 0) {
-      i = selected_keywords.indexOf(name);
-      $('.pot_keywords .suggested_'+name).removeClass('selected');
-      selected_keywords.splice(i,i+1);
-      //selected_keywords.slice(selected_keywords.indexOf(name),-1);
-    } else {
-      $('.pot_keywords .suggested_'+name).addClass('selected');
-      selected_keywords.push(name);
-    }
-    $('.selected_keywords').val(selected_keywords);
-  }
-</script>

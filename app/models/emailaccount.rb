@@ -29,6 +29,22 @@ class Emailaccount < ApplicationRecord
     ""
   end
 
+  def get_email_messages(limit: 500, unread: false)
+    @gmail_api ||= GoogleConnector::GmailApi.new self
+    messages = @gmail_api.get_messages(limit: limit)
+    # Why don't we return the original? Is it about :symbolifying the things? Cause that can be done.
+    messages.map do |msg|
+      date = DateTime.parse(msg['date'])
+      formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+      subject = msg['subject']
+      from = msg['from']
+      thebody = msg['body_text'].to_s.gsub("\r\n", " ")
+      thebody = thebody.truncate(80, separator: " ")
+
+      {date: formatted_date, subject:subject, body: msg['body'], body_text: thebody, from: from}
+    end
+  end
+
   def set_debug_message(message)
     self.update_attribute(:debugmessage,message)
     EmailaccountChannel.broadcast_to(self, {debug: message})

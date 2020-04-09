@@ -1,0 +1,16 @@
+<section id="content">
+  <div class="content-wrap">
+    <div class="container clearfix">
+    <div class="activation-process">
+      <div id="process2">
+        <div class="list-group">
+          <% for message in @messages %>
+            <%= render partial: "emailaccounts/message", locals: {message: message} %>
+          <% end %>
+          <%= render file: "emailaccounts/keywordscript" %>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>

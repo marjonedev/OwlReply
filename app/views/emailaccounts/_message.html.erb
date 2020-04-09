@@ -1,0 +1,12 @@
+<% b=improved_message_body(message) %>
+<a class="list-group-item list-group-item-action flex-column align-items-start">
+  <div class="d-flex w-100 justify-content-between">
+    <h4 class="mb-2"><%= message[:from] %></h4>
+    <small><%= message[:date] %></small>
+  </div>
+  <h5 class="mb-1"><%= message[:subject] %></h5>
+  <% unless b.nil? %><% sug = Reply.suggest_keywords(b) %><% @has_keywords = true unless sug.empty? %>
+    <p class="mb-1"><%= b[0..20].join(' ') %></p>
+    <p class="mb-1 pot_keywords">Potential keywords: <% for reply in sug %><span onclick='select_keyword("<%= reply %>");' class='suggested_<%= reply %>'><%= reply %></span><% end %></p>
+  <% end %>
+</a>

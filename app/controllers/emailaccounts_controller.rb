@@ -3,7 +3,7 @@ class EmailaccountsController < ApplicationController
   include EmailaccountsHelper
   include GoogleConnector
   before_action :require_login
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -24,6 +24,11 @@ class EmailaccountsController < ApplicationController
 
   # GET /emailaccounts/1/edit
   def edit
+  end
+
+  def emails
+    @messages = @emailaccount.get_email_messages(limit: (params[:more] ? 20 : 10), unread: false)
+
   end
 
   # POST /emailaccounts

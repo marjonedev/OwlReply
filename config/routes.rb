@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       put :check_again
       get :authenticate_imap
       get :status
+      get :emails
       patch :connect
       put :connect
       post :connect
