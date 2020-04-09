@@ -38,7 +38,7 @@ class EmailaccountsController < ApplicationController
 
     respond_to do |format|
       if @emailaccount.save
-        format.html { redirect_to viewer_step1_path(@emailaccount), notice: 'Email account was successfully created.' }
+        format.html { redirect_to viewer_step1_url(@emailaccount), notice: 'Email account was successfully created.' }
         format.json { render :show, status: :created, location: @emailaccount }
         format.js {  }
       else
