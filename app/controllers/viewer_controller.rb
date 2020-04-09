@@ -144,8 +144,11 @@ class ViewerController < ApplicationController
   end
 
   def validate
+    if @emailaccount.skip_activation
+      redirect_to root_url
+    end
 
-    if @emailaccount.skip_activation or @emailaccount.setupcomplete
+    if @emailaccount.setupcomplete
       redirect_to root_url, alert: "Your account is already activated."
     end
   end
