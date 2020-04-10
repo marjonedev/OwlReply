@@ -78,11 +78,20 @@ Rails.application.routes.draw do
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset_submit', to: 'passwords#reset_submit'
 
+
   get 'viewer/step1', to: 'viewer#connect_account'
+  get 'viewer/step1/:id', to: 'viewer#connect_account'
   get 'viewer/step2', to: 'viewer#view_messages'
+  get 'viewer/step2/:id', to: 'viewer#view_messages'
   get 'viewer/step3', to: 'viewer#done'
+  get 'viewer/step3/:id', to: 'viewer#done'
   post 'viewer/step3', to: 'viewer#done'
+  post 'viewer/step3/:id', to: 'viewer#done'
   patch 'viewer/skip', to: 'viewer#skip_activation'
+  patch 'viewer/skip/:id', to: 'viewer#skip_activation'
   patch 'viewer/activate', to: 'viewer#activate'
+  patch 'viewer/activate/:id', to: 'viewer#activate'
+  put 'viewer/activate', to: 'viewer#activate'
+  put 'viewer/activate/:id', to: 'viewer#activate'
 
 end

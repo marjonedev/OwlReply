@@ -7,13 +7,11 @@ class ViewerController < ApplicationController
   def connect_account
 
     unless @emailaccount.setupcomplete
-      account = @user.emailaccounts.first
-      if account.authenticated
-        redirect_to viewer_step2_url, notice: "Your account is already connected. Preview your messages to finish the process."
+      if @emailaccount.authenticated
+        redirect_to "/viewer/step2/#{@emailaccount.id}", notice: "Your account is already connected. Preview your messages to finish the process."
       end
     end
 
-    @emailaccount = current_user.emailaccounts.first
   end
 
   def view_messages
@@ -127,16 +125,17 @@ class ViewerController < ApplicationController
 
   def skip_activation
     respond_to do |format|
-      current_user.update_attribute(:skip_activation, true)
+      @emailaccount.update_attribute(:skip_activation, true)
       format.html { redirect_to root_url, notice: 'Skipped! You connect your account manually.' }
     end
   end
 
   def activate
     respond_to do |format|
-      current_user.update_attribute(:active, true)
-      current_user.emailaccounts.first.update_attribute(:setupcomplete,true) # This is BAD.
-      format.html { redirect_to root_url, notice: 'Congratulations! Your account is now activated.' }
+      # current_user.update_attribute(:active, true)
+      if @emailaccount.update_attribute(:setupcomplete,true) # This is BAD.
+        format.html { redirect_to root_url, notice: 'Congratulations! Your account is now activated.', :status => :moved_permanently }
+      end
     end
   end
 
@@ -146,18 +145,15 @@ class ViewerController < ApplicationController
   end
 
   def validate
-    #skip if account more than 1
+    if @emailaccount.skip_activation
+      redirect_to root_url
+    end
 
-    @user = current_user
-
-    #if @user.emailaccounts.count > 1
-    #  redirect_to root_url
-    #end
-
-    if @user.skip_activation or @emailaccount.setupcomplete
+    if @emailaccount.setupcomplete
       redirect_to root_url, alert: "Your account is already activated."
     end
   end
+
   def set_emailaccount
     @emailaccount = current_user.emailaccounts.first
     @emailaccount = current_user.emailaccounts.find(params[:id]) if params[:id]

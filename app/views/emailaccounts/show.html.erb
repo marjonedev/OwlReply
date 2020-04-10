@@ -40,13 +40,15 @@
             </div>
           </div>
         <% end %>
-        <% if @emailaccount.replies.empty? && @emailaccount.template_blank? %>
-          <div class="style-msg style-msg-light" style="background-color: #333;">
-            <div class="sb-msg">
-              <%= link_to 'Setup a default reply', edit_emailaccount_path(@emailaccount), class: 'btn-connect button button-3d button-mini button-rounded button-white button-light' %>
-              With no default reply setup, we have nothing to auto-reply to your emails with.
+        <% if @emailaccount.authenticated %>
+          <% if @emailaccount.replies.empty? && @emailaccount.template_blank? %>
+            <div class="style-msg style-msg-light" style="background-color: #333;">
+              <div class="sb-msg">
+                <%= link_to 'Setup a default reply', edit_emailaccount_path(@emailaccount), class: 'btn-connect button button-3d button-mini button-rounded button-white button-light' %>
+                With no default reply setup, we have nothing to auto-reply to your emails with.
+              </div>
             </div>
-          </div>
+          <% end %>
         <% end %>
         <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
           <%= render partial: 'emailaccounts/viewerlink' %>

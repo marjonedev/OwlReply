@@ -14006,6 +14006,7 @@ body:not(.no-transition) #wrapper,
 }
 .pot_keywords span:hover {
 	background: #FCF;
+	cursor: pointer;
 }
 .pot_keywords span.selected {
 	background: #FBF;
