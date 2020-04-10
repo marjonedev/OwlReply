@@ -428,3 +428,17 @@ div#checked-notification {
 div.custom_cards .card span.numval.admin_last_checked{
     font-size: 20px;
 }
+
+/* HOMEPAGE SECTION SAMPLE EMAIL */
+.sample_section { background-color:#ffecec; text-align: center; paddingx: 0 0 20px; }
+.sample_mail, .sample_arrow, .sample_reply { display: inline-block; width: 100%; max-width: 400px; vertical-align: top; text-align: left; }
+.sample_arrow { max-width: 100px;border: solid #ff8787; border-width: 0 3px 3px 0; display: inline-block; padding: 10px; transform: rotate(-45deg); -webkit-transform: rotate(-45deg); max-width: 20px; margin: 50px 20px; }
+.sample_mail, .sample_reply { border: 1px solid #CCC; border-radius: 10px 10px 0 0; border-top: 0; box-shadow: 3px 7px 4px #666; }
+.sample_mail div, .sample_reply div { background: #FFF; padding: 10px; }
+.sample_mail div:first-of-type, .sample_reply div:first-of-type { background: #1bbc9c; border-radius: 10px 10px 0 0; letter-spacing: 5px; text-align: center;font-size: 1.2em; color: black; }
+.sample_mail span, .sample_reply span { background-color: #00ff33; }
+@media (max-width: 1000px) {
+    .sample_mail, .sample_arrow, .sample_reply { display: block;margin: 20px auto; }
+    .sample_arrow { transform: rotate(45deg); -webkit-transform: rotate(45deg);}
+    .sample_mail { margin-bottom: 20px; }
+}
