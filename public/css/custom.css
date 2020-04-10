@@ -442,3 +442,6 @@ div.custom_cards .card span.numval.admin_last_checked{
     .sample_arrow { transform: rotate(45deg); -webkit-transform: rotate(45deg);}
     .sample_mail { margin-bottom: 20px; }
 }
+.price_section { text-align: center; }
+.price_section .bigger { font-size: 3em;}
+.price_section .goodbutton { background: #FF7800; border-radius: 10px; color: #FFF !important;display: inline-block; font-size: 1.2em; text-transform: uppercase; font-weight: 800;padding: 10px 20px;margin: 10px 0 0; }
