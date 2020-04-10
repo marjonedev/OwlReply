@@ -1,3 +1,5 @@
+require 'googleauth'
+
 module GoogleConnector
 
   class GmailApi
@@ -141,16 +143,29 @@ module GoogleConnector
 
     def refresh_this_token!
 
-      url = URI("https://oauth2.googleapis.com/token")
-      request = Net::HTTP.post_form url, { "refresh_token" => @emailaccount.google_refresh_token,
-                                           "client_id" => api_client_id,
-                                           "client_secret" => api_client_secret,
-                                           "grant_type" => 'refresh_token'}
+      credentials = Google::Auth::UserRefreshCredentials.new(
+          client_id: api_client_id,
+          client_secret: api_client_secret,
+          scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
+                  Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
+                  Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE], # enter the scope for a service whichever you want to use
+          additional_parameters: { "access_type" => "offline" })
 
-      data = JSON.parse(request.body)
-      result = nil
+      credentials.refresh_token = @emailaccount.google_refresh_token
 
-      puts data
+      response = credentials.fetch_access_token!
+      expires_in = Time.now.to_i + response['expires_in']
+
+      # url = URI("https://oauth2.googleapis.com/token")
+      # request = Net::HTTP.post_form url, { "refresh_token" => @emailaccount.google_refresh_token,
+      #                                      "client_id" => api_client_id,
+      #                                      "client_secret" => api_client_secret,
+      #                                      "grant_type" => 'refresh_token'}
+      #
+      # data = JSON.parse(request.body)
+      # result = nil
+      #
+      # puts data
 
       if data.key?("error")
         raise RefreshTokenFailureError.new(data['error_description'] ? data['error_description'] : data['error'])
@@ -181,7 +196,6 @@ module GoogleConnector
         return false
       end
 
-
       revoke = false
       token = nil
 
@@ -192,7 +206,6 @@ module GoogleConnector
         token = @emailaccount.google_refresh_token
         revoke = true
       end
-
 
       if revoke
         url = URI("https://accounts.google.com/o/oauth2/revoke")

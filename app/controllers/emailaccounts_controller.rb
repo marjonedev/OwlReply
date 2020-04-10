@@ -1,9 +1,12 @@
+require 'googleauth'
+require 'json'
+
 class EmailaccountsController < ApplicationController
   include ActionView::Helpers::DateHelper
   include EmailaccountsHelper
   include GoogleConnector
   before_action :require_login
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -143,8 +146,7 @@ class EmailaccountsController < ApplicationController
   def connect
     if connect_params[:email_provider] == "google"
 
-      session["emailaccount_id_#{current_user.id}"] = @emailaccount.id
-      redirect_to emailaccounts_google_redirect_url
+      redirect_to google_redirect_emailaccount_url(@emailaccount)
 
     else
       respond_to do |format|
@@ -164,43 +166,45 @@ class EmailaccountsController < ApplicationController
   def google_redirect
     api_client_id = Rails.application.credentials.google_api_client_id
     api_client_secret = Rails.application.credentials.google_client_secret
-
+    state = {emailaccount_id: @emailaccount.id}
     client = Signet::OAuth2::Client.new({
                   client_id: api_client_id,
                   client_secret: api_client_secret,
                   authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-                  # scope: %w(https://mail.google.com/ https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify), # enter the scope for a service whichever you want to use
                   scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
                           Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
                           Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE],
-                  redirect_uri: emailaccounts_google_callback_url
+                  redirect_uri: emailaccounts_google_callback_url,
+                  state: state.to_json
               })
 
     redirect_to client.authorization_uri.to_s
   end
 
   def google_callback
+
+    state = params[:state]
+    state = JSON.parse(state)
+    @emailaccount = Emailaccount.find(state['emailaccount_id'])
+
     api_client_id = Rails.application.credentials.google_api_client_id
     api_client_secret = Rails.application.credentials.google_client_secret
 
-    client = Signet::OAuth2::Client.new({
-                client_id: api_client_id,
-                client_secret: api_client_secret,
-                token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
-                redirect_uri: emailaccounts_google_callback_url,
-                code: params[:code]
-            })
+    credentials = Google::Auth::UserRefreshCredentials.new(
+        client_id: api_client_id,
+        client_secret: api_client_secret,
+        scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
+                Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
+                Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE], # enter the scope for a service whichever you want to use
+        redirect_uri: emailaccounts_google_callback_url,
+        additional_parameters: { "access_type" => "offline" })
 
-    response = client.fetch_access_token!
-
-    session[:access_token] = response['access_token']
-
-    emailaccount_id = session["emailaccount_id_#{current_user.id}"]
-    session.delete("emailaccount_id_#{current_user.id}")
+    credentials.code = params[:code]
+    response = credentials.fetch_access_token!
 
     expires_in = Time.now.to_i + response['expires_in']
 
-    @emailaccount = Emailaccount.update(emailaccount_id, {google_access_token: response["access_token"],
+    @emailaccount.update({google_access_token: response["access_token"],
                                           google_expires_in: expires_in,
                                           google_refresh_token: response["refresh_token"],
                                           authenticated: 1,
@@ -210,7 +214,7 @@ class EmailaccountsController < ApplicationController
     if !@emailaccount.setupcomplete
       redirect_to "/viewer/step2/#{@emailaccount.id}", notice: @emailaccount.address + " successfully authenticated"
     else
-      redirect_to url_for(action: 'show', id: emailaccount_id), notice: @emailaccount.address + " successfully authenticated"
+      redirect_to url_for(action: 'show', id: @emailaccount.id), notice: @emailaccount.address + " successfully authenticated"
     end
 
 

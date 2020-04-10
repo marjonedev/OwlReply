@@ -17,8 +17,9 @@ Rails.application.routes.draw do
   resources :plans
   resources :replies
 
-  get 'emailaccounts/google_redirect'
+  # get 'emailaccounts/google_redirect'
   get 'emailaccounts/google_callback'
+
   resources :emailaccounts do
     resources :replies #This will be for new and create ONLY. /emailaccounts/1/replies/2 should just be /replies/2
     member do
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
       post :connect
       delete :remove
       get :revoke_account_access
+      get :google_redirect
     end
   end
   resources :sessions
