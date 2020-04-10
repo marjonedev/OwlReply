@@ -59,4 +59,8 @@ module ApplicationHelper
     false
   end
 
+  def get_base_url
+    Rails.application.config.base_url
+  end
+
 end

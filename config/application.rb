@@ -26,5 +26,7 @@ module Website
     config.autoload_paths += %W(#{config.root}/app/channels/application_cable)
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
+    config.base_url = ENV.key?("base_url") ? ENV["base_url"] : "https://owlreply.com"
   end
 end

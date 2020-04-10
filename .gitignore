@@ -35,3 +35,6 @@
 /config/database.yml
 /config/credentials.yml.enc
 /shared/
+
+# Ignore application configuration
+/config/application.yml

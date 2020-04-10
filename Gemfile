@@ -73,3 +73,5 @@ gem 'google-api-client', '>= 0.9', require: 'google/apis/gmail_v1'
 
 gem 'rmail', '~> 1.1'
 
+gem "figaro"
+
