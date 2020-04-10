@@ -3,13 +3,13 @@ class EmailaccountMailer < ActionMailer::Base
 
   def suggestion_email
     @user = params[:user]
-    @url  = 'https://owlreply.com/login'
+    @url  = "#{Rails.application.config.base_url}/login"
     mail(to: @user.email, subject: "Suggested keyword to automate.")
   end
 
   def connection_email
     @user = params[:user]
-    @url  = 'https://owlreply.com/login'
+    @url  = "#{Rails.application.config.base_url}/login"
     mail(to: @user.email, subject: "You still have to connect your email account.")
   end
 

@@ -21,7 +21,7 @@
         You get a lot of emails with the word "<%= @word %>" in it.
       </p>
       <p>
-        <a href="https://owlreply.com/emailaccounts/<%= @emailaccount.id %>/replies/new?keyword=<%= @word %>">Click here to create an automated reply for that word.</a>
+        <a href="<%= Rails.application.config.base_url %>/emailaccounts/<%= @emailaccount.id %>/replies/new?keyword=<%= @word %>">Click here to create an automated reply for that word.</a>
       </p>
       <p>
         Hope this helps!
