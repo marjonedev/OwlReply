@@ -143,18 +143,28 @@ module GoogleConnector
 
     def refresh_this_token!
 
-      credentials = Google::Auth::UserRefreshCredentials.new(
-          client_id: api_client_id,
-          client_secret: api_client_secret,
-          scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
-                  Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
-                  Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE], # enter the scope for a service whichever you want to use
-          additional_parameters: { "access_type" => "offline" })
+      begin
+        credentials = Google::Auth::UserRefreshCredentials.new(
+            client_id: api_client_id,
+            client_secret: api_client_secret,
+            scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
+                    Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
+                    Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE], # enter the scope for a service whichever you want to use
+            additional_parameters: { "access_type" => "offline" })
 
-      credentials.refresh_token = @emailaccount.google_refresh_token
+        credentials.refresh_token = @emailaccount.google_refresh_token
 
-      response = credentials.fetch_access_token!
-      expires_in = Time.now.to_i + response['expires_in']
+        response = credentials.fetch_access_token!
+        expires_in = Time.now.to_i + response['expires_in']
+
+        @emailaccount.update(google_access_token: response['access_token'],
+                       google_expires_in: expires_in)
+
+      rescue Signet::AuthorizationError => error
+        raise RefreshTokenFailureError.new(error.to_s)
+      rescue Exception => error
+        raise RefreshTokenFailureError.new(error.to_s)
+      end
 
       # url = URI("https://oauth2.googleapis.com/token")
       # request = Net::HTTP.post_form url, { "refresh_token" => @emailaccount.google_refresh_token,
@@ -167,17 +177,16 @@ module GoogleConnector
       #
       # puts data
 
-      if data.key?("error")
-        raise RefreshTokenFailureError.new(data['error_description'] ? data['error_description'] : data['error'])
-        #result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
-        # empty_account(account)
-      else
-        expires_in = Time.now.to_i + data['expires_in']
-        @emailaccount.update(google_access_token: data['access_token'],
-                       google_expires_in: expires_in)
-      end
-
-      result
+      # if data.key?("error")
+      #   raise RefreshTokenFailureError.new(data['error_description'] ? data['error_description'] : data['error'])
+      #   #result = {'error' => data['error_description'] ? data['error_description'] : data['error']}
+      #   # empty_account(account)
+      # else
+      #   expires_in = Time.now.to_i + data['expires_in']
+      #   @emailaccount.update(google_access_token: data['access_token'],
+      #                  google_expires_in: expires_in)
+      # end
+      # result
 
     end
 
