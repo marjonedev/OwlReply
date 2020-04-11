@@ -13,7 +13,7 @@
               .style-msg{:style => "background-colorx: #333;"}
                 .sb-msg
                   %a{:href => "?more=1"} Show More Emails
-            - if @has_keywords
+            - if (@has_keywords && @emailaccount.replies.size < 3)
               .allmargin-sm.divcenter.ls3{:style => "background-colorx: #333;"}
                 .sb-msg
                   Click a few keywords and these will be used to generate your first auto replies.

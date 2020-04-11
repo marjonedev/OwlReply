@@ -5,16 +5,18 @@
       i = selected_keywords.indexOf(name);
       $('.suggested_'+name).removeClass('selected');
       selected_keywords.splice(i,i+1);
-      //selected_keywords.slice(selected_keywords.indexOf(name),-1);
     } else {
       $('.suggested_'+name).addClass('selected');
       selected_keywords.push(name);
+      $("#" + message_name + " .reply_box .bootstrap-tagsinput input").val(name);
+      $("#" + message_name + " .reply_box .bootstrap-tagsinput input").keypress();
     }
     if (selected_keywords.length > 0) {
       $(".submit-keywords").val("Write Replies");
       $("#" + message_name + " .reply_box").show();
     } else {
       $(".submit-keywords").val("Yup, these sure are emails.")
+      $("#" + message_name + " .reply_box").hide();
     }
     $('.selected_keywords').val(selected_keywords);
   }
