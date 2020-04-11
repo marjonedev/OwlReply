@@ -1,8 +1,6 @@
 .container.clearfix
   .list-group
     = @errors
-    - unless @messages.empty?
-      %h3 Choose some potential keywords.
     - @messages.each do |message|
       = render partial: "emailaccounts/message", locals: {message: message}
     - unless (params[:more] || @messages.empty?)

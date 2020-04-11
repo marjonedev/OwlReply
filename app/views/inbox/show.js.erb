@@ -1,1 +1,3 @@
-$(".content-wrap .section").prepend("<%=j render partial: 'inbox/show.html' %>")
+$(".content-wrap>.section>div>.row").prepend("<div class='inbox_space col-md-6 mt-4'><%=j render partial: 'inbox/show.html' %></div>")
+$(".replies_box").addClass('col-md-6')
+$(".replies_box").removeClass('col-md-12')
