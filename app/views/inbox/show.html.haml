@@ -1,23 +1,3 @@
 %section#content
   .content-wrap
-    .container.clearfix
-      .activation-process
-        #process2
-          .list-group
-            = @errors
-            - unless @messages.empty?
-              %h3 Click an email.
-            - @messages.each do |message|
-              = render partial: "emailaccounts/message", locals: {message: message}
-            - unless (params[:more] || @messages.empty?)
-              .style-msg{:style => "background-colorx: #333;"}
-                .sb-msg
-                  %a{:href => "?more=1"} Show More Emails
-            - if (@has_keywords && @emailaccount.replies.size < 3)
-              .allmargin-sm.divcenter.ls3{:style => "background-colorx: #333;"}
-                .sb-msg
-                  Click a few keywords and these will be used to generate your first auto replies.
-          .mt-5.d-flex.w-100.justify-content-between
-            = link_to 'Skip. Activate Manually.', "/viewer/skip/#{@emailaccount.id}", method: :patch, class: 'skip', remote: true
-            / a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a
-            = render file: "emailaccounts/keywordscript"
+    = render partial: 'inbox/show.html'
