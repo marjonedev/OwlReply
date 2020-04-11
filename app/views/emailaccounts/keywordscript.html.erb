@@ -1,17 +1,18 @@
 <script>
   var selected_keywords = [];
-  function select_keyword(name) {
+  function select_keyword(name, message_name) {
     if (selected_keywords.indexOf(name) >= 0) {
       i = selected_keywords.indexOf(name);
-      $('.pot_keywords .suggested_'+name).removeClass('selected');
+      $('.suggested_'+name).removeClass('selected');
       selected_keywords.splice(i,i+1);
       //selected_keywords.slice(selected_keywords.indexOf(name),-1);
     } else {
-      $('.pot_keywords .suggested_'+name).addClass('selected');
+      $('.suggested_'+name).addClass('selected');
       selected_keywords.push(name);
     }
     if (selected_keywords.length > 0) {
-      $(".submit-keywords").val("Write Replies")
+      $(".submit-keywords").val("Write Replies");
+      $("#" + message_name + " .reply_box").show();
     } else {
       $(".submit-keywords").val("Yup, these sure are emails.")
     }
@@ -22,3 +23,8 @@
   <input type="hidden" name="keywords" class="selected_keywords" value="">
   <input type="submit" value="Looks Good!" class="submit-keywords button button-large button-rounded button-connect text-white">
 <% end %>
+<style>
+  .email_body { color: #CCC; }
+  .potential_keyword { color: #000; }
+  .potential_keyword:hover { background: #00A8FF; }
+</style>

@@ -14008,6 +14008,6 @@ body:not(.no-transition) #wrapper,
 	background: #FCF;
 	cursor: pointer;
 }
-.pot_keywords span.selected {
+.pot_keywords span.selected, .potential_keyword.selected {
 	background: #FBF;
 }

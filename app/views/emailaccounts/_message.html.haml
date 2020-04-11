@@ -1,0 +1,25 @@
+- b = improved_message_body(message)
+- id = message[:date].downcase.gsub(' ','').gsub(',','_').gsub(':','_')
+.message
+  %a.list-group-item.list-group-item-action.flex-column.align-items-start{onclick: "$(this).parent().find('.email_content').toggle();", id: "message_#{id}"}
+    .d-flex.w-100.justify-content-between
+      %h5.mb-2= message[:from]
+      %small= message[:date]
+    %h4.mb-1= message[:subject]
+  .email_content.list-group-item.mb-3{style: 'display: none;'}
+    - unless b.nil?
+      - sug = Reply.suggest_keywords(b)
+      - @has_keywords = true unless sug.empty?
+      %p.mb-2.pb-3.email_body
+        - body = b.join(' ')
+        - for reply in sug
+          - body.gsub!(reply,"<span class='potential_keyword suggested_"+reply+"' onclick='select_keyword(\""+reply+"\",\"message_"+id+"\");'>"+reply+"</span>")
+        = body.html_safe
+        - b[0..20].join(' ')
+      %p.mb-1.pot_keywords
+        %strong Potential keywords:
+        - for reply in sug
+          %span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(\"#{reply}\",\"message_"+id+"\");"}
+            = reply
+      .reply_box{style: 'display: none;'}
+        = render partial: 'replies/new', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
