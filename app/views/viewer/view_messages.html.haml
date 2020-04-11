@@ -1,0 +1,34 @@
+%section#content
+  .content-wrap
+    .container.clearfix
+      #processTabs
+        %ul.process-steps.bottommargin.clearfix
+          %li
+            %a.i-circled.i-alt.divcenter{:href => "javascript: void(0)"} 1
+            %h5 Connect your account
+          %li.active
+            %a.i-circled.i-alt.divcenter.bgcolor{:href => "javascript: void(0)"} 2
+            %h5 Preview Messages
+          %li
+            %a.i-bordered.i-circled.divcenter{:href => "javascript: void(0)"} 3
+            %h5 Done
+      .activation-process
+        #process2
+          .list-group
+            = @errors
+            - unless @messages.empty?
+              %h3 Choose some potential keywords.
+            - @messages.each do |message|
+              = render partial: "emailaccounts/message", locals: {message: message}
+            - unless (params[:more] || @messages.empty?)
+              .style-msg{:style => "background-colorx: #333;"}
+                .sb-msg
+                  %a{:href => "?more=1"} Show More Emails
+            - if @has_keywords
+              .allmargin-sm.divcenter.ls3{:style => "background-colorx: #333;"}
+                .sb-msg
+                  Click a few keywords and these will be used to generate your first auto replies.
+          .mt-5.d-flex.w-100.justify-content-between
+            = link_to 'Skip. Activate Manually.', "/viewer/skip/#{@emailaccount.id}", method: :patch, class: 'skip', remote: true
+            / a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a
+            = render file: "emailaccounts/keywordscript"

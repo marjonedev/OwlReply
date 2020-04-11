@@ -36,6 +36,9 @@ Rails.application.routes.draw do
       get :google_redirect
     end
   end
+  resources :inbox do
+
+  end
   resources :sessions
   resources :users
 

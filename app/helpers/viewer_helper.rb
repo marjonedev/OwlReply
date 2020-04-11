@@ -5,6 +5,7 @@ module ViewerHelper
     if body.length < 100
       return
     end
+    body = body.gsub('<br>',' ').gsub('<div>',"\n<div>")
     text = strip_tags(body)
     words = text.split(/\s+/)
     return words

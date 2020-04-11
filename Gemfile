@@ -75,3 +75,4 @@ gem 'rmail', '~> 1.1'
 
 gem "figaro"
 
+gem "haml-rails", "~> 2.0"
