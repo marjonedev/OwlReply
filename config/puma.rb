@@ -64,10 +64,6 @@ threads 1, 6
 app_dir = File.expand_path("../..", __FILE__)
 shared_dir = "#{app_dir}/shared"
 
-# Default to production
-rails_env = ENV['RAILS_ENV'] || "production"
-environment rails_env
-
 # Set up socket location
 bind "unix://#{shared_dir}/sockets/puma.sock"
 
