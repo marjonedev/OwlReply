@@ -36,7 +36,7 @@ class Emailaccount < ApplicationRecord
 
   def get_email_messages(limit: 500, unread: false)
     @gmail_api ||= GoogleConnector::GmailApi.new self
-    messages = @gmail_api.get_messages(limit: limit)
+    messages = @gmail_api.get_messages(limit: limit)[:messages]
     # Why don't we return the original? Is it about :symbolifying the things? Cause that can be done.
     messages.map do |msg|
       date = DateTime.parse(msg['date'])
@@ -56,7 +56,7 @@ class Emailaccount < ApplicationRecord
 
   def crunch_initial_words
     #return if self.crunched
-    messages = my_gmail_api.get_messages(limit: 30, unread: false)
+    messages = my_gmail_api.get_messages(limit: 30, unread: false)[:messages]
     for msg in messages
       thebody = msg['body'].to_s
       thebody_downcase = thebody.downcase

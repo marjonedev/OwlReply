@@ -10,8 +10,11 @@ class InboxController < ApplicationController
       api = GmailApi.new @emailaccount
 
       begin
-        messages = api.get_messages(limit: (params[:more] ? 20 : 2))
+        result = api.get_messages(limit: (params[:more] ? 20 : 2))
+        messages = result[:messages]
         @errors = "No unread emails." if messages.empty?
+        @errors = result[:errors] if result[:errors]
+        # We could redirect the user someone based on the error, like back to Google.
 
         messages.each do |msg|
           date = DateTime.parse(msg['date'])

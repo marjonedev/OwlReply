@@ -14,20 +14,22 @@ module GoogleConnector
     end
 
     def get_messages limit:500,unread:true
+      result_object = {}
+      result_object[:messages] = []
 
       begin
         refresh_api!
       rescue RefreshTokenFailureError => error
         replier_logger.error("GOOGLE: #{@emailaccount.address} - Failed to refresh user token. #{error.to_s}")
-        return []
+        result_object[:errors] = "Failed to refresh token."
+        result_object[:error] = "REFRESH_FAILURE"
+        return result_object
       end
 
       query = "after: #{1.week.ago.to_i}"
       label_ids = ['INBOX']
       label_ids.unshift('UNREAD') if unread
       list = @service.list_user_messages('me', max_results: limit, label_ids: label_ids, q: query)
-
-      email_array = []
 
       if set = list.messages
         set.each do |i|
@@ -76,12 +78,10 @@ module GoogleConnector
           end
 
 
-          email_array.push(obj)
+          result_object[:messages].push(obj)
         end
       end
-
-      email_array
-
+      return result_object
     end
 
     def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
