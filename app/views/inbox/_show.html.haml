@@ -1,6 +1,12 @@
 .container.clearfix
+  = link_to "Unread", "/inbox/#{@emailaccount.id}.js?more=1", class: "button button-rounded button-reveal button-small #{'button-light' if params[:all]}", remote: true
+  = link_to "All", "/inbox/#{@emailaccount.id}.js?all=1&more=1", class: "button button-rounded button-reveal button-small #{'button-light' if params[:all].blank?}", remote: true
   .list-group
-    = @errors
+    - @errors.each do |error|
+      .error
+        = error
+    - unless @errors.empty?
+      = link_to "Reauthorize", google_redirect_emailaccount_url(@emailaccount)
     - @messages.each do |message|
       = render partial: "emailaccounts/message", locals: {message: message}
     - unless (params[:more] || @messages.empty?)

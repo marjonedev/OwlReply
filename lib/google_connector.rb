@@ -3,35 +3,63 @@ require 'googleauth'
 module GoogleConnector
 
   class GmailApi
+    attr_accessor :errors
 
     def initialize emailaccount
       @emailaccount = emailaccount
       @service = get_service
+      @errors = []
     end
 
     def replier_logger
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def get_messages limit:500,unread:true
-      result_object = {}
+    def get_authorization_url(callback_url)
+      client = get_authorization_client(callback_url)
+      return client.authorization_uri.to_s
+    end
+
+    def get_authorization_client(callback_url)
+      api_client_id = Rails.application.credentials.google_api_client_id
+      api_client_secret = Rails.application.credentials.google_client_secret
+      state = {emailaccount_id: @emailaccount.id}
+      Signet::OAuth2::Client.new({
+                                  client_id: api_client_id,
+                                  client_secret: api_client_secret,
+                                  authorization_uri: 'https://accounts.google.com/o/oauth2/auth?prompt=consent',
+                                  scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
+                                          Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
+                                          Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE],
+                                  redirect_uri: callback_url,
+                                  state: state.to_json
+                                })
+    end
+
+    def get_messages(limit: 500, unread: true)
+      result_object = {} #This may be deprecated? Later maybe the user then has to call get_messages and access them from @messages variable?
       result_object[:messages] = []
 
       begin
         refresh_api!
       rescue RefreshTokenFailureError => error
         replier_logger.error("GOOGLE: #{@emailaccount.address} - Failed to refresh user token. #{error.to_s}")
-        result_object[:errors] = "Failed to refresh token."
-        result_object[:error] = "REFRESH_FAILURE"
+        @errors.push("Failed to refresh token.")
         return result_object
       end
 
       query = "after: #{1.week.ago.to_i}"
       label_ids = ['INBOX']
       label_ids.unshift('UNREAD') if unread
-      list = @service.list_user_messages('me', max_results: limit, label_ids: label_ids, q: query)
+      begin
+        list = @service.list_user_messages('me', max_results: limit, label_ids: label_ids, q: query)
+      rescue Google::Apis::AuthorizationError => e
+        @errors.push("Google returned an authorization error.")
+      rescue
+        @errors.push("There was an error in listing your messages.")
+      end
 
-      if set = list.messages
+      if set = list&.messages #the & checks for nil
         set.each do |i|
           obj = {}
           email = @service.get_user_message('me', i.id)

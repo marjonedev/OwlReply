@@ -164,21 +164,8 @@ class EmailaccountsController < ApplicationController
   end
 
   def google_redirect
-    api_client_id = Rails.application.credentials.google_api_client_id
-    api_client_secret = Rails.application.credentials.google_client_secret
-    state = {emailaccount_id: @emailaccount.id}
-    client = Signet::OAuth2::Client.new({
-                  client_id: api_client_id,
-                  client_secret: api_client_secret,
-                  authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-                  scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
-                          Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
-                          Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE],
-                  redirect_uri: emailaccounts_google_callback_url,
-                  state: state.to_json
-              })
-
-    redirect_to client.authorization_uri.to_s
+    google = GoogleConnector::GmailApi.new(@emailaccount)
+    redirect_to google.get_authorization_url(emailaccounts_google_callback_url)
   end
 
   def google_callback

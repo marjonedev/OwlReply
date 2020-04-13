@@ -5,15 +5,15 @@ class InboxController < ApplicationController
 
   def show
     @messages = []
-    @errors = nil
+    @errors = []
     if @emailaccount.email_provider == "google"
       api = GmailApi.new @emailaccount
 
       begin
-        result = api.get_messages(limit: (params[:more] ? 20 : 2))
+        result = api.get_messages(limit: (params[:more] ? 20 : 2), unread: (params[:all] ? false : true))
         messages = result[:messages]
-        @errors = "No unread emails." if messages.empty?
-        @errors = result[:errors] if result[:errors]
+        @errors.push("No unread emails.") if messages.empty?
+        @errors.concat(api.errors) if api.errors
         # We could redirect the user someone based on the error, like back to Google.
 
         messages.each do |msg|
