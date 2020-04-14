@@ -21,7 +21,8 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
       post emailaccounts_url, params: { emailaccount: { address: "smithaccount@yahoo.com" } }
     end
 
-    assert_redirected_to emailaccount_url(Emailaccount.last)
+
+    assert_redirected_to "/viewer/step1/#{@user.emailaccounts.last.id}"
   end
 
   test "should show emailaccount" do
@@ -39,9 +40,20 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to emailaccount_url(@emailaccount)
   end
 
-  test "should destroy emailaccount" do
-    assert_difference('Emailaccount.count', -1) do
-      delete emailaccount_url(@emailaccount)
+  test "cannot destroy with only main emailaccount" do
+    assert_no_difference 'Emailaccount.count' do
+      delete emailaccount_url(@user.emailaccounts.last)
+    end
+
+    assert_redirected_to emailaccount_url(@user.emailaccounts.last)
+  end
+
+  test "should destroy if more than 1 emailaccount" do
+
+    post emailaccounts_url, params: { emailaccount: { address: "smithaccount1@yahoo.com" } }
+
+    assert_difference 'Emailaccount.count', -1 do
+      delete emailaccount_url(@user.emailaccounts.last)
     end
 
     assert_redirected_to emailaccounts_url

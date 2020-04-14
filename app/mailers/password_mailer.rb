@@ -3,7 +3,7 @@ class PasswordMailer < ActionMailer::Base
 
   def reset_password_email
     @user = params[:user]
-    @url = "#{Rails.application.config.base_url"
+    @url = "#{Rails.application.config.base_url}"
     @token_url = "#{@url}/password/reset?token=#{@user.reset_password_token}"
     mail(to: @user.email_address, subject: 'Reset Your Password')
   end
