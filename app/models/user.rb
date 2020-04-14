@@ -194,7 +194,7 @@ class User < ApplicationRecord
       accounts = Emailaccount.where(address: self.email_address)
 
       unless accounts.empty?
-        errors.add(:email_address, "#{self.email_address} is already in use. Please use different email address.")
+        errors.add(:email_address, "#{self.email_address} is already in use. Please use a different email address.")
       end
     end
 end

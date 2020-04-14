@@ -57,7 +57,7 @@ class SessionsController < ApplicationController
   def set_attempted_user
     @attempted_user = nil
     if params[:user][:username].match(/\A[\w.+-]+@\w+\.\w+\z/)
-      @attempted_user = (User.where(email_address: params[:user][:username])==1) ? User.find_by(email_address: params[:user][:username]) : nil
+      @attempted_user = (User.where(email_address: params[:user][:username]).size==1) ? User.find_by(email_address: params[:user][:username]) : nil
     else
       @attempted_user = User.find_by(username: params[:user][:username])
     end

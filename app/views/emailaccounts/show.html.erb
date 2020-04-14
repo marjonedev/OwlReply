@@ -1,3 +1,6 @@
+<style>
+  .row { justify-content: center; }
+</style>
 <section id="page-title" class="replies nobg">
 
   <div class="container clearfix">
@@ -18,20 +21,12 @@
 </section>
 
 <section id="content" class="replies">
-  <%# if @emailaccount.password.blank? %>
-<!--  <div class="style-msg" style="background-color: #EEE;">-->
-<!--    <div class="sb-msg" style="text-align: center;"><i class="icon-question-sign"></i>-->
-<!--      You need to add your password for OwlReply to check your incoming mail.<br>-->
-<!--      OwlReply will mark all incoming mail as "Read".-->
-<!--    </div>-->
-<!--  </div>-->
-  <%# end %>
   <div class="content-wrap nopadding">
     <div class="section nomargin notoppadding">
       <div class="">
         <div class="row">
-          <script>$.get('/inbox/1.js')</script>
-          <div class="replies_box col-md-12">
+          <script>$.get('/inbox/<%= @emailaccount.id %>.js')</script>
+          <div class="replies_box col-md-10 mt-4">
             <div class="">
               <% unless @emailaccount.authenticated %>
                 <%= render 'emailaccounts/authentication' %>
