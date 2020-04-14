@@ -54,14 +54,21 @@ module GoogleConnector
         list = @service.list_user_messages('me', max_results: limit, label_ids: label_ids, q: query)
       rescue Google::Apis::AuthorizationError => e
         @errors.push("Google returned an authorization error.")
-      #rescue
-      #  @errors.push("There was an error in listing your messages.")
+      rescue
+        @errors.push("There was an error in listing your messages.")
+        @errors.push("#{$!.to_s}") rescue nil
       end
 
       if set = list&.messages #the & checks for nil
         set.each do |i|
           obj = {}
-          email = @service.get_user_message('me', i.id)
+          begin
+            email = @service.get_user_message('me', i.id)
+          rescue
+            @errors.push("Google returned an error message.")
+            @errors.push("#{$!.to_s}") rescue nil
+            next
+          end
           payload = email.payload
           headers = payload.headers
           subject = headers.any? { |h| h.name == 'Subject' } ? headers.find { |h| h.name == 'Subject' }.value : ''
