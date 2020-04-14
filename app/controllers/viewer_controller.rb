@@ -16,13 +16,14 @@ class ViewerController < ApplicationController
 
   def view_messages
     @messages = []
-    @errors = nil
+    @errors = []
     if @emailaccount.email_provider == "google"
       api = GmailApi.new @emailaccount
 
         begin
           messages = api.get_messages(limit: (params[:more] ? 20 : 2))[:messages]
-          @errors = "No unread emails." if messages.empty?
+          @errors.concat(api.errors)
+          @errors.push("No unread emails.") if messages.empty?
 
           messages.each do |msg|
             date = DateTime.parse(msg['date'])

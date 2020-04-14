@@ -9,6 +9,7 @@ module GoogleConnector
       @emailaccount = emailaccount
       @service = get_service
       @errors = []
+      @messages = []
     end
 
     def replier_logger
@@ -139,7 +140,7 @@ module GoogleConnector
         message.header['References'] = "<#{msgid}>"
       end
 
-      puts message.to_s
+      #puts message.to_s
 
       @service.create_user_draft(
           "me",
@@ -170,8 +171,11 @@ module GoogleConnector
     end
 
     def refresh_this_token!
-
       begin
+        if @emailaccount.google_refresh_token.blank?
+          @errors.push("Google refresh token is blank. Please reauthorize your account.")
+          return true
+        end
         credentials = Google::Auth::UserRefreshCredentials.new(
             client_id: api_client_id,
             client_secret: api_client_secret,
@@ -219,7 +223,7 @@ module GoogleConnector
     end
 
     def refresh_api!
-      if Time.now.to_i > @emailaccount.google_expires_in.to_i
+      if ((Time.now.to_i > @emailaccount.google_expires_in.to_i) || (@emailaccount.google_access_token.blank?))
         refresh_this_token!
       end
     end
