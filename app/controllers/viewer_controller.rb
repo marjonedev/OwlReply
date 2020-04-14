@@ -19,38 +19,20 @@ class ViewerController < ApplicationController
     @errors = []
     if @emailaccount.email_provider == "google"
       api = GmailApi.new @emailaccount
+      messages = api.get_messages(limit: (params[:more] ? 20 : 2))
+      @errors.concat(api.errors)
+      @errors.push("No unread emails.") if messages.empty?
 
-        begin
-          messages = api.get_messages(limit: (params[:more] ? 20 : 2))
-          @errors.concat(api.errors)
-          @errors.push("No unread emails.") if messages.empty?
+      messages.each do |msg|
+        date = DateTime.parse(msg['date'])
+        formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+        subject = msg['subject']
+        from = msg['from']
+        thebody = msg['body_text'].to_s.gsub("\r\n", " ")
+        thebody = thebody.truncate(80, separator: " ")
 
-          messages.each do |msg|
-            date = DateTime.parse(msg['date'])
-            formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
-            subject = msg['subject']
-            from = msg['from']
-            thebody = msg['body_text'].to_s.gsub("\r\n", " ")
-            thebody = thebody.truncate(80, separator: " ")
-
-            @messages.push({date: formatted_date, subject:subject, body: msg['body'], body_text: thebody, from: from})
-          end
-
-        rescue Google::Apis::AuthorizationError => exception
-          @error = "Could not access your account."
-          replier_logger.error exception.message
-          exception.backtrace.each { |line| replier_logger.error line }
-
-          begin
-            api.refresh_api!
-          rescue RefreshTokenFailureError => error
-            replier_logger.error("GOOGLE: #{account.address} - Failed to refresh user token. #{error.to_s}")
-          end
-
-        rescue Exception => e
-          replier_logger.error e.message
-          e.backtrace.each { |line| replier_logger.error line }
-        end
+        @messages.push({date: formatted_date, subject:subject, body: msg['body'], body_text: thebody, from: from, unread: msg['unread']})
+      end
     else
 
       # Here is the imap process

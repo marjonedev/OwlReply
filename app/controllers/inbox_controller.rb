@@ -24,7 +24,7 @@ class InboxController < ApplicationController
           thebody = msg['body_text'].to_s.gsub("\r\n", " ")
           thebody = thebody.truncate(80, separator: " ")
 
-          @messages.push({date: formatted_date, subject:subject, body: msg['body'], body_text: thebody, from: from})
+          @messages.push({date: formatted_date, subject:subject, body: msg['body'], body_text: thebody, from: from, unread: msg['unread']})
         end
 
       rescue Google::Apis::AuthorizationError => exception

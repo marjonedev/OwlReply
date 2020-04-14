@@ -1,7 +1,7 @@
 - b = improved_message_body(message)
 - id = message[:date].downcase.gsub(' ','').gsub(',','_').gsub(':','_')
 .message{id: "message_#{id}"}
-  %a.list-group-item.list-group-item-action.flex-column.align-items-start{onclick: "$(this).parent().find('.email_content').toggle();"}
+  %a.list-group-item.list-group-item-action.flex-column.align-items-start{onclick: "$(this).parent().find('.email_content').toggle();", style: "#{message[:unread] ? '' : 'background-color:#CCC;'}"}
     .d-flex.w-100.justify-content-between
       %h5.mb-2= message[:from]
       %small= message[:date]

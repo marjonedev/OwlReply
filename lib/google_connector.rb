@@ -3,7 +3,7 @@ require 'googleauth'
 module GoogleConnector
 
   class GmailApi
-    attr_accessor :errors
+    attr_accessor :errors, :service, :messages
 
     def initialize emailaccount
       @emailaccount = emailaccount
@@ -54,8 +54,8 @@ module GoogleConnector
         list = @service.list_user_messages('me', max_results: limit, label_ids: label_ids, q: query)
       rescue Google::Apis::AuthorizationError => e
         @errors.push("Google returned an authorization error.")
-      rescue
-        @errors.push("There was an error in listing your messages.")
+      #rescue
+      #  @errors.push("There was an error in listing your messages.")
       end
 
       if set = list&.messages #the & checks for nil
@@ -81,6 +81,12 @@ module GoogleConnector
           obj['body_text'] = nil
           obj['body_size'] = payload.body.size rescue 0
           obj['msgid'] = msgid.tr('<>', '')
+          obj['unread'] = (email.label_ids || []).include?("UNREAD")
+
+
+          Rails.logger.info "\n\n\n\n\n"
+          Rails.logger.info email.label_ids
+          Rails.logger.info obj['unread']
 
           # if body.nil? && payload.parts.any?
           #   body = payload.parts.map { |part| part.body.data }.join
@@ -189,10 +195,13 @@ module GoogleConnector
 
         @emailaccount.update(google_access_token: response['access_token'],
                        google_expires_in: expires_in)
+        @service = get_service # Get a new service object now that we have a new access token.
 
       rescue Signet::AuthorizationError => error
+        @errors.push("Authorization error.")
         raise RefreshTokenFailureError.new(error.to_s)
-      rescue Exception => error
+      rescue StandardError => error
+        @errors.push("Exception")
         raise RefreshTokenFailureError.new(error.to_s)
       end
 
@@ -221,7 +230,7 @@ module GoogleConnector
     end
 
     def refresh_api!
-      if ((Time.now.to_i > @emailaccount.google_expires_in.to_i) || (@emailaccount.google_access_token.blank?))
+      if ((Time.now.to_i > @emailaccount.google_expires_in.to_i) || (@emailaccount.reload.google_access_token.blank?))
         refresh_this_token!
       end
     end
