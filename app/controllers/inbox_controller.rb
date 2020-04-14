@@ -11,7 +11,7 @@ class InboxController < ApplicationController
 
       begin
         result = api.get_messages(limit: (params[:more] ? 20 : 2), unread: (params[:all] ? false : true))
-        messages = result[:messages]
+        messages = result
         @errors.push("No unread emails.") if messages.empty?
         @errors.concat(api.errors) if api.errors
         # We could redirect the user someone based on the error, like back to Google.

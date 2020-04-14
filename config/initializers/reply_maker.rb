@@ -325,7 +325,7 @@ module ReplyMaker
 
         require 'date'
 
-        messages = api.get_messages[:messages]
+        messages = api.get_messages
 
         ids = []
 

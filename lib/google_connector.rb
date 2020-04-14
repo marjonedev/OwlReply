@@ -38,15 +38,13 @@ module GoogleConnector
     end
 
     def get_messages(limit: 500, unread: true)
-      result_object = {} #This may be deprecated? Later maybe the user then has to call get_messages and access them from @messages variable?
-      result_object[:messages] = []
 
       begin
         refresh_api!
       rescue RefreshTokenFailureError => error
         replier_logger.error("GOOGLE: #{@emailaccount.address} - Failed to refresh user token. #{error.to_s}")
         @errors.push("Failed to refresh token.")
-        return result_object
+        return @messages
       end
 
       query = "after: #{1.week.ago.to_i}"
@@ -107,10 +105,10 @@ module GoogleConnector
           end
 
 
-          result_object[:messages].push(obj)
+          @messages.push(obj)
         end
       end
-      return result_object
+      return @messages
     end
 
     def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
