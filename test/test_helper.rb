@@ -31,5 +31,9 @@ class ActiveSupport::TestCase
     post users_url, params: { user: { email_address: @user.email_address, encrypted_password: @user.encrypted_password, salt: @user.salt, username: @user.username } }
   end
 
+  def is_main_emailaccount(account)
+    @user.email_address == account.address
+  end
+
   # Add more helper methods to be used by all tests here...
 end

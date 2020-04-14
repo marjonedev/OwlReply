@@ -41,8 +41,13 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot destroy with only main emailaccount" do
-    assert_no_difference 'Emailaccount.count' do
-      delete emailaccount_url(@user.emailaccounts.last)
+
+    @user.emailaccounts.each do |account|
+      if is_main_emailaccount(account)
+        assert_no_difference 'Emailaccount.count' do
+          delete emailaccount_url(account)
+        end
+      end
     end
 
     assert_redirected_to emailaccount_url(@user.emailaccounts.last)
