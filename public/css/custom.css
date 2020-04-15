@@ -428,7 +428,8 @@ div#checked-notification {
 div.custom_cards .card span.numval.admin_last_checked{
     font-size: 20px;
 }
-
+/* HOME TIME */
+.time_section { background-color:#9A9A9A; text-align: center; paddingx: 0 0 20px; }
 /* HOMEPAGE SECTION SAMPLE EMAIL */
 .sample_section { background-color:#eaeaea; text-align: center; paddingx: 0 0 20px; }
 .sample_mail, .sample_arrow, .sample_reply { display: inline-block; width: 100%; max-width: 400px; vertical-align: top; text-align: left; }
