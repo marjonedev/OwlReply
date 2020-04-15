@@ -6,6 +6,11 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     @invoice = invoices(:one)
   end
 
+  teardown do
+    @invoice = nil
+    Invoice.destroy_all
+  end
+
   test "should get index" do
     get invoices_url
     assert_response :success
@@ -18,14 +23,15 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create invoice" do
     assert_difference('Invoice.count') do
-      post invoices_url, params: { invoice: { amount: @invoice.amount, amount_paid: @invoice.amount_paid, date_paid: @invoice.date_paid, transaction_id: @invoice.transaction_id, user_id: @invoice.user_id } }
+      create_user_invoice
     end
 
-    assert_redirected_to invoice_url(Invoice.last)
+    assert_redirected_to root_url
   end
 
   test "should show invoice" do
-    get invoice_url(@invoice)
+    create_user_invoice
+    get invoice_url(Invoice.last)
     assert_response :success
   end
 
@@ -35,15 +41,17 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update invoice" do
-    patch invoice_url(@invoice), params: { invoice: { amount: @invoice.amount, amount_paid: @invoice.amount_paid, date_paid: @invoice.date_paid, transaction_id: @invoice.transaction_id, user_id: @invoice.user_id } }
-    assert_redirected_to invoice_url(@invoice)
+    create_user_invoice
+    patch invoice_url(@user.invoices.last), params: { invoice: { amount: @invoice.amount, amount_paid: @invoice.amount_paid, date_paid: @invoice.date_paid, transaction_id: @invoice.transaction_id, user_id: @invoice.user_id } }
+    assert_redirected_to invoices_url
   end
 
   test "should destroy invoice" do
+    create_user_invoice
     assert_difference('Invoice.count', -1) do
-      delete invoice_url(@invoice)
+      @user.invoices.last.destroy
     end
 
-    assert_redirected_to invoices_url
+    assert_redirected_to root_url
   end
 end

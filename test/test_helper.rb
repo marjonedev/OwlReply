@@ -23,7 +23,7 @@ class ActiveSupport::TestCase
   end
 
   def create_the_basic_subscription
-    Subscription.create(id: 1, name: "Entrepreneur", price: 0, frequency: "Monthly")
+    Subscription.create([id: 1, name: "Entrepreneur", price: 0, frequency: "Monthly"])
   end
 
   def create_the_first_user
@@ -33,6 +33,41 @@ class ActiveSupport::TestCase
 
   def is_main_emailaccount(account)
     @user.email_address == account.address
+  end
+
+  def create_stripe_token(cardno: '4242424242424242', exp_month: 4, exp_year: 2021, cvc: '321')
+    # require 'stripe'
+    Stripe.api_key = Rails.application.credentials.stripe_api_key
+
+    Stripe::Token.create({
+                             card: {
+                                 number: cardno,
+                                 exp_month: exp_month,
+                                 exp_year: exp_year,
+                                 cvc: cvc,
+                             },
+                         })
+  end
+
+  def create_user_invoice
+    @paymentmethod = paymentmethods(:one)
+    @sub = subscriptions(:one)
+    @subscription  = Subscription.create(name: @sub.name, price: @sub.price, frequency: @sub.frequency)
+    token = create_stripe_token(cardno: @paymentmethod.card_number, exp_month: @paymentmethod.card_exp_month, exp_year: @paymentmethod.card_exp_year)
+
+    @user.paymentmethods.create({
+                                    token: token.id,
+                                    default: true,
+                                    card_number: @paymentmethod.card_number,
+                                    card_exp_month: @paymentmethod.card_exp_month,
+                                    card_exp_year: @paymentmethod.card_exp_year,
+                                    card_brand: @paymentmethod.card_brand,
+                                    customer_id: @paymentmethod.customer_id,
+                                    currency: @paymentmethod.currency
+                                })
+
+    @user.invoices.create({ subscription_id: @subscription.id })
+
   end
 
   # Add more helper methods to be used by all tests here...
