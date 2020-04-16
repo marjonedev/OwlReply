@@ -80,5 +80,10 @@ class ActiveSupport::TestCase
 
   end
 
+  def create_emailaccount
+    @emailaccount = emailaccounts(:email1)
+    post emailaccounts_url, params: { emailaccount: { address: @emailaccount.address } }
+  end
+
   # Add more helper methods to be used by all tests here...
 end
