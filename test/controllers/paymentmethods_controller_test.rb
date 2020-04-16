@@ -18,29 +18,57 @@ class PaymentmethodsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create paymentmethod" do
     assert_difference('Paymentmethod.count') do
-      post paymentmethods_url, params: { paymentmethod: { card_exp_date: @paymentmethod.card_exp_date, card_name: @paymentmethod.card_name, card_type: @paymentmethod.card_type, customer_id: @paymentmethod.customer_id, method: @paymentmethod.method, user_id: @paymentmethod.user_id } }
+
+      create_paymentmethod
+
+      # post paymentmethods_url, params: {
+      #     paymentmethod: {
+      #         token: token.id,
+      #         default: true,
+      #         card_number: @paymentmethod.card_number,
+      #         card_exp_month: @paymentmethod.card_exp_month,
+      #         card_exp_year: @paymentmethod.card_exp_year,
+      #         card_brand: @paymentmethod.card_brand,
+      #         customer_id: @paymentmethod.customer_id,
+      #         currency: @paymentmethod.currency
+      #     }
+      # }
     end
 
-    assert_redirected_to paymentmethod_url(Paymentmethod.last)
+    assert_redirected_to root_url
   end
 
   test "should show paymentmethod" do
+    @paymentmethod = create_paymentmethod
     get paymentmethod_url(@paymentmethod)
     assert_response :success
   end
 
   test "should get edit" do
+    @paymentmethod = create_paymentmethod
     get edit_paymentmethod_url(@paymentmethod)
     assert_response :success
   end
 
   test "should update paymentmethod" do
-    patch paymentmethod_url(@paymentmethod), params: { paymentmethod: { card_exp_date: @paymentmethod.card_exp_date, card_name: @paymentmethod.card_name, card_type: @paymentmethod.card_type, customer_id: @paymentmethod.customer_id, method: @paymentmethod.method, user_id: @paymentmethod.user_id } }
-    assert_redirected_to paymentmethod_url(@paymentmethod)
+    @paymentmethod = create_paymentmethod
+    @paymentmethod2 = paymentmethods(:two)
+
+    @paymentmethod.update(default: true,
+      card_number: @paymentmethod2.card_number,
+      card_exp_month: @paymentmethod2.card_exp_month,
+      card_exp_year: @paymentmethod2.card_exp_year,
+      card_brand: @paymentmethod2.card_brand,
+      customer_id: @paymentmethod2.customer_id,
+      currency: @paymentmethod2.currency
+    )
+
+    assert_redirected_to root_url
   end
 
   test "should destroy paymentmethod" do
-    assert_difference('Paymentmethod.count', -1) do
+    @paymentmethod = create_paymentmethod
+    assert_difference 'Paymentmethod.count', -1 do
       delete paymentmethod_url(@paymentmethod)
     end
 

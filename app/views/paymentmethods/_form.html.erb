@@ -1,5 +1,6 @@
-<%= form_with(model: paymentmethod, local: true) do |form| %>
-  <% if paymentmethod.errors.any? %>
+<%= form_with model: (paymentmethod || paymentmethod = Paymentmethod.new), remote: true do |form| %>
+
+    <% if paymentmethod.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(paymentmethod.errors.count, "error") %> prohibited this paymentmethod from being saved:</h2>
 
@@ -17,28 +18,28 @@
   </div>
 
   <div class="field">
-    <%= form.label :method %>
-    <%= form.text_field :method %>
+    <%= form.label :card_number %>
+    <%= form.number_field :card_number %>
   </div>
 
   <div class="field">
-    <%= form.label :card_name %>
-    <%= form.text_field :card_name %>
+    <%= form.label :card_exp_month %>
+    <%= form.number_field :card_exp_month %>
   </div>
 
   <div class="field">
-    <%= form.label :card_type %>
-    <%= form.text_field :card_type %>
+    <%= form.label :card_exp_year %>
+    <%= form.number_field :card_exp_year %>
+  </div>
+
+  <div class="field">
+    <%= form.label :card_brand %>
+    <%= form.text_field :card_brand %>
   </div>
 
   <div class="field">
     <%= form.label :customer_id %>
-    <%= form.text_field :customer_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :card_exp_date %>
-    <%= form.date_select :card_exp_date %>
+    <%= form.number_field :customer_id %>
   </div>
 
   <div class="actions">

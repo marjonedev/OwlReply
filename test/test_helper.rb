@@ -49,10 +49,14 @@ class ActiveSupport::TestCase
                          })
   end
 
-  def create_user_invoice
-    @paymentmethod = paymentmethods(:one)
+  def create_subscription
     @sub = subscriptions(:one)
-    @subscription  = Subscription.create(name: @sub.name, price: @sub.price, frequency: @sub.frequency)
+    Subscription.create(name: @sub.name, price: @sub.price, frequency: @sub.frequency)
+  end
+
+  def create_paymentmethod
+    @paymentmethod = paymentmethods(:one)
+
     token = create_stripe_token(cardno: @paymentmethod.card_number, exp_month: @paymentmethod.card_exp_month, exp_year: @paymentmethod.card_exp_year)
 
     @user.paymentmethods.create({
@@ -65,6 +69,12 @@ class ActiveSupport::TestCase
                                     customer_id: @paymentmethod.customer_id,
                                     currency: @paymentmethod.currency
                                 })
+
+  end
+
+  def create_user_invoice
+
+    @subscription = create_subscription
 
     @user.invoices.create({ subscription_id: @subscription.id })
 

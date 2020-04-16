@@ -15,9 +15,9 @@ two:
   user_id: 2
   token: MyString
   default: false
-  card_number: 4879
-  card_exp_month: 08
-  card_exp_year: 24
+  card_number: 4242424242424242
+  card_exp_month: 8
+  card_exp_year: 2028
   card_brand: Visa
   customer_id: dfjkdkdkdkdkdkdk
   currency: USD

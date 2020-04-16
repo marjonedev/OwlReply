@@ -23,6 +23,7 @@ class PaymentmethodsController < ApplicationController
     elsif (params.has_key?(:invoice))
       session[:invoice] = params[:invoice]
     end
+
   end
 
 
@@ -55,9 +56,9 @@ class PaymentmethodsController < ApplicationController
   def create
     @paymentmethod = current_user.paymentmethods.new(paymentmethod_params)
 
-    respond_to do |format|
-      if session[:upgrade]
-        @subscription = Subscription.find(session[:upgrade])
+    if session[:upgrade]
+      @subscription = Subscription.find(session[:upgrade])
+      respond_to do |format|
         if @paymentmethod.save
           session.delete(:upgrade)
           current_user.set_subscription!(@subscription)
@@ -66,18 +67,24 @@ class PaymentmethodsController < ApplicationController
           format.js {  }
           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
         end
-      elsif session[:invoice]
-         if @paymentmethod.save
-           invoice_id = session[:invoice]
-           session.delete(:invoice)
-           format.html { redirect_to invoice_path(invoice_id), notice: "Payment method was successfully created" }
-         else
-           format.js {  }
-           format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
-         end
-      else
+      end
+    elsif session[:invoice]
+      respond_to do |format|
         if @paymentmethod.save
-          @paymentmethods = current_user.paymentmethods
+          invoice_id = session[:invoice]
+          session.delete(:invoice)
+          format.html { redirect_to invoice_path(invoice_id), notice: "Payment method was successfully created" }
+        else
+          format.js {  }
+          format.json { render json: @paymentmethod.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+
+        @paymentmethods = current_user.paymentmethods
+        if @paymentmethod.save
+
           format.js {  }
           # format.html { redirect_to @paymentmethod, notice: 'Paymentmethod was successfully created.' }
           format.json { render :show, status: :created, location: @paymentmethod }
@@ -88,6 +95,7 @@ class PaymentmethodsController < ApplicationController
         end
       end
     end
+
   end
 
   # PATCH/PUT /paymentmethods/1
@@ -112,9 +120,9 @@ class PaymentmethodsController < ApplicationController
   def destroy
     @paymentmethod.destroy
     respond_to do |format|
+      format.js {  }
       format.html { redirect_to paymentmethods_url, notice: 'Paymentmethod was successfully destroyed.' }
       format.json { head :no_content }
-      format.js {  }
     end
   end
 
