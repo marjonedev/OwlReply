@@ -30,4 +30,35 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     assert_equal "/", path
   end
 
+  test "should get accounts" do
+    get admin_accounts_url
+    follow_redirect!
+  end
+
+  test "should get emailaccounts" do
+    get admin_emailaccounts_url
+    follow_redirect!
+  end
+
+  test "should get replies" do
+    get admin_replies_url
+    follow_redirect!
+  end
+
+  test "should get subscribers" do
+    get admin_subscribers_url
+    follow_redirect!
+  end
+
+  test "should get late_invoices" do
+    get admin_late_invoices_url
+    follow_redirect!
+  end
+
+  test "should get show_invoice" do
+    @invoice = invoices(:one)
+    get "/admin/show_invoice/#{@invoice.id}"
+    follow_redirect!
+  end
+
 end

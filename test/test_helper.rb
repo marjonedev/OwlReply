@@ -31,6 +31,14 @@ class ActiveSupport::TestCase
     post users_url, params: { user: { email_address: @user.email_address, encrypted_password: @user.encrypted_password, salt: @user.salt, username: @user.username } }
   end
 
+  def create_admin_user
+
+    @user = users(:username3)
+
+    post users_url, params: { user: { email_address: @user.email_address, encrypted_password: @user.encrypted_password,
+                                      salt: @user.salt, username: @user.username, admin: @user.admin } }
+  end
+
   def is_main_emailaccount(account)
     @user.email_address == account.address
   end

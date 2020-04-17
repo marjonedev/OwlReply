@@ -4,9 +4,17 @@ username1:
   username: username1
   email_address: someone1@example.com
   salt: MyString
+  admin: false
 
 username2:
   username: username2
   email_address: someone2@example.com
   salt: MyString
+  admin: false
+
+username3:
+  username: username3
+  email_address: someone3@example.com
+  salt: MyString
+  admin: true
 
