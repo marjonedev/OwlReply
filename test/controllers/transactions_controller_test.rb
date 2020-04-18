@@ -4,6 +4,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     setup_everything_necessary!
     @transaction = transactions(:one)
+    @invoice = invoices(:one)
   end
 
   test "should get index" do
@@ -17,8 +18,9 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create transaction" do
+
     assert_difference('Transaction.count') do
-      post transactions_url, params: { transaction: { amount: @transaction.amount, payment_provider: @transaction.payment_provider, reference: @transaction.reference, reversed: @transaction.reversed, timestamp: @transaction.timestamp, user_id: @transaction.user_id } }
+      post transactions_url, params: { transaction: { amount: @transaction.amount, payment_provider: @transaction.payment_provider, reference: @transaction.reference, reversed: @transaction.reversed, timestamp: @transaction.timestamp, user_id: @user.id, invoice_id: @invoice.id} }
     end
 
     assert_redirected_to transaction_url(Transaction.last)
@@ -35,7 +37,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update transaction" do
-    patch transaction_url(@transaction), params: { transaction: { amount: @transaction.amount, payment_provider: @transaction.payment_provider, reference: @transaction.reference, reversed: @transaction.reversed, timestamp: @transaction.timestamp, user_id: @transaction.user_id } }
+    patch transaction_url(@transaction), params: { transaction: { amount: @transaction.amount, payment_provider: @transaction.payment_provider, reference: @transaction.reference, reversed: @transaction.reversed, timestamp: @transaction.timestamp, user_id: @user.id, invoice_id:  @invoice.id} }
     assert_redirected_to transaction_url(@transaction)
   end
 

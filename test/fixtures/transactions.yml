@@ -4,14 +4,16 @@ one:
   user_id: 1
   reference: MyString
   payment_provider: MyString
-  timestamp: 2019-08-26 19:19:33
+  timestamp: 2020-04-19 01:33:47
   reversed: false
-  amount: 1.5
+  amount: 1200
+  invoice_id: 1
 
 two:
   user_id: 1
   reference: MyString
   payment_provider: MyString
-  timestamp: 2019-08-26 19:19:33
+  timestamp: 2020-04-19 01:33:47
   reversed: false
-  amount: 1.5
+  amount: 1600
+  invoice_id: 1

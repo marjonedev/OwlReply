@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_185355) do
+ActiveRecord::Schema.define(version: 2020_04_18_190318) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_185355) do
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "invoice_id", null: false
     t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
@@ -135,4 +136,16 @@ ActiveRecord::Schema.define(version: 2020_04_08_185355) do
     t.index ["email_address"], name: "index_users_on_email_address"
   end
 
+  create_table "wordcounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "emailaccount_id"
+    t.string "word"
+    t.integer "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["emailaccount_id", "count"], name: "index_wordcounts_on_emailaccount_id_and_count"
+    t.index ["emailaccount_id", "word"], name: "index_wordcounts_on_emailaccount_id_and_word"
+    t.index ["emailaccount_id"], name: "index_wordcounts_on_emailaccount_id"
+  end
+
+  add_foreign_key "wordcounts", "emailaccounts"
 end
