@@ -3,7 +3,7 @@ require 'test_helper'
 class RepliesControllerTest < ActionDispatch::IntegrationTest
   setup do
     setup_everything_necessary!
-    create_emailaccount
+    @emailaccount = emailaccounts(:email1)
     @reply = replies(:one)
   end
 

@@ -6,9 +6,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    setup_everything_necessary!
+    setup_everything_with_admin!
     get users_url
-    assert_response :redirect
+    assert_response :success
   end
 
   test "should get new" do
@@ -18,10 +18,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user" do
     assert_difference('User.count') do
-      post users_url, params: { user: { email: @user.email, password: @user.password, salt: @user.salt, username: @user.username } }
+      create_the_basic_subscription
+      post users_url, params: { user: { email_address: 'someone4@example.com', password: 'nothing123', salt: 'MyString', username: 'username4'} }
     end
 
-    assert_redirected_to user_url(User.last)
+    follow_redirect!
   end
 
   test "should show user" do
@@ -43,10 +44,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy user" do
-    # assert_difference('User.count', -1) do
-    #   delete user_url(@user)
-    # end
-    #
-    # assert_redirected_to users_url
+    assert_difference('User.count', -1) do
+      delete user_url(@user)
+    end
+
+    assert_redirected_to users_url
   end
 end

@@ -9,13 +9,20 @@ class ActiveSupport::TestCase
   def setup_everything_necessary
     host! "https://www.owlreply.com"
     create_the_basic_subscription
-    create_the_first_user
+    # create_the_first_user
+    @user = users(:username1)
     User.all.each{|user|user.password="nothing123";user.save!}
   end
 
   def setup_everything_necessary!
     setup_everything_necessary
-    post '/login', params: {'user[username]': User.first.username, 'user[password]': 'nothing123'}
+    post login_url, params: {'user[username]': User.first.username, 'user[password]': 'nothing123'}
+  end
+
+  def setup_everything_with_admin!
+    setup_everything_necessary
+    @user = users(:username3)
+    post login_url, params: {'user[username]': @user.username, 'user[password]': 'nothing123'}
   end
 
   def login
@@ -28,15 +35,8 @@ class ActiveSupport::TestCase
 
   def create_the_first_user
     @user = users(:username1)
+
     post users_url, params: { user: { email_address: @user.email_address, encrypted_password: @user.encrypted_password, salt: @user.salt, username: @user.username } }
-  end
-
-  def create_admin_user
-
-    @user = users(:username3)
-
-    post users_url, params: { user: { email_address: @user.email_address, encrypted_password: @user.encrypted_password,
-                                      salt: @user.salt, username: @user.username, admin: @user.admin } }
   end
 
   def is_main_emailaccount(account)
@@ -57,17 +57,12 @@ class ActiveSupport::TestCase
                          })
   end
 
-  def create_subscription
-    @sub = subscriptions(:one)
-    Subscription.create(name: @sub.name, price: @sub.price, frequency: @sub.frequency)
-  end
-
-  def create_paymentmethod
+  def create_paymentmethod(user)
     @paymentmethod = paymentmethods(:one)
 
     token = create_stripe_token(cardno: @paymentmethod.card_number, exp_month: @paymentmethod.card_exp_month, exp_year: @paymentmethod.card_exp_year)
 
-    @user.paymentmethods.create({
+    user.paymentmethods.create({
                                     token: token.id,
                                     default: true,
                                     card_number: @paymentmethod.card_number,
@@ -82,16 +77,17 @@ class ActiveSupport::TestCase
 
   def create_user_invoice
 
-    @subscription = create_subscription
-
-    @user.invoices.create({ subscription_id: @subscription.id })
+    @user = users(:username1)
+    @sub = subscriptions(:one)
+    create_paymentmethod @user
+    @user.invoices.create({ subscription_id: @sub.id })
 
   end
 
-  def create_emailaccount
-    @emailaccount = emailaccounts(:email1)
-    post emailaccounts_url, params: { emailaccount: { address: @emailaccount.address } }
-  end
+  # def create_emailaccount
+  #   @emailaccount = emailaccounts(:email1)
+  #   post emailaccounts_url, params: { emailaccount: { address: @emailaccount.address } }
+  # end
 
   # Add more helper methods to be used by all tests here...
 end

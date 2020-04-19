@@ -19,7 +19,7 @@ class PaymentmethodsControllerTest < ActionDispatch::IntegrationTest
   test "should create paymentmethod" do
     assert_difference('Paymentmethod.count') do
 
-      create_paymentmethod
+      create_paymentmethod @user
 
       # post paymentmethods_url, params: {
       #     paymentmethod: {
@@ -39,19 +39,19 @@ class PaymentmethodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show paymentmethod" do
-    @paymentmethod = create_paymentmethod
+    @paymentmethod = create_paymentmethod(@user)
     get paymentmethod_url(@paymentmethod)
     assert_response :success
   end
 
   test "should get edit" do
-    @paymentmethod = create_paymentmethod
+    @paymentmethod = create_paymentmethod(@user)
     get edit_paymentmethod_url(@paymentmethod)
     assert_response :success
   end
 
   test "should update paymentmethod" do
-    @paymentmethod = create_paymentmethod
+    @paymentmethod = create_paymentmethod(@user)
     @paymentmethod2 = paymentmethods(:two)
 
     @paymentmethod.update(default: true,
@@ -67,7 +67,7 @@ class PaymentmethodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy paymentmethod" do
-    @paymentmethod = create_paymentmethod
+    @paymentmethod = create_paymentmethod(@user)
     assert_difference 'Paymentmethod.count', -1 do
       delete paymentmethod_url(@paymentmethod)
     end
