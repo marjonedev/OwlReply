@@ -184,7 +184,10 @@ class EmailaccountsController < ApplicationController
                 Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
                 Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE], # enter the scope for a service whichever you want to use
         redirect_uri: emailaccounts_google_callback_url,
-        additional_parameters: { "access_type" => "offline" })
+        additional_parameters: {
+            access_type: "offline",
+            prompt: "consent"
+        })
 
     credentials.code = params[:code]
     response = credentials.fetch_access_token!

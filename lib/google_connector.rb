@@ -28,7 +28,7 @@ module GoogleConnector
       Signet::OAuth2::Client.new({
                                   client_id: api_client_id,
                                   client_secret: api_client_secret,
-                                  authorization_uri: 'https://accounts.google.com/o/oauth2/auth?prompt=consent',
+                                  authorization_uri: 'https://accounts.google.com/o/oauth2/auth?access_type=offline&prompt=consent',
                                   scope: [Google::Apis::GmailV1::AUTH_GMAIL_READONLY,
                                           Google::Apis::GmailV1::AUTH_GMAIL_MODIFY,
                                           Google::Apis::GmailV1::AUTH_GMAIL_COMPOSE],
