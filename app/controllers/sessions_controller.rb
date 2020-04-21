@@ -2,12 +2,14 @@ class SessionsController < ApplicationController
   before_action :set_attempted_user, only: [:create]
 
   def new
+    @redirect_to = params[:redirect_to]
   end
 
   def create
+    redirect_url = params[:redirect_to] ? URI.decode(params[:redirect_to]) : root_url
     if @attempted_user&.can_authenticate_with?(params[:user][:password])
       session[:user_id] = @attempted_user.id
-      redirect_to root_url, id: @attempted_user.id
+      redirect_to redirect_url, id: @attempted_user.id
     else
       flash.now[:errormsg] = "Username or password is invalid."
       render "new"

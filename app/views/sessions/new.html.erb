@@ -39,6 +39,7 @@
               <button class="button button-3d button-black nomargin float-md-left" id="login-form-submit" name="login-form-submit" value="login">Login</button>
               <%= link_to 'Forgot Password?', forgot_password_url, :class => 'float-md-right' %>
             </div>
+            <input type="hidden" name="redirect_to" value="<%= ERB::Util.url_encode(@redirect_to) %>" />
           <% end %>
         </div>
 

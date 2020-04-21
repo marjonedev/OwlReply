@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     if !logged_in?
-      redirect_to login_url
+      redirect_to "#{login_url}?redirect_to=#{ERB::Util.url_encode(request.fullpath)}"
     end
   end
 
