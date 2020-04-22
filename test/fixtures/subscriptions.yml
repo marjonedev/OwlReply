@@ -1,11 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  name: Entrepreneur
+  price: 0
+  frequency: monthly
+
+two:
   name: Small Business
   price: 1200
   frequency: monthly
 
-two:
+three:
   name: Big Business
   price: 1600
   frequency: monthly
