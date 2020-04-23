@@ -21,44 +21,50 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
 
   test "no account view from non admin" do
     assert_raise(ActionController::RoutingError) do
-      post '/admin/accounts'
+      post admin_accounts_url
       follow_redirect!
     end
-    get '/admin/accounts'
+    get admin_accounts_url
     assert_response :redirect
     follow_redirect!
     assert_equal "/", path
   end
 
-  test "should get accounts" do
+  test "admin view accounts" do
+    setup_everything_with_admin!
     get admin_accounts_url
-    follow_redirect!
+    assert_response :success
   end
 
-  test "should get emailaccounts" do
+  test "admin view emailaccounts" do
+    setup_everything_with_admin!
     get admin_emailaccounts_url
-    follow_redirect!
+    assert_response :success
   end
 
-  test "should get replies" do
+  test "admin view replies" do
+    setup_everything_with_admin!
     get admin_replies_url
-    follow_redirect!
+    assert_response :success
   end
 
-  test "should get subscribers" do
+  test "admin view subscribers" do
+    setup_everything_with_admin!
     get admin_subscribers_url
-    follow_redirect!
+    assert_response :success
   end
 
-  test "should get late_invoices" do
+  test "admin view late_invoices" do
+    setup_everything_with_admin!
     get admin_late_invoices_url
-    follow_redirect!
+    assert_response :success
   end
 
-  test "should get show_invoice" do
+  test "admin view show_invoice" do
+    setup_everything_with_admin!
     @invoice = invoices(:one)
     get "/admin/show_invoice/#{@invoice.id}"
-    follow_redirect!
+    assert_response :success
   end
 
 end

@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group row">
                           <label class="col-sm-8">Date: </label>
-                          <div class="col-sm-4"><%= @invoice.date.strftime("%m/%d/%Y") %></div>
+                          <div class="col-sm-4"><%= @invoice.date.strftime("%m/%d/%Y") if @invoice.date %></div>
                         </div>
                       </div>
                     </div>
@@ -57,7 +57,7 @@
                           <th class="text-right" width="10%">Amount</th>
                         </thead>
                         <tbody>
-                          <td><%= @invoice.subscription.name %> - Monthly Charge</td>
+                          <td><%= @invoice.subscription.name if @invoice.subscription %> - Monthly Charge</td>
                           <td class="text-right"><%= @invoice.amount_to_string %></td>
                         </tbody>
                         <!--<tfoot>

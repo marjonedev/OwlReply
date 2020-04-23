@@ -30,7 +30,10 @@ class ActiveSupport::TestCase
   end
 
   def create_the_basic_subscription
-    Subscription.create([id: 1, name: "Entrepreneur", price: 0, frequency: "Monthly"])
+    sub = Subscription.where(name: "Entrepreneur")
+    unless sub.any?
+      Subscription.create([id: 1, name: "Entrepreneur", price: 0, frequency: "Monthly"])
+    end
   end
 
   def create_the_first_user

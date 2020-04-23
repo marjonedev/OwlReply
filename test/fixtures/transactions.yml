@@ -1,19 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 1
+  user: username1
   reference: MyString
   payment_provider: MyString
   timestamp: 2020-04-19 01:33:47
   reversed: false
   amount: 1200
-  invoice_id: 1
+  invoice: two
 
 two:
-  user_id: 1
+  user: username1
   reference: MyString
   payment_provider: MyString
   timestamp: 2020-04-19 01:33:47
   reversed: false
   amount: 1600
-  invoice_id: 1
+  invoice: one

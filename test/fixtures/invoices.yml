@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 1
+  user: username1
   amount: 1600
   amount_paid: 1600
   date_paid: 2019-08-26 19:17:11
   transaction_id: 1
-  subscription_id: 1
+  subscription: three
 
 two:
-  user_id: 1
-  amount: 1600
-  amount_paid: 1600
+  user: username1
+  amount: 1200
+  amount_paid: 1200
   date_paid: 2019-08-26 19:17:11
   transaction_id: 1
-  subscription_id: 1
+  subscription: two
