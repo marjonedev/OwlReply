@@ -34,6 +34,26 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get emails" do
+    get emails_emailaccount_url(@emailaccount)
+  end
+
+  # test "should remove email with AJAX" do
+  #   delete remove_emailaccount_url(@emailaccount), xhr: true
+  #   assert_response :success
+  # end
+
+  test "should check again status with AJAX" do
+    patch check_again_emailaccount_url(@emailaccount), xhr: true
+    assert_response :success
+  end
+
+  test "should get status" do
+    get status_emailaccount_url(@emailaccount, :format => :json), xhr: true
+    assert_response :success
+  end
+
+
   test "should update emailaccount" do
     patch emailaccount_url(@emailaccount), params: { emailaccount: { address: @emailaccount.address, encrypted_password: @emailaccount.encrypted_password, encryption_key: @emailaccount.encryption_key, password: @emailaccount.password, user_id: @emailaccount.user_id } }
     assert_redirected_to emailaccount_url(@emailaccount)

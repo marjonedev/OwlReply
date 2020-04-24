@@ -113,7 +113,7 @@ class EmailaccountsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html
+      # format.html
       format.json {render json: {data:last_checked}}
     end
   end
