@@ -45,5 +45,18 @@ class PagesController < ApplicationController
 
   def privacy
   end
+
+  def guide_email_automation
+    @page_title = "A guide to automating your email replies."
+    render file: 'pages/guides/email_automation'
+  end
+  def guide_customer_service_emails
+    @page_title = "A guide to automating your email replies."
+    render file: 'pages/guides/customer_service_emails'
+  end
+  def guide_tips_for_good_emails
+    @page_title = "A guide to automating your email replies."
+    render file: 'pages/guides/tips_for_good_emails'
+  end
 end
 

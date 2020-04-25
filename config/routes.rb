@@ -69,6 +69,9 @@ Rails.application.routes.draw do
   get 'documentation', to: 'pages#documentation'
   get 'faqs', to: 'pages#faqs'
   get 'security', to: 'pages#security'
+  get 'guides/email-automation', to: 'pages#guide_email_automation'
+  get 'guides/customer-service-emails', to: 'pages#guide_customer_service_emails'
+  get 'guides/tips-for-good-emails', to: 'pages#guide_tips_for_good_emails'
   get 'signup' => 'users#new', :as => "signup"
   get 'users/index'
   get 'login' => 'sessions#new', :as => "login"
