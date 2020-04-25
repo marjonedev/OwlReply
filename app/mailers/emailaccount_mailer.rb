@@ -1,5 +1,5 @@
 class EmailaccountMailer < ActionMailer::Base
-  default from: 'ceo@owlreply.com'
+  default from: 'OwlReply <ceo@owlreply.com>'
 
   def suggestion_email
     @emailaccount = params[:emailaccount]
