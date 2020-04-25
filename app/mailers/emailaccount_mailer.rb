@@ -5,7 +5,7 @@ class EmailaccountMailer < ActionMailer::Base
     @emailaccount = params[:emailaccount]
     @url  = "#{Rails.application.config.base_url}"
     @words = Wordcount.most_frequent(@emailaccount).pluck(:word)
-    mail(to: @emailaccount, subject: "Suggested keyword to automate.")
+    mail(to: @emailaccount.address, subject: "Suggested keyword to automate.")
   end
 
   def connection_email
