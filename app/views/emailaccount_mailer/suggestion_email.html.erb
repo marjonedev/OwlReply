@@ -4,12 +4,11 @@
 </p>
 <p>
   <% for word in @words %>
-    <a href="<%= Rails.application.config.base_url %>/emailaccounts/<%= @emailaccount.id %>/replies/new?keyword=<%= word %>"><%= word %></a>
+    <a href="<%= Rails.application.config.base_url %>/emailaccounts/<%= @emailaccount.id %>/replies/new?keyword=<%= word %>" style="display:inline-block;padding:5px;margin:5px;"><%= word %></a>
   <% end %>
-  <%# @words %>
 </p>
 <p>
-  You get a lot of emails with thee "<%= @words %>" in it.
+  You get a lot of emails with these keywords.
 </p>
 <p>
   <a href="<%= Rails.application.config.base_url %>">Go to OwlReply</a> to add replies.
