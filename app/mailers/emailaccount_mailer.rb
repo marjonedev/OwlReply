@@ -2,9 +2,10 @@ class EmailaccountMailer < ActionMailer::Base
   default from: 'ceo@owlreply.com'
 
   def suggestion_email
-    @user = params[:user]
-    @url  = "#{Rails.application.config.base_url}/login"
-    mail(to: @user.email, subject: "Suggested keyword to automate.")
+    @emailaccount = params[:emailaccount]
+    @url  = "#{Rails.application.config.base_url}"
+    @words = Wordcount.most_frequent(@emailaccount).pluck(:word)
+    mail(to: @emailaccount, subject: "Suggested keyword to automate.")
   end
 
   def connection_email
