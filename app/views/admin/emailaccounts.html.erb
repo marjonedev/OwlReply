@@ -56,7 +56,9 @@
 <% content_for :javascript_footer_includes do %>
   <script>
       $(document).ready(function() {
-          $('#emailAccountsTable').dataTable();
+          $('#emailAccountsTable').dataTable({
+            "order": [[ 5, "desc" ]]
+          });
       });
   </script>
 <% end %>
