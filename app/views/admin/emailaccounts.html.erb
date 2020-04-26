@@ -32,7 +32,7 @@
           <tbody>
           <% @emailaccounts.each do |account| %>
             <tr>
-              <td><%= link_to account.user.email_address, "/admin/emailaccount/#{account.id}" %></td>
+              <td><%= link_to account.user.email_address, "/admin/emailaccounts/#{account.id}" %></td>
               <td><%= account.address %></td>
               <td><%= account.drafts_created_today.to_i %></td>
               <td><%= account.drafts_created_lifetime.to_i %></td>
