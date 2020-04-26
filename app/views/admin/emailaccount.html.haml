@@ -4,7 +4,7 @@
       = @emailaccount.address
     .keywords
       - for reply in @emailaccount.replies
-      .keyword
-        %strong
-          = reply.keywords
-      = reply.body
+        .keyword
+          %strong
+            = reply.keywords
+        = reply.body
