@@ -1,6 +1,9 @@
-.container
+.container.p-3
   .emailaccount
-    = @emailaccount.address
+    %h1
+      = @emailaccount.address
     .keywords
       - for reply in @emailaccount.replies
-        = reply.keywords
+        %strong
+          = reply.keywords
+        = reply.body
