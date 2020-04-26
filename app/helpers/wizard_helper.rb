@@ -1,4 +1,4 @@
-module ViewerHelper
+module WizardHelper
 
   def improved_message_body(message)
     body = message[:body]

@@ -26,7 +26,7 @@ class User < ApplicationRecord
   after_commit :create_newuser_job, on: :create
 
   def create_newuser_job
-    #NewuserJob.set(wait: 1.hour).perform_later(self)
+    NewuserJob.set(wait: 48.hours).perform_later(self)
   end
   def send_welcome_email
     UserMailer.with(user: self).welcome_email.deliver_later
@@ -47,7 +47,6 @@ class User < ApplicationRecord
     # set default subscription_id
     s = Subscription.find_by(name: "Entrepreneur").id
     self.subscription_id = s
-    #CongoingsubscribeJob.perform_later(self.email_address)
   end
 
   def create_initial_emailaccount

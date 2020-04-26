@@ -21,8 +21,8 @@
     $('.selected_keywords').val(selected_keywords);
   }
 </script>
-<% if controller_name == "viewer" %>
-  <%= form_with(model: @emailaccount, url: "/viewer/step3/#{@emailaccount.id}", method: "post", data: {remote: false}) do %>
+<% if controller_name == "wizard" %>
+  <%= form_with(model: @emailaccount, url: "/wizard/3/#{@emailaccount.id}", method: "post", data: {remote: false}) do %>
     <input type="hidden" name="keywords" class="selected_keywords" value="">
     <input type="submit" value="Looks Good!" class="submit-keywords button button-large button-rounded button-connect text-white">
   <% end %>

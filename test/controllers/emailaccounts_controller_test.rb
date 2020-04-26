@@ -21,7 +21,7 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
       post emailaccounts_url, params: { emailaccount: { address: "smithaccount@yahoo.com" } }
     end
 
-    assert_redirected_to "/viewer/step1/#{@user.emailaccounts.last.id}"
+    assert_redirected_to "/wizard/1/#{@user.emailaccounts.last.id}"
   end
 
   test "should show emailaccount" do

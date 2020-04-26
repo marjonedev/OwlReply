@@ -63,7 +63,7 @@
                   end
                 %>
                 <div class="mt-5 d-flex w-100 justify-content-between">
-                  <%= link_to 'Skip. Activate Manually.', "/viewer/skip/#{@emailaccount.id}", method: :patch, class: 'skip button button-light', remote: true %>
+                  <%= link_to 'Skip. Activate Manually.', "/wizard/skip/#{@emailaccount.id}", method: :patch, class: 'skip button button-light', remote: true %>
                   <button type="submit" class="button button-large button-rounded button-connect float-right <%= google_class %>">Connect</button>
                 </div>
            </div>

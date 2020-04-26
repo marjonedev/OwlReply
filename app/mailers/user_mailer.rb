@@ -25,4 +25,9 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email_address, subject: "OwlReply's got your automation covered.")
   end
 
+  def feedback
+    @user = params[:user]
+    mail(to: @user.email_address, subject: "How are you liking OwlReply?")
+  end
+
 end

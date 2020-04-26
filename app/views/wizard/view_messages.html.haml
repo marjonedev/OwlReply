@@ -31,6 +31,6 @@
                 .sb-msg
                   Click a few keywords and these will be used to generate your first auto replies.
           .mt-5.d-flex.w-100.justify-content-between
-            = link_to 'Skip. Activate Manually.', "/viewer/skip/#{@emailaccount.id}", method: :patch, class: 'skip button button-light', remote: true
+            = link_to 'Skip. Activate Manually.', "/wizard/skip/#{@emailaccount.id}", method: :patch, class: 'skip button button-light', remote: true
             / a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a
             = render file: "emailaccounts/keywordscript"

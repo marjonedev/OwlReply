@@ -46,7 +46,7 @@ class UsersController < ApplicationController
         session[:user_id] = @user.id # Make sure the user is logged in after signing in!
         session[:new_sign_up] = true
         # format.html { redirect_to @user.emailaccounts.first }
-        format.html { redirect_to "/viewer/step1" }
+        format.html { redirect_to "/wizard/1" }
         format.json { render :show, status: :created, location: @user, color: 'valid' }
       else
         format.html { render :new }

@@ -3,6 +3,6 @@ class NewuserJob < ApplicationJob
   discard_on ActiveJob::DeserializationError
 
   def perform(user)
-    user.send_informational_email
+    UserMailer.with(user: self).informational_email.deliver_later
   end
 end
