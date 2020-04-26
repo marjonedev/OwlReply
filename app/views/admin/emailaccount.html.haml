@@ -1,0 +1,5 @@
+.emailaccount
+  = @emailaccount.address
+  .keywords
+    - for reply in @emailaccount.replies
+      = reply.keywords
