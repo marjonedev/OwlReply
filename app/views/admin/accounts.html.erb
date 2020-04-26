@@ -31,7 +31,7 @@
           <% @accounts.each do |account| %>
             <tr>
               <td><%= account.email_address %></td>
-              <td><%= account.username %></td>
+              <td><%= link_to account.username, "/admin/accounts/#{account.id}/emailaccounts" %></td>
               <td><%= subs[account.subscription_id.to_i] %></td>
               <td data-order="<%= account.created_at.to_i %>"><%= account.created_at.strftime("%b %d, %Y") %></td>
             </tr>

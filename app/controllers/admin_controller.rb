@@ -5,6 +5,12 @@ class AdminController < ApplicationController
     @accounts = User.where(admin: false)
   end
 
+  def accounts_emailaccounts
+    @account = User.find(params[:id])
+    @emailaccounts = @account.emailaccounts
+    render action: 'emailaccounts'
+  end
+
   def emailaccounts
     @emailaccounts =  Emailaccount.left_joins(:user).where(users: {admin: false}).order(created_at: :DESC)
   end
