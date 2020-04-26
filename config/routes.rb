@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   #end
 
   get 'admin/accounts'
-  get 'admin/accounts/:id/emailaccounts'
+  get 'admin/accounts/:id/emailaccounts', to: 'admin#accounts_emailaccounts'
   get 'admin/emailaccounts'
   get 'admin/emailaccounts/:id', to: 'admin#emailaccount'
   get 'admin/replies'
