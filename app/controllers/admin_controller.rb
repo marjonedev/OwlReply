@@ -2,11 +2,15 @@ class AdminController < ApplicationController
   before_action :verify_admin
 
   def accounts
-    @accounts = User.where(:admin => false)
+    @accounts = User.where(admin: false)
   end
 
   def emailaccounts
-    @emailaccounts =  Emailaccount.left_joins(:user).where(users: {admin: false})
+    @emailaccounts =  Emailaccount.left_joins(:user).where(users: {admin: false}).order(created_at: :DESC)
+  end
+
+  def emailaccount
+    @emailaccount = Emailaccount.find(params[:id])
   end
 
   def replies
