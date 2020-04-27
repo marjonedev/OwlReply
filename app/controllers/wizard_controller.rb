@@ -8,7 +8,7 @@ class WizardController < ApplicationController
 
     unless @emailaccount.setupcomplete
       if @emailaccount.authenticated
-        redirect_to "/wizard/step2/#{@emailaccount.id}", notice: "Your account is already connected. Preview your messages to finish the process."
+        redirect_to "/wizard/2/#{@emailaccount.id}", notice: "Your account is already connected. Preview your messages to finish the process."
       end
     end
 
