@@ -46,6 +46,9 @@ class PagesController < ApplicationController
   def privacy
   end
 
+  def forgot_password
+  end
+
   def guide_email_automation
     @page_title = "A guide to automating your email replies from OwlReply."
     render file: 'pages/guides/email_automation'

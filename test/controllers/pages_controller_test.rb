@@ -4,24 +4,6 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   setup do
   end
 
-  test "should show home for admin" do
-    setup_everything_with_admin!
-    get root_url
-    assert_response :success
-  end
-
-  test "should show home for admin with one emailaccount" do
-
-  end
-
-  test "should show home for admin with many emailaccount" do
-
-  end
-
-  test "show get for non admin" do
-
-  end
-
   test "should get home" do
     get root_url
     assert_response :success
@@ -69,6 +51,11 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get privacy" do
     get "/privacy-policy"
+    assert_response :success
+  end
+
+  test "should get forgot_password" do
+    get forgot_password_url
     assert_response :success
   end
 

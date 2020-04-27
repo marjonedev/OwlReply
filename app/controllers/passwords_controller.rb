@@ -46,7 +46,7 @@ class PasswordsController < ApplicationController
         return render :template => 'passwords/change_password_error', :locals => { :message => 'Oops. There is an error. Please try different password.' }
       end
     else
-      render :template => 'passwords/change_password_error', :locals => { :message => 'Link not valid or expired. Try generating a new link.'}
+      render :template => 'passwords/change_password_error', :locals => { :message => 'Link not valid or expired. Try generating a new link.'}, :formats => [:js]
     end
   end
 

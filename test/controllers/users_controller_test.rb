@@ -22,7 +22,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post users_url, params: { user: { email_address: 'someone4@example.com', password: 'nothing123', salt: 'MyString', username: 'username4'} }
     end
 
-    follow_redirect!
+    assert_redirected_to "/wizard/1"
   end
 
   test "should show user" do
