@@ -15,3 +15,11 @@ two:
   date_paid: 2019-08-26 19:17:11
   transaction_id: 1
   subscription: two
+
+three:
+  user: username1
+  amount: 1600
+  amount_paid:
+  date_paid:
+  transaction_id: 1
+  subscription: three

@@ -26,7 +26,7 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
       create_user_invoice
     end
 
-    assert_redirected_to root_url
+    assert_response :success
   end
 
   test "should show invoice" do
@@ -52,6 +52,6 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
       @user.invoices.last.destroy
     end
 
-    assert_redirected_to root_url
+    assert_response :success
   end
 end

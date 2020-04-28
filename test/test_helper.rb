@@ -47,7 +47,7 @@ class ActiveSupport::TestCase
   end
 
   def create_stripe_token(cardno: '4242424242424242', exp_month: 4, exp_year: 2021, cvc: '321')
-    # require 'stripe'
+
     Stripe.api_key = Rails.application.credentials.stripe_api_key
 
     Stripe::Token.create({
@@ -60,37 +60,34 @@ class ActiveSupport::TestCase
                          })
   end
 
-  def create_paymentmethod(user)
+  def create_paymentmethod()
     @paymentmethod = paymentmethods(:one)
 
     token = create_stripe_token(cardno: @paymentmethod.card_number, exp_month: @paymentmethod.card_exp_month, exp_year: @paymentmethod.card_exp_year)
 
-    user.paymentmethods.create({
-                                    token: token.id,
-                                    default: true,
-                                    card_number: @paymentmethod.card_number,
-                                    card_exp_month: @paymentmethod.card_exp_month,
-                                    card_exp_year: @paymentmethod.card_exp_year,
-                                    card_brand: @paymentmethod.card_brand,
-                                    customer_id: @paymentmethod.customer_id,
-                                    currency: @paymentmethod.currency
-                                })
+    post paymentmethods_url, params: {
+        paymentmethod: {
+            token: token.id,
+            default: true,
+            card_number: @paymentmethod.card_number,
+            card_exp_month: @paymentmethod.card_exp_month,
+            card_exp_year: @paymentmethod.card_exp_year,
+            card_brand: @paymentmethod.card_brand,
+            customer_id: @paymentmethod.customer_id,
+            currency: @paymentmethod.currency
+        }
+    }, xhr: true
 
   end
 
   def create_user_invoice
 
     @user = users(:username1)
-    @sub = subscriptions(:one)
-    create_paymentmethod @user
+    @sub = subscriptions(:three)
+    create_paymentmethod
     @user.invoices.create({ subscription_id: @sub.id })
 
   end
-
-  # def create_emailaccount
-  #   @emailaccount = emailaccounts(:email1)
-  #   post emailaccounts_url, params: { emailaccount: { address: @emailaccount.address } }
-  # end
 
   # Add more helper methods to be used by all tests here...
 end
