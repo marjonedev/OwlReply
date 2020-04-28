@@ -26,7 +26,8 @@ class User < ApplicationRecord
   after_commit :create_newuser_job, on: :create
 
   def create_newuser_job
-    NewuserJob.set(wait: 48.hours).perform_later(self)
+    NewuserguideJob.set(wait: 24.hours).perform_later(self)
+    NewuserfeedbackJob.set(wait: 72.hours).perform_later(self)
   end
   def send_welcome_email
     UserMailer.with(user: self).welcome_email.deliver_later

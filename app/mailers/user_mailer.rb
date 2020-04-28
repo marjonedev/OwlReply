@@ -21,8 +21,8 @@ class UserMailer < ActionMailer::Base
 
   def informational_email
     @user = params[:user]
-    @url  = "#{Rails.application.config.base_url}/login"
-    mail(to: @user.email_address, subject: "OwlReply's got your automation covered.")
+    @url = "#{Rails.application.config.base_url}"
+    mail(to: @user.email_address, subject: "OwlReply's guides to email automation.")
   end
 
   def feedback

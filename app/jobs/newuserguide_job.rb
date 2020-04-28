@@ -1,4 +1,4 @@
-class NewuserJob < ApplicationJob
+class NewuserguideJob < ApplicationJob
   queue_as :default
   discard_on ActiveJob::DeserializationError
 
