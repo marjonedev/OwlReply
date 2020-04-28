@@ -1,10 +1,17 @@
-.container.p-3
-  .emailaccount
-    %h1
-      = @emailaccount.address
-    .keywords
+.emailaccount
+  %section#page-title.replies.nobg
+    .container.clearfix.emailaccount_title
+      %h1
+        = @emailaccount.address
+      .breadcrumb
+        = link_to 'All Accounts', '/admin/emailaccounts'
+
+  .container.p-3
+    .keywords.p-2
       - for reply in @emailaccount.replies
         .keyword
           %strong
             = reply.keywords
         = reply.body
+      - if @emailaccount.replies.empty?
+        No replies setup.
