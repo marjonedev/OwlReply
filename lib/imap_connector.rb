@@ -26,7 +26,7 @@ module IMAPConnector
 
       @service.examine(inbox)
 
-      start_date = 1.week.ago.strftime("%d-%b-%Y")
+      start_date = 1.year.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
       tags = ["SINCE", start_date]
 
@@ -40,31 +40,46 @@ module IMAPConnector
           break
         end
 
-        email = imap.fetch(message_id, "RFC822")[0].attr["RFC822"]
+        email = @service.fetch(message_id, "RFC822")[0].attr["RFC822"]
 
         msg = Mail.read_from_string email
+
+        date = DateTime.rfc3339(msg.date.to_s)
+        formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
+
+        thebody = msg.body.to_s
+
         from = msg[:from].display_names.first
 
         mid = msg.body.to_s[0, 30]
         body = msg.body.to_s.split(mid)
         thebody = ""
 
-        body.each do |m|
-          if m.include?("Content-Type: text/plain; charset=\"UTF-8\"")
-            text = m.gsub("\n\n", "")
-            text = text.gsub("\nContent-Type: text/plain; charset=\"UTF-8\"", "")
-            thebody << text
-            break
-          end
-        end
+        puts "==========================================MSG"
+        puts msg.content_type
+        puts msg.main_type
+        puts msg.sub_type
+        puts msg.multipart?
+        # puts msg.html_part
+        puts msg.text_part
+        # puts msg.body
 
-        thebody = thebody.to_s.gsub("\r\n", " ")
-        thebody = thebody.truncate(80, separator: " ")
-
-        date = DateTime.parse(msg.date.to_s)
-        formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
-        subject = msg.subject
-        from = from
+        # body.each do |m|
+        #   if m.include?("Content-Type: text/plain; charset=\"UTF-8\"")
+        #     text = m.gsub("\n\n", "")
+        #     text = text.gsub("\nContent-Type: text/plain; charset=\"UTF-8\"", "")
+        #     thebody << text
+        #     break
+        #   end
+        # end
+        #
+        # thebody = thebody.to_s.gsub("\r\n", " ")
+        # thebody = thebody.truncate(80, separator: " ")
+        #
+        # date = DateTime.parse(msg.date.to_s)
+        # formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+        # subject = msg.subject
+        # from = from
 
         # body_html = (msg.html_part.body.to_s rescue "")
         # body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
@@ -73,17 +88,17 @@ module IMAPConnector
         # body_text = thebody if body_text.blank?
         # body = thebody
 
-        obj['date'] = date
-        obj['subject'] = subject
-        obj['from'] = from
+        # obj['date'] = date
+        # obj['subject'] = subject
+        # obj['from'] = from
         # obj['id'] = i.id
         # obj['thread_id'] = i.thread_id
         # obj['reply_to'] = reply_to
         # obj['body_size'] = payload.body.size rescue 0
         # obj['msgid'] = msgid.tr('<>', '')
-        obj['unread'] = (email.label_ids || []).include?("UNREAD")
+        # obj['unread'] = (email.label_ids || []).include?("UNREAD")
 
-        @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
+        # @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
 
         limit -= 1
 
