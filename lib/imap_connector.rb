@@ -86,7 +86,7 @@ module IMAPConnector
       end
     end
 
-    def read_and_create_reply_draft(id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
+    def create_reply_draft(id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
 
       require 'mail'
 
@@ -115,8 +115,8 @@ module IMAPConnector
       @service.append(@drafts, message, [:Seen, :Draft], Time.now)
     end
 
-    def read_messages(id: nil)
-      @service.store(id, "+FLAGS", [:Seen])
+    def read_messages(ids)
+      @service.store(ids, "+FLAGS", [:Seen])
     end
 
     private
