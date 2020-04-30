@@ -5,13 +5,17 @@ module IMAPConnector
 
     def initialize emailaccount
       require 'net/imap'
-      require 'mail'
       require 'date'
 
       @emailaccount = emailaccount
       @errors = []
       @messages = []
       @service = get_service emailaccount
+
+      @folders =  @service.list('', "*")
+      @drafts = @folders.any? { |h| h.attr.include? :Drafts } ? @folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
+      @inbox = @folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? @folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+
     end
 
     def replier_logger
@@ -20,11 +24,8 @@ module IMAPConnector
 
     def get_messages(limit: 500, unread: true)
 
-      folders =  @service.list('', "*")
 
-      inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
-
-      @service.examine(inbox)
+      @service.examine(@inbox)
 
       start_date = 1.year.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
@@ -32,7 +33,11 @@ module IMAPConnector
 
       tags.unshift('UNSEEN') if unread
 
-      @service.search(tags).each do |message_id|
+      tags2 = tags
+      tags2.unshift('UNSEEN')
+      unseen = @service.search(tags2).sort.reverse
+
+      @service.search(tags).sort.reverse.each do |message_id|
 
         obj = {}
 
@@ -47,74 +52,71 @@ module IMAPConnector
         date = DateTime.rfc3339(msg.date.to_s)
         formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
 
-        thebody = msg.body.to_s
+        # thebody = msg.body.to_s
 
-        from = msg[:from].display_names.first
+        # from = msg[:from].display_names.first
+        from = msg[:from]
+        subject = msg[:subject]
+        reply_to = msg[:reply_to].blank? ? msg[:from] : msg[:reply_to]
+        plain_part = msg.multipart? ? (msg.text_part ? msg.text_part.body.decoded : nil) : msg.body.decoded
+        html_part = msg.html_part ? msg.html_part.body.decoded : nil
+        body = if msg.multipart?
+                 msg.text_part ? msg.text_part.body.decoded : msg.html_part.body.decoded
+               else
+                 msg.body.decoded
+               end
 
-        mid = msg.body.to_s[0, 30]
-        body = msg.body.to_s.split(mid)
-        thebody = ""
-
-        puts "==========================================MSG"
-        puts msg.content_type
-        puts msg.main_type
-        puts msg.sub_type
-        puts msg.multipart?
-        # puts msg.html_part
-        puts msg.text_part
-        # puts msg.body
-
-        # body.each do |m|
-        #   if m.include?("Content-Type: text/plain; charset=\"UTF-8\"")
-        #     text = m.gsub("\n\n", "")
-        #     text = text.gsub("\nContent-Type: text/plain; charset=\"UTF-8\"", "")
-        #     thebody << text
-        #     break
-        #   end
-        # end
-        #
-        # thebody = thebody.to_s.gsub("\r\n", " ")
-        # thebody = thebody.truncate(80, separator: " ")
-        #
-        # date = DateTime.parse(msg.date.to_s)
-        # formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
-        # subject = msg.subject
-        # from = from
-
-        # body_html = (msg.html_part.body.to_s rescue "")
-        # body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
-        # body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
-        # body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
-        # body_text = thebody if body_text.blank?
-        # body = thebody
-
-        # obj['date'] = date
-        # obj['subject'] = subject
-        # obj['from'] = from
-        # obj['id'] = i.id
         # obj['thread_id'] = i.thread_id
-        # obj['reply_to'] = reply_to
-        # obj['body_size'] = payload.body.size rescue 0
-        # obj['msgid'] = msgid.tr('<>', '')
-        # obj['unread'] = (email.label_ids || []).include?("UNREAD")
+        obj['id'] = message_id
+        obj['subject'] = subject
+        obj['date'] = formatted_date
+        obj['from'] = from
+        obj['reply_to'] = reply_to
+        obj['body'] = body
+        obj['body_html'] = html_part
+        obj['body_text'] = plain_part
+        obj['unread'] = unseen.include?(message_id)
+        obj['multipart'] = msg.multipart?
+        obj['msgid'] = msg.message_id
 
-        # @messages.push({date: formatted_date, subject:subject, body: thebody, from: from})
+        @messages.push(obj)
 
         limit -= 1
 
       end
     end
 
-    def create_reply_draft
+    def read_and_create_reply_draft(id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
 
+      require 'mail'
+
+      mail = Mail.new do
+        from    "#{@emailaccount.address} <#{@emailaccount.address}>"
+        to      to
+        subject "Re: #{subject}"
+        text_part do
+          content_type 'text/plain; charset=UTF-8'
+          # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
+          body body_text
+        end
+        html_part do
+          content_type 'text/html; charset=UTF-8'
+          body body_html
+        end
+      end
+
+      unless id.to_s.strip.empty?
+        mail.header['In-Reply-To'] = "<#{msgid}>" #message_id
+        mail.header['References'] = "<#{msgid}>"
+      end
+
+      message = mail.to_s
+
+      @service.append(@drafts, message, [:Seen, :Draft], Time.now)
     end
 
-    def read_messages
-
-    end
-
-    def is_thread_message!
-
+    def read_messages(id: nil)
+      @service.store(id, "+FLAGS", [:Seen])
     end
 
     private
