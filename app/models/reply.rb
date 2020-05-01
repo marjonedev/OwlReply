@@ -3,12 +3,14 @@ class Reply < ApplicationRecord
   include Stopwords
 
   def matches?(subject,body)
+    subject = subject.to_s.downcase
+    body = body.to_s.downcase
     content = ""
-    content = "#{subject.downcase} #{body.downcase}" if self.search == "Subject and Body" || self.search.nil?
-    content = "#{subject.downcase}" if self.search == "Subject Only"
-    content = "#{body.downcase}" if self.search == "Body Only"
+    content = "#{subject} #{body}" if self.search == "Subject and Body" || self.search.nil?
+    content = "#{subject}" if self.search == "Subject Only"
+    content = "#{body}" if self.search == "Body Only"
     for word in self.keywords.split(",")
-      return true if word.downcase.in?(content)
+      return true if word.to_s.downcase.in?(content)
     end
     return false
   end

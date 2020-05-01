@@ -182,148 +182,11 @@ module ReplyMaker
       end
     end
 
-    def self.create_drafts_using_imap(account)
-
-      unless account.replies.count > 0
-        return false #return if there's no replies created on the email account. fixed
-      end
+    def self.create_draft account, api
 
       begin
-
-        require 'net/imap'
-        require 'mail'
         require 'date'
-
-        ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
-        port = account.imap_port ? account.imap_port : 993
-        host = account.imap_host.to_s.empty? ? account.address.to_s.split("@").last : account.imap_host
-
-        imap = Net::IMAP.new(host, ssl: ssl, port: port )
-        imap.login(account.address, account.password)
-
-        folders =  imap.list('', "*")
-
-        inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
-        drafts = folders.any? { |h| h.attr.include? :Drafts } ? folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
-
-        imap.select(inbox)
-
-        start_date = 1.week.ago.strftime("%d-%b-%Y")
-
-        messages_size = 0
-        replies_size = 0
-
-        imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
-
-          reply_used = false
-          data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
-          msg = Mail.read_from_string data
-
-          date = DateTime.rfc3339(msg.date.to_s)
-          formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
-
-          thebody = msg.body.to_s
-          thebody_downcase = thebody.downcase
-          next if account.subject_line_skip?(msg.subject)
-          next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
-
-          auto = ""
-
-          for reply in account.replies
-            next unless reply.matches?(msg.subject, thebody_downcase)
-            body = reply.body.to_s.gsub("\n","<br>\n")
-            auto << body
-            reply.increment!(:drafts_created_today)
-            reply.increment!(:drafts_created_lifetime)
-            replies_size += 1
-            reply_used = true
-          end
-
-          if reply_used #only reply_used true can create draft.
-            body_html = (msg.html_part.body.to_s rescue "")
-            body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
-            body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
-            body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
-            body_text = thebody if body_text.blank?
-            email_to = (msg.reply_to || msg.from)
-
-            body_text2 = ""
-            body_text.each_line do |tline|
-              body_text2 << "> #{tline}"
-            end
-
-            reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
-            html_reply_body = reply_body.gsub("\n","<br>\n")
-
-            mail = Mail.new do
-              from    "#{account.address} <#{account.address}>"
-              to      email_to
-              subject "Re: #{msg.subject}"
-              text_part do
-                content_type 'text/plain; charset=UTF-8'
-                # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
-                body reply_body+"\n\nOn #{formatted_date}, #{email_to} wrote:\n>\n#{body_text2}"
-              end
-              html_part do
-                content_type 'text/html; charset=UTF-8'
-                body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
-              end
-            end
-
-            mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
-            mail.header['References'] = msg["Message-ID"]
-            message = mail.to_s
-
-            imap.append(drafts, message, [:Seen, :Draft], Time.now)
-
-            account.increment!(:drafts_created_today)
-            account.increment!(:drafts_created_lifetime)
-          else
-            account.increment!(:drafts_missing_replies_today) unless reply_used
-            account.increment!(:drafts_missing_replies_lifetime) unless reply_used
-          end
-
-          messages_size += 1
-
-        end
-
-        if messages_size > 1
-          self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
-        else
-          replier_logger.error("IMAP - Messages are empty.")
-          self.update_admin_checked(account, message: "Messages on #{account.address} are empty", type: 'warning')
-        end
-        return true
-      rescue Exception => e
-        replier_logger.error e.message
-        self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}", type: 'danger')
-        return false
-      end
-    end
-
-    def self.single_use_test account
-      api = GoogleConnector::GmailApi.new account
-      @service = api.send(:get_service)
-      list = @service.list_user_messages('me', max_results: 500, label_ids: ['INBOX'], q: "after: #{1.week.ago.to_i}")
-      @service.get_user_message('me',list.messages.first.id)
-
-    end
-
-    # To be finished, or just rename test_google_draft once it works.
-    def self.create_drafts_using_google account
-
-      # We should stop checking this. It makes it so errors can appear at weird times; ie only after they've added replies.
-      # The messages.each already does not run if there are no replies.
-      #unless account.replies.count > 0
-      #  return false
-      #end
-
-      include GoogleConnector
-      api = GmailApi.new account
-
-      begin
-
-        require 'date'
+        require 'cgi'
 
         messages = api.get_messages
 
@@ -342,79 +205,84 @@ module ReplyMaker
 
         account_has_no_template = account.template_blank?
 
-        messages.each do |msg|
+        # if messages
+          messages.each do |msg|
+            date = DateTime.parse(msg['date'])
+            formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
 
-          date = DateTime.parse(msg['date'])
-          formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+            thebody = msg['body'].to_s
+            thebody_downcase = thebody.downcase
+            Wordcount.count(account,thebody)
+            next if account.subject_line_skip?(msg['subject'])
+            next if msg['is_thread']
 
-          thebody = msg['body'].to_s
-          thebody_downcase = thebody.downcase
-          Wordcount.count(account,thebody)
-          next if account.subject_line_skip?(msg['subject'])
-          next if api.is_thread_message! msg['thread_id'] # Skip if this thread has more than one email! Secret sauce!
+            reply_used = false
 
-          reply_used = false
+            auto = ""
 
-          auto = ""
-
-          for reply in account.replies
-            next unless reply.matches?(msg['subject'], thebody_downcase)
-            body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
-            auto << body
-            reply.increment!(:drafts_created_today)
-            reply.increment!(:drafts_created_lifetime)
-            replies_size += 1
-            reply_used = true
-          end
-
-          if thebody_downcase.include?("testman100@fakedomain.com")
-            reply = Reply.find(58)
-            body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
-            auto << body
-            reply_used = true
-          end
-
-          if (reply_used || (!account_has_no_template))
-            body_html = (msg['body_html'].body.to_s rescue "")
-            body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
-            body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
-            body_html = thebody.gsub("\n", "<br>\n") if body_html.blank?
-            body_text = thebody if body_text.blank?
-
-            #email_to = msg['from']
-            #auto << msg.to_s
-            email_to = msg['reply_to'].blank? ? msg['from'] : msg['reply_to']
-            subject = "Re: #{msg['subject']}"
-            from = "#{account.address}"
-
-            body_text2 = ""
-            body_text.each_line do |tline|
-              body_text2 << "> #{tline}"
+            for reply in account.replies
+              next unless reply.matches?(msg['subject'], thebody_downcase)
+              body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
+              auto << body
+              reply.increment!(:drafts_created_today)
+              reply.increment!(:drafts_created_lifetime)
+              replies_size += 1
+              reply_used = true
             end
 
-            reply_body = account_has_no_template ? auto : account.template.to_s.gsub("%%reply%%", auto)
-            html_reply_body = reply_body.gsub("\n", "<br>\n")
+            if thebody_downcase.include?("testman100@fakedomain.com")
+              reply = Reply.find(58)
+              body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
+              auto << body
+              reply_used = true
+            end
+
+            if (reply_used || (!account_has_no_template))
+              body_html = (msg['body_html'].body.to_s rescue "")
+              body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
+              body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
+              body_html = thebody.gsub("\n", "<br>\n") if body_html.blank?
+              body_text = thebody if body_text.blank?
+
+              #email_to = msg['from']
+              #auto << msg.to_s
+              email_to = msg['reply_to'].blank? ? msg['from'] : msg['reply_to']
+              email_to_addr = msg['reply_to_addr'].blank? ? msg['from'] : msg['reply_to_addr']
+              subject = "Re: #{msg['subject']}"
+              from = "#{account.address}"
+
+              body_text2 = ""
+              body_text.each_line do |tline|
+                body_text2 << "> #{tline}"
+              end
+
+              reply_body = account_has_no_template ? auto : account.template.to_s.gsub("%%reply%%", auto)
+              html_reply_body = reply_body.gsub("\n", "<br>\n")
 
 
-            text_part = reply_body + "\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
+              text_part = reply_body + "\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
 
-            email_to_html = CGI::escapeHTML(email_to)
+              email_to_html = CGI::escape_html(email_to.to_s)
 
-            html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body.force_encoding('UTF-8')}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html.force_encoding('UTF-8')}</blockquote></div></div>"
+              html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body.force_encoding('UTF-8')}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html.force_encoding('UTF-8')}</blockquote></div></div>"
 
 
-            api.create_reply_draft(msg['id'], thread_id: msg['thread_id'], from: from, to: email_to, subject: subject, multipart: msg['multipart'], body_text: text_part, body_html: html_part, msgid: msg['msgid'])
-            ids.push(msg['id'])
+              api.create_reply_draft(id: msg['id'], thread_id: msg['thread_id'], from: from, to: email_to_addr, subject: subject, body_text: text_part, body_html: html_part, msgid: msg['msgid'])
+              ids.push(msg['id'])
+            end
+
+            if reply_used
+              account.increment!(:drafts_created_today)
+              account.increment!(:drafts_created_lifetime)
+            else
+              account.increment!(:drafts_missing_replies_today) unless reply_used
+              account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+            end
+
           end
+        # end
 
-          if reply_used
-            account.increment!(:drafts_created_today)
-            account.increment!(:drafts_created_lifetime)
-          else
-            account.increment!(:drafts_missing_replies_today) unless reply_used
-            account.increment!(:drafts_missing_replies_lifetime) unless reply_used
-          end
-        end
+
         informational_message = ""
         if messages.size == 0
           informational_message = "Found no unread emails."
@@ -445,7 +313,7 @@ module ReplyMaker
 
         self.update_admin_checked(account, message: "Checking error on #{account.address}. #{exception.message}", type: 'danger')
 
-        #retry # This could cause an infinite loop I think.
+          #retry # This could cause an infinite loop I think.
       rescue Exception => e
         replier_logger.error e.message
 
@@ -453,6 +321,293 @@ module ReplyMaker
 
         e.backtrace.each { |line| replier_logger.error line }
       end
+    end
+
+    def self.create_drafts_using_imap account
+      unless account.replies.count > 0
+        return false #return if there's no replies created on the email account. fixed
+      end
+
+      include IMAPConnector
+      api = IMAPApi.new account
+
+      self.create_draft account, api
+    end
+
+    # def self.create_drafts_using_imap(account)
+    #
+    #   unless account.replies.count > 0
+    #     return false #return if there's no replies created on the email account. fixed
+    #   end
+    #
+    #   begin
+    #
+    #     require 'net/imap'
+    #     require 'mail'
+    #     require 'date'
+    #
+    #     ssl = account.imap_ssl ? {ssl_version: :TLSv1_2} : false
+    #     port = account.imap_port ? account.imap_port : 993
+    #     host = account.imap_host.to_s.empty? ? account.address.to_s.split("@").last : account.imap_host
+    #
+    #     imap = Net::IMAP.new(host, ssl: ssl, port: port )
+    #     imap.login(account.address, account.password)
+    #
+    #     folders =  imap.list('', "*")
+    #
+    #     inbox = folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+    #     drafts = folders.any? { |h| h.attr.include? :Drafts } ? folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
+    #
+    #     imap.select(inbox)
+    #
+    #     start_date = 1.week.ago.strftime("%d-%b-%Y")
+    #
+    #     messages_size = 0
+    #     replies_size = 0
+    #
+    #     imap.search(["UNSEEN", "SINCE", start_date]).each do |message_id|
+    #
+    #       reply_used = false
+    #       data = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
+    #       msg = Mail.read_from_string data
+    #
+    #       date = DateTime.rfc3339(msg.date.to_s)
+    #       formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
+    #
+    #       thebody = msg.body.to_s
+    #       thebody_downcase = thebody.downcase
+    #       next if account.subject_line_skip?(msg.subject)
+    #       next if (msg.references && (msg.references.size > 1)) # Skip if this thread has more than one email! Secret sauce!
+    #
+    #       auto = ""
+    #
+    #       for reply in account.replies
+    #         next unless reply.matches?(msg.subject, thebody_downcase)
+    #         body = reply.body.to_s.gsub("\n","<br>\n")
+    #         auto << body
+    #         reply.increment!(:drafts_created_today)
+    #         reply.increment!(:drafts_created_lifetime)
+    #         replies_size += 1
+    #         reply_used = true
+    #       end
+    #
+    #       if reply_used #only reply_used true can create draft.
+    #         body_html = (msg.html_part.body.to_s rescue "")
+    #         body_html = (msg.text_part.body.to_s rescue "") if body_html.strip.blank?
+    #         body_text = (msg.text_part.body.to_s rescue "").strip.blank? ? (msg.html_part.body.to_s rescue "") : (msg.text_part.body.to_s rescue "")
+    #         body_html = thebody.gsub("\n","<br>\n") if body_html.blank?
+    #         body_text = thebody if body_text.blank?
+    #         email_to = (msg.reply_to || msg.from)
+    #
+    #         body_text2 = ""
+    #         body_text.each_line do |tline|
+    #           body_text2 << "> #{tline}"
+    #         end
+    #
+    #         reply_body = (account.template.nil? || account.template.to_s.strip == "")  ? auto : account.template.to_s.gsub("%%reply%%",auto)
+    #         html_reply_body = reply_body.gsub("\n","<br>\n")
+    #
+    #         mail = Mail.new do
+    #           from    "#{account.address} <#{account.address}>"
+    #           to      email_to
+    #           subject "Re: #{msg.subject}"
+    #           text_part do
+    #             content_type 'text/plain; charset=UTF-8'
+    #             # body account.template.gsub("%%reply%%",auto)+"\n\nIn reply to:\n\n"+(body_text)
+    #             body reply_body+"\n\nOn #{formatted_date}, #{email_to} wrote:\n>\n#{body_text2}"
+    #           end
+    #           html_part do
+    #             content_type 'text/html; charset=UTF-8'
+    #             body html_reply_body+"<br><br>\n\nOn #{formatted_date}, #{email_to} wrote:<br>\n<br>\n#{body_html}"
+    #           end
+    #         end
+    #
+    #         mail.header['In-Reply-To'] = msg["Message-ID"]#message_id
+    #         mail.header['References'] = msg["Message-ID"]
+    #         message = mail.to_s
+    #
+    #         imap.append(drafts, message, [:Seen, :Draft], Time.now)
+    #
+    #         account.increment!(:drafts_created_today)
+    #         account.increment!(:drafts_created_lifetime)
+    #       else
+    #         account.increment!(:drafts_missing_replies_today) unless reply_used
+    #         account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+    #       end
+    #
+    #       messages_size += 1
+    #
+    #     end
+    #
+    #     if messages_size > 1
+    #       self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
+    #     else
+    #       replier_logger.error("IMAP - Messages are empty.")
+    #       self.update_admin_checked(account, message: "Messages on #{account.address} are empty", type: 'warning')
+    #     end
+    #     return true
+    #   rescue Exception => e
+    #     replier_logger.error e.message
+    #     self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}", type: 'danger')
+    #     return false
+    #   end
+    # end
+
+    def self.single_use_test account
+      api = GoogleConnector::GmailApi.new account
+      @service = api.send(:get_service)
+      list = @service.list_user_messages('me', max_results: 500, label_ids: ['INBOX'], q: "after: #{1.week.ago.to_i}")
+      @service.get_user_message('me',list.messages.first.id)
+
+    end
+
+    # To be finished, or just rename test_google_draft once it works.
+    def self.create_drafts_using_google account
+
+      # We should stop checking this. It makes it so errors can appear at weird times; ie only after they've added replies.
+      # The messages.each already does not run if there are no replies.
+      #unless account.replies.count > 0
+      #  return false
+      #end
+
+      include GoogleConnector
+      api = GmailApi.new account
+
+      self.create_draft account, api
+
+      # begin
+      #
+      #   require 'date'
+      #
+      #   messages = api.get_messages
+      #
+      #   ids = []
+      #
+      #   if messages.empty?
+      #     replier_logger.error("GOOGLE - Messages are empty.")
+      #     account.set_debug_message("No unread emails available to check.")
+      #     self.update_admin_checked(account, message: "Messages on #{account.address} are empty.", type: 'warning')
+      #     return
+      #   end
+      #
+      #   replies_size = 0
+      #
+      #   messages_size = messages.count
+      #
+      #   account_has_no_template = account.template_blank?
+      #
+      #   messages.each do |msg|
+      #
+      #     date = DateTime.parse(msg['date'])
+      #     formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+      #
+      #     thebody = msg['body'].to_s
+      #     thebody_downcase = thebody.downcase
+      #     Wordcount.count(account,thebody)
+      #     next if account.subject_line_skip?(msg['subject'])
+      #     # next if api.is_thread_message! msg['thread_id'] # Skip if this thread has more than one email! Secret sauce!
+      #     next if msg['is_thread']
+      #
+      #     reply_used = false
+      #
+      #     auto = ""
+      #
+      #     for reply in account.replies
+      #       next unless reply.matches?(msg['subject'], thebody_downcase)
+      #       body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
+      #       auto << body
+      #       reply.increment!(:drafts_created_today)
+      #       reply.increment!(:drafts_created_lifetime)
+      #       replies_size += 1
+      #       reply_used = true
+      #     end
+      #
+      #     if thebody_downcase.include?("testman100@fakedomain.com")
+      #       reply = Reply.find(58)
+      #       body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
+      #       auto << body
+      #       reply_used = true
+      #     end
+      #
+      #     if (reply_used || (!account_has_no_template))
+      #       body_html = (msg['body_html'].body.to_s rescue "")
+      #       body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
+      #       body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
+      #       body_html = thebody.gsub("\n", "<br>\n") if body_html.blank?
+      #       body_text = thebody if body_text.blank?
+      #
+      #       #email_to = msg['from']
+      #       #auto << msg.to_s
+      #       email_to = msg['reply_to'].blank? ? msg['from'] : msg['reply_to']
+      #       subject = "Re: #{msg['subject']}"
+      #       from = "#{account.address}"
+      #
+      #       body_text2 = ""
+      #       body_text.each_line do |tline|
+      #         body_text2 << "> #{tline}"
+      #       end
+      #
+      #       reply_body = account_has_no_template ? auto : account.template.to_s.gsub("%%reply%%", auto)
+      #       html_reply_body = reply_body.gsub("\n", "<br>\n")
+      #
+      #
+      #       text_part = reply_body + "\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
+      #
+      #       email_to_html = CGI::escapeHTML(email_to)
+      #
+      #       html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body.force_encoding('UTF-8')}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html.force_encoding('UTF-8')}</blockquote></div></div>"
+      #
+      #
+      #       api.create_reply_draft(id: msg['id'], thread_id: msg['thread_id'], from: from, to: email_to, subject: subject, body_text: text_part, body_html: html_part, msgid: msg['msgid'])
+      #       ids.push(msg['id'])
+      #     end
+      #
+      #     if reply_used
+      #       account.increment!(:drafts_created_today)
+      #       account.increment!(:drafts_created_lifetime)
+      #     else
+      #       account.increment!(:drafts_missing_replies_today) unless reply_used
+      #       account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+      #     end
+      #   end
+      #   informational_message = ""
+      #   if messages.size == 0
+      #     informational_message = "Found no unread emails."
+      #   elsif replies_size == 0
+      #     if account_has_no_template
+      #       informational_message = "No default template reply."
+      #     elsif account.replies.empty?
+      #       informational_message = "No auto-replies have been setup."
+      #     end
+      #   end
+      #
+      #   self.update_admin_checked(account, emails: messages_size, replies: replies_size, type: 'success')
+      #   account.set_debug_message(informational_message) unless informational_message.blank?
+      #   UserChannel.broadcast_to(account.user, {message: "Succesfully checked #{messages.size} emails. #{informational_message}"})
+      #
+      #   api.read_messages(ids)
+      #
+      # rescue Google::Apis::AuthorizationError => exception
+      #   replier_logger.error exception.message
+      #   exception.backtrace.each { |line| replier_logger.error line }
+      #
+      #   begin
+      #     api.refresh_api!
+      #   rescue RefreshTokenFailureError => error
+      #     replier_logger.error("GOOGLE: #{account.address} - Failed to refresh user token. #{error.to_s}")
+      #     # return []
+      #   end
+      #
+      #   self.update_admin_checked(account, message: "Checking error on #{account.address}. #{exception.message}", type: 'danger')
+      #
+      #   #retry # This could cause an infinite loop I think.
+      # rescue Exception => e
+      #   replier_logger.error e.message
+      #
+      #   self.update_admin_checked(account, message: "Checking error on #{account.address}. #{e.message}", type: 'danger')
+      #
+      #   e.backtrace.each { |line| replier_logger.error line }
+      # end
 
     end
 

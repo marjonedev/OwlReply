@@ -6,6 +6,7 @@ module IMAPConnector
     def initialize emailaccount
       require 'net/imap'
       require 'date'
+      require 'mail'
 
       @emailaccount = emailaccount
       @errors = []
@@ -33,7 +34,7 @@ module IMAPConnector
 
       tags.unshift('UNSEEN') if unread
 
-      tags2 = tags
+      tags2 = ["SINCE", start_date]
       tags2.unshift('UNSEEN')
       unseen = @service.search(tags2).sort.reverse
 
@@ -49,15 +50,14 @@ module IMAPConnector
 
         msg = Mail.read_from_string email
 
-        date = DateTime.rfc3339(msg.date.to_s)
+        date = msg.date
         formatted_date = date.strftime("%a, %b %d, %Y at %I:%M %p")
-
-        # thebody = msg.body.to_s
 
         # from = msg[:from].display_names.first
         from = msg[:from]
         subject = msg[:subject]
-        reply_to = msg[:reply_to].blank? ? msg[:from] : msg[:reply_to]
+        reply_to = msg.reply_to.blank? ? msg[:from] : msg[:reply_to]
+        reply_to_addr = msg.reply_to.blank? ? msg.from : msg.reply_to
         plain_part = msg.multipart? ? (msg.text_part ? msg.text_part.body.decoded : nil) : msg.body.decoded
         html_part = msg.html_part ? msg.html_part.body.decoded : nil
         body = if msg.multipart?
@@ -66,32 +66,45 @@ module IMAPConnector
                  msg.body.decoded
                end
 
+        obj["is_thread"] = msg.in_reply_to.to_s.empty? ? false : true
+
+        @messages.each do |ms|
+          if ms['reference'].to_s.include?(msg.message_id)
+            obj["is_thread"] = true
+            break
+          end
+        end
+
         # obj['thread_id'] = i.thread_id
         obj['id'] = message_id
         obj['subject'] = subject
         obj['date'] = formatted_date
         obj['from'] = from
         obj['reply_to'] = reply_to
+        obj['reply_to_addr'] = reply_to_addr
         obj['body'] = body
         obj['body_html'] = html_part
         obj['body_text'] = plain_part
         obj['unread'] = unseen.include?(message_id)
         obj['multipart'] = msg.multipart?
         obj['msgid'] = msg.message_id
+        obj['reference'] = msg.references&.first
 
         @messages.push(obj)
 
         limit -= 1
 
       end
+
+      return @messages
     end
 
-    def create_reply_draft(id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
+    def create_reply_draft(id: nil, thread_id: nil, to: nil, from: nil, subject: "", body_text: "",  body_html: "", msgid: nil)
 
       require 'mail'
 
       mail = Mail.new do
-        from    "#{@emailaccount.address} <#{@emailaccount.address}>"
+        from    from
         to      to
         subject "Re: #{subject}"
         text_part do
@@ -105,18 +118,21 @@ module IMAPConnector
         end
       end
 
-      unless id.to_s.strip.empty?
+      unless msgid.to_s.strip.empty?
         mail.header['In-Reply-To'] = "<#{msgid}>" #message_id
         mail.header['References'] = "<#{msgid}>"
       end
 
       message = mail.to_s
 
-      @service.append(@drafts, message, [:Seen, :Draft], Time.now)
+      @service.append(@drafts, message, [:Draft], Time.now)
     end
 
-    def read_messages(ids)
-      @service.store(ids, "+FLAGS", [:Seen])
+    def read_messages ids
+      if ids.any?
+        @service.select(@inbox)
+        @service.store(ids, "+FLAGS", [:Seen])
+      end
     end
 
     private

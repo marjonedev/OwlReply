@@ -51,7 +51,8 @@ module GoogleConnector
         return @messages
       end
 
-      query = "after: #{1.week.ago.to_i}"
+      # query = "after: #{1.week.ago.to_i}"
+      query = "after: #{1.month.ago.to_i}"
       label_ids = ['INBOX']
       label_ids.unshift('UNREAD') if unread
       begin
@@ -65,9 +66,11 @@ module GoogleConnector
 
       if set = list&.messages #the & checks for nil
         set.each do |i|
+
           obj = {}
           begin
             email = @service.get_user_message('me', i.id)
+            thread = @service.get_user_thread("me", i.thread_id, format: 'minimal')
           rescue
             @errors.push("Google returned an error message.")
             @errors.push("#{$!.to_s}") rescue nil
@@ -87,12 +90,14 @@ module GoogleConnector
           obj['date'] = date
           obj['from'] = from
           obj['reply_to'] = reply_to
+          obj['reply_to_addr'] = reply_to
           obj['body'] = ""
           obj['body_html'] = nil
           obj['body_text'] = nil
           obj['body_size'] = payload.body.size rescue 0
           obj['msgid'] = msgid.tr('<>', '')
           obj['unread'] = (email.label_ids || []).include?("UNREAD")
+          obj['is_thread'] = thread.messages.count > 1
 
 
           Rails.logger.info "\n\n\n\n\n"
@@ -121,14 +126,14 @@ module GoogleConnector
             obj['body'] = body
           end
 
-
           @messages.push(obj)
         end
       end
+
       return @messages
     end
 
-    def create_reply_draft(id, thread_id: nil, to: nil, from: nil, subject: "", multipart: true, body_text: "",  body_html: "", msgid: nil)
+    def create_reply_draft(id: nil, thread_id: nil, to: nil, from: nil, subject: "", body_text: "",  body_html: "", msgid: nil)
 
       if thread_id.nil?
         thread_id = id
@@ -170,20 +175,20 @@ module GoogleConnector
 
     end
 
-    def read_messages email_ids
-      if email_ids.any?
+    def read_messages ids
+      if ids.any?
         @service.batch_modify_messages("me", {
-            ids: email_ids,
+            ids: ids,
             remove_label_ids: %w(UNREAD),
         }, options: {})
       end
 
     end
 
-    def is_thread_message! thread_id
-      thread = @service.get_user_thread("me", thread_id, format: 'minimal')
-      thread.messages.count > 1
-    end
+    # def is_thread_message! thread_id
+    #   thread = @service.get_user_thread("me", thread_id, format: 'minimal')
+    #   thread.messages.count > 1
+    # end
 
     def refresh_this_token!
       begin
