@@ -13,9 +13,14 @@ module IMAPConnector
       @messages = []
       @service = get_service emailaccount
 
-      @folders =  @service.list('', "*")
-      @drafts = @folders.any? { |h| h.attr.include? :Drafts } ? @folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
-      @inbox = @folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? @folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+      begin
+        @folders =  @service.list('', "*")
+        @drafts = @folders.any? { |h| h.attr.include? :Drafts } ? @folders.find { |h| h.attr.include? :Drafts }.name : 'DRAFTS'
+        @inbox = @folders.any? { |h| h.name.to_s.downcase == 'inbox' } ? @folders.find { |h| h.name.to_s.downcase == 'inbox' }.name : 'INBOX'
+      rescue Exception => e
+        replier_logger.error("#{e.to_s}")
+        @errors.push("Failed to initialize imap. #{e.message}")
+      end
 
     end
 
@@ -28,7 +33,7 @@ module IMAPConnector
       begin
         @service.examine(@inbox)
 
-        start_date = 1.year.ago.strftime("%d-%b-%Y") #change to 1.week.ago
+        start_date = 1.week.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
         tags = ["SINCE", start_date]
 
@@ -131,13 +136,23 @@ module IMAPConnector
 
       message = mail.to_s
 
-      @service.append(@drafts, message, [:Draft], Time.now)
+      begin
+        @service.append(@drafts, message, [:Draft], Time.now)
+      rescue Exception => e
+        replier_logger.error("IMAP: #{@emailaccount.address} - Failed to create draft. #{e.to_s}")
+        @errors.push("Failed to create draft. #{e.message}")
+      end
     end
 
     def read_messages ids
       if ids.any?
-        @service.select(@inbox)
-        @service.store(ids, "+FLAGS", [:Seen])
+        begin
+          @service.select(@inbox)
+          @service.store(ids, "+FLAGS", [:Seen])
+        rescue Exception => e
+          replier_logger.error("IMAP: #{@emailaccount.address} - Failed to read messages. #{e.to_s}")
+          @errors.push("Failed to read messages. #{e.message}")
+        end
       end
     end
 
