@@ -25,19 +25,26 @@ module IMAPConnector
 
     def get_messages(limit: 500, unread: true)
 
-      @service.examine(@inbox)
+      begin
+        @service.examine(@inbox)
 
-      start_date = 1.week.ago.strftime("%d-%b-%Y") #change to 1.week.ago
+        start_date = 1.year.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
-      tags = ["SINCE", start_date]
+        tags = ["SINCE", start_date]
 
-      tags.unshift('UNSEEN') if unread
+        tags.unshift('UNSEEN') if unread
 
-      tags2 = ["SINCE", start_date]
-      tags2.unshift('UNSEEN')
-      unseen = @service.search(tags2).sort.reverse
+        tags2 = ["SINCE", start_date]
+        tags2.unshift('UNSEEN')
+        unseen = @service.search(tags2).sort.reverse
 
-      @service.search(tags).sort.reverse.each do |message_id|
+      rescue Exception => e
+        replier_logger.error("IMAP: #{@emailaccount.address} - Failed to get messages. #{e.to_s}")
+        @errors.push("Failed to get messages. #{e.message}")
+        return @messages
+      end
+
+        @service.search(tags).sort.reverse.each do |message_id|
 
         obj = {}
 
@@ -137,6 +144,7 @@ module IMAPConnector
     private
 
       def get_service emailaccount
+        begin
           ssl = emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
           port = emailaccount.imap_port ? emailaccount.imap_port : 993
           host = emailaccount.imap_host.to_s.empty? ? emailaccount.address.to_s.split("@").last : emailaccount.imap_host
@@ -145,7 +153,13 @@ module IMAPConnector
 
           service.login(emailaccount.address, emailaccount.password)
 
-          service
+          return service
+        rescue Net::IMAP::NoResponseError => e
+          @errors.push("IMAP returned an authorization error. #{e.message}")
+        rescue
+          @errors.push("There was an error in IMAP service.")
+          @errors.push("#{$!.to_s}") rescue nil
+        end
       end
   end
 end
