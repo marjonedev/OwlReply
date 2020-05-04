@@ -52,7 +52,7 @@ module GoogleConnector
       end
 
       # query = "after: #{1.week.ago.to_i}"
-      query = "after: #{1.month.ago.to_i}"
+      query = "after: #{1.week.ago.to_i}"
       label_ids = ['INBOX']
       label_ids.unshift('UNREAD') if unread
       begin
