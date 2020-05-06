@@ -7,7 +7,7 @@ Rails.application.configure do
   config.cache_classes = false
 
   #config.assets.compile = false
-  config.public_file_server.enabled = true
+  # config.public_file_server.enabled = true
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -56,7 +56,7 @@ Rails.application.configure do
   config.assets.debug = true
 
   # Suppress logger output for asset requests.
-  #config.assets.quiet = true
+  config.assets.quiet = true
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

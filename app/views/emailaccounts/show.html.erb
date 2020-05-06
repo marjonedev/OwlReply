@@ -25,7 +25,6 @@
     <div class="section nomargin notoppadding">
       <div class="">
         <div class="row">
-          <script>$.get('/inbox/<%= @emailaccount.id %>.js')</script>
           <div class="replies_box col-md-10 mt-4">
             <div class="">
               <% unless @emailaccount.authenticated %>
@@ -60,7 +59,15 @@
     </div>
   </div>
 
-  <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
+  <%# if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
     <%#= render 'viewer/wizard' %><%# The wizard isn't quite done yet. %>
-  <% end %>
+  <%# end %>
 </section>
+
+<% content_for :javascript_footer_includes do %>
+  <script>
+      $(document).ready(function() {
+          $.get('/inbox/<%= @emailaccount.id %>.js');
+      });
+  </script>
+<% end %>

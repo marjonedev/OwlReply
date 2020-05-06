@@ -115,4 +115,8 @@ class InboxController < ApplicationController
   def set_emailaccount
     @emailaccount = current_user.emailaccounts.find(params[:id])
   end
+
+  def replier_logger
+    @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
+  end
 end

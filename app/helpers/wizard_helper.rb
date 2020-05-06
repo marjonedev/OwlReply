@@ -7,7 +7,7 @@ module WizardHelper
     end
     body = body.gsub('<br>',' ').gsub('<div>',"\n<div>")
     text = strip_tags(body)
-    words = text.split(/\s+/)
+    words = text.encode('UTF-8', :invalid => :replace).split(/\s+/)
     return words
   end
 
