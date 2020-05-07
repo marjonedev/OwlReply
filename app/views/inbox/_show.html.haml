@@ -1,21 +1,18 @@
-.container.clearfix
-  = link_to "Unread", "/inbox/#{@emailaccount.id}.js?more=1", class: "button button-rounded button-reveal button-small #{'button-light' if params[:all]}", remote: true
-  = link_to "All", "/inbox/#{@emailaccount.id}.js?all=1&more=1", class: "button button-rounded button-reveal button-small #{'button-light' if params[:all].blank?}", remote: true
-  .list-group
-    - @errors.each do |error|
-      .error.list-group-item.list-group-item-action
-        = error
-    - @messages.each do |message|
-      = render partial: "emailaccounts/message", locals: {message: message}
-    - unless (params[:more] || @messages.empty?)
-      .style-msg{:style => "background-colorx: #333;"}
-        .sb-msg
-          %a{:href => "?more=1"} Show More Emails
-    - if @has_keywords
-      .allmargin-sm.divcenter.ls3{:style => "background-colorx: #333;"}
-        .sb-msg
-          Click a few keywords and these will be used to generate your first auto replies.
-  - unless @errors.empty?
-    = link_to "Reauthorize", google_redirect_emailaccount_url(@emailaccount), class: 'button button-rounded button-reveal button-small button'
-  .mt-5.d-flex.w-100.justify-content-between
-    = render file: "emailaccounts/keywordscript"
+.list-group
+  - @errors.each do |error|
+    .error.list-group-item.list-group-item-action
+      = error
+  - @messages.each do |message|
+    = render partial: "emailaccounts/message", locals: {message: message}
+  - unless (params[:more] || @messages.empty?)
+    .style-msg{:style => "background-colorx: #333;"}
+      .sb-msg
+        %a{:href => "?more=1"} Show More Emails
+  - if @has_keywords
+    .allmargin-sm.divcenter.ls3{:style => "background-colorx: #333;"}
+      .sb-msg
+        Click a few keywords and these will be used to generate your first auto replies.
+- if !@errors.empty? && @emailaccount.email_provider == "google"
+  = link_to "Reauthorize", google_redirect_emailaccount_url(@emailaccount), class: 'button button-rounded button-reveal button-small button'
+.mt-5.d-flex.w-100.justify-content-between
+  = render file: "emailaccounts/keywordscript"

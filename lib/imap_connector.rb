@@ -33,7 +33,7 @@ module IMAPConnector
       begin
         @service.examine(@inbox)
 
-        start_date = 1.year.ago.strftime("%d-%b-%Y") #change to 1.week.ago
+        start_date = 1.week.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
         tags = ["SINCE", start_date]
 
