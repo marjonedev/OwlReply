@@ -1,11 +1,11 @@
 - b = improved_message_body(message)
 - id = message[:date].downcase.gsub(' ','').gsub(',','_').gsub(':','_')
 .message{id: "message_#{id}"}
-  %a.list-group-item.list-group-item-action.flex-column.align-items-start{onclick: "$(this).parent().find('.email_content').toggle();", style: "#{message[:unread] ? '' : 'background-color:#CCC;'}"}
+  %a.list-group-item.list-group-item-action.flex-column.align-items-start{onclick: "$(this).parent().find('.email_content').toggle();", style: "#{message[:unread] ? '' : 'background-color:#e0e0e0;'}"}
     .d-flex.w-100.justify-content-between
-      %h5.mb-2= message[:from]
-      %small= message[:date]
-    %h4.mb-1= message[:subject]
+      %h5.mb-2{style: 'color: #8c8b8b'}= message[:from]
+      %small{style: 'color: #8c8b8b'}= message[:date]
+    %h4.mb-1{style: 'color: #8c8b8b'}= message[:subject]
   .email_content.list-group-item.mb-3{style: 'display: none;'}
     - unless b.nil?
       - sug = Reply.suggest_keywords(b)

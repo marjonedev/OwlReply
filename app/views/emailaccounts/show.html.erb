@@ -58,7 +58,7 @@
                   </div>
                 <% end %>
               <% end %>
-              <% if (@emailaccount.authenticated && (! @emailaccount.setupcomplete)) %>
+              <% if @emailaccount.authenticated && !@emailaccount.setupcomplete && !@emailaccount.skip_activation %>
                 <%= render partial: 'emailaccounts/viewerlink' %>
               <% end %>
               <%= render file: "replies/index" %>
@@ -77,10 +77,15 @@
 <% content_for :javascript_footer_includes do %>
   <script>
       $(document).ready(function() {
-          $("a.inbox_button").on('click', function () {
-              $('.loading-spinner').show();
-              $('.inbox-content > .list-group').remove();
-              $(this).removeClass('button-light').siblings('a').addClass('button-light');
+          $("a.inbox_button").on('click', function (e) {
+              if($(this).hasClass('button-light')){
+                  $('.loading-spinner').show();
+                  $('.inbox-content > .list-group').remove();
+                  $(this).removeClass('button-light').siblings('a').addClass('button-light');
+              }else{
+                  e.preventDefault();
+                  return false;
+              }
           });
           $.get('/inbox/<%= @emailaccount.id %>.js');
       });

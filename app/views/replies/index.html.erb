@@ -3,6 +3,7 @@
     <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Automated Reply</span>'), new_emailaccount_reply_path(@emailaccount), class: "button button-rounded button-reveal button-small button-dirtygreen", id: "addnew_reply", remote: true %>
   </div>
 </div>
+<div class="new_reply_container"></div>
 
 <!--<div id="replies_container" class="replies_container">-->
 <% @replies.each do |reply| %>
