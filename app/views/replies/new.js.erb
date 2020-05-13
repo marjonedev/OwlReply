@@ -1,17 +1,16 @@
-if(!$('.replies_container .new_reply').length){
+if(!$('.new_reply_container .new_reply').length){
     $('.new_reply_container').html("<%= j render 'new', reply: @reply %>").slideDown();
-    $('#new_reply').find('input.keywords').tagsinput();
+    $('.new_reply_container .new_reply').find('input.keywords').tagsinput();
 }else{
-    $('#new_reply').addClass( "custom_shake" );
+    $('.new_reply_container > .new_reply').addClass( "custom_shake" );
 
-    $('#new_reply').on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e){
-        $('#new_reply').delay(500).removeClass('custom_shake');
+    $('.new_reply_container > .new_reply').on('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e){
+        $('.new_reply_container > .new_reply').delay(500).removeClass('custom_shake');
     });
 }
-
 
 $('a.cancel_new').on('click', function (e) {
     e.preventDefault();
     $(this).closest('#new_reply').slideToggle('slow').delay(200).remove();
-})
-Replymaker.show_suggestions();
+});
+Replymaker.show_suggestions($('.new_reply_container'));

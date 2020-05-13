@@ -1,6 +1,6 @@
 <script>
   var selected_keywords = [];
-  function select_keyword(name, message_name) {
+  function select_keyword(elem, name, message_name) {
     if (selected_keywords.indexOf(name) >= 0) {
       i = selected_keywords.indexOf(name);
       $('.suggested_'+name).removeClass('selected');

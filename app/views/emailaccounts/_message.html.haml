@@ -13,15 +13,15 @@
       %p.mb-2.pb-3.email_body
         - body = b.join(' ')
         - for reply in sug
-          - exc = ["span", "class", "onclick"]
+          - exc = ["span", "class", "onclick", "click"]
           - key = exc.include?(reply) ? "#{reply} " : reply
-          - body.gsub!(key, "<span class='potential_keyword suggested_#{reply}' onclick='select_keyword(\"#{reply}\",\"message_#{id}\");'>#{reply}</span> ")
+          - body.gsub!(key, "<span class='potential_keyword suggested_#{reply}' onclick='select_keyword(this, \"#{reply}\",\"message_#{id}\");'>#{reply}</span> ")
         =  body.html_safe
         - b[0..20].join(' ')
       %p.mb-1.pot_keywords
         %strong Potential keywords:
         - for reply in sug
-          %span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(\"#{reply}\",\"message_"+id+"\");"}
+          %span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(this, \"#{reply}\",\"message_"+id+"\");"}
             = reply
       - (r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil})
       .reply_box{style: (r.empty? ? 'display: none;' : '')}
