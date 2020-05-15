@@ -68,9 +68,6 @@ Paymentmethod.ResponseHandler = function(status, response) {
 };
 
 Paymentmethod.creation_error = function (jqXHR, textStatus, errorThrown) {
-    console.log(jqXHR);
-    console.log(textStatus);
-    console.log(errorThrown);
 
     var $form = $("#new_paymentmethod");
     $form.find('.errormsg').find('span.message').text(textStatus);

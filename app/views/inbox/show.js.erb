@@ -3,3 +3,9 @@ $(".content-wrap>.section>div>.row").find(".list-group").remove();
 $(".content-wrap>.section>div>.row").find(".inbox-content").html("<%=j render partial: 'inbox/show.html' %>");
 $(".replies_box").addClass('col-md-5');
 $(".replies_box").removeClass('col-md-10');
+$("input[name='reply[keywords]'], input[data-role='tagsinput']").tagsinput();
+
+$('.cancel_new').on('click', function (e) {
+    e.preventDefault();
+    $(this).closest('.reply_box').slideToggle('slow');
+});

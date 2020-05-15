@@ -1,16 +1,21 @@
 <script>
   var selected_keywords = [];
   function select_keyword(elem, name, message_name) {
+      console.log('select', $(elem).parent());
+      var email_content = $(elem).closest('.email_content');
     $('.reply_creation_area').addClass('modal');
     if (selected_keywords.indexOf(name) >= 0) {
       i = selected_keywords.indexOf(name);
       $('.suggested_'+name).removeClass('selected');
+      $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
       selected_keywords.splice(i,i+1);
+      console.log('removed',selected_keywords );
     } else {
       $('.suggested_'+name).addClass('selected');
       selected_keywords.push(name);
       $("#" + message_name + " .reply_box .bootstrap-tagsinput input").val(name);
       $("#" + message_name + " .reply_box .bootstrap-tagsinput input").keypress();
+        console.log('added',selected_keywords );
     }
     if (selected_keywords.length > 0) {
       $(".submit-keywords").val("Write Replies");
@@ -20,7 +25,19 @@
       $("#" + message_name + " .reply_box").hide();
     }
     $('.selected_keywords').val(selected_keywords);
+
   }
+
+  $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
+      var name = event.item;
+      $(this).closest('.email_content')
+          .find('.potential_keyword.suggested_'+name)
+          .removeClass('selected');
+
+      var i = selected_keywords.indexOf(name);
+      selected_keywords.splice(i,i+1);
+      $('.selected_keywords').val(selected_keywords);
+  });
 </script>
 <% if controller_name == "wizard" %>
   <%= form_with(model: @emailaccount, url: "/wizard/3/#{@emailaccount.id}", method: "post", data: {remote: false}) do %>
