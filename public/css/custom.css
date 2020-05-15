@@ -503,4 +503,18 @@ div.reply-box{
 
 /*Reply Box
 ===========================*/
-.reply_box
+
+@media (min-width: 1000px) {
+    .reply_creation_area.modal {
+        position: fixed;
+        top: 110px;
+        z-index: 9;
+        background: #FFF;
+        border: 2px solid #CCC;
+        padding: 40px;
+        left: 40px;
+        width: calc(100% - 80px);
+        max-height: calc(100% - 150px);
+        overflow-y: auto;
+    }
+}
