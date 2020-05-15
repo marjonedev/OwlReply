@@ -1,25 +1,57 @@
 <script>
+  function open_select_keyword_modal(elem){
+      var message = $(elem).closest('.message');
+
+      var modal = $(elem).closest('.modal');
+
+      if(message.length > 0){
+          var id = message.data('id');
+
+          modal = $('#keywordsModal_'+id).detach();
+          modal.appendTo($('body'));
+
+          var email_content = $(elem).closest('.email_content');
+          var email_creation = $(email_content).find('.reply_creation_area').detach();
+          var modal_body = modal.find('.modal-body');
+          email_creation.appendTo($(modal_body));
+          modal.modal('show');
+      }
+
+      return modal;
+  }
+
   var selected_keywords = [];
+
   function select_keyword(elem, name, message_name) {
-      var email_content = $(elem).closest('.email_content');
-    $('.reply_creation_area').addClass('modal');
+    var email_content = $(elem).closest('.reply_creation_area');
+
+    var modal = open_select_keyword_modal(elem);
+
+    console.log('selected', selected_keywords);
+    console.log('selected2', selected_keywords.indexOf(name));
+
     if (selected_keywords.indexOf(name) >= 0) {
       i = selected_keywords.indexOf(name);
-      $('.suggested_'+name).removeClass('selected');
+
+      // modal.find('.suggested_'+name).removeClass('selected');
       $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
-      selected_keywords.splice(i,i+1);
+      console.log('splice1', i,selected_keywords[i]);
+      console.log('splice2', i+1, selected_keywords[i+1]);
+      // selected_keywords.splice(i,1);
     } else {
-      $('.suggested_'+name).addClass('selected');
+      modal.find('.suggested_'+name).addClass('selected');
       selected_keywords.push(name);
-      $("#" + message_name + " .reply_box .bootstrap-tagsinput input").val(name);
-      $("#" + message_name + " .reply_box .bootstrap-tagsinput input").keypress();
+      modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+      modal.find(".reply_box .bootstrap-tagsinput input").keypress();
     }
+      console.log('selected3', selected_keywords);
+    console.log('selected length', selected_keywords.length);
     if (selected_keywords.length > 0) {
       $(".submit-keywords").val("Write Replies");
-      $("#" + message_name + " .reply_box").show();
+      modal.find(".reply_box").show();
     } else {
       $(".submit-keywords").val("Yup, these sure are emails.")
-      $("#" + message_name + " .reply_box").hide();
+        modal.find(".reply_box").hide();
     }
     $('.selected_keywords').val(selected_keywords);
 
@@ -27,12 +59,12 @@
 
   $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
       var name = event.item;
-      $(this).closest('.email_content')
-          .find('.potential_keyword.suggested_'+name)
+      $(this).closest('.reply_creation_area')
+          .find('.suggested_'+name)
           .removeClass('selected');
 
       var i = selected_keywords.indexOf(name);
-      selected_keywords.splice(i,i+1);
+      selected_keywords.splice(i,1);
       $('.selected_keywords').val(selected_keywords);
   });
 </script>
