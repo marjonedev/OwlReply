@@ -1,7 +1,6 @@
 <script>
   var selected_keywords = [];
   function select_keyword(elem, name, message_name) {
-      console.log('select', $(elem).parent());
       var email_content = $(elem).closest('.email_content');
     $('.reply_creation_area').addClass('modal');
     if (selected_keywords.indexOf(name) >= 0) {
@@ -9,13 +8,11 @@
       $('.suggested_'+name).removeClass('selected');
       $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
       selected_keywords.splice(i,i+1);
-      console.log('removed',selected_keywords );
     } else {
       $('.suggested_'+name).addClass('selected');
       selected_keywords.push(name);
       $("#" + message_name + " .reply_box .bootstrap-tagsinput input").val(name);
       $("#" + message_name + " .reply_box .bootstrap-tagsinput input").keypress();
-        console.log('added',selected_keywords );
     }
     if (selected_keywords.length > 0) {
       $(".submit-keywords").val("Write Replies");
