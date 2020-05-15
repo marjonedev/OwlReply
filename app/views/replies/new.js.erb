@@ -12,6 +12,5 @@ Replymaker.show_suggestions($('.new_reply_container'));
 
 $(document).on('click', 'a.cancel_new', function (e) {
     e.preventDefault();
-    alert('cancel 1');
     $(this).closest('.new_reply').slideToggle('slow').delay(200).remove();
 });
