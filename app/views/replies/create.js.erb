@@ -1,7 +1,10 @@
-$('#new_reply')
-    .attr('id', '<%= dom_id(@reply) %>')
-    .replaceWith('<%= j render 'reply', reply: @reply %>');
+$('.new_reply_container > .new_reply').slideToggle('slow').delay(200).remove();
 
-$('#<%= dom_id(@reply) %>').find('input.keywords').tagsinput();
+$( "<%= j render @reply %>" ).insertAfter('.new_reply_container');
+
+if($('body').hasClass('modal-open')){
+  var modal = $('.modal.show');
+  close_keyword_modal(modal);
+}
 
 $.Custom.notify('Successfully Created New Email Reply.');

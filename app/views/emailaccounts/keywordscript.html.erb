@@ -15,6 +15,7 @@
           var modal_body = modal.find('.modal-body');
           email_creation.appendTo($(modal_body));
           modal.modal('show');
+          modal.find(".reply_box").show();
       }
 
       return modal;
@@ -27,16 +28,11 @@
 
     var modal = open_select_keyword_modal(elem);
 
-    console.log('selected', selected_keywords);
-    console.log('selected2', selected_keywords.indexOf(name));
-
     if (selected_keywords.indexOf(name) >= 0) {
       i = selected_keywords.indexOf(name);
 
       // modal.find('.suggested_'+name).removeClass('selected');
       $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
-      console.log('splice1', i,selected_keywords[i]);
-      console.log('splice2', i+1, selected_keywords[i+1]);
       // selected_keywords.splice(i,1);
     } else {
       modal.find('.suggested_'+name).addClass('selected');
@@ -44,17 +40,28 @@
       modal.find(".reply_box .bootstrap-tagsinput input").val(name);
       modal.find(".reply_box .bootstrap-tagsinput input").keypress();
     }
-      console.log('selected3', selected_keywords);
-    console.log('selected length', selected_keywords.length);
-    if (selected_keywords.length > 0) {
-      $(".submit-keywords").val("Write Replies");
-      modal.find(".reply_box").show();
-    } else {
-      $(".submit-keywords").val("Yup, these sure are emails.")
-        modal.find(".reply_box").hide();
-    }
+
+    // console.log('selected length', selected_keywords.length);
+    // if (selected_keywords.length > 0) {
+    //   $(".submit-keywords").val("Write Replies");
+    //   modal.find(".reply_box").show();
+    // } else {
+    //   $(".submit-keywords").val("Yup, these sure are emails.")
+    //     modal.find(".reply_box").hide();
+    // }
     $('.selected_keywords').val(selected_keywords);
 
+  }
+
+  function close_keyword_modal(modal){
+      var id = modal.data('id');
+      modal.find('.reply_box').hide();
+      modal.find('.selected').trigger('click');
+      modal.find('input[name="reply[keywords]"]').tagsinput('removeAll');
+      modal.find('textarea').val('');
+      var email_creation = $(modal).find('.reply_creation_area').detach();
+      var message = $('#message_'+id).find('.reply_creation_container');
+      email_creation.appendTo($(message));
   }
 
   $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
@@ -68,12 +75,7 @@
       $('.selected_keywords').val(selected_keywords);
   });
 </script>
-<% if controller_name == "wizard" %>
-  <%= form_with(model: @emailaccount, url: "/wizard/3/#{@emailaccount.id}", method: "post", data: {remote: false}) do %>
-    <input type="hidden" name="keywords" class="selected_keywords" value="">
-    <input type="submit" value="Looks Good!" class="submit-keywords button button-large button-rounded button-connect text-white">
-  <% end %>
-<% end %>
+
 <style>
   .email_body { color: #CCC; }
   .potential_keyword { color: #000; }

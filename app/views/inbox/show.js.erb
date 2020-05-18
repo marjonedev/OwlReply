@@ -7,5 +7,12 @@ $("input[name='reply[keywords]'], input[data-role='tagsinput']").tagsinput();
 
 $('.cancel_new').on('click', function (e) {
     e.preventDefault();
-    $(this).closest('.reply_box').slideToggle('slow');
+    var modal = $(this).closest('.modal');
+    if(modal.length > 0){
+        modal.modal('hide');
+    }
+});
+
+$('.modal').on('hidden.bs.modal', function (e) {
+  close_keyword_modal($(this));
 });

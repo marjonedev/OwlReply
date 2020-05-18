@@ -1,5 +1,6 @@
 - b = improved_message_body(message)
-- id = message[:date].downcase.gsub(' ','').gsub(',','_').gsub(':','_')
+- date = message[:date].downcase.gsub(' ','').gsub(',','_').gsub(':','_')
+- id = "#{date}_#{key}"
 .message{id: "message_#{id}", "data-id" => id }
   %a.list-group-item.list-group-item-action.flex-column.align-items-start{onclick: "$(this).parent().find('.email_content').toggle();", style: "#{message[:unread] ? '' : 'background-color:#e0e0e0;'}"}
     .d-flex.w-100.justify-content-between
@@ -26,18 +27,20 @@
               %span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(this, \"#{reply}\",\"message_#{id}\");"}
                 = reply
           - (r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil})
-          .reply_box{style: (r.empty? ? 'display: none;' : '')}
+          .mt-4.reply_box{style: (r.empty? ? 'display: none;' : '')}
             - if (!r.empty?)
-              = render partial: 'replies/new', locals: {reply: r.first}
+              = render partial: 'replies/new_popup', locals: {reply: r.first}
             - else
-              = render partial: 'replies/new', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
+              = render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
 
-  .modal.fade{id: "keywordsModal_#{id}", "aria-hidden" => "true", "aria-labelledby" => "keywordsModal_#{id}Label", :role => "dialog", :tabindex => "-1"}
-    .modal-dialog{:role => "document"}
+  .modal.fade{id: "keywordsModal_#{id}", "aria-hidden" => "true", "aria-labelledby" => "keywordsModal_#{id}Label", "data-backdrop" => "static", "data-id" => "#{id}", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog.modal-lg{:role => "document"}
       .modal-content
         .modal-header
-          %h5.modal-title Potential Keywords
+          %h5.modal-title Create a Reply
+          %button.close{"data-dismiss"=>"modal", "aria-label" => "Close"}
+            %span{"aria-hidden" => "true"} &times;
         .modal-body
-        .modal-footer
-          %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
-          %button.btn.btn-primary{:type => "button"} Cancel
+        -#.modal-footer
+        -#  %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        -#  %button.btn.btn-primary{:type => "button"} Cancel
