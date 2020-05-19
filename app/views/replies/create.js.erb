@@ -2,9 +2,13 @@ $('.new_reply_container > .new_reply').slideToggle('slow').delay(200).remove();
 
 $( "<%= j render @reply %>" ).insertAfter('.new_reply_container');
 
+$('#<%= dom_id(@reply) %>').find('input.keywords').tagsinput();
+
 if($('body').hasClass('modal-open')){
   var modal = $('.modal.show');
-  close_keyword_modal(modal);
+  if(modal.length > 0){
+      modal.modal('hide');
+  }
 }
 
 $.Custom.notify('Successfully Created New Email Reply.');
