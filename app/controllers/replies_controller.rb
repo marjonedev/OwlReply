@@ -27,9 +27,8 @@ class RepliesController < ApplicationController
   # POST /replies
   # POST /replies.json
   def create
-    logger1 = Logger.new("#{Rails.root}/log/replier.log")
-    logger1.debug "==================ssss=============="
     @reply = @emailaccount.replies.new(reply_params)
+
     respond_to do |format|
       if @reply.save
         format.html { redirect_to @reply, notice: 'Reply was successfully created.' }
