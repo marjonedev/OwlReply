@@ -41,14 +41,6 @@
       modal.find(".reply_box .bootstrap-tagsinput input").keypress();
     }
 
-    // console.log('selected length', selected_keywords.length);
-    // if (selected_keywords.length > 0) {
-    //   $(".submit-keywords").val("Write Replies");
-    //   modal.find(".reply_box").show();
-    // } else {
-    //   $(".submit-keywords").val("Yup, these sure are emails.")
-    //     modal.find(".reply_box").hide();
-    // }
     $('.selected_keywords').val(selected_keywords);
 
   }
@@ -74,6 +66,19 @@
       selected_keywords.splice(i,1);
       $('.selected_keywords').val(selected_keywords);
   });
+
+  $('.cancel_new').on('click', function (e) {
+      e.preventDefault();
+      var modal = $(this).closest('.modal');
+      if(modal.length > 0){
+          modal.modal('hide');
+      }
+  });
+
+  $('.modal').on('hidden.bs.modal', function (e) {
+      close_keyword_modal($(this));
+  });
+
 </script>
 
 <style>

@@ -4,15 +4,3 @@ $(".content-wrap>.section>div>.row").find(".inbox-content").html("<%=j render pa
 $(".replies_box").addClass('col-md-5');
 $(".replies_box").removeClass('col-md-10');
 $("input[name='reply[keywords]'], input[data-role='tagsinput']").tagsinput();
-
-$('.cancel_new').on('click', function (e) {
-    e.preventDefault();
-    var modal = $(this).closest('.modal');
-    if(modal.length > 0){
-        modal.modal('hide');
-    }
-});
-
-$('.modal').on('hidden.bs.modal', function (e) {
-  close_keyword_modal($(this));
-});

@@ -4,8 +4,8 @@
     <div class="activation-process">
       <div id="process2">
         <div class="list-group">
-          <% for message in @messages %>
-            <%= render partial: "emailaccounts/message", locals: {message: message} %>
+          <% @messages.each_with_index do |message, key| %>
+            <%= render partial: "emailaccounts/message", locals: {message: message, key: key} %>
           <% end %>
           <%= render file: "emailaccounts/keywordscript" %>
         </div>

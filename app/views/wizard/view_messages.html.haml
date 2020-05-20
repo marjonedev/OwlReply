@@ -20,8 +20,8 @@
                 = @error
             - unless @messages.empty?
               %h3 Click an email.
-            - @messages.each do |message|
-              = render partial: "emailaccounts/message", locals: {message: message}
+            - @messages.each_with_index do |message, key|
+              = render partial: "emailaccounts/message", locals: {message: message, key: key}
             - unless (params[:more] || @messages.empty?)
               .style-msg{:style => "background-colorx: #333;"}
                 .sb-msg
