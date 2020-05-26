@@ -26,8 +26,17 @@
             - for reply in sug
               %span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(this, \"#{reply}\",\"message_#{id}\");"}
                 = reply
-          .mt-4.reply_box{style: 'display: none;'}
-            = render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
+
+          - if controller.controller_name == "wizard"
+            - (r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil})
+            .mt-4.reply_box{style: 'display: none;'}
+              - if (!r.empty?)
+                = render partial: 'replies/new_popup', locals: {reply: r.first}
+              - else
+                = render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
+          - else
+            .mt-4.reply_box{style: 'display: none;'}
+              = render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
 
   .modal.fade{id: "keywordsModal_#{id}", "aria-hidden" => "true", "aria-labelledby" => "keywordsModal_#{id}Label", "data-backdrop" => "static", "data-id" => "#{id}", :role => "dialog", :tabindex => "-1"}
     .modal-dialog.modal-lg{:role => "document"}

@@ -1,0 +1,98 @@
+<script>
+  function open_select_keyword_modal(elem){
+
+      var message = $(elem).closest('.message');
+
+      var modal = $(elem).closest('.modal');
+
+      if(message.length > 0){
+          var id = message.data('id');
+
+          modal = $('#keywordsModal_'+id).detach();
+          modal.appendTo($('body'));
+
+          var email_content = $(elem).closest('.email_content');
+          var email_creation = $(email_content).find('.reply_creation_area').detach();
+          var modal_body = modal.find('.modal-body');
+          email_creation.appendTo($(modal_body));
+          modal.modal('show');
+          modal.find(".reply_box").show();
+      }
+
+      return modal;
+  }
+
+  var selected_keywords = [];
+
+  function select_keyword(elem, name, message_name) {
+    var email_content = $(elem).closest('.reply_creation_area');
+
+    var modal = open_select_keyword_modal(elem);
+
+    if (selected_keywords.indexOf(name) >= 0) {
+      i = selected_keywords.indexOf(name);
+
+      // modal.find('.suggested_'+name).removeClass('selected');
+      $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
+      // selected_keywords.splice(i,1);
+    } else {
+        alert(name);
+      email_content.find('.suggested_'+name).addClass('selected');
+      modal.find('.suggested_'+name).addClass('selected');
+      selected_keywords.push(name);
+      modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+      modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+    }
+
+    $('.selected_keywords').val(selected_keywords);
+
+  }
+
+  function close_keyword_modal(modal){
+      var id = modal.data('id');
+      modal.find('.reply_box').hide();
+      // modal.find('.selected').trigger('click');
+      // modal.find('input[name="reply[keywords]"]').tagsinput('removeAll');
+      // modal.find('textarea').val('');
+      var email_creation = $(modal).find('.reply_creation_area').detach();
+      var message = $('#message_'+id).find('.reply_creation_container');
+      email_creation.appendTo($(message));
+  }
+
+  $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
+      var name = event.item;
+      $(this).closest('.reply_creation_area')
+          .find('.suggested_'+name)
+          .removeClass('selected');
+
+      var i = selected_keywords.indexOf(name);
+      selected_keywords.splice(i,1);
+      $('.selected_keywords').val(selected_keywords);
+  });
+
+  $('.cancel_new').on('click', function (e) {
+      e.preventDefault();
+      var modal = $(this).closest('.modal');
+      if(modal.length > 0){
+          modal.modal('hide');
+      }
+  });
+
+  $('.modal').on('hidden.bs.modal', function (e) {
+      close_keyword_modal($(this));
+  });
+
+</script>
+
+<style>
+  .email_body { color: #CCC; }
+  .potential_keyword {
+    color: #000;
+    padding: 0 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    vertical-align: baseline;
+  }
+  .potential_keyword:hover { background: #00A8FF; cursor: pointer; color: #FFFFFF; }
+</style>
