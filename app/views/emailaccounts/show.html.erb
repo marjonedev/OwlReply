@@ -24,6 +24,35 @@
   <div class="content-wrap nopadding">
     <div class="section nomargin notoppadding">
       <div class="">
+        <div class="row mt-1">
+          <div class="col-md-10">
+            <% unless @emailaccount.authenticated %>
+              <%= render 'emailaccounts/authentication' %>
+            <% end %>
+            <% if @emailaccount.authenticated && (!@emailaccount.last_checked.nil?) && (@emailaccount.drafts_created_lifetime.nil?) %>
+              <div class="style-msg style-msg-light" style="background-color: #333;">
+                <div class="sb-msg">
+                  We checked and found no emails to auto-reply to yet.<br>
+                  <b>Emails must be <u>unread</u> and sent in the last week for us to auto-reply.</b>
+                </div>
+              </div>
+            <% end %>
+            <% if @emailaccount.authenticated %>
+              <% if @emailaccount.replies.empty? && @emailaccount.template_blank? %>
+                <div class="style-msg style-msg-light" style="background-color: #333;">
+                  <div class="sb-msg">
+                    <%= link_to 'Setup a default reply', edit_emailaccount_path(@emailaccount), class: 'btn-connect button button-3d button-mini button-rounded button-white button-light' %>
+                    With no default reply setup, we have nothing to auto-reply to your emails with.
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+            <% if @emailaccount.authenticated && !@emailaccount.setupcomplete && !@emailaccount.skip_activation %>
+              <%= render partial: 'emailaccounts/viewerlink' %>
+            <% end %>
+          </div>
+        </div>
+
         <div class="row">
           <div class='inbox_space col-md-5 mt-4'>
             <div class="container clearfix">
@@ -37,30 +66,6 @@
           </div>
           <div class="replies_box col-md-5 mt-4">
             <div class="">
-              <% unless @emailaccount.authenticated %>
-                <%= render 'emailaccounts/authentication' %>
-              <% end %>
-              <% if @emailaccount.authenticated && (!@emailaccount.last_checked.nil?) && (@emailaccount.drafts_created_lifetime.nil?) %>
-                <div class="style-msg style-msg-light" style="background-color: #333;">
-                  <div class="sb-msg">
-                    We checked and found no emails to auto-reply to yet.<br>
-                    <b>Emails must be <u>unread</u> and sent in the last week for us to auto-reply.</b>
-                  </div>
-                </div>
-              <% end %>
-              <% if @emailaccount.authenticated %>
-                <% if @emailaccount.replies.empty? && @emailaccount.template_blank? %>
-                  <div class="style-msg style-msg-light" style="background-color: #333;">
-                    <div class="sb-msg">
-                      <%= link_to 'Setup a default reply', edit_emailaccount_path(@emailaccount), class: 'btn-connect button button-3d button-mini button-rounded button-white button-light' %>
-                      With no default reply setup, we have nothing to auto-reply to your emails with.
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-              <% if @emailaccount.authenticated && !@emailaccount.setupcomplete && !@emailaccount.skip_activation %>
-                <%= render partial: 'emailaccounts/viewerlink' %>
-              <% end %>
               <%= render file: "replies/index" %>
             </div>
           </div>
