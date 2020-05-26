@@ -36,7 +36,6 @@
       $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
       // selected_keywords.splice(i,1);
     } else {
-        alert(name);
       email_content.find('.suggested_'+name).addClass('selected');
       modal.find('.suggested_'+name).addClass('selected');
       selected_keywords.push(name);
