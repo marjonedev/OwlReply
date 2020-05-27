@@ -14017,3 +14017,8 @@ body:not(.no-transition) #wrapper,
 	background: #ff71ff;
 	color: #fff;
 }
+
+.email_body .potential_keyword.selected{
+	background: #9ddeff;
+	color: #333;
+}

@@ -33,7 +33,7 @@
           .mt-5.d-flex.w-100.justify-content-between
             = link_to 'Skip. Activate Manually.', "/wizard/skip/#{@emailaccount.id}", method: :patch, class: 'skip button button-light', remote: true
             / a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a
-            - if controller.controller_name == "wizard"
-              = render file: "emailaccounts/keywordscript_wizard"
-            - else
-              = render file: "emailaccounts/keywordscript"
+            -#- if controller.controller_name == "wizard"
+            -#  = render file: "emailaccounts/keywordscript_wizard"
+            -#- else
+            = render file: "emailaccounts/keywordscript"

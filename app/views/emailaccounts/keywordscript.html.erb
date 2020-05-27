@@ -1,4 +1,23 @@
 <script>
+  function update_selected(id, elem){
+
+      var selected_keywords = [];
+
+      if(localDB.get(id)){
+          selected_keywords = localDB.get(id);
+      }
+
+      elem.find('input[name="reply[keywords]"]').tagsinput("removeAll");
+      elem.find('.potential_keyword.selected').removeClass('selected');
+
+      if(selected_keywords){
+          selected_keywords.forEach(function (keyword) {
+              elem.find('input[name="reply[keywords]"]').tagsinput('add', keyword);
+              elem.find('.suggested_'+keyword).addClass('selected');
+          });
+      }
+  }
+
   function open_select_keyword_modal(elem){
       var message = $(elem).closest('.message');
 
@@ -11,6 +30,8 @@
           modal.appendTo($('body'));
 
           var email_content = $(elem).closest('.email_content');
+          update_selected(id, email_content);
+
           var email_creation = $(email_content).find('.reply_creation_area').detach();
           var modal_body = modal.find('.modal-body');
           email_creation.appendTo($(modal_body));
@@ -21,39 +42,50 @@
       return modal;
   }
 
-  var selected_keywords = [];
+  // var selected_keywords = [];
 
-  function select_keyword(elem, name, message_name) {
+  function select_keyword(elem, name, message_id) {
+
     var email_content = $(elem).closest('.reply_creation_area');
 
     var modal = open_select_keyword_modal(elem);
 
-    if (selected_keywords.indexOf(name) >= 0) {
-      i = selected_keywords.indexOf(name);
+    var selected_keywords = [];
 
-      // modal.find('.suggested_'+name).removeClass('selected');
-      $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
-      // selected_keywords.splice(i,1);
-    } else {
-      modal.find('.suggested_'+name).addClass('selected');
-      selected_keywords.push(name);
-      modal.find(".reply_box .bootstrap-tagsinput input").val(name);
-      modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+    if(localDB.get(message_id)){
+        selected_keywords = localDB.get(message_id);
     }
 
+    if (selected_keywords.indexOf(name) >= 0) {
+        i = selected_keywords.indexOf(name);
+
+        // modal.find('.suggested_'+name).removeClass('selected');
+        $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
+        // selected_keywords.splice(i,1);
+    } else {
+        modal.find('.suggested_'+name).addClass('selected');
+        selected_keywords.push(name);
+        modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+        modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+    }
+
+
     $('.selected_keywords').val(selected_keywords);
+    // localDB.store(message_id, selected_keywords);
+    //   console.log('selected_keywords', selected_keywords);
 
   }
 
   function close_keyword_modal(modal){
       var id = modal.data('id');
       modal.find('.reply_box').hide();
-      modal.find('.selected').trigger('click');
-      modal.find('input[name="reply[keywords]"]').tagsinput('removeAll');
-      modal.find('textarea').val('');
+      // modal.find('.selected').trigger('click');
+      // modal.find('input[name="reply[keywords]"]').tagsinput('removeAll');
+      // modal.find('textarea').val('');
       var email_creation = $(modal).find('.reply_creation_area').detach();
       var message = $('#message_'+id).find('.reply_creation_container');
       email_creation.appendTo($(message));
+      update_selected(id, $('#message_'+id));
   }
 
   $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
@@ -61,10 +93,18 @@
       $(this).closest('.reply_creation_area')
           .find('.suggested_'+name)
           .removeClass('selected');
+      var id = $(this).closest('.reply_creation_area').data('id');
+
+      var selected_keywords = [];
+
+      if(localDB.get(id)){
+          selected_keywords = localDB.get(id);
+      }
 
       var i = selected_keywords.indexOf(name);
       selected_keywords.splice(i,1);
       $('.selected_keywords').val(selected_keywords);
+
   });
 
   $('.cancel_new').on('click', function (e) {
@@ -73,6 +113,16 @@
       if(modal.length > 0){
           modal.modal('hide');
       }
+  });
+
+
+  $('.modal').on('click', 'input[type="submit"]', function () {
+     $this = $(this);
+
+     var selected_keywords = $this.closest('form').find('input[name="reply[keywords]"]').tagsinput('items');
+     var id = $this.closest('.reply_creation_area').data('id');
+     localDB.store(id, selected_keywords);
+
   });
 
   $('.modal').on('hidden.bs.modal', function (e) {
@@ -91,5 +141,5 @@
     border-radius: 3px;
     vertical-align: baseline;
   }
-  .potential_keyword:hover { background: #00A8FF; cursor: pointer; color: #FFFFFF; }
+  .potential_keyword:hover { background: #9ddeff; cursor: pointer; color: #333; }
 </style>

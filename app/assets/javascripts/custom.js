@@ -16,5 +16,49 @@ $(function(){
             });
         }
     }
+
 });
+
+localDB = (function(){
+    'use strict';
+
+    var storage = null;
+    try {
+        storage = window.localStorage;
+        storage.setItem("~~~", "!");
+        storage.removeItem("~~~");
+    } catch (err) {
+        console.log('Local DB not supported!');
+        storage = null;
+    }
+
+    function store(key, val){
+        if(storage){
+            storage.setItem(key, JSON.stringify(val));
+        }
+    }
+    function get(key){
+        if(storage) {
+            return JSON.parse(localStorage.getItem(key));
+        }
+        return null;
+    }
+    function remove(key){
+        if(storage){
+            storage.removeItem(key);
+        }
+    }
+
+    function clear(){
+        if(storage) {
+            storage.clear();
+        }
+    }
+    return{
+        store: store,
+        get: get,
+        remove: remove,
+        clear: clear,
+    }
+})();
 
