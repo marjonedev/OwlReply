@@ -21,9 +21,9 @@
   function update_localDB(){
       $('.message').each(function(k, v){
           $this = $(this);
-          var selected_keywords = $this.find('input[name="reply[keywords]"]').tagsinput('items');
+          var selected_keywords = $this.find('input[name="reply[keywords]"]').val();
           var id = $this.find('.reply_creation_area').data('id');
-          localDB.store(id, selected_keywords);
+          localDB.store(id, selected_keywords.split(','));
       });
   }
 
