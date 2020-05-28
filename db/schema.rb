@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_18_190318) do
+ActiveRecord::Schema.define(version: 2020_05_28_143845) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2020_04_18_190318) do
     t.integer "drafts_created_today"
     t.integer "drafts_created_lifetime"
     t.string "search"
+    t.string "message_id"
     t.index ["emailaccount_id"], name: "index_replies_on_emailaccount_id"
   end
 

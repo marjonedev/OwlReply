@@ -3,7 +3,8 @@
     <div class="white-section custom-white-box nopadding">
       <div class="card active">
         <div class="card-body">
-          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'}, url: emailaccount_replies_path(@emailaccount) do |f| %>
+          <% url = reply.nil? ? emailaccount_replies_path(@emailaccount) : "/emailaccounts/#{@emailaccount.id}/replies/#{reply.id}" %>
+          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin popup_form'}, url: url do |f| %>
             <% if reply.errors.any? %>
               <div class="style-msg2 errormsg">
                 <div class="msgtitle">Oops! There's an error upon submitting.</div>
@@ -35,6 +36,7 @@
               </div>
             </div>
             <div class="card-footer">
+              <%= f.hidden_field :message_id, value: message_id %>
               <%= f.submit 'Save', :class => 'button button-large nomargin submit_btn' %>
               <a href="#" class="cancel_new button button-white button-light button-large">Cancel</a>
             </div>

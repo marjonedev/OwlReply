@@ -1,4 +1,10 @@
-$('.<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
-$('.<%= dom_id(@reply) %>').find('input.keywords').tagsinput();
+var modal = $('.<%= dom_id(@reply) %>').closest('.modal');
+
+if(modal.length > 0){
+    modal.modal('hide');
+}else{
+    $('.<%= dom_id(@reply) %>').replaceWith('<%= j render 'reply', reply: @reply %>');
+    $('.<%= dom_id(@reply) %>').find('input.keywords').tagsinput();
+}
 
 $.Custom.notify('Email Reply Successfully Updated.');

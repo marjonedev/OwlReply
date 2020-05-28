@@ -37,7 +37,7 @@
             <div class="mb-3 text-left">
               <%= link_to 'Preview', '#', :remote => true, :class => 'button_preview button button-amber button-small nomargin' %>
             </div>
-            <div class="card-footer norightpadding">
+            <div class="card-footer norightpadding pl-0">
               <%= f.submit 'Save', :class => 'button button-large nomargin submit_btn' %>
               <%= link_to 'Cancel', emailaccount_reply_path(reply), :remote => true, :class => 'cancel_edit button button-white button-light button-large' %>
               <%= link_to 'Remove', emailaccount_reply_url(@emailaccount, reply), remote: true, method: :delete, data: {confirm: "Are you sure to delete this reply?"}, class: 'button button-large button-red float-right' %>
