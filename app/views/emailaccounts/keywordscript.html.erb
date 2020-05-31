@@ -1,31 +1,31 @@
 <script>
-  function update_selected(id, elem){
+  // function update_selected(id, elem){
+  //
+  //     var selected_keywords = [];
+  //
+  //     if(localDB.get(id)){
+  //         selected_keywords = localDB.get(id);
+  //     }
+  //
+  //     elem.find('input[name="reply[keywords]"]').tagsinput("removeAll");
+  //     elem.find('.potential_keyword.selected').removeClass('selected');
+  //
+  //     if(selected_keywords){
+  //         selected_keywords.forEach(function (keyword) {
+  //             elem.find('input[name="reply[keywords]"]').tagsinput('add', keyword);
+  //             elem.find('.suggested_'+keyword).addClass('selected');
+  //         });
+  //     }
+  // }
 
-      var selected_keywords = [];
-
-      if(localDB.get(id)){
-          selected_keywords = localDB.get(id);
-      }
-
-      elem.find('input[name="reply[keywords]"]').tagsinput("removeAll");
-      elem.find('.potential_keyword.selected').removeClass('selected');
-
-      if(selected_keywords){
-          selected_keywords.forEach(function (keyword) {
-              elem.find('input[name="reply[keywords]"]').tagsinput('add', keyword);
-              elem.find('.suggested_'+keyword).addClass('selected');
-          });
-      }
-  }
-
-  function update_localDB(){
-      $('.message').each(function(k, v){
-          $this = $(this);
-          var selected_keywords = $this.find('input[name="reply[keywords]"]').val();
-          var id = $this.find('.reply_creation_area').data('id');
-          localDB.store(id, selected_keywords.split(','));
-      });
-  }
+  // function update_localDB(){
+  //     $('.message').each(function(k, v){
+  //         $this = $(this);
+  //         var selected_keywords = $this.find('input[name="reply[keywords]"]').val();
+  //         var id = $this.find('.reply_creation_area').data('id');
+  //         localDB.store(id, selected_keywords.split(','));
+  //     });
+  // }
 
   function open_select_keyword_modal(elem){
       var message = $(elem).closest('.message');
@@ -45,6 +45,7 @@
           var modal_body = modal.find('.modal-body');
           email_creation.appendTo($(modal_body));
           modal.modal('show');
+          // modal.find('.potential_keyword').attr('onclick', 'alert("test")');
           modal.find(".reply_box").show();
       }
 
@@ -64,24 +65,33 @@
     // if(localDB.get(message_id)){
     //     selected_keywords = localDB.get(message_id);
     // }
+    //
+    // if (selected_keywords.indexOf(name) >= 0) {
+    //     i = selected_keywords.indexOf(name);
+    //
+    //     // modal.find('.suggested_'+name).removeClass('selected');
+    //     $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
+    //     // selected_keywords.splice(i,1);
+    // } else {
+    //     modal.find('.suggested_'+name).addClass('selected');
+    //     selected_keywords.push(name);
+    //     modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+    //     modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+    // }
 
-    if (selected_keywords.indexOf(name) >= 0) {
-        i = selected_keywords.indexOf(name);
 
-        // modal.find('.suggested_'+name).removeClass('selected');
-        $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
-        // selected_keywords.splice(i,1);
-    } else {
-        modal.find('.suggested_'+name).addClass('selected');
-        selected_keywords.push(name);
-        modal.find(".reply_box .bootstrap-tagsinput input").val(name);
-        modal.find(".reply_box .bootstrap-tagsinput input").keypress();
-    }
-
-
-    $('.selected_keywords').val(selected_keywords);
+    // $('.selected_keywords').val(selected_keywords);
     // localDB.store(message_id, selected_keywords);
     //   console.log('selected_keywords', selected_keywords);
+
+    modal.find('.suggested_'+name).addClass('selected');
+    // selected_keywords.push(name);
+    // modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+    // modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+
+  }
+
+  function select_popup_keyword(elem, name){
 
   }
 
@@ -138,9 +148,9 @@
       close_keyword_modal($(this));
   });
 
-$(document).ready(function () {
-    update_localDB();
-});
+// $(document).ready(function () {
+//     update_localDB();
+// });
 
 </script>
 

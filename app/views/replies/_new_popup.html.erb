@@ -24,9 +24,9 @@
             <div class="form-group">
               <label>Search By</label>
               <select name="reply[search]" class="form-control">
-                <option value="Subject and Body">Subject and Body</option>
-                <option value="Subject Only">Subject Only</option>
-                <option value="Body Only">Body Only</option>
+                <option value="Subject and Body" <%= html_attr_selected reply.search, 'Subject and Body' %>>Subject and Body</option>
+                <option value="Subject Only" <%= html_attr_selected reply.search, 'Subject Only' %>>Subject Only</option>
+                <option value="Body Only" <%= html_attr_selected reply.search, 'Body Only' %>>Body Only</option>
               </select>
             </div>
             <div class="form-group">
