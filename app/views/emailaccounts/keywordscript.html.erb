@@ -39,7 +39,7 @@
           modal.appendTo($('body'));
 
           var email_content = $(elem).closest('.email_content');
-          update_selected(id, email_content);
+          // update_selected(id, email_content);
 
           var email_creation = $(email_content).find('.reply_creation_area').detach();
           var modal_body = modal.find('.modal-body');
@@ -51,19 +51,19 @@
       return modal;
   }
 
-  // var selected_keywords = [];
+  var selected_keywords = [];
 
-  function select_keyword(elem, name, message_id) {
+  function select_keyword(elem, name) {
 
     var email_content = $(elem).closest('.reply_creation_area');
 
     var modal = open_select_keyword_modal(elem);
 
-    var selected_keywords = [];
-
-    if(localDB.get(message_id)){
-        selected_keywords = localDB.get(message_id);
-    }
+    // var selected_keywords = [];
+    //
+    // if(localDB.get(message_id)){
+    //     selected_keywords = localDB.get(message_id);
+    // }
 
     if (selected_keywords.indexOf(name) >= 0) {
         i = selected_keywords.indexOf(name);
@@ -94,7 +94,7 @@
       var email_creation = $(modal).find('.reply_creation_area').detach();
       var message = $('#message_'+id).find('.reply_creation_container');
       email_creation.appendTo($(message));
-      update_selected(id, $('#message_'+id));
+      // update_selected(id, $('#message_'+id));
   }
 
   $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
@@ -104,11 +104,11 @@
           .removeClass('selected');
       var id = $(this).closest('.reply_creation_area').data('id');
 
-      var selected_keywords = [];
+      // var selected_keywords = [];
 
-      if(localDB.get(id)){
-          selected_keywords = localDB.get(id);
-      }
+      // if(localDB.get(id)){
+      //     selected_keywords = localDB.get(id);
+      // }
 
       var i = selected_keywords.indexOf(name);
       selected_keywords.splice(i,1);
