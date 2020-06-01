@@ -6,7 +6,7 @@ class EmailaccountsController < ApplicationController
   include EmailaccountsHelper
   include GoogleConnector
   before_action :require_login
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect, :reply]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -235,6 +235,21 @@ class EmailaccountsController < ApplicationController
       end
     end
 
+  end
+
+  def reply
+    @keyword = params[:keyword]
+    # reply.keywords.split(',')
+    # @keywords = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil}
+    # @emailaccount.replies.select{|reply| !(reply.keywords.split(',').include? @keyword ).empty? rescue nil }
+    @replies = @emailaccount.replies.select do |x|
+      words = x.keywords.split(',')
+      if words.include?(@keyword)
+        return x
+      end
+
+      return nil
+    end
   end
 
   private

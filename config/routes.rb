@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       delete :remove
       get :revoke_account_access
       get :google_redirect
+      get :reply
     end
   end
   resources :inbox do

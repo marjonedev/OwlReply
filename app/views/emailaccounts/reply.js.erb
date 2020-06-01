@@ -1,0 +1,11 @@
+<% id = "#{@keyword}_#{@emailaccount.id}" %>
+console.log('replies', '<%= @replies %>');
+console.log('keyword', '<%= @keyword %>');
+$('.keywords_modal').remove();
+$('body .modals').append('<%= j render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id), id: id} %>');
+var modal = $('#keywordsModal_<%= id %>');
+modal.find('input[data-role="tagsinput"]').tagsinput();
+$('#keywordsModal_<%= id %>').modal('show');
+
+
+
