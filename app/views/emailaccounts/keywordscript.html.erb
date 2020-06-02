@@ -27,131 +27,155 @@
   //     });
   // }
 
-  function open_select_keyword_modal(elem){
-      var message = $(elem).closest('.message');
+  // function open_select_keyword_modal(elem){
+  //     var message = $(elem).closest('.message');
+  //
+  //     var modal = $(elem).closest('.modal');
+  //
+  //     if(message.length > 0){
+  //         var id = message.data('id');
+  //
+  //         modal = $('#keywordsModal_'+id).detach();
+  //         modal.appendTo($('body'));
+  //
+  //         var email_content = $(elem).closest('.email_content');
+  //         // update_selected(id, email_content);
+  //
+  //         var email_creation = $(email_content).find('.reply_creation_area').detach();
+  //         var modal_body = modal.find('.modal-body');
+  //         email_creation.appendTo($(modal_body));
+  //         modal.modal('show');
+  //         // modal.find('.potential_keyword').attr('onclick', 'alert("test")');
+  //         modal.find(".reply_box").show();
+  //     }
+  //
+  //     return modal;
+  // }
 
-      var modal = $(elem).closest('.modal');
+  // var selected_keywords = [];
 
-      if(message.length > 0){
-          var id = message.data('id');
+  // function select_keyword(elem, name) {
+  //
+  //   var email_content = $(elem).closest('.reply_creation_area');
+  //
+  //   var modal = open_select_keyword_modal(elem);
+  //
+  //   // var selected_keywords = [];
+  //   //
+  //   // if(localDB.get(message_id)){
+  //   //     selected_keywords = localDB.get(message_id);
+  //   // }
+  //   //
+  //   // if (selected_keywords.indexOf(name) >= 0) {
+  //   //     i = selected_keywords.indexOf(name);
+  //   //
+  //   //     // modal.find('.suggested_'+name).removeClass('selected');
+  //   //     $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
+  //   //     // selected_keywords.splice(i,1);
+  //   // } else {
+  //   //     modal.find('.suggested_'+name).addClass('selected');
+  //   //     selected_keywords.push(name);
+  //   //     modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+  //   //     modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+  //   // }
+  //
+  //
+  //   // $('.selected_keywords').val(selected_keywords);
+  //   // localDB.store(message_id, selected_keywords);
+  //   //   console.log('selected_keywords', selected_keywords);
+  //
+  //   modal.find('.suggested_'+name).addClass('selected');
+  //   // selected_keywords.push(name);
+  //   // modal.find(".reply_box .bootstrap-tagsinput input").val(name);
+  //   // modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+  //
+  // }
 
-          modal = $('#keywordsModal_'+id).detach();
-          modal.appendTo($('body'));
+  // function select_popup_keyword(elem, name){
+  //
+  // }
+  //
+  // function close_keyword_modal(modal){
+  //     var id = modal.data('id');
+  //     modal.find('.reply_box').hide();
+  //     // modal.find('.selected').trigger('click');
+  //     // modal.find('input[name="reply[keywords]"]').tagsinput('removeAll');
+  //     // modal.find('textarea').val('');
+  //     var email_creation = $(modal).find('.reply_creation_area').detach();
+  //     var message = $('#message_'+id).find('.reply_creation_container');
+  //     email_creation.appendTo($(message));
+  //     // update_selected(id, $('#message_'+id));
+  // }
 
-          var email_content = $(elem).closest('.email_content');
-          // update_selected(id, email_content);
+  // $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
+  //     var name = event.item;
+  //     $(this).closest('.reply_creation_area')
+  //         .find('.suggested_'+name)
+  //         .removeClass('selected');
+  //     var id = $(this).closest('.reply_creation_area').data('id');
+  //
+  //     // var selected_keywords = [];
+  //
+  //     // if(localDB.get(id)){
+  //     //     selected_keywords = localDB.get(id);
+  //     // }
+  //
+  //     var i = selected_keywords.indexOf(name);
+  //     selected_keywords.splice(i,1);
+  //     $('.selected_keywords').val(selected_keywords);
+  //
+  // });
 
-          var email_creation = $(email_content).find('.reply_creation_area').detach();
-          var modal_body = modal.find('.modal-body');
-          email_creation.appendTo($(modal_body));
-          modal.modal('show');
-          // modal.find('.potential_keyword').attr('onclick', 'alert("test")');
-          modal.find(".reply_box").show();
-      }
-
-      return modal;
-  }
-
-  var selected_keywords = [];
-
-  function select_keyword(elem, name) {
-
-    var email_content = $(elem).closest('.reply_creation_area');
-
-    var modal = open_select_keyword_modal(elem);
-
-    // var selected_keywords = [];
-    //
-    // if(localDB.get(message_id)){
-    //     selected_keywords = localDB.get(message_id);
-    // }
-    //
-    // if (selected_keywords.indexOf(name) >= 0) {
-    //     i = selected_keywords.indexOf(name);
-    //
-    //     // modal.find('.suggested_'+name).removeClass('selected');
-    //     $(email_content).find('input[name="reply[keywords]"]').tagsinput('remove', name);
-    //     // selected_keywords.splice(i,1);
-    // } else {
-    //     modal.find('.suggested_'+name).addClass('selected');
-    //     selected_keywords.push(name);
-    //     modal.find(".reply_box .bootstrap-tagsinput input").val(name);
-    //     modal.find(".reply_box .bootstrap-tagsinput input").keypress();
-    // }
-
-
-    // $('.selected_keywords').val(selected_keywords);
-    // localDB.store(message_id, selected_keywords);
-    //   console.log('selected_keywords', selected_keywords);
-
-    modal.find('.suggested_'+name).addClass('selected');
-    // selected_keywords.push(name);
-    // modal.find(".reply_box .bootstrap-tagsinput input").val(name);
-    // modal.find(".reply_box .bootstrap-tagsinput input").keypress();
-
-  }
-
-  function select_popup_keyword(elem, name){
-
-  }
-
-  function close_keyword_modal(modal){
-      var id = modal.data('id');
-      modal.find('.reply_box').hide();
-      // modal.find('.selected').trigger('click');
-      // modal.find('input[name="reply[keywords]"]').tagsinput('removeAll');
-      // modal.find('textarea').val('');
-      var email_creation = $(modal).find('.reply_creation_area').detach();
-      var message = $('#message_'+id).find('.reply_creation_container');
-      email_creation.appendTo($(message));
-      // update_selected(id, $('#message_'+id));
-  }
-
-  $('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
-      var name = event.item;
-      $(this).closest('.reply_creation_area')
-          .find('.suggested_'+name)
-          .removeClass('selected');
-      var id = $(this).closest('.reply_creation_area').data('id');
-
-      // var selected_keywords = [];
-
-      // if(localDB.get(id)){
-      //     selected_keywords = localDB.get(id);
-      // }
-
-      var i = selected_keywords.indexOf(name);
-      selected_keywords.splice(i,1);
-      $('.selected_keywords').val(selected_keywords);
-
-  });
-
-  $('.cancel_new').on('click', function (e) {
-      e.preventDefault();
-      var modal = $(this).closest('.modal');
-      if(modal.length > 0){
-          modal.modal('hide');
-      }
-  });
+  // $('.cancel_new').on('click', function (e) {
+  //     e.preventDefault();
+  //     var modal = $(this).closest('.modal');
+  //     if(modal.length > 0){
+  //         modal.modal('hide');
+  //     }
+  // });
 
 
-  $('.modal').on('click', 'input[type="submit"]', function () {
-     $this = $(this);
-
-     var selected_keywords = $this.closest('form').find('input[name="reply[keywords]"]').val();
-     var id = $this.closest('.reply_creation_area').data('id');
-     localDB.store(id, selected_keywords.split(','));
-
-  });
-
-  $('.modal').on('hidden.bs.modal', function (e) {
-      close_keyword_modal($(this));
-  });
+  // $('.modal').on('click', 'input[type="submit"]', function () {
+  //    $this = $(this);
+  //
+  //    var selected_keywords = $this.closest('form').find('input[name="reply[keywords]"]').val();
+  //    var id = $this.closest('.reply_creation_area').data('id');
+  //    localDB.store(id, selected_keywords.split(','));
+  //
+  // });
+  //
+  // $('.modal').on('hidden.bs.modal', function (e) {
+  //     close_keyword_modal($(this));
+  // });
 
 // $(document).ready(function () {
 //     update_localDB();
 // });
 
+    var selected_keywords = [];
+    function select_keyword(elem, word) {
+        var modal = $(elem).closest('.modal');
+        var is_modal = $(elem).hasClass('.modal');
+        if(is_modal){
+            modal = $(elem);
+        }
+
+        if(selected_keywords.indexOf(word) >= 0){
+            i = selected_keywords.indexOf(name);
+            modal.find('.suggested_'+word).removeClass('selected');
+            selected_keywords.splice(i,1);
+            $(modal).find('input[name="reply[keywords]"]').tagsinput('remove', word);
+        }else{
+            if(is_modal){
+                modal.find('.suggested_'+word).addClass('selected');
+            }else{
+                $(elem).addClass('selected');
+            }
+            modal.find(".reply_box .bootstrap-tagsinput input").val(word);
+            modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+            selected_keywords.push(word);
+        }
+    }
 </script>
 
 <style>

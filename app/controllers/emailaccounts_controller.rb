@@ -6,7 +6,7 @@ class EmailaccountsController < ApplicationController
   include EmailaccountsHelper
   include GoogleConnector
   before_action :require_login
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect, :reply]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect, :reply, :get_keywords]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -239,17 +239,29 @@ class EmailaccountsController < ApplicationController
 
   def reply
     @keyword = params[:keyword]
-    # reply.keywords.split(',')
+    @message_id = params[:message]
     # @keywords = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil}
-    # @emailaccount.replies.select{|reply| !(reply.keywords.split(',').include? @keyword ).empty? rescue nil }
-    @replies = @emailaccount.replies.select do |x|
-      words = x.keywords.split(',')
-      if words.include?(@keyword)
-        return x
-      end
+    @replies = @emailaccount.replies.select{|e| e.keywords.split(',').include?(@keyword) rescue nil }
 
-      return nil
+    respond_to do |format|
+      format.js
     end
+  end
+
+  def get_keywords
+    sug = params[:suggested]
+    sug = sug.split(',')
+    res = []
+    sug.each do |word|
+      replies = @emailaccount.replies.select{|e| e.keywords.split(',').include?(word) rescue nil }
+      if replies.empty?
+        res.push(word)
+      end
+    end
+
+    res = sug.select{|word| @emailaccount.replies.select{|e| e.keywords.split(',').include?(word) rescue nil }.empty? }
+
+    render json: { keywords: res }
   end
 
   private

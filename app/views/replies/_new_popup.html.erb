@@ -13,43 +13,49 @@
             <div class="white-section custom-white-box nopadding">
               <div class="card active">
                 <div class="card-body">
-                  <% url = reply.nil? ? emailaccount_replies_path(@emailaccount) : "/emailaccounts/#{@emailaccount.id}/replies/#{reply.id}" %>
-                  <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin popup_form'}, url: url do |f| %>
-                    <% if reply.errors.any? %>
-                      <div class="style-msg2 errormsg">
-                        <div class="msgtitle">Oops! There's an error upon submitting.</div>
-                        <div class="sb-msg">
-                          <ul>
-                            <% reply.errors.full_messages.each do |message| %>
-                              <li><%= message %></li>
-                            <% end %>
-                          </ul>
+                  <p class="mb-1 pot_keywords">
+                    <strong>Potential keywords:</strong>
+                  </p>
+                  <div class="mt-4 reply_box">
+                    <% url = reply.nil? ? emailaccount_replies_path(@emailaccount) : "/emailaccounts/#{@emailaccount.id}/replies/#{reply.id}" %>
+                    <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin popup_form'}, url: url do |f| %>
+                      <% if reply.errors.any? %>
+                        <div class="style-msg2 errormsg">
+                          <div class="msgtitle">Oops! There's an error upon submitting.</div>
+                          <div class="sb-msg">
+                            <ul>
+                              <% reply.errors.full_messages.each do |message| %>
+                                <li><%= message %></li>
+                              <% end %>
+                            </ul>
+                          </div>
+                        </div>
+                      <% end %>
+                      <div class="form-group">
+                        <label>Keywords</label>
+                        <%= f.text_field :keywords, class: 'form-control keywords', data: {role: 'tagsinput'}, required: 'required' %>
+                      </div>
+                      <div class="form-group">
+                        <label>Search By</label>
+                        <select name="reply[search]" class="form-control">
+                          <option value="Subject and Body" <%= html_attr_selected reply.search, 'Subject and Body' %>>Subject and Body</option>
+                          <option value="Subject Only" <%= html_attr_selected reply.search, 'Subject Only' %>>Subject Only</option>
+                          <option value="Body Only" <%= html_attr_selected reply.search, 'Body Only' %>>Body Only</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Body</label>
+                        <div>
+                          <%= f.text_area :body, class: 'form-control' %>
                         </div>
                       </div>
-                    <% end %>
-                    <div class="form-group">
-                      <label>Keywords</label>
-                      <%= f.text_field :keywords, class: 'form-control keywords', data: {role: 'tagsinput'}, required: 'required' %>
-                    </div>
-                    <div class="form-group">
-                      <label>Search By</label>
-                      <select name="reply[search]" class="form-control">
-                        <option value="Subject and Body" <%= html_attr_selected reply.search, 'Subject and Body' %>>Subject and Body</option>
-                        <option value="Subject Only" <%= html_attr_selected reply.search, 'Subject Only' %>>Subject Only</option>
-                        <option value="Body Only" <%= html_attr_selected reply.search, 'Body Only' %>>Body Only</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label>Body</label>
-                      <div>
-                        <%= f.text_area :body, class: 'form-control' %>
+                      <div class="card-footer">
+                        <%= f.submit 'Save', :class => 'button button-large nomargin submit_btn' %>
+                        <a href="#" class="cancel_new button button-white button-light button-large">Cancel</a>
                       </div>
-                    </div>
-                    <div class="card-footer">
-                      <%= f.submit 'Save', :class => 'button button-large nomargin submit_btn' %>
-                      <a href="#" class="cancel_new button button-white button-light button-large">Cancel</a>
-                    </div>
-                  <% end %>
+                    <% end %>
+                  </div>
+
                 </div>
               </div>
             </div>

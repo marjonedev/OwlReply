@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  class OnlyAjaxRequest
+    def matches?(request)
+      request.xhr?
+    end
+  end
+
   get "/404", to: "errors#not_found"
   get "/422", to: "errors#unacceptable"
   get "/500", to: "errors#internal_error"
@@ -35,6 +41,7 @@ Rails.application.routes.draw do
       get :revoke_account_access
       get :google_redirect
       get :reply
+      get :get_keywords, constraint: OnlyAjaxRequest.new
     end
   end
   resources :inbox do

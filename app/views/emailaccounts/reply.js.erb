@@ -1,11 +1,42 @@
-<% id = "#{@keyword}_#{@emailaccount.id}" %>
-console.log('replies', '<%= @replies %>');
-console.log('keyword', '<%= @keyword %>');
 $('.keywords_modal').remove();
-$('body .modals').append('<%= j render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id), id: id} %>');
-var modal = $('#keywordsModal_<%= id %>');
+
+<% html = @replies.empty? ? (render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id), id: @message_id}) : (render partial: 'replies/new_popup', locals: {reply: @replies.first, id: @message_id}) %>
+$('body .modals').append('<%= j html %>');
+
+var modal = $('#keywordsModal_<%= @message_id %>');
+
 modal.find('input[data-role="tagsinput"]').tagsinput();
-$('#keywordsModal_<%= id %>').modal('show');
+
+<% if @replies.empty? %>
+select_keyword(modal, "<%= @keyword %>");
+<% end %>
+
+$('#keywordsModal_<%= @message_id %>').modal('show');
+
+var sugkey = $('#sugkey_<%= @message_id %>').val();
+
+$.get('/emailaccounts/<%= @emailaccount.id %>/get_keywords', {suggested: sugkey}, function(data){
+    if(data.keywords){
+        var str = "";
+        $.each(data.keywords, function( i, word){
+            var clas_selected = word === "<%= @keyword %>" ? 'selected' : '';
+            str += "<span class='potential_keyword suggested_"+word+" "+clas_selected+"' onclick='select_keyword(this, \""+word+"\")'>"+word+"</span>";
+        });
+        modal.find('.pot_keywords').append(str);
+    }
+})
+
+modal.find('.cancel_new').on('click', function (e) {
+    e.preventDefault();
+    modal.modal('hide');
+});
+
+modal.on('hidden.bs.modal', function (e) {
+    $(this).remove();
+    if (typeof selected_keywords !== 'undefined') {
+        selected_keywords = [];
+    }
+});
 
 
 

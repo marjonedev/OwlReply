@@ -10,14 +10,16 @@
   .email_content.list-group-item.mb-3{style: 'display: none;'}
     - unless b.nil?
       - sug = Reply.suggest_keywords(b)
+      - sug_tos = sug.join(',')
       - @has_keywords = true unless sug.empty?
+      %input{type: "hidden", value: sug_tos, class: "suggested_keywords", id: "sugkey_#{id}"}
       %p.mb-2.pb-3.email_body
         - body = b.join(' ')
         - for reply in sug
           - exc = ["span", "class", "onclick", "click"]
           - key = exc.include?(reply) ? "#{reply} " : reply
           -#- body.gsub!(key, "<span class='potential_keyword suggested_#{reply}' onclick='select_keyword(this, \"#{reply}\",\"message_#{id}\");'>#{reply}</span> ")
-          - body.gsub!(key, "<a class='potential_keyword suggested_#{reply}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}' data-remote='true'>#{reply}</a> ")
+          - body.gsub!(key, "<a class='potential_keyword suggested_#{reply}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true'>#{reply}</a> ")
         =  body.html_safe
         - b[0..20].join(' ')
       .reply_creation_container
@@ -28,18 +30,18 @@
               -#%span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(this, \"#{reply}\",\"message_#{id}\");"}
               %a{:class => "potential_keyword suggested_#{reply}", :href => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}", "data-remote" => true}
                 = reply
-          - r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil}
-          .mt-4.reply_box{style: 'display: none;'}
+          -#- r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil}
+          -#.mt-4.reply_box{style: 'display: none;'}
             -#- if r.empty?
             -#  = render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
             -#- else
             -#  = render partial: 'replies/new_popup', locals: {reply: r.first}
 
-  .modal.fade{id: "keywordsModal_#{id}", "aria-hidden" => "true", "aria-labelledby" => "keywordsModal_#{id}Label", "data-backdrop" => "static", "data-id" => "#{id}", :role => "dialog", :tabindex => "-1"}
-    .modal-dialog.modal-lg{:role => "document"}
-      .modal-content
-        .modal-header
-          %h5.modal-title Create a Reply
-          %button.close{"data-dismiss"=>"modal", "aria-label" => "Close"}
-            %span{"aria-hidden" => "true"} &times;
-        .modal-body
+  -#.modal.fade{id: "keywordsModal_#{id}", "aria-hidden" => "true", "aria-labelledby" => "keywordsModal_#{id}Label", "data-backdrop" => "static", "data-id" => "#{id}", :role => "dialog", :tabindex => "-1"}
+  -#  .modal-dialog.modal-lg{:role => "document"}
+  -#    .modal-content
+  -#      .modal-header
+  -#        %h5.modal-title Create a Reply
+  -#        %button.close{"data-dismiss"=>"modal", "aria-label" => "Close"}
+  -#          %span{"aria-hidden" => "true"} &times;
+  -#      .modal-body
