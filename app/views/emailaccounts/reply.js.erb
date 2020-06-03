@@ -1,4 +1,4 @@
-$('.keywords_modal').remove();
+//$('.keywords_modal').remove();
 
 <% html = @replies.empty? ? (render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id), id: @message_id}) : (render partial: 'replies/new_popup', locals: {reply: @replies.first, id: @message_id}) %>
 $('body .modals').append('<%= j html %>');
@@ -32,11 +32,30 @@ modal.find('.cancel_new').on('click', function (e) {
 });
 
 modal.on('hidden.bs.modal', function (e) {
-    $(this).remove();
     if (typeof selected_keywords !== 'undefined') {
+        if(selected_keywords.length > 0){
+            for (let i in selected_keywords) {
+                $('#message_<%= @message_id %>').find('.potential_keyword.suggested_'+selected_keywords[i]).addClass('selected');
+            }
+        }
         selected_keywords = [];
     }
+    if (typeof removed_keywords !== 'undefined') {
+        if(removed_keywords.length > 0){
+            for (let i in removed_keywords) {
+               $('#message_<%= @message_id %>').find('.potential_keyword.suggested_'+removed_keywords[i]).removeClass('selected');
+            }
+        }
+        removed_keywords = [];
+    }
+    $(this).remove();
 });
 
-
+$('input[name="reply[keywords]"]').on('itemRemoved', function(event) {
+     var name = event.item;
+    modal.find('.suggested_'+name).removeClass('selected');
+     var i = selected_keywords.indexOf(name);
+     removed_keywords.push(name);
+     selected_keywords.splice(i,1);
+ });
 

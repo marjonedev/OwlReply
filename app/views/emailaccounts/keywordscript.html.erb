@@ -152,41 +152,34 @@
 //     update_localDB();
 // });
 
-    var selected_keywords = [];
-    function select_keyword(elem, word) {
-        var modal = $(elem).closest('.modal');
-        var is_modal = $(elem).hasClass('.modal');
-        if(is_modal){
-            modal = $(elem);
-        }
+  var selected_keywords = [];
+  var removed_keywords = [];
+  function select_keyword(elem, word) {
+      var modal = $(elem).closest('.modal');
+      var is_modal = $(elem).hasClass('.modal');
+      if(is_modal){
+          modal = $(elem);
+      }
 
-        if(selected_keywords.indexOf(word) >= 0){
-            i = selected_keywords.indexOf(name);
-            modal.find('.suggested_'+word).removeClass('selected');
-            selected_keywords.splice(i,1);
-            $(modal).find('input[name="reply[keywords]"]').tagsinput('remove', word);
-        }else{
-            if(is_modal){
-                modal.find('.suggested_'+word).addClass('selected');
-            }else{
-                $(elem).addClass('selected');
-            }
-            modal.find(".reply_box .bootstrap-tagsinput input").val(word);
-            modal.find(".reply_box .bootstrap-tagsinput input").keypress();
-            selected_keywords.push(word);
-        }
-    }
-</script>
+      if (selected_keywords.indexOf(word) >= 0) {
+          i = selected_keywords.indexOf(word);
+          modal.find('.suggested_' + word).removeClass('selected');
+          $(modal).find('input[name="reply[keywords]"]').tagsinput('remove', word);
+          selected_keywords.splice(i, 1);
+      } else {
+          if (is_modal) {
+              modal.find('.suggested_' + word).addClass('selected');
+          } else {
+              $(elem).addClass('selected');
+          }
 
-<style>
-  .email_body { color: #CCC; }
-  .potential_keyword {
-    color: #000;
-    padding: 0 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    vertical-align: baseline;
+          modal.find(".reply_box .bootstrap-tagsinput input").val(word);
+          modal.find(".reply_box .bootstrap-tagsinput input").keypress();
+
+
+          var rk = removed_keywords.indexOf(word);
+          removed_keywords.splice(rk, 1);
+          selected_keywords.push(word);
+      }
   }
-  .potential_keyword:hover { background: #9ddeff; cursor: pointer; color: #333; }
-</style>
+</script>

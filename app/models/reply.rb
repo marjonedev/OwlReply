@@ -27,6 +27,10 @@ class Reply < ApplicationRecord
     return words
   end
 
+  def self.selected(emailaccount, word)
+    !emailaccount.replies.select{|e| e.keywords.split(',').include?(word) rescue nil }.empty?
+  end
+
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
   # def search
   #   "Subject and Body"
