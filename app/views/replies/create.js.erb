@@ -1,6 +1,8 @@
-$('.new_reply_container > .new_reply').slideToggle('slow').delay(200).remove();
+if($('.new_reply_container').length > 0){
+    $('.new_reply_container > .new_reply').slideToggle('slow').delay(200).remove();
 
-$( "<%= j render @reply %>" ).insertAfter('.new_reply_container');
+    $( "<%= j render @reply %>" ).insertAfter('.new_reply_container');
+}
 
 $('#<%= dom_id(@reply) %>').find('input.keywords').tagsinput();
 

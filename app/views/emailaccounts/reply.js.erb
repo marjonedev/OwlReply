@@ -28,6 +28,12 @@ $.get('/emailaccounts/<%= @emailaccount.id %>/get_keywords', {suggested: sugkey}
 
 modal.find('.cancel_new').on('click', function (e) {
     e.preventDefault();
+    if (typeof selected_keywords !== 'undefined') {
+        selected_keywords = [];
+    }
+    if (typeof removed_keywords !== 'undefined') {
+        removed_keywords = [];
+    }
     modal.modal('hide');
 });
 
