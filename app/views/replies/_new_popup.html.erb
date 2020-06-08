@@ -2,8 +2,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Create a Reply</h5>
-        <button aria-label="Close" class="close" data-dismiss="modal">
+        <h5 class="modal-title"><%= action %> a Reply</h5>
+        <button aria-label="Close" class="close cancel_new" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -46,7 +46,7 @@
                       <div class="form-group">
                         <label>Body</label>
                         <div>
-                          <%= f.text_area :body, class: 'form-control' %>
+                          <%= f.text_area :body, class: 'form-control reply_body' %>
                         </div>
                       </div>
                       <div class="card-footer">

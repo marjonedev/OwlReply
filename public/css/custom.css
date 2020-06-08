@@ -531,3 +531,7 @@ div.reply-box{
     line-height: 1.2;
 }
 .potential_keyword:hover { background: #9ddeff; cursor: pointer; color: #333; }
+
+textarea.reply_body{
+    min-height: 220px;
+}

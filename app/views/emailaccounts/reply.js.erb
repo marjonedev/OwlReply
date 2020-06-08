@@ -1,6 +1,6 @@
 //$('.keywords_modal').remove();
 
-<% html = @replies.empty? ? (render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id), id: @message_id}) : (render partial: 'replies/new_popup', locals: {reply: @replies.first, id: @message_id}) %>
+<% html = @replies.empty? ? (render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id), id: @message_id, action: "Create"}) : (render partial: 'replies/new_popup', locals: {reply: @replies.first, id: @message_id, action: "Edit"}) %>
 $('body .modals').append('<%= j html %>');
 
 var modal = $('#keywordsModal_<%= @message_id %>');
@@ -12,6 +12,7 @@ select_keyword(modal, "<%= @keyword %>");
 <% end %>
 
 $('#keywordsModal_<%= @message_id %>').modal('show');
+
 
 var sugkey = $('#sugkey_<%= @message_id %>').val();
 
@@ -42,6 +43,7 @@ modal.on('hidden.bs.modal', function (e) {
         if(selected_keywords.length > 0){
             for (let i in selected_keywords) {
                 $(document).find('.potential_keyword.suggested_'+selected_keywords[i]).addClass('selected');
+                $('.pot_keywords').find('.suggested_'+selected_keywords[i]).addClass('hidden');
             }
         }
         selected_keywords = [];
@@ -49,7 +51,7 @@ modal.on('hidden.bs.modal', function (e) {
     if (typeof removed_keywords !== 'undefined') {
         if(removed_keywords.length > 0){
             for (let i in removed_keywords) {
-               $(document).find('.potential_keyword.suggested_'+removed_keywords[i]).removeClass('selected');
+               $(document).find('.potential_keyword.suggested_'+removed_keywords[i]).removeClass('hidden selected');
             }
         }
         removed_keywords = [];

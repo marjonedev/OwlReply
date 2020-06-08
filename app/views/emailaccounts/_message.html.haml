@@ -29,7 +29,7 @@
             %strong Potential keywords:
             - for reply in sug
               -#%span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(this, \"#{reply}\",\"message_#{id}\");"}
-              - selected2 = Reply.selected(@emailaccount, reply) ? 'selected' : ''
+              - selected2 = Reply.selected(@emailaccount, reply) ? 'selected hidden' : ''
               %a{:class => "potential_keyword suggested_#{reply} #{selected2}", :href => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}", "data-remote" => true,  "data-disable-with" => "#{reply}"}
                 = reply
           -#- r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil}
