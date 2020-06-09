@@ -3,7 +3,7 @@
     <div class="white-section custom-white-box nopadding">
       <div class="card">
         <div class="card-body">
-          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin'} do |f| %>
+          <%= form_with model: (reply || reply = Reply.new), html:{class: 'nobottommargin reply_form'} do |f| %>
             <% if reply.errors.any? %>
               <div class="style-msg2 errormsg">
                 <div class="msgtitle">Oops! There's an error upon submitting.</div>
@@ -17,15 +17,15 @@
               </div>
             <% end %>
             <div class="form-group readonly">
-              <label>Keywords</label>
+              <label>Reply to these keywords in your email</label>
               <%= f.text_field :keywords, class: 'form-control readonly keywords', readonly: 'readonly', data: {role: 'tagsinput'} %>
             </div>
             <div class="form-group">
-              <label>Search By</label>
+              <label>Where should we look for the keywords?</label>
               <%= f.text_field :search, class: 'form-control readonly', readonly: 'readonly' %>
             </div>
             <div class="form-group">
-              <label>Body</label>
+              <label>Write the content of the automated reply</label>
               <div>
                 <%= f.text_area :body, class: 'form-control readonly', readonly: 'readonly' %>
               </div>

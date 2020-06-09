@@ -5,7 +5,7 @@ module RepliesHelper
     # logger.debug "===================22222==================="
     # reply_content =
     if !reply.emailaccount.template.nil?
-      simple_format(reply.emailaccount.template.to_s.gsub("%%reply%%", reply.body))
+      simple_format(reply.emailaccount.template.to_s.gsub("%%reply%%", "<div class='reply_body'>#{reply.body}</div>"))
     else
       reply.body
     end

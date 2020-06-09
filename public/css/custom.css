@@ -181,6 +181,10 @@ section#content.replies .authentication .style-msg{
     margin-bottom: 0;
 }
 
+.reply_form label{
+    color: #bbb;
+}
+
 /*EFFECTS: Shake
 ==================================*/
 @-webkit-keyframes kf_shake {
@@ -534,4 +538,12 @@ div.reply-box{
 
 textarea.reply_body{
     min-height: 220px;
+}
+
+.preview{
+    color: #bbb;
+}
+
+.preview .reply_body{
+    color: #555;
 }

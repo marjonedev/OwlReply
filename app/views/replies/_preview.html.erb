@@ -1,8 +1,11 @@
 <div class="popup block divcenter" style="background-color: #FFF; max-width: 750px;">
-  <h4 class="popup-title text-center">Preview</h4>
+  <h4 class="popup-title text-center">Reply Preview</h4>
   <div class="popup-content nobottomborder">
     <div class="preview">
       <%= preview_reply(@reply) %>
     </div>
+  </div>
+  <div class="center nomargin">
+    <a href="<%= edit_emailaccount_url(@emailaccount) %>#template" class="button button-yellow button-light" target="_blank">Edit Template</a>
   </div>
 </div>
