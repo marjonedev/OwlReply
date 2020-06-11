@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_31_092050) do
+ActiveRecord::Schema.define(version: 2020_06_11_175935) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 2020_05_31_092050) do
     t.string "debugmessage"
     t.boolean "skip_activation", default: false
     t.index ["user_id"], name: "index_emailaccounts_on_user_id"
+  end
+
+  create_table "ignoredwords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "emailaccount_id"
+    t.string "word"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
