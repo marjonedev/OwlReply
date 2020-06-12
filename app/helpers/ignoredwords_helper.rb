@@ -1,0 +1,2 @@
+module IgnoredwordsHelper
+end

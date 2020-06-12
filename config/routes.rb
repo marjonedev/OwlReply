@@ -47,8 +47,12 @@ Rails.application.routes.draw do
   resources :inbox do
 
   end
+
   resources :sessions
+
   resources :users
+
+  resources :ignoredwords
 
   #Fix later.
   #resources :viewer do

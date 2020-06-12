@@ -82,7 +82,7 @@ class RepliesController < ApplicationController
           .permit(:keywords, :body, :negative_keywords, :catchcall, :search)
     end
 
-  def set_emailaccount
-    @emailaccount = current_user.emailaccounts.find(params[:emailaccount_id])
-  end
+    def set_emailaccount
+      @emailaccount = current_user.emailaccounts.find(params[:emailaccount_id])
+    end
 end

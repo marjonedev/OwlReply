@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :transactions, through: :invoices
   has_many :invoices
   has_many :paymentmethods
-  has_many :ignoredwords
+  has_many :ignoredwords, :dependent => :destroy
 
   attr_accessor :password
 
