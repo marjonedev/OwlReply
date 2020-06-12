@@ -13,16 +13,17 @@
       - sug_tos = sug.join(',')
       - @has_keywords = true unless sug.empty?
       %input{type: "hidden", value: sug_tos, class: "suggested_keywords", id: "sugkey_#{id}"}
-      %p.mb-2.pb-3.email_body
-        - body = b.join(' ')
-        - for reply in sug
-          - exc = ["span", "class", "onclick", "click", "selected", "reply", "keyword", "message", "remote", "data", "disable", "with", "potential", "suggested", "true"]
-          - key = exc.include?(reply) ? "#{reply} " : reply
-          -#- body.gsub!(key, "<span class='potential_keyword suggested_#{reply}' onclick='select_keyword(this, \"#{reply}\",\"message_#{id}\");'>#{reply}</span> ")
-          - selected = Reply.selected(@emailaccount, reply) ? 'selected' : ''
-          - body.gsub!(key, "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a> ")
-        =  body.html_safe
-        - b[0..20].join(' ')
+      %div.mb-2.pb-3
+        %p.mb-0.pb-0.email_body
+          - body = b.join(' ')
+          - for reply in sug
+            - exc = ["span", "class", "onclick", "click", "selected", "reply", "keyword", "message", "remote", "data", "disable", "with", "potential", "suggested", "true"]
+            - key = exc.include?(reply) ? "#{reply} " : reply
+            -#- body.gsub!(key, "<span class='potential_keyword suggested_#{reply}' onclick='select_keyword(this, \"#{reply}\",\"message_#{id}\");'>#{reply}</span> ")
+            - selected = Reply.selected(@emailaccount, reply) ? 'selected' : ''
+            - body.gsub!(key, "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a> ")
+          =  body.html_safe
+          - b[0..20].join(' ')
       .reply_creation_container
         .reply_creation_area{"data-id" => "#{id}"}
           %p.mb-1.pot_keywords
@@ -32,9 +33,3 @@
               - selected2 = Reply.selected(@emailaccount, reply) ? 'selected hidden' : ''
               %a{:class => "potential_keyword suggested_#{reply} #{selected2}", :href => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}", "data-remote" => true,  "data-disable-with" => "#{reply}"}
                 = reply
-          -#- r = @emailaccount.replies.select{|reply|(!(reply.keywords.split(',') & sug).empty?) rescue nil}
-          -#.mt-4.reply_box{style: 'display: none;'}
-            -#- if r.empty?
-            -#  = render partial: 'replies/new_popup', locals: {reply: Reply.new(emailaccount_id: @emailaccount.id)}
-            -#- else
-            -#  = render partial: 'replies/new_popup', locals: {reply: r.first}

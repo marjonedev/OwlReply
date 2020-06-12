@@ -547,3 +547,16 @@ textarea.reply_body{
 .preview .reply_body{
     color: #555;
 }
+
+.email_content a.rm-link{
+    background: #efefef;
+    color: #bbb;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 11px;
+}
+
+
+.email_content a.rm-link:hover{
+    background: #dcdcdc;
+}
