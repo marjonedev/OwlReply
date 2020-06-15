@@ -22,6 +22,7 @@ class UsersController < ApplicationController
       end
 
       @paymentmethods = current_user.paymentmethods
+      @ignoredwords = current_user.ignoredwords.join(',')
     end
 
   end
