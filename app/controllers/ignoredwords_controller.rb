@@ -2,21 +2,18 @@ class IgnoredwordsController < ApplicationController
   before_action :require_login
   before_action :set_ignoredword, only: [:show, :edit, :update, :destroy]
 
-  # GET /replies
-  # GET /replies.json
   def index
     @ignoredwords = current_user.ignoredwords
   end
 
-  # GET /replies/1
-  # GET /replies/1.json
   def show
   end
 
-  # GET /replies/new
+  # GET /ignoredwords/new
   def new
     @ignoredword = Ignoredword.new
   end
+
 
   # GET /replies/1/edit
   def edit
@@ -56,13 +53,13 @@ class IgnoredwordsController < ApplicationController
     end
   end
 
-  # DELETE /replies/1
-  # DELETE /replies/1.json
+  # DELETE /ignoredwords/1
+  # DELETE /ignoredwords/1.json
   def destroy
     @ignoredword.destroy
     respond_to do |format|
       format.js {  }
-      format.html { redirect_to ignoredword_url, notice: 'Ignored word was successfully destroyed.' }
+      # format.html { redirect_to ignoredword_url, notice: 'Ignored word was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

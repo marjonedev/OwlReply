@@ -560,3 +560,36 @@ textarea.reply_body{
 .email_content a.rm-link:hover{
     background: #dcdcdc;
 }
+
+.ignoredwords .ignoreword{
+    margin-right: 3px;
+    color: inherit;
+    background-color: #EEE;
+    border-radius: 0;
+    padding: 0 0 0 10px;
+    font-size: 11px;
+    height: 28px;
+    line-height: 28px;
+    text-shadow: none !important;
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    margin-bottom: 3px;
+}
+
+
+.ignoredwords .ignoreword a.remove{
+    margin-left: 5px;
+    border-left: 1px solid #dedddd;
+    color: #aaa;
+    padding: 5px;
+    cursor: pointer;
+}
+.ignoredwords .ignoreword a.remove:after{
+    content: "x";
+    padding: 0px 2px;
+}

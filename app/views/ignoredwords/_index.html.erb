@@ -8,8 +8,13 @@
             <h3 class="section-title nomargin">Ignored Words</h3>
           </div>
           <div class="divider  divider-rounded divider-right notopmargin nobottommargin"><i class="icon-times-circle1"></i></div>
-          <div class="bottommargin-sm">
-            <input class="form-control" data-role="tagsinput" id="ignoredwords" value="<%= @ignoredwords %>" />
+          <div class="bottommargin-sm ignoredwords">
+            <% @ignoredwords.each do |iw| %>
+              <span class="badge badge badge-info ignoreword"><%= iw.word %><%= link_to '', ignoredword_url(iw), class: "remove", data: {role: "remove", confirm: "Are you sure to remove #{iw.word}?"}, method: :delete, remote: true %></span>
+            <% end %>
+          </div>
+          <div>
+            <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Word to Ignore</span>'), new_ignoredword_url, class: "button button-rounded button-reveal button-small button-dirtygreen", method: :post, remote: true %>
           </div>
         </div>
       </div>
