@@ -12,6 +12,7 @@ class IgnoredwordsController < ApplicationController
   # GET /ignoredwords/new
   def new
     @ignoredword = Ignoredword.new
+    @ignoredwords = current_user.ignoredwords
   end
 
 
@@ -24,6 +25,7 @@ class IgnoredwordsController < ApplicationController
   def create
     @ignoredword = current_user.ignoredwords.new(ignoredword_params)
 
+    @ignoredwords = current_user.ignoredwords
     respond_to do |format|
       if @ignoredword.save
         format.html { redirect_to @ignoredword, notice: 'Reply was successfully created.' }
@@ -57,6 +59,8 @@ class IgnoredwordsController < ApplicationController
   # DELETE /ignoredwords/1.json
   def destroy
     @ignoredword.destroy
+
+    @ignoredwords = current_user.ignoredwords
     respond_to do |format|
       format.js {  }
       # format.html { redirect_to ignoredword_url, notice: 'Ignored word was successfully destroyed.' }

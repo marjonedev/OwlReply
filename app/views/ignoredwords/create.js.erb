@@ -1,3 +1,8 @@
+$.magnificPopup.close();
+
+$.Custom.notify('Successfully Created New Ignored Word.');
+
+
 if ($( "#user_ignoredwords" ).length) {
     $("#user_ignoredwords").replaceWith('<%= j render partial: 'index' %>');
 }

@@ -1,4 +1,4 @@
-<div class="section nomargin notoppadding" id="user_paymentmethod_list">
+<div class="section nomargin notoppadding" id="user_ignoredwords">
   <div class="container clearfix">
     <div class="row">
       <div class="col-lg-1 col-sm-1"></div>
@@ -9,12 +9,15 @@
           </div>
           <div class="divider  divider-rounded divider-right notopmargin nobottommargin"><i class="icon-times-circle1"></i></div>
           <div class="bottommargin-sm ignoredwords">
+            <% if @ignoredwords.empty? %>
+              <span>You don't have any ignored words. Click add new button to ignore a word.</span>
+            <% end %>
             <% @ignoredwords.each do |iw| %>
               <span class="badge badge badge-info ignoreword"><%= iw.word %><%= link_to '', ignoredword_url(iw), class: "remove", data: {role: "remove", confirm: "Are you sure to remove #{iw.word}?"}, method: :delete, remote: true %></span>
             <% end %>
           </div>
           <div>
-            <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Word to Ignore</span>'), new_ignoredword_url, class: "button button-rounded button-reveal button-small button-dirtygreen", method: :post, remote: true %>
+            <%= link_to raw('<i class="icon-plus-sign"></i><span>Add New Word to Ignore</span>'), new_ignoredword_url, class: "button button-rounded button-reveal button-small button-dirtygreen", remote: true %>
           </div>
         </div>
       </div>
