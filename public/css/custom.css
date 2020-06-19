@@ -561,7 +561,8 @@ textarea.reply_body{
     background: #dcdcdc;
 }
 
-.ignoredwords .ignoreword{
+.ignoredwords .ignoreword,
+.pot_keywords .potential_keyword.badge {
     margin-right: 3px;
     color: inherit;
     background-color: #EEE;
@@ -581,15 +582,28 @@ textarea.reply_body{
     margin-bottom: 3px;
 }
 
+.pot_keywords .potential_keyword.badge{
+    font-size: 10px;
+    height: 22px;
+    line-height: 22px;
+}
 
-.ignoredwords .ignoreword a.remove{
+
+.ignoredwords .ignoreword a.remove,
+.pot_keywords .potential_keyword.badge a.ignore{
     margin-left: 5px;
     border-left: 1px solid #dedddd;
     color: #aaa;
     padding: 5px;
     cursor: pointer;
 }
-.ignoredwords .ignoreword a.remove:after{
+
+.pot_keywords .potential_keyword.badge a.ignore{
+    font-size: 10px;
+}
+
+.ignoredwords .ignoreword a.remove:after,
+.pot_keywords .potential_keyword.badge a.ignore:after{
     content: "x";
     padding: 0px 2px;
 }

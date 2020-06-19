@@ -52,7 +52,11 @@ Rails.application.routes.draw do
 
   resources :users
 
-  resources :ignoredwords
+  resources :ignoredwords do
+    member do
+      post :ignore
+    end
+  end
 
   #Fix later.
   #resources :viewer do

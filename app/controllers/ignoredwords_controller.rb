@@ -29,7 +29,7 @@ class IgnoredwordsController < ApplicationController
     respond_to do |format|
       if @ignoredword.save
         format.html { redirect_to @ignoredword, notice: 'Reply was successfully created.' }
-        format.json { render :show, status: :created, location: @reply }
+        format.json { render :show, status: :created, location: @ignoredword }
         format.js {  }
       else
         format.html { render :new }
@@ -65,6 +65,21 @@ class IgnoredwordsController < ApplicationController
       format.js {  }
       # format.html { redirect_to ignoredword_url, notice: 'Ignored word was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def ignore
+
+    @ignoredword = current_user.ignoredwords.new(ignoredword_params)
+
+    respond_to do |format|
+      if @ignoredword.save
+        format.js {  }
+        format.json { render :show, status: :created, location: @ignoredword }
+      else
+        format.js {  }
+        format.json { render json: @ignoredword.errors, status: :unprocessable_entity }
+      end
     end
   end
 
