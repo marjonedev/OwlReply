@@ -32,7 +32,7 @@
                   Click a few keywords and these will be used to generate your first auto replies.
           .mt-5.d-flex.w-100.justify-content-between
             = link_to 'Skip. Activate Manually.', "/wizard/skip/#{@emailaccount.id}", method: :patch, class: 'skip button button-light', remote: true
-            %a.button.button-large.button-rounded.button-connect.text-white{:href => "/viewer/step3", :type => "button"} Looks Good!
+            %a.button.button-large.button-rounded.button-connect.text-white{:href => "/wizard/3/#{@emailaccount.id}", :type => "button"} Looks Good!
             / a href="/viewer/step3" type="button" class="button button-large button-rounded button-connect text-white">Looks Good!</a
             -#- if controller.controller_name == "wizard"
             -#  = render file: "emailaccounts/keywordscript_wizard"
