@@ -79,6 +79,11 @@
   <%# end %>
 </section>
 
+
+<% content_for :javascript_includes do %>
+  <script src="/js/readMoreJS.min.js"></script>
+<% end %>
+
 <% content_for :javascript_footer_includes do %>
   <script>
       $(document).ready(function() {

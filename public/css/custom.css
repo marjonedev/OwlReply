@@ -414,6 +414,7 @@ div.activation-process a.skip{
 }
 div.activation-process a.skip:hover{
     text-decoration: underline !important;
+    color: #fff;
 }
 div.activation-process div.feature-box.fbox-center .fbox-icon{
     width: 150px;
