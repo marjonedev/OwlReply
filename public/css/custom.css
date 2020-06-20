@@ -588,6 +588,12 @@ textarea.reply_body{
     line-height: 22px;
 }
 
+.pot_keywords .potential_keyword.badge a:hover,
+.pot_keywords .potential_keyword.badge a:focus,
+.pot_keywords .potential_keyword.badge a.ignore:hover,
+.pot_keywords .potential_keyword.badge a.ignore:hover{
+    color: #111;
+}
 
 .ignoredwords .ignoreword a.remove,
 .pot_keywords .potential_keyword.badge a.ignore{
@@ -606,4 +612,8 @@ textarea.reply_body{
 .pot_keywords .potential_keyword.badge a.ignore:after{
     content: "x";
     padding: 0px 2px;
+}
+
+.pot_keywords .potential_keyword a{
+    color: #666;
 }

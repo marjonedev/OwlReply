@@ -15,11 +15,17 @@ class Reply < ApplicationRecord
     return false
   end
 
-  def self.suggest_keywords(text)
+  def self.suggest_keywords(text, user_id: nil)
     text = text.uniq.map{|word|word.downcase.gsub(/[^0-9a-z ]/i, '')}.uniq
     words = text.select{|word|
       !word.in?(Stopwords.words)
     }
+    if !user_id.nil?
+      user = User.find(user_id)
+      words = words.select{|word|
+        !word.in?(user.ignoredwords.map{|w| w.word })
+      }
+    end
     words.delete_if do |word|
       (word.match(/[^a-zA-Z0-9]*$/).nil?) || (word.include?('http') || word.include?('@') || word.include?('$') || (word.length<5))
     end

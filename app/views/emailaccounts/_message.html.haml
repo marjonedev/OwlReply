@@ -9,7 +9,7 @@
     %h4.mb-1{style: 'color: #8c8b8b'}= message[:subject]
   .email_content.list-group-item.mb-3{style: 'display: none;'}
     - unless b.nil?
-      - sug = Reply.suggest_keywords(b)
+      - sug = Reply.suggest_keywords(b, user_id: current_user.id)
       - sug_tos = sug.join(',')
       - @has_keywords = true unless sug.empty?
       %input{type: "hidden", value: sug_tos, class: "suggested_keywords", id: "sugkey_#{id}"}
@@ -29,8 +29,8 @@
           %p.mb-1.pot_keywords
             %strong Potential keywords:
             - for reply in sug
-              -#%span{:class => "potential_keyword suggested_#{reply}", :onclick => "select_keyword(this, \"#{reply}\",\"message_#{id}\");"}
               - selected2 = Reply.selected(@emailaccount, reply) ? 'selected hidden' : ''
-              %span{:class => "badge badge badge-info potential_keyword suggested_#{reply} #{selected2}", "data-url" => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}",  "data-disable-with" => "#{reply}"}
-                = reply
-                = link_to '', "#{ignore_ignoredword_url}?word=#{reply}", class: "ignore", title: "ignore this word", data: {role: "remove", confirm: "Are you sure to ignore #{reply}?"}, method: :post, remote: true
+              %span{:class => "badge badge badge-info potential_keyword suggested_#{reply} #{selected2}", "data-url" => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}"}
+                %a{:href => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}", "data-remote" => true,  "data-disable-with" => "#{reply}"}
+                  = reply
+                = link_to '', ignore_ignoredword_url(ignoredword: {word: "#{reply}"}), class: "ignore", title: "ignore this word", data: {role: "remove", confirm: "Are you sure to ignore #{reply}?"}, method: :post, remote: true
