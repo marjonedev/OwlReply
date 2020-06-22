@@ -14,7 +14,7 @@
       - @has_keywords = true unless sug.empty?
       %input{type: "hidden", value: sug_tos, class: "suggested_keywords", id: "sugkey_#{id}"}
       %div.mb-2.pb-3
-        %p.mb-0.pb-0.email_body
+        %p.mb-0.pb-0.email_body.js-read-more{"data-rm-words" => "125"}
           - body = b.join(' ')
           - for reply in sug
             - exc = ["span", "class", "onclick", "click", "selected", "reply", "keyword", "message", "remote", "data", "disable", "with", "potential", "suggested", "true"]

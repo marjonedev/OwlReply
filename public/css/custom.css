@@ -549,7 +549,8 @@ textarea.reply_body{
     color: #555;
 }
 
-.email_content a.rm-link{
+.email_content a.rm-link,
+.email_content a.read-more__link{
     background: #efefef;
     color: #bbb;
     padding: 1px 5px;
@@ -558,7 +559,8 @@ textarea.reply_body{
 }
 
 
-.email_content a.rm-link:hover{
+.email_content a.rm-link:hover,
+.email_content a.read-more__link:hover{
     background: #dcdcdc;
 }
 
