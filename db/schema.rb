@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_12_182817) do
+ActiveRecord::Schema.define(version: 2020_06_30_163531) do
 
   create_table "emailaccounts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -61,6 +61,15 @@ ActiveRecord::Schema.define(version: 2020_06_12_182817) do
     t.string "number"
     t.string "payment_currency"
     t.index ["user_id"], name: "index_invoices_on_user_id"
+  end
+
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "emailaccount_id"
+    t.string "provider"
+    t.string "message_id"
+    t.boolean "fetched", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "paymentmethods", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC", force: :cascade do |t|

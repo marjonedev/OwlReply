@@ -24,6 +24,10 @@ module IMAPConnector
 
     end
 
+    def get_api_name
+      "IMAP"
+    end
+
     def replier_logger
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
@@ -33,10 +37,9 @@ module IMAPConnector
       begin
         @service.examine(@inbox)
 
-        start_date = 1.year.ago.strftime("%d-%b-%Y") #change to 1.week.ago
+        start_date = 1.week.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
         tags = ["SINCE", start_date]
-
         tags.unshift('UNSEEN') if unread
 
         tags2 = ["SINCE", start_date]
@@ -49,7 +52,7 @@ module IMAPConnector
         return @messages
       end
 
-        @service.search(tags).sort.reverse.each do |message_id|
+      @service.search(tags).sort.reverse.each do |message_id|
 
         obj = {}
 

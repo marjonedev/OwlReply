@@ -12,6 +12,10 @@ module GoogleConnector
       @messages = []
     end
 
+    def get_api_name
+      "GOOGLE"
+    end
+
     def replier_logger
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
