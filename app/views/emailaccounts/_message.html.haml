@@ -33,4 +33,4 @@
               %span{:class => "badge badge badge-info potential_keyword suggested_#{reply} #{selected2}", "data-url" => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}"}
                 %a{:href => "/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}", "data-remote" => true,  "data-disable-with" => "#{reply}"}
                   = reply
-                = link_to '', ignore_ignoredword_url(ignoredword: {word: "#{reply}"}), class: "ignore", title: "ignore this word", data: {role: "remove", confirm: "Are you sure to ignore #{reply}?"}, method: :post, remote: true
+                = link_to '', ignore_ignoredword_url(ignoredword: {word: "#{reply}"}), class: "ignore", title: "ignore this word", data: {role: "remove", confirm: "Are you sure to ignore the keyword \"#{reply}\"?"}, method: :post, remote: true

@@ -48,7 +48,7 @@ class InboxController < ApplicationController
           end
         end
       else
-        @errors.push("Email account setup is on progress. Start building your automated replies.")
+        @errors.push("Email account setup is on progress. You will see your unread messages once the setup has been completed.")
       end
     else
       @errors.push("Email account is still not connected.")
