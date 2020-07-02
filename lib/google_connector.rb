@@ -45,7 +45,7 @@ module GoogleConnector
                                 })
     end
 
-    def get_messages(limit: 500, unread: true)
+    def get_messages(limit: 500, unread: true, cron: false)
 
       begin
         refresh_api!
@@ -70,6 +70,10 @@ module GoogleConnector
 
       if set = list&.messages #the & checks for nil
         set.each do |i|
+
+          if cron
+            next if Message.exists?(:message_id => i.id, :emailaccount_id => @emailaccount.id, :provider => 'google')
+          end
 
           obj = {}
           begin
@@ -131,6 +135,10 @@ module GoogleConnector
           end
 
           @messages.push(obj)
+
+          if cron
+            Message.create(emailaccount_id: @emailaccount.id, provider: 'google', message_id: i.id, fetched: true)
+          end
         end
       end
 

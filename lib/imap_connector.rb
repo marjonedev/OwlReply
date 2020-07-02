@@ -32,7 +32,7 @@ module IMAPConnector
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def get_messages(limit: 500, unread: true)
+    def get_messages(limit: 500, unread: true, cron: false)
 
       begin
         @service.examine(@inbox)
@@ -58,6 +58,10 @@ module IMAPConnector
 
         if limit < 1
           break
+        end
+
+        if cron
+          next if Message.exists?(:message_id => message_id, :emailaccount_id => @emailaccount.id, :provider => 'imap')
         end
 
         email = @service.fetch(message_id, "RFC822")[0].attr["RFC822"]
@@ -107,6 +111,10 @@ module IMAPConnector
         @messages.push(obj)
 
         limit -= 1
+
+        if cron
+          Message.create(emailaccount_id: @emailaccount.id, provider: 'imap', message_id: message_id, fetched: true)
+        end
 
       end
 

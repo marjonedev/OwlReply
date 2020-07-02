@@ -188,7 +188,7 @@ module ReplyMaker
         require 'date'
         require 'cgi'
 
-        messages = api.get_messages(limit: 100)
+        messages = api.get_messages(limit: 100, cron: true)
         api_name = api.get_api_name
 
         ids = []
@@ -207,83 +207,82 @@ module ReplyMaker
         account_has_no_template = account.template_blank?
 
         # if messages
-          messages.each do |msg|
-            date = DateTime.parse(msg['date'])
-            formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
+        messages.each do |msg|
+          date = DateTime.parse(msg['date'])
+          formatted_date = date.strftime('%a, %b %d, %Y at %I:%M %p')
 
-            thebody = msg['body'].to_s
-            thebody_downcase = thebody.downcase
-            Wordcount.count(account,thebody)
-            next if account.subject_line_skip?(msg['subject'])
-            next if msg['is_thread']
+          thebody = msg['body'].to_s
+          thebody_downcase = thebody.downcase
+          Wordcount.count(account,thebody)
+          next if account.subject_line_skip?(msg['subject'])
+          next if msg['is_thread']
 
-            reply_used = false
+          reply_used = false
 
-            auto = ""
+          auto = ""
 
-            for reply in account.replies
-              next unless reply.matches?(msg['subject'], thebody_downcase)
-              body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
-              auto << body
-              reply.increment!(:drafts_created_today)
-              reply.increment!(:drafts_created_lifetime)
-              replies_size += 1
-              reply_used = true
-            end
-
-            if thebody_downcase.include?("testman100@fakedomain.com")
-              reply = Reply.find(58)
-              body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
-              auto << body
-              reply_used = true
-            end
-
-            if (reply_used || (!account_has_no_template))
-              body_html = (msg['body_html'].body.to_s rescue "")
-              body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
-              body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
-              body_html = thebody.gsub("\n", "<br>\n") if body_html.blank?
-              body_text = thebody if body_text.blank?
-
-              #email_to = msg['from']
-              #auto << msg.to_s
-              email_to = msg['reply_to'].blank? ? msg['from'] : msg['reply_to']
-              email_to_addr = msg['reply_to_addr'].blank? ? msg['from'] : msg['reply_to_addr']
-              subject = "Re: #{msg['subject']}"
-              from = "#{account.address}"
-
-              body_text2 = ""
-              body_text.each_line do |tline|
-                body_text2 << "> #{tline}"
-              end
-
-              reply_body = account_has_no_template ? auto : account.template.to_s.gsub("%%reply%%", auto)
-              html_reply_body = reply_body.gsub("\n", "<br>\n")
-
-
-              text_part = reply_body + "\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
-
-              email_to_html = CGI::escape_html(email_to.to_s)
-
-              html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body.force_encoding('UTF-8')}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html.force_encoding('UTF-8')}</blockquote></div></div>"
-
-
-              api.create_reply_draft(id: msg['id'], thread_id: msg['thread_id'], from: from, to: email_to_addr, subject: subject, body_text: text_part, body_html: html_part, msgid: msg['msgid'])
-              ids.push(msg['id'])
-            end
-
-            if reply_used
-              account.increment!(:drafts_created_today)
-              account.increment!(:drafts_created_lifetime)
-            else
-              account.increment!(:drafts_missing_replies_today) unless reply_used
-              account.increment!(:drafts_missing_replies_lifetime) unless reply_used
-            end
-
+          for reply in account.replies
+            next unless reply.matches?(msg['subject'], thebody_downcase)
+            body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
+            auto << body
+            reply.increment!(:drafts_created_today)
+            reply.increment!(:drafts_created_lifetime)
+            replies_size += 1
+            reply_used = true
           end
+
+          if thebody_downcase.include?("testman100@fakedomain.com")
+            reply = Reply.find(58)
+            body = reply.body #.gsub("\n", "<br>\n") # This is done later on.
+            auto << body
+            reply_used = true
+          end
+
+          if (reply_used || (!account_has_no_template))
+            body_html = (msg['body_html'].body.to_s rescue "")
+            body_html = (msg['body_text'].body.to_s rescue "") if body_html.strip.blank?
+            body_text = (msg['body_text'].to_s rescue "").strip.blank? ? (msg['body_html'].to_s rescue "") : (msg['body_text'].to_s rescue "")
+            body_html = thebody.gsub("\n", "<br>\n") if body_html.blank?
+            body_text = thebody if body_text.blank?
+
+            #email_to = msg['from']
+            #auto << msg.to_s
+            email_to = msg['reply_to'].blank? ? msg['from'] : msg['reply_to']
+            email_to_addr = msg['reply_to_addr'].blank? ? msg['from'] : msg['reply_to_addr']
+            subject = "Re: #{msg['subject']}"
+            from = "#{account.address}"
+
+            body_text2 = ""
+            body_text.each_line do |tline|
+              body_text2 << "> #{tline}"
+            end
+
+            reply_body = account_has_no_template ? auto : account.template.to_s.gsub("%%reply%%", auto)
+            html_reply_body = reply_body.gsub("\n", "<br>\n")
+
+
+            text_part = reply_body + "\n\nOn #{msg['date']}, #{email_to} wrote:\n>\n#{body_text2}"
+
+            email_to_html = CGI::escape_html(email_to.to_s)
+
+            html_part = "<div dir=\"ltr\"><div dir=\"ltr\">#{html_reply_body.force_encoding('UTF-8')}</div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On #{formatted_date} #{email_to_html} wrote:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">#{body_html.force_encoding('UTF-8')}</blockquote></div></div>"
+
+
+            api.create_reply_draft(id: msg['id'], thread_id: msg['thread_id'], from: from, to: email_to_addr, subject: subject, body_text: text_part, body_html: html_part, msgid: msg['msgid'])
+            ids.push(msg['id'])
+          end
+
+          if reply_used
+            account.increment!(:drafts_created_today)
+            account.increment!(:drafts_created_lifetime)
+          else
+            account.increment!(:drafts_missing_replies_today) unless reply_used
+            account.increment!(:drafts_missing_replies_lifetime) unless reply_used
+          end
+
+        end
         # end
-
-
+        #
         informational_message = ""
         if messages.size == 0
           informational_message = "Found no unread emails."
