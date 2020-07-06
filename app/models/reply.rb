@@ -1,6 +1,7 @@
 class Reply < ApplicationRecord
   belongs_to :emailaccount
   include Stopwords
+  after_commit :clear_messages, on: [:create, :update]
 
   def matches?(subject,body)
     subject = subject.to_s.downcase
@@ -35,6 +36,10 @@ class Reply < ApplicationRecord
 
   def self.selected(emailaccount, word)
     !emailaccount.replies.select{|e| e.keywords.split(',').include?(word) rescue nil }.empty?
+  end
+
+  def clear_messages
+    Message.clear_messages(self.emailaccount, 3)
   end
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
