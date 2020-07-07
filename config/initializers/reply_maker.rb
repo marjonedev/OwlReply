@@ -411,5 +411,9 @@ module ReplyMaker
 
       end
     end
+
+    def self.clear_messages
+      Message.where("created_at < ?", 1.week.ago).destroy_all
+    end
   end
 end

@@ -1,7 +1,8 @@
 class Reply < ApplicationRecord
   belongs_to :emailaccount
   include Stopwords
-  after_commit :clear_messages, on: [:create, :update]
+  after_update :clear_messages_on_update
+  after_commit :clear_messages, on: [:create, :destroy]
 
   def matches?(subject,body)
     subject = subject.to_s.downcase
@@ -38,9 +39,18 @@ class Reply < ApplicationRecord
     !emailaccount.replies.select{|e| e.keywords.split(',').include?(word) rescue nil }.empty?
   end
 
+  private
+
+  def clear_messages_on_update
+    if saved_change_to_attribute?(:keywords)
+      Message.clear_messages(self.emailaccount, 3)
+    end
+  end
+
   def clear_messages
     Message.clear_messages(self.emailaccount, 3)
   end
+
 
   # THIS NEEDS TO BECOME A DB FIELD and added to the form with appropriate choices. Probably a select-field?
   # def search

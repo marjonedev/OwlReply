@@ -13,5 +13,10 @@ namespace :reply do
   task :reset_error => :environment do
     ReplyMaker::Replier.reset_account_error
   end
+
+  desc "This will clear all messages that is more than a week"
+  task :clear_messages => :environment do
+    ReplyMaker::Replier.clear_messages
+  end
 end
 
