@@ -1,4 +1,4 @@
-- b = improved_message_body(message)
+- b = improved_message_body(message, false)
 - date = message[:date].downcase.gsub(' ','').gsub(',','_').gsub(':','_')
 - id = "#{date}_#{key}"
 .message{id: "message_#{id}", "data-id" => id }
@@ -19,7 +19,6 @@
           - for reply in sug
             - exc = ["span", "class", "onclick", "click", "selected", "reply", "keyword", "message", "remote", "data", "disable", "with", "potential", "suggested", "true"]
             - key = exc.include?(reply) ? "#{reply} " : reply
-            -#- body.gsub!(key, "<span class='potential_keyword suggested_#{reply}' onclick='select_keyword(this, \"#{reply}\",\"message_#{id}\");'>#{reply}</span> ")
             - selected = Reply.selected(@emailaccount, reply) ? 'selected' : ''
             - body.gsub!(key, "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a> ")
           =  body.html_safe

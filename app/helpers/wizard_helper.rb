@@ -1,9 +1,11 @@
 module WizardHelper
 
-  def improved_message_body(message)
+  def improved_message_body(message, less = true)
     body = message[:body]
-    if body.length < 100
-      return
+    if less
+      if body.length < 100
+        return
+      end
     end
     body = body.gsub('<br>',' ').gsub('<div>',"\n<div>")
     text = strip_tags(body)
