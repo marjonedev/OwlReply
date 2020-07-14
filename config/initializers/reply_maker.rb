@@ -415,5 +415,12 @@ module ReplyMaker
     def self.clear_messages
       Message.where("created_at < ?", 1.week.ago).destroy_all
     end
+
+    def self.check_sum_daily_replies
+      sum = Emailaccount.sum(:drafts_created_today)
+      if sum < 1
+        AdminMailer.zero_reply_notification_email.deliver_later
+      end
+    end
   end
 end

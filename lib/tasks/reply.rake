@@ -18,5 +18,10 @@ namespace :reply do
   task :clear_messages => :environment do
     ReplyMaker::Replier.clear_messages
   end
+
+  desc "This will check daily if reply made zero"
+  task :zero_reply_check => :environment do
+    ReplyMaker::Replier.check_sum_daily_replies
+  end
 end
 
