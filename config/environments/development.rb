@@ -19,6 +19,7 @@ Rails.application.configure do
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
+    config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
@@ -32,6 +33,8 @@ Rails.application.configure do
 
   config.action_cable.url = 'wss://owlreply.com/cable'
   config.action_cable.allowed_request_origins = [ 'https://dev.owlreply.com', /https:\/\/dev.owlreply.*/ ]
+
+  config.hosts << /[a-z0-9]+\.owlreply\.com/
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
