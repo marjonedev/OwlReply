@@ -82,4 +82,15 @@ class EmailaccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to emailaccounts_url
   end
+
+  # reply
+  test "should get replies from an emailaccount" do
+
+  end
+
+  # get_keywords
+  test "should get keywords of an emailaccount" do
+
+  end
+
 end

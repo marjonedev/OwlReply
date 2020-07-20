@@ -36,6 +36,20 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "admin view emailaccounts of a user" do
+    setup_everything_with_admin!
+    @user = users(:username1)
+    get "/admin/accounts/#{@user.id}/emailaccounts"
+    assert_response :success
+  end
+
+  test "admin view emailaccount" do
+    setup_everything_with_admin!
+    @emailaccount = emailaccounts(:email1)
+    get "/admin/emailaccounts/#{@emailaccount.id}"
+    assert_response :success
+  end
+
   test "admin view emailaccounts" do
     setup_everything_with_admin!
     get admin_emailaccounts_url

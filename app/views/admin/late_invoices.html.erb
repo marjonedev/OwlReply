@@ -28,7 +28,7 @@
               <td><%= invoice.user.email_address %></td>
               <td><%= invoice.subscription.name %></td>
               <td>$<%= invoice.amount / 100 %></td>
-              <td data-order="<%= invoice.date.to_time.to_i %>"><%= invoice.date.strftime("%b %d, %Y") %></td>
+              <td data-order="<%= invoice.date&.to_time.to_i %>"><%= invoice.date&.strftime("%b %d, %Y") %></td>
               <td><%= link_to "Show Invoice", "/admin/show_invoice/#{invoice.id}", class: "button button-mini" %></td>
             </tr>
           <% end %>

@@ -13,3 +13,17 @@ two:
   negative_keywords: MyString
   catchcall: false
   emailaccount: email2
+
+three:
+  keywords: lorem,donec,sitcom
+  body: This is a sample body. from a test keyword
+  negative_keywords: MyString
+  catchcall: false
+  emailaccount: email1
+
+four:
+  keywords: yes,what
+  body: This is a sample body of four. from a tests keywords.
+  negative_keywords: MyString
+  catchcall: false
+  emailaccount: email1

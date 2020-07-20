@@ -16,19 +16,19 @@ class IgnoredwordsController < ApplicationController
   end
 
 
-  # GET /replies/1/edit
+  # GET /ignoredwords/1/edit
   def edit
   end
 
-  # POST /replies
-  # POST /replies.json
+  # POST /ignoredwords
+  # POST /ignoredwords.json
   def create
     @ignoredword = current_user.ignoredwords.new(ignoredword_params)
 
     @ignoredwords = current_user.ignoredwords
     respond_to do |format|
       if @ignoredword.save
-        format.html { redirect_to @ignoredword, notice: 'Reply was successfully created.' }
+        format.html { redirect_to @ignoredword, notice: 'Ignored Word was successfully created.' }
         format.json { render :show, status: :created, location: @ignoredword }
         format.js {  }
       else
@@ -39,12 +39,12 @@ class IgnoredwordsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /replies/1
-  # PATCH/PUT /replies/1.json
+  # PATCH/PUT /ignoredwords/1
+  # PATCH/PUT /ignoredwords/1.json
   def update
     respond_to do |format|
       if @ignoredword.update(ignoredword_params)
-        format.html { redirect_to @ignoredword, notice: 'Reply was successfully updated.' }
+        format.html { redirect_to @ignoredword, notice: 'Ignored Word was successfully updated.' }
         format.json { render :show, status: :ok, location: @ignoredword }
         format.js {  }
       else
@@ -68,6 +68,8 @@ class IgnoredwordsController < ApplicationController
     end
   end
 
+  # POST /ignoredwords
+  # POST /ignoredwords.json
   def ignore
 
     @ignoredword = current_user.ignoredwords.new(ignoredword_params)

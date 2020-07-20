@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     end
   end
 
+  # post 'ignorewords/ignore' => 'ignoredwords#ignore'
+
   #Fix later.
   #resources :viewer do
   #  member do
