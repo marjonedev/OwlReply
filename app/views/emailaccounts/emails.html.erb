@@ -7,7 +7,7 @@
           <% @messages.each_with_index do |message, key| %>
             <%= render partial: "emailaccounts/message", locals: {message: message, key: key} %>
           <% end %>
-          <%= render file: "emailaccounts/keywordscript" %>
+          <%= render template: "emailaccounts/keywordscript" %>
         </div>
       </div>
     </div>

@@ -8,9 +8,9 @@ class PagesController < ApplicationController
         if @emailaccounts.count == 1
           @emailaccount = @emailaccounts.first
           @replies = @emailaccount.replies.order("created_at DESC")
-          render file: "emailaccounts/show"
+          render template: "emailaccounts/show"
         else
-          render file: "emailaccounts/index"
+          render template: "emailaccounts/index"
         end
       end
     else
@@ -51,15 +51,15 @@ class PagesController < ApplicationController
 
   def guide_email_automation
     @page_title = "A guide to automating your email replies from OwlReply."
-    render file: 'pages/guides/email_automation'
+    render template: 'pages/guides/email_automation'
   end
   def guide_customer_service_emails
     @page_title = "Writing better customer service emails. | OwlReply"
-    render file: 'pages/guides/customer_service_emails'
+    render template: 'pages/guides/customer_service_emails'
   end
   def guide_tips_for_good_emails
     @page_title = "A guide to writing better emails. - OwlReply"
-    render file: 'pages/guides/tips_for_good_emails'
+    render template: 'pages/guides/tips_for_good_emails'
   end
 end
 
