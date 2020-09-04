@@ -620,3 +620,7 @@ textarea.reply_body{
 .pot_keywords .potential_keyword a{
     color: #666;
 }
+
+.inbox-content .message{
+    overflow: hidden;
+}
