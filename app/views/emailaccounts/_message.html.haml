@@ -24,7 +24,7 @@
             - selected = Reply.selected(@emailaccount, reply) ? 'selected' : ''
             - body.gsub!(/\b#{reply}\b/, "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a>")
           =  body.html_safe
-          - b[0..20].join(' ')
+          -#- b[0..20].join(' ')
       .reply_creation_container
         .reply_creation_area{"data-id" => "#{id}"}
           %p.mb-1.pot_keywords

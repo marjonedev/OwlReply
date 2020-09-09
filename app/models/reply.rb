@@ -39,13 +39,16 @@ class Reply < ApplicationRecord
     !emailaccount.replies.select{|e| e.keywords.split(',').include?(word) rescue nil }.empty?
   end
 
-  def self.body_with_suggestions(b, sug, emailaccount, id)x
+  def self.body_with_suggestions(b, sug, emailaccount, id)
     b.each {|i|
-      sug.each {|reply|
-        selected = selected(emailaccount, reply) ? 'selected' : ''
-        i.to_s.gsub(/\w+/){ |text| text == reply ? 'test' : reply }
-        # i.sub(/(\b#{reply}\b)/, "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a>")
-      }
+      unless i.blank?
+        sug.each {|reply|
+          if i.strip == reply
+            selected = selected(emailaccount, reply) ? 'selected' : ''
+            i.replace "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a>"
+          end
+        }
+      end
     }
 
     return b.join(' ')
