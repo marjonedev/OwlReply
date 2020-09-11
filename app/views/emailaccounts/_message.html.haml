@@ -10,7 +10,6 @@
   .email_content.list-group-item.mb-3{style: 'display: none;'}
     - unless b.nil?
       - sug = Reply.suggest_keywords(b, user_id: current_user.id)
-      = sug
       - sug_tos = sug.join(',')
       - @has_keywords = true unless sug.empty?
       %input{type: "hidden", value: sug_tos, class: "suggested_keywords", id: "sugkey_#{id}"}
