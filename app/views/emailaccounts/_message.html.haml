@@ -10,21 +10,14 @@
   .email_content.list-group-item.mb-3{style: 'display: none;'}
     - unless b.nil?
       - sug = Reply.suggest_keywords(b, user_id: current_user.id)
-      -#= sug
+      = sug
       - sug_tos = sug.join(',')
       - @has_keywords = true unless sug.empty?
       %input{type: "hidden", value: sug_tos, class: "suggested_keywords", id: "sugkey_#{id}"}
       %div.mb-2.pb-3
         %p.mb-0.pb-0.email_body.js-read-more{"data-rm-words" => "125"}
-          -#- body = b.join(' ')
           - body = Reply.body_with_suggestions(b, sug, @emailaccount, id)
-          -#- for reply in sug
-            -#- exc = ["span", "class", "onclick", "click", "selected", "reply", "keyword", "message", "remote", "data", "disable", "with", "potential", "suggested", "true", "accounts"]
-            -#- key = exc.include?(reply) ? "#{reply} " : reply
-            - selected = Reply.selected(@emailaccount, reply) ? 'selected' : ''
-            - body.gsub!(/\b#{reply}\b/, "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{@emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{reply}</a>")
           =  body.html_safe
-          -#- b[0..20].join(' ')
       .reply_creation_container
         .reply_creation_area{"data-id" => "#{id}"}
           %p.mb-1.pot_keywords
