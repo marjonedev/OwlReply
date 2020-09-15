@@ -1,1 +1,4 @@
 $('.pot_keywords').find('.suggested_<%= @ignoredword.word %>').remove();
+let suggest = $('.email_body').find('.suggested_<%= @ignoredword.word %>');
+$( suggest ).after( "<%= @ignoredword.word %>" );
+$( suggest ).remove();
