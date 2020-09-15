@@ -43,7 +43,8 @@ class Reply < ApplicationRecord
     b.each {|i|
       unless i.blank?
           sug.each {|reply|
-          if i.downcase.include? reply
+          if i.downcase == reply or i.downcase == "#{reply}," or i.downcase == "#{reply}."
+          # if i.downcase.include? reply
             selected = selected(emailaccount, reply) ? 'selected' : ''
             i.replace "<a class='potential_keyword suggested_#{reply} #{selected}' href='/emailaccounts/#{emailaccount.id}/reply.js?keyword=#{reply}&message=#{id}' data-remote='true' data-disable-with='#{reply}'>#{i}</a>"
             break
