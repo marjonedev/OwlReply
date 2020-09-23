@@ -23,7 +23,7 @@
             - @messages.each_with_index do |message, key|
               = render partial: "emailaccounts/message", locals: {message: message, key: key}
             - unless (params[:more] || @messages.empty?)
-              .style-msg{:style => "background-colorx: #333;"}
+              .style-msg{:style => "background-colorx: #333;", :class=> "showmore"}
                 .sb-msg
                   %a{:href => "?more=1"} Show More Emails
             - if @has_keywords

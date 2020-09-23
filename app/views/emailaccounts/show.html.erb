@@ -56,8 +56,8 @@
         <div class="row">
           <div class='inbox_space col-md-5 mt-4'>
             <div class="container clearfix">
-              <%= link_to "Unread", "/inbox/#{@emailaccount.id}.js?more=1", class: "inbox_button button button-rounded button-small #{'button-light' if params[:all]}", remote: true %>
-              <%= link_to "All", "/inbox/#{@emailaccount.id}.js?all=1&more=1", class: "inbox_button button button-rounded button-small #{'button-light' if params[:all].blank?}", remote: true %>
+              <%= link_to "Unread", "/inbox/#{@emailaccount.id}.js?more=1", class: "inbox_button ml-0 button button-rounded button-small #{'button-light' if params[:all]}", remote: true %>
+              <%= link_to "All", "/inbox/#{@emailaccount.id}.js?all=1&more=1", class: "inbox_button ml-0 button button-rounded button-small #{'button-light' if params[:all].blank?}", remote: true %>
               <%= render template: "layouts/spinner" %>
               <div class="inbox-content">
                 <div class="list-group"></div>

@@ -108,9 +108,9 @@ module GoogleConnector
           obj['is_thread'] = thread.messages.count > 1
 
 
-          Rails.logger.info "\n\n\n\n\n"
-          Rails.logger.info email.label_ids
-          Rails.logger.info obj['unread']
+          # Rails.logger.info "\n\n\n\n\n"
+          # Rails.logger.info email.label_ids
+          # Rails.logger.info obj['unread']
 
           # if body.nil? && payload.parts.any?
           #   body = payload.parts.map { |part| part.body.data }.join

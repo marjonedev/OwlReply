@@ -624,3 +624,13 @@ textarea.reply_body{
 .inbox-content .message{
     overflow: hidden;
 }
+
+.inbox-content .message a.list-group-item{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0px;
+    margin-bottom: 0px;
+}
+
+.style-msg.showmore{
+    margin-top: 5px;
+}

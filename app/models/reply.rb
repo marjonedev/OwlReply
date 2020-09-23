@@ -18,7 +18,7 @@ class Reply < ApplicationRecord
   end
 
   def self.suggest_keywords(text, user_id: nil)
-    text = text.uniq.map{|word|word.downcase.gsub(/[^0-9a-z ]/i, '')}.uniq
+    text = text.uniq.map{|word|word.downcase.gsub(/[^0-9a-z. ]/i, '')}.uniq
     words = text.select{|word|
       !word.in?(Stopwords.words)
     }
