@@ -171,13 +171,13 @@ module IMAPConnector
 
       def get_service emailaccount
         begin
-          # ssl = emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
-          ssl = emailaccount.imap_ssl ? true : false
+          ssl = emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
+          # ssl = emailaccount.imap_ssl ? true : false
           port = emailaccount.imap_port ? emailaccount.imap_port : 993
           host = emailaccount.imap_host.to_s.empty? ? emailaccount.address.to_s.split("@").last : emailaccount.imap_host
 
-          # service = Net::IMAP.new(host, ssl: ssl, port: port, openssl_verify_mode: false)
-          service = Net::IMAP.new(host, port, ssl, nil, false)
+          service = Net::IMAP.new(host, ssl: ssl, port: port, openssl_verify_mode: false)
+          # service = Net::IMAP.new(host, port, ssl, nil, false)
 
           service.login(emailaccount.address, emailaccount.password)
 
