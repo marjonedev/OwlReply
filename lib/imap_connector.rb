@@ -32,12 +32,12 @@ module IMAPConnector
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def get_messages(limit: 100, unread: true, cron: false)
+    def get_messages(limit: 500, unread: true, cron: false)
 
       begin
         @service.examine(@inbox)
 
-        start_date = 1.day.ago.strftime("%d-%b-%Y") #change to 1.week.ago
+        start_date = 1.week.ago.strftime("%d-%b-%Y") #change to 1.week.ago
 
         tags = ["SINCE", start_date]
         tags.unshift('UNSEEN') if unread
@@ -172,12 +172,10 @@ module IMAPConnector
       def get_service emailaccount
         begin
           ssl = emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
-          # ssl = emailaccount.imap_ssl ? true : false
           port = emailaccount.imap_port ? emailaccount.imap_port : 993
           host = emailaccount.imap_host.to_s.empty? ? emailaccount.address.to_s.split("@").last : emailaccount.imap_host
 
-          service = Net::IMAP.new(host, ssl: ssl, port: port, openssl_verify_mode: false)
-          # service = Net::IMAP.new(host, port, ssl, nil, false)
+          service = Net::IMAP.new(host, ssl: ssl, port: port )
 
           service.login(emailaccount.address, emailaccount.password)
 
