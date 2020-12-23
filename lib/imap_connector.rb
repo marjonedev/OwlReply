@@ -183,7 +183,7 @@ module IMAPConnector
         rescue Net::IMAP::NoResponseError => e
           @errors.push("IMAP returned an authorization error. #{e.message}")
         rescue
-          @errors.push("There was an error in IMAP service.")
+          @errors.push("There was an error in IMAP service...")
           @errors.push("#{$!.to_s}") rescue nil
         end
       end
