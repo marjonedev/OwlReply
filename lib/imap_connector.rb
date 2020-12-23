@@ -32,7 +32,7 @@ module IMAPConnector
       @@replier_logger ||= Logger.new("#{Rails.root}/log/replier.log")
     end
 
-    def get_messages(limit: 500, unread: true, cron: false)
+    def get_messages(limit: 50, unread: true, cron: false)
 
       begin
         @service.examine(@inbox)
@@ -171,11 +171,11 @@ module IMAPConnector
 
       def get_service emailaccount
         begin
-          ssl = emailaccount.imap_ssl ? true : false
+          ssl = emailaccount.imap_ssl ? {ssl_version: :TLSv1_2} : false
           port = emailaccount.imap_port ? emailaccount.imap_port : 993
           host = emailaccount.imap_host.to_s.empty? ? emailaccount.address.to_s.split("@").last : emailaccount.imap_host
 
-          service = Net::IMAP.new(host, port, ssl)
+          service = Net::IMAP.new(host, ssl: ssl, port: port )
 
           service.login(emailaccount.address, emailaccount.password)
 
@@ -183,7 +183,7 @@ module IMAPConnector
         rescue Net::IMAP::NoResponseError => e
           @errors.push("IMAP returned an authorization error. #{e.message}")
         rescue
-          @errors.push("There was an error in IMAP service...")
+          @errors.push("There was an error in IMAP service.")
           @errors.push("#{$!.to_s}") rescue nil
         end
       end
