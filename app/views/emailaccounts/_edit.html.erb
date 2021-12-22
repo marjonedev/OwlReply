@@ -33,7 +33,7 @@
        <% else %>
         <div class="style-msg style-msg-light" style="background-color: #333;">
           <div class="sb-msg">
-            <%= link_to 'Connect', '#', class: "btn-connect button button-3d button-mini button-rounded button-white button-light", remote: true, method: :post %> Your account needs to be authenticated. Please connect your IMAP account.
+            <%= link_to 'Connect', '#', class: "btn-connect button button-3d button-mini button-rounded button-white button-light", remote: true, data: { method: :post } %> Your account needs to be authenticated. Please connect your IMAP account.
           </div>
         </div>
        <% end %>
