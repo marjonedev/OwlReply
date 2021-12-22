@@ -6,7 +6,7 @@ class EmailaccountsController < ApplicationController
   include EmailaccountsHelper
   include GoogleConnector
   before_action :require_login
-  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect, :reply, :get_keywords]
+  before_action :set_emailaccount, only: [:show, :edit, :update, :destroy, :emails, :check_again, :status, :connect, :remove, :revoke_account_access, :authenticate_imap, :google_redirect, :reply, :get_keywords, :go_to_authorization]
 
   # GET /emailaccounts
   # GET /emailaccounts.json
@@ -141,6 +141,14 @@ class EmailaccountsController < ApplicationController
       end
     end
 
+  end
+
+  def go_to_authorization
+    if @emailaccount.email_provider == 'google'
+      redirect_to google_redirect_emailaccount_url(@emailaccount)
+    else
+      redirect_to "/wizard/2/#{@emailaccount.id}"
+    end
   end
 
   def connect

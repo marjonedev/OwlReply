@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       patch :connect
       put :connect
       post :connect
+      post :go_to_authorization
       delete :remove
       get :revoke_account_access
       get :google_redirect
