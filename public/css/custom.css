@@ -88,6 +88,10 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
 .template_partial {
     color: #CCC;
 }
+#content .template_partial p {
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
 
 #page-title.replies h1 a.edit{
     vertical-align: middle;
