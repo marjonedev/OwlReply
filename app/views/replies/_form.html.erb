@@ -27,9 +27,11 @@
             </div>
             <div class="form-group">
               <label>Write the content of the automated reply</label>
+              <div class="template_top template_partial"><%= reply.emailaccount&.template_top %></div>
               <div>
                 <%= f.text_area :body, class: 'form-control' %>
               </div>
+              <div class="template_bottom template_partial"><%= reply.emailaccount&.template_bottom %></div>
             </div>
           <% end %>
         </div>

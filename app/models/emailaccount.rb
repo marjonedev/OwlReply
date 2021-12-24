@@ -26,6 +26,13 @@ class Emailaccount < ApplicationRecord
     return false
   end
 
+  def template_top
+    self.template.to_s.split("%%reply%%").first
+  end
+  def template_bottom
+    self.template.to_s.split("%%reply%%").last
+  end
+
   def template_blank?
     (self.template.nil? || self.template.to_s.strip == "")
   end

@@ -85,6 +85,10 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
 
 /*REPLIES
 ---------------------------------*/
+.template_partial {
+    color: #CCC;
+}
+
 #page-title.replies h1 a.edit{
     vertical-align: middle;
     font-size: 14px;
