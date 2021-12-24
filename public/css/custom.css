@@ -92,6 +92,9 @@ section#content.emailaccount_edit textarea[name="emailaccount[template]"]{
     line-height: 1.5;
     margin-bottom: 10px;
 }
+#content .reply_body p {
+    color: black;
+}
 
 #page-title.replies h1 a.edit{
     vertical-align: middle;
